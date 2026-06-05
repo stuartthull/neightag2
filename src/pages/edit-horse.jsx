@@ -2,45 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
+const INITIAL_FORM_DATA = {
+    horse_name: '',
+    is_public: true,
+    horse_dob: '',
+    horse_weight_kg: '',
+    horse_vet_name: '',
+    horse_vet_practice: '',
+    horse_vet_phone_one: '',
+    horse_last_weighed: '',
+    horse_passport_number: '',
+    horse_medication: '',
+    horse_allergies: '',
+    farrier_name: '',
+    farrier_phone_one: '',
+    farrier_email: '',
+    farrier_next_visit: '',
+    farrier_last_visit: '',
+    farrier_notes: '',
+    horse_breed: '',
+    horse_colour: '',
+    horse_height: '',
+    dentist_name: '',
+    dentist_phone_one: '',
+    dentist_email: '',
+    dentist_next_visit: '',
+    dentist_last_visit: '',
+    dentist_notes: '',
+    emergency_name_one: '',
+    emergency_phone_one: '',
+    emergency_name_two: '',
+    emergency_phone_two: '',
+    feed_instructions: ''
+};
+
 export default function EditItem() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
     // Master state object strictly tracking core vitals fields and visibility
-    const [formData, setFormData] = useState({
-        horse_name: '',
-        is_public: true, // ✅ Track global visibility inside state initialization
-        horse_dob: '',
-        horse_weight_kg: '',
-        horse_vet_name: '',
-        horse_vet_practice: '',
-        horse_vet_phone_one: '',
-        horse_last_weighed: '',
-        horse_passport_number: '',
-        horse_medication: '',
-        horse_allergies: '',
-        farrier_name: '',
-        farrier_phone_one: '',
-        farrier_email: '',
-        farrier_next_visit: '',
-        farrier_last_visit: '',
-        farrier_notes: '',
-        horse_breed: '',
-        horse_colour: '',
-        horse_height: '',
-        dentist_name: '',
-        dentist_phone_one: '',
-        dentist_email: '',
-        dentist_next_visit: '',
-        dentist_last_visit: '',
-        dentist_notes: '',
-        emergency_name_one: '',
-        emergency_phone_one: '',
-        emergency_name_two: '',
-        emergency_phone_two: '',
-        feed_instructions: ''
-    });
+    const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
     useEffect(() => {
         const fetchCoreVitals = async () => {
@@ -59,7 +61,7 @@ export default function EditItem() {
             // Safeguard database nulls into empty strings for controlled inputs
             const safePayload = {};
             Object.keys(data || {}).forEach(key => {
-                if (key in formData || key === 'id') {
+                if (key in INITIAL_FORM_DATA || key === 'id') {
                     if (key === 'is_public') {
                         safePayload[key] = data[key] ?? true; // Default to true if unassigned
                     } else {
@@ -68,7 +70,7 @@ export default function EditItem() {
                 }
             });
 
-            setFormData(safePayload);
+            setFormData({ ...INITIAL_FORM_DATA, ...safePayload });
             setLoading(false);
         };
 
@@ -93,7 +95,7 @@ export default function EditItem() {
         // 2. Explicitly append the boolean flag state onto the outbound payload object
         vitalsPayload.is_public = Boolean(formData.is_public);
 
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('equi_log_main')
             .update(vitalsPayload)
             .eq('id', id);
