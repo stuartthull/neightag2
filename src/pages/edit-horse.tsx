@@ -89,8 +89,8 @@ export default function EditItem() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        // 1. Extract structural metadata fields you want to skip updating
-        const { id: _, created_at: __, user_uuid: ___, ...vitalsPayload } = formData;
+        // 1. Build outbound payload from controlled form state
+        const vitalsPayload = { ...formData };
 
         // 2. Explicitly append the boolean flag state onto the outbound payload object
         vitalsPayload.is_public = Boolean(formData.is_public);

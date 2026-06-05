@@ -68,7 +68,7 @@ export default function Login() {
     );
 }
 
-const styles = {
+const styles: Record<string, React.CSSProperties> = {
     container: {
         display: 'flex',
         justifyContent: 'center',

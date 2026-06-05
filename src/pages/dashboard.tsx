@@ -2,24 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
-export default function Dashboard({ session }) {
-    const [myLogs, setMyLogs] = useState([]);
+type LogRecord = {
+    id: number;
+    horse_name: string;
+};
+
+export default function Dashboard() {
+    const [myLogs, setMyLogs] = useState<LogRecord[]>([]);
     const [horseName, setHorseName] = useState('');
+    const [sessionUserId, setSessionUserId] = useState<string | null>(null);
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data }) => {
+            setSessionUserId(data.session?.user?.id ?? null);
+        });
+    }, []);
 
     const fetchMyLogs = async () => {
         const { data } = await supabase.from('equi_log_main').select('*');
-        setMyLogs(data || []);
+        setMyLogs((data as LogRecord[]) || []);
     };
 
     useEffect(() => { fetchMyLogs(); }, []);
 
-    const addHorse = async (e) => {
+    const addHorse = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!horseName) return;
+        if (!horseName || !sessionUserId) return;
 
         await supabase.from('equi_log_main').insert([{
             horse_name: horseName,
-            user_uuid: session.user.id
+            user_uuid: sessionUserId
         }]);
 
         setHorseName('');
