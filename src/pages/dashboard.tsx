@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import '../css/equilog.css';
 
 type LogRecord = {
     id: number;
@@ -60,44 +61,52 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="page-container">
-            <section className="section-container white-section-container">
-                <h2 style={{ marginBottom: '20px' }}>Registered Horses</h2>
+        <div className="page-wrapper">
+            <div className="page-container">
+                <section className="section-container purple-section-container">
+                    <h1 className="textbig">Your Stable</h1>
+                    <p className="text-normal">Manage your horses and their medical records.</p>
+                </section>
 
-                {loading ? (
-                    <p>Loading your stable profile...</p>
-                ) : myLogs.length === 0 ? (
-                    <p style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
-                ) : (
-                    myLogs.map(log => (
-                        <ul key={log.id} className="marginbsixteen">
-                            <li><p className="marginbsixteen">
-                                <Link to={`/edit/${log.id}`}>Edit Logs & Medical details</Link>
-                            </p></li>
-                            <li><p className="marginbsixteen">
-                                <Link to={`/privacy/${log.id}`}>Edit privacy</Link>
-                            </p></li>
-                            <li><p className="marginbsixteen">
-                                <Link to={`/horse/${log.id}`} >
-                                    {log.horse_name}'s Records
-                                </Link>
-                            </p></li>
-                        </ul >
-                    ))
-                )}
+                <section className="section-container white-section-container">
+                    <h2 className="textmedium marginbeight">Registered Horses</h2>
 
-                <hr />
+                    {loading ? (
+                        <p className="text-normal">Loading your stable profile...</p>
+                    ) : myLogs.length === 0 ? (
+                        <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
+                    ) : (
+                        <div style={{ display: 'grid', gap: '16px' }}>
+                            {myLogs.map(log => (
+                                <div key={log.id} style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '16px' }}>
+                                    <div className="text-normal"><strong>{log.horse_name}</strong></div>
+                                    <div style={{ display: 'flex', gap: '15px', marginTop: '8px', flexWrap: 'wrap' }}>
+                                        <Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link>
+                                        <Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link>
+                                        <Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </section>
 
-                <form onSubmit={addHorse} style={{ marginBottom: '20px' }}>
-                    <input
-                        value={horseName}
-                        onChange={e => setHorseName(e.target.value)}
-                        placeholder="Enter name"
-                        style={{ padding: '8px', marginRight: '10px' }}
-                    />
-                    <button type="submit" className="buttonMain buttonPurple">Add Horse</button>
-                </form>
-            </section>
+                <section className="section-container purple-section-container">
+                    <h2 className="textmedium marginbeight">Add a New Horse</h2>
+                    <form onSubmit={addHorse} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <input
+                            className="inputText"
+                            value={horseName}
+                            onChange={e => setHorseName(e.target.value)}
+                            placeholder="Enter horse name"
+                            required
+                        />
+                        <button type="submit" className="buttonWhite buttonMain">
+                            Add Horse to Stable
+                        </button>
+                    </form>
+                </section>
+            </div>
         </div>
     );
 }
