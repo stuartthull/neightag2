@@ -576,7 +576,7 @@ a:hover {
 .back-link {
     background: none;
     border: none;
-    color: #94a3b8;
+    color: var(--purple);
     cursor: pointer;
     margin-bottom: 20px;
     padding: 0;
@@ -922,7 +922,7 @@ a:hover {
 }
 
 input:checked+.slider {
-    background-color: #059669;
+    background-color: var(--purple);
 }
 
 /* Deep matching green when active */
@@ -968,4 +968,13 @@ input:checked+.slider:before {
     margin: 4px 0 0 0;
     font-size: 0.8rem;
     color: #64748b;
+}
+
+.buttonaslinker {
+    margin-top: 1rem;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    border: none;
 }

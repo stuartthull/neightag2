@@ -1,21 +1,40 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Session } from '@supabase/supabase-js';
+import { supabase } from '../supabaseClient';
+
 import homeHorse from '../assets/home-horse.jpg';
 import EnterDetails from '../assets/enter-details.png';
 import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
-import { Link } from 'react-router-dom';
 
+function Home(): React.JSX.Element {
+    const [session, setSession] = useState<Session | null>(null);
 
-function Home() {
+    useEffect(() => {
+        // Fetch current session status on mount
+        supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
 
+        // Listen for real-time auth status shifts
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
 
+        return () => subscription.unsubscribe();
+    }, []);
 
     return (
         <main>
             <div className="home-page">
                 <img src={homeHorse} alt="" />
+                {/* Hero CTA Button: Swaps based on login status */}
                 <div className="centered-button">
-                    <Link to="/login?mode=signup" className="buttonPurple buttonMain">Sign up now!</Link>
+                    {session ? (
+                        <Link to="/dashboard" className="buttonPurple buttonMain">Go to Dashboard</Link>
+                    ) : (
+                        <Link to="/login?mode=signup" className="buttonPurple buttonMain">Sign up now!</Link>
+                    )}
                 </div>
             </div>
 
@@ -66,7 +85,11 @@ function Home() {
                             <h2 className="textmedium">EquiLog Calendar</h2>
                             <p className="text-normal">When you sign up for our paid service, you can add your schedule to your EquiLog calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our EquiLog calendar.</p>
                             <p className="text-normal">Get a message reminder a few days before so you dont forget those important dates.</p>
-                            <a href='/' className="buttonWhite buttonMain">Sign up now!</a>
+
+                            {/* Calendar Sign up text block link hiding completely when logged in */}
+                            {!session && (
+                                <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -75,4 +98,4 @@ function Home() {
     );
 }
 
-export default Home
+export default Home;

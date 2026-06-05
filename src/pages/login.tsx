@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import '../css/equilog.css';
 
 export default function Login(): React.JSX.Element {
     const navigate = useNavigate();
@@ -88,12 +87,21 @@ export default function Login(): React.JSX.Element {
                         </form>
 
                         <button
-                            type="button"
-                            onClick={() => setIsSignUp(!isSignUp)}
-                            className="clearbutton text-purple marginteight"
+                            className="buttonaslinker"
+                            onClick={() => {
+                                const nextMode = !isSignUp;
+                                setIsSignUp(nextMode);
+                                // Sync the URL parameters with the newly toggled state
+                                if (nextMode) {
+                                    navigate('/login?mode=signup', { replace: true });
+                                } else {
+                                    navigate('/login', { replace: true });
+                                }
+                            }}
                         >
                             {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
                         </button>
+
                     </section>
                 </div>
             </main>

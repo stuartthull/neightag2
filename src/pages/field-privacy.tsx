@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import '../css/equilog.css';
 
 export default function FieldPrivacy() {
     const { id } = useParams();
@@ -66,7 +67,15 @@ export default function FieldPrivacy() {
         }
     };
 
-    if (loading) return <div className="loading">Loading Privacy Map...</div>;
+    if (loading) return (
+        <div className="page-wrapper">
+            <div className="page-container">
+                <section className="section-container purple-section-container">
+                    <h1 className="textmedium">Loading Privacy Map...</h1>
+                </section>
+            </div>
+        </div>
+    );
 
     const fields = [
         // --- BASIC IDENTITY & DATA ---
@@ -113,20 +122,25 @@ export default function FieldPrivacy() {
     ];
 
     return (
-        <div className="page-wrapper text-padding">
-            <main className="container">
-                <button onClick={() => navigate(-1)} className="back-link">← Back</button>
-                <h1 className="heading-title">Public Display Matrix</h1>
-                <p className="subtext">Control exactly what details the public can see for <strong>{horseName}</strong>.</p>
+        <div className="page-wrapper">
+            <div className="page-container">
+                <section className="section-container purple-section-container">
+                    <button onClick={() => navigate(-1)} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
+                        ← Back to Dashboard
+                    </button>
+                    <h1 className="textbig">Public Display Matrix</h1>
+                    <p className="text-normal">Control exactly what details the public can see for <strong>{horseName}</strong>.</p>
+                </section>
 
-                <div className="privacy-matrix">
+                <section className="section-container white-section-container">
+                    <h2 className="textmedium marginbeight">Visibility Settings</h2>
                     {fields.map(field => (
-                        <div key={field.key} className="privacy-row-item">
+                        <div key={field.key} className="marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
                             <div>
-                                <span className="field-title">{field.label}</span>
-                                <p className="field-status-text">
+                                <div className="text-normal"><strong>{field.label}</strong></div>
+                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
                                     {privacy?.[field.key] ? "🌐 Visible to everyone" : "🔒 Hidden from public view"}
-                                </p>
+                                </div>
                             </div>
                             <label className="switch">
                                 <input
@@ -138,8 +152,8 @@ export default function FieldPrivacy() {
                             </label>
                         </div>
                     ))}
-                </div>
-            </main>
+                </section>
+            </div>
         </div>
     );
 }

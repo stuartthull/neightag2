@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import '../css/equilog.css';
 
 const INITIAL_FORM_DATA = {
     horse_name: '',
@@ -108,138 +109,138 @@ export default function EditItem() {
         }
     };
 
-    if (loading) return <div className="loading">Populating comprehensive records...</div>;
+    if (loading) return (
+        <div className="page-wrapper">
+            <div className="page-container">
+                <section className="section-container purple-section-container">
+                    <h1 className="textmedium">Populating comprehensive records...</h1>
+                </section>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="page-wrapper text-padding">
-            <div className="container">
+        <div className="page-wrapper">
+            <div className="page-container">
+                <form onSubmit={handleUpdate}>
+                    {/* HERO SECTION */}
+                    <section className="section-container purple-section-container">
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
+                            ← Back to Dashboard
+                        </button>
 
-                <button onClick={() => navigate('/dashboard')} className="back-link">
-                    ← Back to Dashboard
-                </button>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                            <div>
+                                <h1 className="textbig">Edit Vital Logs</h1>
+                                <p className="text-normal">Updating records for: <strong>{formData.horse_name || 'Unnamed'}</strong></p>
+                            </div>
 
-                {/* ✅ GLOBAL PUBLIC PROFILE TOGGLE ROW HEADER */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', flexWrap: 'wrap', gap: '20px' }}>
-                    <div>
-                        <h1 className="heading-title">Edit Vital Logs</h1>
-                        <p className="subtext" style={{ margin: 0 }}>Updating records for: <strong>{formData.horse_name || 'Unnamed'}</strong></p>
-                    </div>
-
-                    {/* Public Visibility Toggle Card Element */}
-                    <div className="card" style={{ padding: '14px 20px', display: 'flex', alignItems: 'center', gap: '15px', borderRadius: '12px' }}>
-                        <div>
-                            <div className="field-title" style={{ fontSize: '0.95rem' }}>🌐 Global Public Profile</div>
-                            <div className="field-status-text" style={{ fontSize: '0.8rem', marginTop: '2px' }}>
-                                {formData.is_public ? "Profile is Live" : "Profile is Hidden"}
+                            <div style={{ background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <div>
+                                    <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>
+                                    <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                                        {formData.is_public ? "Profile is Live" : "Profile is Hidden"}
+                                    </div>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" name="is_public" checked={formData.is_public} onChange={handleChange} />
+                                    <span className="slider round"></span>
+                                </label>
                             </div>
                         </div>
-                        <label className="switch">
-                            <input type="checkbox" name="is_public" checked={formData.is_public} onChange={handleChange} />
-                            <span className="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-
-                <form onSubmit={handleUpdate} className="dashboard-grid">
-
-                    {/* SECTION 1: CORE PROFILE */}
-                    <div className="card">
-                        <h3 className="card-title">📋 Horse Identity & Profile</h3>
-                        <div className="data-row"><span>Horse Name:</span> <strong><input name="horse_name" type="text" value={formData.horse_name} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Breed:</span> <strong><input name="horse_breed" type="text" value={formData.horse_breed} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Colour:</span> <strong><input name="horse_colour" type="text" value={formData.horse_colour} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Height (hh):</span> <strong><input name="horse_height" type="text" value={formData.horse_height} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Date of Birth:</span> <strong><input name="horse_dob" type="date" value={formData.horse_dob} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Passport Number:</span> <strong><input name="horse_passport_number" type="text" value={formData.horse_passport_number} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Weight (kg):</span> <strong><input name="horse_weight_kg" type="text" value={formData.horse_weight_kg} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Last Weighed:</span> <strong><input name="horse_last_weighed" type="date" value={formData.horse_last_weighed} onChange={handleChange} /></strong></div>
-                    </div>
-
-                    {/* SECTION 2: VETERINARY */}
-                    <div className="card">
-                        <h3 className="card-title">🩺 Veterinary Details</h3>
-                        <div className="data-row"><span>Vet Name:</span> <strong><input name="horse_vet_name" type="text" value={formData.horse_vet_name} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Vet Practice:</span> <strong><input name="horse_vet_practice" type="text" value={formData.horse_vet_practice} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Vet Primary Phone:</span> <strong><input name="horse_vet_phone_one" type="text" value={formData.horse_vet_phone_one} onChange={handleChange} className="phone-text" /></strong></div>
-
-                        <div className="label-group">
-                            <div className="small-label">Current Medication</div>
-                            <textarea name="horse_medication" value={formData.horse_medication} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                        </div>
-                        <div className="label-group">
-                            <div className="small-label">Allergies</div>
-                            <textarea name="horse_allergies" value={formData.horse_allergies} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                        </div>
-                    </div>
-
-                    {/* SECTION 3: FARRIER */}
-                    <div className="card">
-                        <h3 className="card-title">🔨 Farrier Log</h3>
-                        <div className="data-row"><span>Farrier Name:</span> <strong><input name="farrier_name" type="text" value={formData.farrier_name} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Farrier Phone:</span> <strong><input name="farrier_phone_one" type="text" value={formData.farrier_phone_one} onChange={handleChange} className="phone-text" /></strong></div>
-                        <div className="data-row"><span>Farrier Email:</span> <strong><input name="farrier_email" type="email" value={formData.farrier_email} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Last Visit Date:</span> <strong><input name="farrier_last_visit" type="date" value={formData.farrier_last_visit} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Next Visit Appt:</span> <strong><input name="farrier_next_visit" type="date" value={formData.farrier_next_visit} onChange={handleChange} /></strong></div>
-
-                        <div className="label-group">
-                            <div className="small-label">Farrier Structural Notes</div>
-                            <input name="farrier_notes" type="text" value={formData.farrier_notes} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                        </div>
-                    </div>
-
-                    {/* SECTION 4: DENTIST */}
-                    <div className="card">
-                        <h3 className="card-title">🦷 Equine Dentist Log</h3>
-                        <div className="data-row"><span>Dentist Name:</span> <strong><input name="dentist_name" type="text" value={formData.dentist_name} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Dentist Phone:</span> <strong><input name="dentist_phone_one" type="text" value={formData.dentist_phone_one} onChange={handleChange} className="phone-text" /></strong></div>
-                        <div className="data-row"><span>Dentist Email:</span> <strong><input name="dentist_email" type="email" value={formData.dentist_email} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Last Dental Exam:</span> <strong><input name="dentist_last_visit" type="date" value={formData.dentist_last_visit} onChange={handleChange} /></strong></div>
-                        <div className="data-row"><span>Next Dental Appt:</span> <strong><input name="dentist_next_visit" type="date" value={formData.dentist_next_visit} onChange={handleChange} /></strong></div>
-
-                        <div className="label-group">
-                            <div className="small-label">Dentist Treatment Notes</div>
-                            <input name="dentist_notes" type="text" value={formData.dentist_notes} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                        </div>
-                    </div>
-
-                    {/* SECTION 5: FEED & INSTRUCTIONS */}
-                    <div className="card full-width">
-                        <h3 className="card-title">🌾 Feeding & Turnout Instructions</h3>
-                        <div className="label-group">
-                            <div className="small-label">Detailed Feed Instructions</div>
-                            <textarea name="feed_instructions" value={formData.feed_instructions} onChange={handleChange} style={{ width: '100%', height: '100px', marginTop: '5px' }} />
-                        </div>
-                    </div>
+                    </section>
 
                     {/* SECTION 6: EMERGENCY CONTACTS */}
-                    <div className="card emergency-card full-width">
-                        <h3 className="card-title emergency-title">🚨 Emergency Contacts</h3>
-                        <div className="grid-2">
-                            <div className="sub-card">
-                                <div className="small-label">Primary Contact Name</div>
-                                <input name="emergency_name_one" type="text" value={formData.emergency_name_one} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                                <div className="small-label" style={{ marginTop: '10px' }}>Primary Phone Line</div>
-                                <input name="emergency_phone_one" type="text" value={formData.emergency_phone_one} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} className="phone-text" />
+                    <section className="section-container purple-section-container">
+                        <h2 className="textmedium marginbeight">Emergency Contacts</h2>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '12px' }}>
+                                <p className="text-normal marginbeight"><strong>Primary Contact</strong></p>
+                                <input className="inputText marginbeight" placeholder="Name" name="emergency_name_one" type="text" value={formData.emergency_name_one} onChange={handleChange} />
+                                <input className="inputText" placeholder="Phone" name="emergency_phone_one" type="text" value={formData.emergency_phone_one} onChange={handleChange} />
                             </div>
-                            <div className="sub-card">
-                                <div className="small-label">Secondary Contact Name</div>
-                                <input name="emergency_name_two" type="text" value={formData.emergency_name_two} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} />
-                                <div className="small-label" style={{ marginTop: '10px' }}>Secondary Phone Line</div>
-                                <input name="emergency_phone_two" type="text" value={formData.emergency_phone_two} onChange={handleChange} style={{ width: '100%', marginTop: '5px' }} className="phone-text" />
+                            <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '12px' }}>
+                                <p className="text-normal marginbeight"><strong>Secondary Contact</strong></p>
+                                <input className="inputText marginbeight" placeholder="Name" name="emergency_name_two" type="text" value={formData.emergency_name_two} onChange={handleChange} />
+                                <input className="inputText" placeholder="Phone" name="emergency_phone_two" type="text" value={formData.emergency_phone_two} onChange={handleChange} />
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    {/* FORM CTA CONTROL ACTIONS */}
-                    <div className="full-width" style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end', marginTop: '10px' }}>
-                        <button type="button" onClick={() => navigate('/dashboard')} className="nav-btn-logout" style={{ background: '#64748b', padding: '12px 24px', borderRadius: '8px', fontSize: '1rem' }}>
+                    {/* SECTION 1: CORE PROFILE */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbeight">Horse Identity & Profile</h2>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Horse Name:</span> <input className="inputText" style={{ width: '60%' }} name="horse_name" type="text" value={formData.horse_name} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Breed:</span> <input className="inputText" style={{ width: '60%' }} name="horse_breed" type="text" value={formData.horse_breed} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Colour:</span> <input className="inputText" style={{ width: '60%' }} name="horse_colour" type="text" value={formData.horse_colour} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Height (hh):</span> <input className="inputText" style={{ width: '60%' }} name="horse_height" type="text" value={formData.horse_height} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Date of Birth:</span> <input className="inputText" style={{ width: '60%' }} name="horse_dob" type="date" value={formData.horse_dob} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Passport Number:</span> <input className="inputText" style={{ width: '60%' }} name="horse_passport_number" type="text" value={formData.horse_passport_number} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Weight (kg):</span> <input className="inputText" style={{ width: '60%' }} name="horse_weight_kg" type="text" value={formData.horse_weight_kg} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Last Weighed:</span> <input className="inputText" style={{ width: '60%' }} name="horse_last_weighed" type="date" value={formData.horse_last_weighed} onChange={handleChange} /></div>
+                    </section>
+
+                    {/* SECTION 2: VETERINARY */}
+                    <section className="section-container purple-section-container">
+                        <h2 className="textmedium marginbeight">Veterinary Details</h2>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Vet Name:</span> <input className="inputText" style={{ width: '60%' }} name="horse_vet_name" type="text" value={formData.horse_vet_name} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Vet Practice:</span> <input className="inputText" style={{ width: '60%' }} name="horse_vet_practice" type="text" value={formData.horse_vet_practice} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Vet Phone:</span> <input className="inputText" style={{ width: '60%' }} name="horse_vet_phone_one" type="text" value={formData.horse_vet_phone_one} onChange={handleChange} /></div>
+
+                        <div style={{ marginTop: '20px' }}>
+                            <label className="text-normal"><strong>Current Medication</strong></label>
+                            <textarea className="inputText" name="horse_medication" value={formData.horse_medication} onChange={handleChange} style={{ height: '80px', marginTop: '5px' }} />
+                        </div>
+                        <div style={{ marginTop: '15px' }}>
+                            <label className="text-normal"><strong>Allergies</strong></label>
+                            <textarea className="inputText" name="horse_allergies" value={formData.horse_allergies} onChange={handleChange} style={{ height: '80px', marginTop: '5px' }} />
+                        </div>
+                    </section>
+
+                    {/* SECTION 3: FARRIER */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbeight">Farrier Log</h2>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Farrier Name:</span> <input className="inputText" style={{ width: '60%' }} name="farrier_name" type="text" value={formData.farrier_name} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Phone:</span> <input className="inputText" style={{ width: '60%' }} name="farrier_phone_one" type="text" value={formData.farrier_phone_one} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Email:</span> <input className="inputText" style={{ width: '60%' }} name="farrier_email" type="email" value={formData.farrier_email} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Last Visit:</span> <input className="inputText" style={{ width: '60%' }} name="farrier_last_visit" type="date" value={formData.farrier_last_visit} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Next Visit:</span> <input className="inputText" style={{ width: '60%' }} name="farrier_next_visit" type="date" value={formData.farrier_next_visit} onChange={handleChange} /></div>
+                        <div style={{ marginTop: '15px' }}>
+                            <label className="text-normal"><strong>Structural Notes</strong></label>
+                            <input className="inputText" name="farrier_notes" type="text" value={formData.farrier_notes} onChange={handleChange} />
+                        </div>
+                    </section>
+
+                    {/* SECTION 4: DENTIST */}
+                    <section className="section-container purple-section-container">
+                        <h2 className="textmedium marginbeight">Equine Dentist Log</h2>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Dentist Name:</span> <input className="inputText" style={{ width: '60%' }} name="dentist_name" type="text" value={formData.dentist_name} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Phone:</span> <input className="inputText" style={{ width: '60%' }} name="dentist_phone_one" type="text" value={formData.dentist_phone_one} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Email:</span> <input className="inputText" style={{ width: '60%' }} name="dentist_email" type="email" value={formData.dentist_email} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Last Exam:</span> <input className="inputText" style={{ width: '60%' }} name="dentist_last_visit" type="date" value={formData.dentist_last_visit} onChange={handleChange} /></div>
+                        <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}><span>Next Appt:</span> <input className="inputText" style={{ width: '60%' }} name="dentist_next_visit" type="date" value={formData.dentist_next_visit} onChange={handleChange} /></div>
+                        <div style={{ marginTop: '15px' }}>
+                            <label className="text-normal"><strong>Treatment Notes</strong></label>
+                            <input className="inputText" name="dentist_notes" type="text" value={formData.dentist_notes} onChange={handleChange} />
+                        </div>
+                    </section>
+
+                    {/* SECTION 5: FEED & INSTRUCTIONS */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbeight">Feeding & Turnout Instructions</h2>
+                        <textarea className="inputText" name="feed_instructions" value={formData.feed_instructions} onChange={handleChange} style={{ height: '120px' }} />
+                    </section>
+
+
+
+                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end', marginBottom: '40px' }}>
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain">
                             Cancel Changes
                         </button>
-                        <button type="submit" className="nav-btn-logout" style={{ background: '#059669', padding: '12px 24px', borderRadius: '8px', fontSize: '1rem' }}>
-                            Save Vital Log Updates
+                        <button type="submit" className="buttonPurple buttonMain">
+                            Save Changes
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
