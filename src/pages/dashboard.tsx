@@ -68,8 +68,8 @@ export default function Dashboard() {
                     <p className="text-normal">Manage your horses and their medical records.</p>
                 </section>
 
-                <section className="section-container white-section-container">
-                    <h2 className="textmedium marginbeight">Registered Horses</h2>
+                <section className="section-container white-section-container purple-border">
+
 
                     {loading ? (
                         <p className="text-normal">Loading your stable profile...</p>
@@ -78,20 +78,24 @@ export default function Dashboard() {
                     ) : (
                         <div style={{ display: 'grid', gap: '16px' }}>
                             {myLogs.map(log => (
-                                <div key={log.id} style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '16px' }}>
-                                    <div className="text-normal"><strong>{log.horse_name}</strong></div>
-                                    <div style={{ display: 'flex', gap: '15px', marginTop: '8px', flexWrap: 'wrap' }}>
-                                        <Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link>
-                                        <Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link>
-                                        <Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link>
+                                <>
+                                    <div key={log.id} style={{ paddingBottom: '8px' }}>
+                                        <h2 className="textmedium marginbeight">Registered horse: <strong>{log.horse_name}</strong></h2>
+                                        <div style={{ display: 'flex', gap: '15px', marginTop: '8px', flexWrap: 'wrap' }}>
+                                            <Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link>
+                                            <Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link>
+                                            <Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link>
+                                        </div>
+
                                     </div>
-                                </div>
+                                    <hr />
+                                </>
                             ))}
                         </div>
                     )}
                 </section>
 
-                <section className="section-container purple-section-container">
+                <section className="section-container white-section-container">
                     <h2 className="textmedium marginbeight">Add a New Horse</h2>
                     <form onSubmit={addHorse} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <input
@@ -102,7 +106,7 @@ export default function Dashboard() {
                             required
                         />
                         <button type="submit" className="buttonWhite buttonMain">
-                            Add Horse to Stable
+                            Add new horse to Stable
                         </button>
                     </form>
                 </section>
