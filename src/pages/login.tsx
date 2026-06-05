@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import '../css/equilog.css';
 
-export default function Login() {
-    const [loading, setLoading] = useState(false);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isSignUp, setIsSignUp] = useState(false);
+export default function Login(): React.JSX.Element {
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
-    const handleAuth = async (e) => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [isSignUp, setIsSignUp] = useState<boolean>(false);
+
+    // Sync state with URL parameter on mount (e.g., /login?mode=signup)
+    useEffect(() => {
+        const mode = searchParams.get('mode');
+        if (mode === 'signup') {
+            setIsSignUp(true);
+        } else {
+            setIsSignUp(false);
+        }
+    }, [searchParams]);
+
+    const handleAuth = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setLoading(true);
 
@@ -20,7 +35,10 @@ export default function Login() {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             }
-        } catch (error) {
+
+            // ✅ Only navigate home if auth is completely successful
+            navigate('/dashboard');
+        } catch (error: any) {
             alert(error.error_description || error.message);
         } finally {
             setLoading(false);
@@ -28,94 +46,57 @@ export default function Login() {
     };
 
     return (
-        <div style={styles.container}>
-            <div style={styles.card}>
-                <h2>{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
-                <p style={styles.subtitle}>
-                    {isSignUp ? 'Sign up to start managing your data' : 'Login to edit your entries'}
-                </p>
+        <div className="page-wrapper">
+            <main className="container">
+                <div className="page-container">
+                    <section className="section-container white-section-container">
+                        <h2 className="textbig text-purple">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
+                        <p className="text-normal marginbsixteen">
+                            {isSignUp ? 'Sign up to start managing your data' : 'Login to edit your entries'}
+                        </p>
 
-                <form onSubmit={handleAuth} style={styles.form}>
-                    <input
-                        type="email"
-                        placeholder="Email address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={styles.input}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={styles.input}
-                        required
-                    />
-                    <button type="submit" disabled={loading} style={styles.button}>
-                        {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Login'}
-                    </button>
-                </form>
+                        <form onSubmit={handleAuth}>
+                            <div className="marginbsixteen">
+                                <label className="labelForm" htmlFor="email">Email address</label>
+                                <input
+                                    id="email"
+                                    className="inputText"
+                                    type="email"
+                                    placeholder="Email address"
+                                    value={email}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
 
-                <button
-                    onClick={() => setIsSignUp(!isSignUp)}
-                    style={styles.toggleBtn}
-                >
-                    {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
-                </button>
-            </div>
+                            <div className="marginbsixteen">
+                                <label className="labelForm" htmlFor="password">Password</label>
+                                <input
+                                    id="password"
+                                    className="inputText"
+                                    type="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+
+                            <button type="submit" disabled={loading} className="buttonMain buttonPurple">
+                                {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Login'}
+                            </button>
+                        </form>
+
+                        <button
+                            type="button"
+                            onClick={() => setIsSignUp(!isSignUp)}
+                            className="clearbutton text-purple marginteight"
+                        >
+                            {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
+                        </button>
+                    </section>
+                </div>
+            </main>
         </div>
     );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '80vh',
-        fontFamily: 'system-ui, sans-serif'
-    },
-    card: {
-        padding: '2rem',
-        borderRadius: '8px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-        width: '100%',
-        maxWidth: '400px',
-        textAlign: 'center',
-        backgroundColor: '#fff'
-    },
-    subtitle: {
-        color: '#666',
-        marginBottom: '1.5rem'
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem'
-    },
-    input: {
-        padding: '12px',
-        borderRadius: '4px',
-        border: '1px solid #ddd',
-        fontSize: '1rem'
-    },
-    button: {
-        padding: '12px',
-        borderRadius: '4px',
-        border: 'none',
-        backgroundColor: '#007bff',
-        color: 'white',
-        fontSize: '1rem',
-        fontWeight: 'bold',
-        cursor: 'pointer'
-    },
-    toggleBtn: {
-        marginTop: '1rem',
-        background: 'none',
-        border: 'none',
-        color: '#007bff',
-        textDecoration: 'underline',
-        cursor: 'pointer'
-    }
-};

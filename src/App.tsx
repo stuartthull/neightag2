@@ -5,11 +5,11 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import EditItem from './pages/edit-horse';
-import NavModel from './components/nav-modal';
 
 // Your newly implemented views
 import HorseDetails from './pages/horse-details';
 import FieldPrivacy from './pages/field-privacy';
+import ProtectedRoute from './components/protected-route';
 
 const LogoSvg = () => {
     return (
@@ -39,11 +39,11 @@ export default function App() {
                     <Route path="/horse/:id" element={<HorseDetails />} />
 
                     {/* Protected Owner/Dashboard Operations */}
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/edit/:id" element={<EditItem />} />
+                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                    <Route path="/edit/:id" element={<ProtectedRoute><EditItem /></ProtectedRoute>} />
 
                     {/* Route for handling field-by-field privacy switches */}
-                    <Route path="/privacy/:id" element={<FieldPrivacy />} />
+                    <Route path="/privacy/:id" element={<ProtectedRoute><FieldPrivacy /></ProtectedRoute>} />
                 </Routes>
             </div>
         </Router >
@@ -52,11 +52,6 @@ export default function App() {
 }
 
 const Navigation = () => {
-    const [modalOpen, setOpen] = React.useState(false);
-
-    const openModal = () => setOpen(true);
-    const closeModal = () => setOpen(false);
-
     return (
         <nav className="navigation">
             <Link className="logo-holder" to="/">
@@ -69,12 +64,12 @@ const Navigation = () => {
             </Link>
             <div className="nav-buttons">
                 <NavBar />
-                <button onClick={openModal} className="nav-link">
+                <Link to="/dashboard" className="nav-link">
                     <HamburgerSvg />
                     <span className="nav-link-text">Menu</span>
-                </button>
+                </Link>
+
             </div>
-            <NavModel modalOpen={modalOpen} closeModal={closeModal} />
         </nav>
     );
 };

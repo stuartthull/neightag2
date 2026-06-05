@@ -3,7 +3,7 @@ import EnterDetails from '../assets/enter-details.png';
 import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
-import '../css/reset.css'
+import { Link } from 'react-router-dom';
 
 
 function Home() {
@@ -15,7 +15,7 @@ function Home() {
             <div className="home-page">
                 <img src={homeHorse} alt="" />
                 <div className="centered-button">
-                    <a href='/' className="buttonPurple buttonMain">Sign up now!</a>
+                    <Link to="/login?mode=signup" className="buttonPurple buttonMain">Sign up now!</Link>
                 </div>
             </div>
 

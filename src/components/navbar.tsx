@@ -1,24 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabaseClient';
-import '../css/equilog.css'; // Import the new matching styles
+// @ts-ignore -- CSS side-effect import is resolved by the build tool
+import '../css/equilog.css';
+// @ts-ignore -- CSS side-effect import is resolved by the build tool
+import '../css/reset.css'
 
-export default function NavBar() {
-    const [session, setSession] = useState(null);
+
+export default function NavBar(): React.JSX.Element {
+    const navigate = useNavigate();
+    // Explicitly typed state for the Supabase Auth Session structure
+    const [session, setSession] = useState<Session | null>(null);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setSession(session);
+        });
+
         return () => subscription.unsubscribe();
     }, []);
 
-    return (
+    // Sequentially handles logging out of Supabase and pushing back to root index
+    const handleSignOut = async (): Promise<void> => {
+        try {
+            await supabase.auth.signOut();
+            navigate('/'); // Redirection target back to root homepage
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    };
 
+    return (
         <>
             {session ? (
                 <>
                     <button
-                        onClick={() => supabase.auth.signOut()}
+                        onClick={handleSignOut}
                         className="nav-btn-logout"
                     >
                         Sign Out
@@ -28,6 +48,5 @@ export default function NavBar() {
                 <Link to="/login" className="nav-item">Login / Sign Up</Link>
             )}
         </>
-
     );
 }

@@ -39,31 +39,37 @@ export default function Dashboard() {
     };
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>My Private Stable Records</h1>
+        <div className="page-container">
+
+            <h2 style={{ marginBottom: '20px' }}>Registered Horses</h2>
+            {myLogs.map(log => (
+                <ul key={log.id} className="marginbsixteen">
+                    <li><p className="marginbsixteen">
+                        <Link to={`/edit/${log.id}`}>Edit Logs & Medical details</Link>
+                    </p></li>
+                    <li><p className="marginbsixteen">
+                        <Link to={`/privacy/${log.id}`}>Edit privacy</Link>
+                    </p></li>
+                    <li><p className="marginbsixteen">
+                        <Link to={`/horse/${log.id}`} >
+                            {log.horse_name}'s Records
+                        </Link>
+                    </p></li>
+                </ul >
+            ))
+            }
+            <hr />
 
             <form onSubmit={addHorse} style={{ marginBottom: '20px' }}>
                 <input
                     value={horseName}
                     onChange={e => setHorseName(e.target.value)}
-                    placeholder="Enter Horse Name to Register"
+                    placeholder="Enter name"
                     style={{ padding: '8px', marginRight: '10px' }}
                 />
-                <button type="submit">Add Horse</button>
+                <button type="submit" className="buttonMain buttonPurple">Add Horse</button>
             </form>
 
-            <h2>Registered Horses</h2>
-            <ul>
-                {myLogs.map(log => (
-                    <li key={log.id} style={{ display: 'flex', gap: '20px', marginBottom: '10px', alignItems: 'center' }}>
-                        <Link to={`/edit/${log.id}`} style={{ color: '#007bff' }}>Edit Logs & Medical details</Link>
-                        <Link to={`/privacy/${log.id}`} style={{ color: '#007bff' }}>Edit privacy</Link>
-                        <Link to={`/horse/${log.id}`} style={{ fontWeight: 'bold' }}>
-                            {log.horse_name}'s Records
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        </div >
     );
 }
