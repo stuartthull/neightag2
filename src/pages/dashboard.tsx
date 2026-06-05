@@ -61,41 +61,43 @@ export default function Dashboard() {
 
     return (
         <div className="page-container">
-            <h2 style={{ marginBottom: '20px' }}>Registered Horses</h2>
+            <section className="section-container white-section-container">
+                <h2 style={{ marginBottom: '20px' }}>Registered Horses</h2>
 
-            {loading ? (
-                <p>Loading your stable profile...</p>
-            ) : myLogs.length === 0 ? (
-                <p style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
-            ) : (
-                myLogs.map(log => (
-                    <ul key={log.id} className="marginbsixteen">
-                        <li><p className="marginbsixteen">
-                            <Link to={`/edit/${log.id}`}>Edit Logs & Medical details</Link>
-                        </p></li>
-                        <li><p className="marginbsixteen">
-                            <Link to={`/privacy/${log.id}`}>Edit privacy</Link>
-                        </p></li>
-                        <li><p className="marginbsixteen">
-                            <Link to={`/horse/${log.id}`} >
-                                {log.horse_name}'s Records
-                            </Link>
-                        </p></li>
-                    </ul >
-                ))
-            )}
+                {loading ? (
+                    <p>Loading your stable profile...</p>
+                ) : myLogs.length === 0 ? (
+                    <p style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
+                ) : (
+                    myLogs.map(log => (
+                        <ul key={log.id} className="marginbsixteen">
+                            <li><p className="marginbsixteen">
+                                <Link to={`/edit/${log.id}`}>Edit Logs & Medical details</Link>
+                            </p></li>
+                            <li><p className="marginbsixteen">
+                                <Link to={`/privacy/${log.id}`}>Edit privacy</Link>
+                            </p></li>
+                            <li><p className="marginbsixteen">
+                                <Link to={`/horse/${log.id}`} >
+                                    {log.horse_name}'s Records
+                                </Link>
+                            </p></li>
+                        </ul >
+                    ))
+                )}
 
-            <hr />
+                <hr />
 
-            <form onSubmit={addHorse} style={{ marginBottom: '20px' }}>
-                <input
-                    value={horseName}
-                    onChange={e => setHorseName(e.target.value)}
-                    placeholder="Enter name"
-                    style={{ padding: '8px', marginRight: '10px' }}
-                />
-                <button type="submit" className="buttonMain buttonPurple">Add Horse</button>
-            </form>
+                <form onSubmit={addHorse} style={{ marginBottom: '20px' }}>
+                    <input
+                        value={horseName}
+                        onChange={e => setHorseName(e.target.value)}
+                        placeholder="Enter name"
+                        style={{ padding: '8px', marginRight: '10px' }}
+                    />
+                    <button type="submit" className="buttonMain buttonPurple">Add Horse</button>
+                </form>
+            </section>
         </div>
     );
 }
