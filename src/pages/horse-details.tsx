@@ -81,9 +81,6 @@ export default function HorseDetails() {
             <div className="page-container">
                 {/* HERO SECTION */}
                 <section className="section-container purple-section-container">
-                    <button onClick={() => navigate(-1)} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
-                        ← Back to Dashboard
-                    </button>
 
                     {shouldShow('show_name') && <h1 className="textbig">{horse.horse_name}</h1>}
 

@@ -79,7 +79,7 @@ a:hover {
     text-align: center;
     background: none;
     border: none;
-    width: 60px;
+    min-width: 80px;
 
     svg {
         width: 24px;

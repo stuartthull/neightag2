@@ -7,6 +7,11 @@ import '../css/equilog.css';
 // @ts-ignore -- CSS side-effect import is resolved by the build tool
 import '../css/reset.css'
 
+const AccountSvg = () => {
+    return (
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="m31.51 24.62.13.39c8.28 2.91 13.3 10.96 13.7 19.56l-3.35.6c-.49-4.23-1.44-8.19-4.16-11.56-7.31-9.07-21.41-8.51-27.92 1.14-2.15 3.19-2.84 6.66-3.32 10.42l-3.36-.6c.4-8.6 5.49-16.84 13.84-19.57.05-.27.04-.25-.13-.41-1.39-1.32-2.48-2.02-3.47-3.81-5.01-9.08 2.57-19.86 12.77-18.28 10.8 1.67 14.27 15.94 5.27 22.12zm-8.15-18.73c-12.52 1.32-8.93 20.92 3.49 17.33 10.11-2.92 7.17-18.46-3.49-17.33z" /></svg>
+    )
+}
 
 export default function NavBar(): React.JSX.Element {
     const navigate = useNavigate();
@@ -39,13 +44,17 @@ export default function NavBar(): React.JSX.Element {
                 <>
                     <button
                         onClick={handleSignOut}
-                        className="nav-btn-logout"
+                        className="nav-link"
                     >
-                        Sign Out
+                        <AccountSvg />
+                        <span className="nav-link-text">Sign Out</span>
                     </button>
                 </>
             ) : (
-                <Link to="/login" className="nav-item">Login / Sign Up</Link>
+                <Link to="/login" className="nav-link">
+                    <AccountSvg />
+                    <span className="nav-link-text">Sign in/up</span>
+                </Link>
             )}
         </>
     );
