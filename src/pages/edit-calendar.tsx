@@ -122,7 +122,8 @@ export default function EditCalendarEntry(): React.JSX.Element {
                     type="button"
                     onClick={handleDelete}
                     disabled={saving}
-                    style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '8px 14px', borderRadius: '6px', fontWeight: '600', cursor: 'pointer' }}
+                    style={{ background: '#ef4444', color: '#fff' }}
+                    className="buttonSmall"
                 >
                     Delete Event
                 </button>
@@ -177,7 +178,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
                     className="buttonMain buttonPurple"
                     style={{ marginTop: '10px', width: '100%' }}
                 >
-                    {saving ? 'Updating entry context...' : 'Save Structural Changes'}
+                    {saving ? 'Updating entry context...' : 'Save Changes'}
                 </button>
             </form>
         </div>
