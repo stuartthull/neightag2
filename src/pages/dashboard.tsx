@@ -64,14 +64,12 @@ export default function Dashboard() {
     return (
         <div className="page-wrapper">
             <div className="page-container">
-                <section className="section-container purple-section-container">
+                <section className="section-container purple-section-container no-print">
                     <h1 className="textbig">Your Stable</h1>
                     <p className="text-normal">Manage your horses and their medical records.</p>
                 </section>
 
-                <section className="section-container white-section-container purple-border">
-
-
+                <section className="section-container white-section-container purple-border no-print">
                     {loading ? (
                         <p className="text-normal">Loading your stable profile...</p>
                     ) : myLogs.length === 0 ? (
@@ -82,8 +80,6 @@ export default function Dashboard() {
                                 <>
                                     <div key={log.id} style={{ paddingBottom: '8px' }}>
                                         <h2 className="textmedium marginbeight">Registered horse: <strong>{log.horse_name}</strong></h2>
-
-                                        <HorseQrCode horseId={log.id} horseName={log.horse_name} />
 
                                         <div style={{ margin: '16px 0' }}>
                                             <ul>
@@ -106,7 +102,15 @@ export default function Dashboard() {
                     )}
                 </section>
 
-                <section className="section-container white-section-container">
+                {myLogs.map(log => (
+                    <div key={log.id}>
+                        <HorseQrCode horseId={log.id} horseName={log.horse_name} />
+                    </div>
+                ))}
+
+
+
+                <section className="section-container white-section-container no-print">
                     <h2 className="textmedium marginbeight">Add a New Horse</h2>
                     <form onSubmit={addHorse} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         <input

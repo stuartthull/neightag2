@@ -84,7 +84,7 @@ export default function App() {
 
 const Navigation = () => {
     return (
-        <nav className="navigation">
+        <nav className="navigation no-print">
             <Link className="logo-holder" to="/">
                 <span className="neightag-logo">
                     <LogoSvg />

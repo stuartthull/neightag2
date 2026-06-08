@@ -10,50 +10,58 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
     const absoluteUrl = `https://neightag2.netlify.app/horse/${horseId}`;
 
     const handlePrint = (): void => {
-        // Works seamlessly across all desktop and mobile browsers
         window.print();
     };
 
     return (
         <>
-            {/* 1. Global Print Stylesheets Injection */}
+            {/* 1. Global Print CSS Targets */}
             <style>{`
-                /* 🖥️ Hide the print layout on the screen standard view */
+                /* 🖥️ Default screen state for print blueprint layout */
                 .stable-card-print-area {
                     display: none;
                 }
 
-                /* 🖨️ Triggered exclusively when printing */
+                /* 🖨️ Targeted Print Rules */
                 @media print {
-                    /* Hide EVERYTHING on the dashboard web page layout */
-                    body *, html * {
-                        visibility: hidden;
-                        height: 0;
-                        margin: 0;
-                        padding: 0;
-                    }
-                    
-                    /* Show ONLY our specialized stable badge card */
-                    .stable-card-print-area, .stable-card-print-area * {
-                        visibility: visible;
-                        height: auto;
+                    /* ✅ Hide the interactive screen card and global components cleanly */
+                    .no-print, 
+                    nav, 
+                    header, 
+                    footer, 
+                    button,
+                    aside,
+                    #sidebar,
+                    .navbar {
+                        display: none !important;
                     }
 
-                    /* Center it nicely on the paper sheet */
+                    /* Unbind paper margins */
+                    @page {
+                        size: auto;
+                        margin: 15mm;
+                    }
+
+                    body, html {
+                        background: #ffffff !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+
+                    /* ✅ Force display blueprint card as standard block container flow */
                     .stable-card-print-area {
                         display: block !important;
-                        position: absolute;
-                        left: 50%;
-                        top: 30%;
-                        transform: translate(-50%, -50%);
-                        width: 90%;
-                        max-width: 380px;
-                        border: 4px solid #994899;
-                        border-radius: 16px;
-                        padding: 30px 24px;
-                        text-align: center;
-                        box-sizing: border-box;
-                        background: #ffffff;
+                        visibility: visible !important;
+                        margin: 40px auto 0 auto !important;
+                        width: 100% !important;
+                        max-width: 380px !important;
+                        border: 4px solid #994899 !important;
+                        border-radius: 16px !important;
+                        padding: 30px 24px !important;
+                        text-align: center !important;
+                        box-sizing: border-box !important;
+                        background: #ffffff !important;
+                        page-break-inside: avoid;
                     }
 
                     .stable-print-header-tag {
@@ -100,7 +108,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         font-weight: 600;
                         text-transform: uppercase;
                         letter-spacing: 0.5px;
-                        -webkit-print-color-adjust: exact; /* Ensures color renders on mobile printers */
+                        -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
                     }
 
@@ -112,36 +120,37 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                 }
             `}</style>
 
-            {/* 2. Standard Screen View Card (What users see inside the dashboard) */}
-            <div style={styles.qrContainer}>
-                <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
-                <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
-                    Generate a door tag for {horseName}'s stable box.
-                </p>
+            {/* 2. Dashboard Screen View Container Box (Disappears when printing) */}
+            <div style={styles.qrContainer} className="no-print">
+                <div>
+                    <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
+                    <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
+                        Generate a door tag for {horseName}'s stable box.
+                    </p>
 
-                {/* ✅ FIXED: Changed display from 'none' to 'inline-block' so the component renders beautifully */}
-                <div style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                    <QRCodeSVG
-                        value={absoluteUrl}
-                        size={160}
-                        bgColor={"#ffffff"}
-                        fgColor={"#000000"}
-                        level={"H"}
-                    />
-                </div>
+                    <div style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                        <QRCodeSVG
+                            value={absoluteUrl}
+                            size={160}
+                            bgColor={"#ffffff"}
+                            fgColor={"#000000"}
+                            level={"H"}
+                        />
+                    </div>
 
-                <div style={{ marginTop: '18px' }}>
-                    <button
-                        onClick={handlePrint}
-                        className="buttonMain buttonPurple"
-                        style={{ padding: '10px 20px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-                    >
-                        <span>🖨️</span> Print Stable Card
-                    </button>
+                    <div style={{ marginTop: '18px' }}>
+                        <button
+                            onClick={handlePrint}
+                            className="buttonMain buttonPurple"
+                            style={{ padding: '10px 20px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                        >
+                            <span>🖨️</span> Print Stable Card
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* 3. Hidden Print Blueprint Layout (Invisible on screen, only parsed by printer) */}
+            {/* 3. Hidden Print Blueprint Layout (Fixed position layer to bypass nested parent hides) */}
             <div className="stable-card-print-area">
                 <img src="/images/logo.jpg" className="stable-print-logo" alt="" />
                 <div className="stable-print-header-tag">NeighTag Vital Records</div>
@@ -151,7 +160,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                 <div className="stable-print-qr-wrapper">
                     <QRCodeSVG
                         value={absoluteUrl}
-                        size={150} // Slightly bigger size for optimal paper scans
+                        size={150}
                         bgColor={"#ffffff"}
                         fgColor={"#000000"}
                         level={"H"}
