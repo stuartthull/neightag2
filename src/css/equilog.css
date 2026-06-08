@@ -37,26 +37,11 @@ a:hover {
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        color: var(--white);
-        background-color: var(--black);
-    }
-
-    a:hover {
-        color: #747bff;
-    }
-}
-
 .container {
     max-width: 500px;
     margin: 0 auto;
     background-color: #e8e8e8;
     min-height: 100vh;
-
-    @media (prefers-color-scheme: dark) {
-        background-color: var(--darkgrey);
-    }
 
     img {
         width: 100%
@@ -136,11 +121,6 @@ a:hover {
     white-space: nowrap;
     max-width: 50%;
     color: var(--purple);
-
-    @media (prefers-color-scheme: dark) {
-        color: var(--white)
-    }
-
     font-weight: 600;
     font-size: 0.9em;
 }
@@ -157,10 +137,6 @@ a:hover {
     color: var(--black);
     justify-content: flex-end;
     text-align: right;
-
-    @media (prefers-color-scheme: dark) {
-        color: var(--white)
-    }
 }
 
 .dtdiv {
@@ -248,11 +224,6 @@ a:hover {
     transform: translateX(100%);
     background-color: var(--white);
 
-    @media (prefers-color-scheme: dark) {
-        background-color: var(--black)
-    }
-
-
     @media (min-width: 600px) {
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
@@ -280,21 +251,11 @@ a:hover {
 .lightpurple-section-container {
     background-color: var(--lightpurple);
     color: var(--black);
-
-    @media (prefers-color-scheme: dark) {
-        background-color: var(--lightpurple);
-        color: var(--black);
-    }
 }
 
 
 .white-section-container {
     background-color: var(--white);
-
-    @media (prefers-color-scheme: dark) {
-        background-color: var(--black);
-        color: var(--white)
-    }
 }
 
 .textbig {
@@ -323,10 +284,6 @@ a:hover {
 
 .text-black {
     color: var(--black);
-
-    @media (prefers-color-scheme: dark) {
-        color: var(--white)
-    }
 }
 
 .info-bar {
@@ -416,10 +373,6 @@ a:hover {
     color: var(--purple);
     font-weight: 600;
     float: right;
-
-    @media (prefers-color-scheme: dark) {
-        color: var(--white)
-    }
 
     .close-x {
         font-weight: 800;
