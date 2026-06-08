@@ -7,7 +7,7 @@ interface HorseQrCodeProps {
 }
 
 export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): React.JSX.Element {
-    const absoluteUrl = `${window.location.origin}/horse/${horseId}`;
+    const absoluteUrl = `https://neightag2.netlify.app/horse/${horseId}`;
     const qrRef = useRef<HTMLDivElement>(null);
 
     const handlePrint = (): void => {
