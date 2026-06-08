@@ -8,162 +8,161 @@ interface HorseQrCodeProps {
 
 export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): React.JSX.Element {
     const absoluteUrl = `https://neightag2.netlify.app/horse/${horseId}`;
-    const qrRef = useRef<HTMLDivElement>(null);
 
     const handlePrint = (): void => {
-        const qrSvgHtml = qrRef.current?.innerHTML;
-        if (!qrSvgHtml) return;
-
-        // Create a hidden print iframe to prevent document.body reloads entirely
-        const iframe = document.createElement('iframe');
-        iframe.style.position = 'absolute';
-        iframe.style.width = '0px';
-        iframe.style.height = '0px';
-        iframe.style.border = 'none';
-        document.body.appendChild(iframe);
-
-        const iframeDoc = iframe.contentWindow?.document;
-        if (!iframeDoc) return;
-
-        // Construct a clean, isolated HTML canvas template inside the print document
-        iframeDoc.open();
-        iframeDoc.write(`
-            <html>
-                <head>
-                    <title>Print Stable Tag - ${horseName}</title>
-                    <style>
-                        @page {
-                            size: A5 portrait;
-                            margin: 0;
-                        }
-                        body {
-                            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-                            margin: 0;
-                            padding: 20px;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            height: 90vh;
-                            background-color: #ffffff;
-                        }
-                        /* The Stable Badge Container Card */
-                        .stable-card {
-                            width: 100%;
-                            max-width: 380px;
-                            border: 4px solid #994899;
-                            border-radius: 16px;
-                            padding: 30px 24px;
-                            text-align: center;
-                            box-sizing: border-box;
-                        }
-                        .header-tag {
-                            font-size: 10px;
-                            text-transform: uppercase;
-                            letter-spacing: 2px;
-                            color: #994899;
-                            font-weight: bold;
-                            margin-bottom: 6px;
-                        }
-                        h1 {
-                            font-size: 28px;
-                            color: #1e293b;
-                            margin: 0 0 8px 0;
-                            font-weight: 800;
-                            border-bottom: 2px solid #f3e8ff;
-                            padding-bottom: 12px;
-                        }
-                        .subtitle {
-                            font-size: 13px;
-                            color: #475569;
-                            margin: 0 0 25px 0;
-                            line-height: 1.4;
-                        }
-                        .qr-wrapper {
-                            display: inline-block;
-                            padding: 14px;
-                            background: #ffffff;
-                            border: 1px solid #e2e8f0;
-                            border-radius: 12px;
-                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-                            margin-bottom: 25px;
-                        }
-                        /* Highlighted Footer instructions for handlers or vets */
-                        .alert-footer {
-                            background-color: #fdf2f8;
-                            border: 1px dashed #f472b6;
-                            border-radius: 8px;
-                            padding: 10px;
-                            font-size: 11px;
-                            color: #be185d;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            letter-spacing: 0.5px;
-                        }
-                            .logo {
-                            max-width: 100px;
-                            margin: 0 auto 16px;
-                            }
-                    </style>
-                </head>
-                <body>
-                    <div class="stable-card">
-                        <span>
-                            <img src="/images/logo.jpg"  class="logo" alt="" />
-                        </span>
-                        <div class="header-tag">NeighTag Vital Records</div>
-                        <h1>${horseName}</h1>
-                        <p class="subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>
-                        
-                        <div class="qr-wrapper">
-                            ${qrSvgHtml}
-                        </div>
-                        
-                        <div class="alert-footer">
-                            ⚠️ In Case of Emergency Scan Badge
-                        </div>
-                    </div>
-                </body>
-            </html>
-        `);
-        iframeDoc.close();
-
-        // Trigger printer focus window context
-        setTimeout(() => {
-            iframe.contentWindow?.focus();
-            iframe.contentWindow?.print();
-            // Cleanup and delete the temporary print node frame out of the DOM
-            document.body.removeChild(iframe);
-        }, 500);
+        // Works seamlessly across all desktop and mobile browsers
+        window.print();
     };
 
     return (
-        <div style={styles.qrContainer}>
-            <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
-            <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
-                Generate a door tag for {horseName}'s stable box.
-            </p>
+        <>
+            {/* 1. Global Print Stylesheets Injection */}
+            <style>{`
+                /* 🖥️ Hide the print layout on the screen standard view */
+                .stable-card-print-area {
+                    display: none;
+                }
 
-            {/* Hidden source hook used strictly to copy pure SVG structure nodes */}
-            <div ref={qrRef} style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                <QRCodeSVG
-                    value={absoluteUrl}
-                    size={160}
-                    bgColor={"#ffffff"}
-                    fgColor={"#000000"}
-                    level={"H"}
-                />
+                /* 🖨️ Triggered exclusively when printing */
+                @media print {
+                    /* Hide EVERYTHING on the dashboard web page layout */
+                    body *, html * {
+                        visibility: hidden;
+                        height: 0;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    
+                    /* Show ONLY our specialized stable badge card */
+                    .stable-card-print-area, .stable-card-print-area * {
+                        visibility: visible;
+                        height: auto;
+                    }
+
+                    /* Center it nicely on the paper sheet */
+                    .stable-card-print-area {
+                        display: block !important;
+                        position: absolute;
+                        left: 50%;
+                        top: 40%;
+                        transform: translate(-50%, -50%);
+                        width: 90%;
+                        max-width: 380px;
+                        border: 4px solid #994899;
+                        border-radius: 16px;
+                        padding: 30px 24px;
+                        text-align: center;
+                        box-sizing: border-box;
+                        background: #ffffff;
+                    }
+
+                    .stable-print-header-tag {
+                        font-size: 10px;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        color: #994899;
+                        font-weight: bold;
+                        margin-bottom: 6px;
+                    }
+
+                    .stable-print-title {
+                        font-size: 28px;
+                        color: #1e293b;
+                        margin: 0 0 8px 0;
+                        font-weight: 800;
+                        border-bottom: 2px solid #f3e8ff;
+                        padding-bottom: 12px;
+                    }
+
+                    .stable-print-subtitle {
+                        font-size: 13px;
+                        color: #475569;
+                        margin: 0 0 25px 0;
+                        line-height: 1.4;
+                    }
+
+                    .stable-print-qr-wrapper {
+                        display: inline-block;
+                        padding: 14px;
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 12px;
+                        margin-bottom: 25px;
+                    }
+
+                    .stable-print-alert-footer {
+                        background-color: #fdf2f8 !important;
+                        border: 1px dashed #f472b6;
+                        border-radius: 8px;
+                        padding: 10px;
+                        font-size: 11px;
+                        color: #be185d;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        -webkit-print-color-adjust: exact; /* Ensures color renders on mobile printers */
+                        print-color-adjust: exact;
+                    }
+
+                    .stable-print-logo {
+                        max-width: 100px;
+                        margin: 0 auto 16px;
+                        display: block;
+                    }
+                }
+            `}</style>
+
+            {/* 2. Standard Screen View Card (What users see inside the dashboard) */}
+            <div style={styles.qrContainer}>
+                <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
+                <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
+                    Generate a door tag for {horseName}'s stable box.
+                </p>
+
+                {/* ✅ FIXED: Changed display from 'none' to 'inline-block' so the component renders beautifully */}
+                <div style={{ display: 'inline-block', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                    <QRCodeSVG
+                        value={absoluteUrl}
+                        size={160}
+                        bgColor={"#ffffff"}
+                        fgColor={"#000000"}
+                        level={"H"}
+                    />
+                </div>
+
+                <div style={{ marginTop: '18px' }}>
+                    <button
+                        onClick={handlePrint}
+                        className="buttonMain buttonPurple"
+                        style={{ padding: '10px 20px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                    >
+                        <span>🖨️</span> Print Stable Card
+                    </button>
+                </div>
             </div>
 
-            <div style={{ marginTop: '18px' }}>
-                <button
-                    onClick={handlePrint}
-                    className="buttonMain buttonPurple"
-                    style={{ padding: '10px 20px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-                >
-                    <span>🖨️</span> Print Stable Card
-                </button>
+            {/* 3. Hidden Print Blueprint Layout (Invisible on screen, only parsed by printer) */}
+            <div className="stable-card-print-area">
+                <img src="/images/logo.jpg" className="stable-print-logo" alt="" />
+                <div className="stable-print-header-tag">NeighTag Vital Records</div>
+                <h1 className="stable-print-title">{horseName}</h1>
+                <p className="stable-print-subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>
+
+                <div className="stable-print-qr-wrapper">
+                    <QRCodeSVG
+                        value={absoluteUrl}
+                        size={220} // Slightly bigger size for optimal paper scans
+                        bgColor={"#ffffff"}
+                        fgColor={"#000000"}
+                        level={"H"}
+                    />
+                </div>
+
+                <div className="stable-print-alert-footer">
+                    ⚠️ In Case of Emergency Scan Badge
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
