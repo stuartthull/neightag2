@@ -141,7 +141,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
         <div style={styles.qrContainer}>
             <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
             <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
-                Generate a weatherproof door tag for {horseName}'s stable box.
+                Generate a door tag for {horseName}'s stable box.
             </p>
 
             {/* Hidden source hook used strictly to copy pure SVG structure nodes */}
