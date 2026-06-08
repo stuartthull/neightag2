@@ -66,18 +66,13 @@ export default function HorseboxView(): React.JSX.Element {
                     </div>
                 ) : (
                     <div>
-                        <div className="section-container purple-section-container">
-                            <div className="marginbsixteen">
-                                <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">
-                                    ← Back to Dashboard
-                                </button>
-                                <h1 className="textbig">{horsebox.make_model || 'Unspecified Model Setup'}</h1>
-                                <p className="horsebox-reg-plate">{horsebox.registration || 'NO REG'}</p>
-                            </div>
-                            <Link to="/horsebox/edit" className="buttonWhite buttonSmall">
-                                ✏️ Edit Records
-                            </Link>
+                        <div className="marginbeight">
+                            <h1 className="textbig">My Horsebox: {horsebox.make_model || 'Unspecified Model Setup'}</h1>
+                            <p className="horsebox-reg-plate">{horsebox.registration || 'NO REG'}</p>
                         </div>
+                        <Link to="/horsebox/edit" className="buttonSmall buttonPurple">
+                            ✏️ Edit Records
+                        </Link>
 
                         <div className="horsebox-date-grid">
                             <div className="horsebox-date-card">

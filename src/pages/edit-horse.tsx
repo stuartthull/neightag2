@@ -273,7 +273,7 @@ export default function EditItem() {
 
                     {/* ✅ STICKY ACTIONS BAR CONTAINER */}
                     <div className="sticky-actions-bar">
-                        <button type="submit" className="buttonPurple buttonMain">
+                        <button type="submit" className="buttonSmall buttonPurple">
                             Save Changes
                         </button>
                     </div>

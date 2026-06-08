@@ -63,7 +63,7 @@ function Home(): React.JSX.Element {
     }, [session]);
 
     return (
-        <main>
+        <main className="page-wrapper">
 
             <div className="home-page">
                 <img src={homeHorse} alt="" />
