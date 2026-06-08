@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
-import './ManageVisibility.css'; // Creating a corresponding stylesheet next
 
 export default function ManageVisibility() {
     const [horses, setHorses] = useState([]);

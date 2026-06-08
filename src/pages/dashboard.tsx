@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import '../css/equilog.css';
+import HorseQrCode from '../components/qr-code';
 
 type LogRecord = {
     id: number;
@@ -76,19 +77,29 @@ export default function Dashboard() {
                     ) : myLogs.length === 0 ? (
                         <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
                     ) : (
-                        <div style={{ display: 'grid', gap: '16px' }}>
+                        <div style={{ display: 'grid', gap: '16px', width: '100%' }}>
                             {myLogs.map(log => (
                                 <>
                                     <div key={log.id} style={{ paddingBottom: '8px' }}>
                                         <h2 className="textmedium marginbeight">Registered horse: <strong>{log.horse_name}</strong></h2>
-                                        <div style={{ display: 'flex', gap: '15px', marginTop: '8px', flexWrap: 'wrap' }}>
-                                            <Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link>
-                                            <Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link>
-                                            <Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link>
-                                        </div>
 
+                                        <HorseQrCode horseId={log.id} horseName={log.horse_name} />
+
+                                        <div style={{ margin: '16px 0' }}>
+                                            <ul>
+                                                <li><Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link></li>
+                                                <li><Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link></li>
+                                                <li><Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link></li>
+                                            </ul>
+                                        </div>
+                                        <hr />
+                                        <div style={{ margin: '16px 0 0' }}>
+                                            <ul>
+                                                <li><Link to={`/calendar`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Calendar</Link></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <hr />
+
                                 </>
                             ))}
                         </div>
@@ -110,7 +121,7 @@ export default function Dashboard() {
                         </button>
                     </form>
                 </section>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

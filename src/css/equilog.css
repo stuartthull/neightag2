@@ -76,6 +76,10 @@ a:hover {
     max-width: 100%;
 }
 
+.linkwhite {
+    color: var(--white);
+}
+
 .nav-link {
     display: inline-block;
     align-content: center;
@@ -273,6 +277,17 @@ a:hover {
     color: var(--white)
 }
 
+.lightpurple-section-container {
+    background-color: var(--lightpurple);
+    color: var(--black);
+
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--lightpurple);
+        color: var(--black);
+    }
+}
+
+
 .white-section-container {
     background-color: var(--white);
 
@@ -424,7 +439,7 @@ a:hover {
     font-size: 16px;
     line-height: 24px;
     appearance: none;
-    background-color: rgb(255, 255, 255);
+    background-color: var(--white);
     box-shadow: 0 0 0 1px inset;
     border: none;
     border-radius: 8px;

@@ -9,8 +9,15 @@ import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
 
+interface QuickEvent {
+    id: number;
+    calendar_title: string;
+    calendar_date: string;
+}
+
 function Home(): React.JSX.Element {
     const [session, setSession] = useState<Session | null>(null);
+    const [upcomingEvents, setUpcomingEvents] = useState<QuickEvent[]>([]);
 
     useEffect(() => {
         // Fetch current session status on mount
@@ -24,8 +31,40 @@ function Home(): React.JSX.Element {
         return () => subscription.unsubscribe();
     }, []);
 
+    // Fetch and filter events happening in the next 7 days
+    useEffect(() => {
+        if (!session?.user?.id) {
+            setUpcomingEvents([]);
+            return;
+        }
+
+        const fetchUpcomingAlerts = async () => {
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const upperLimitObj = new Date();
+            upperLimitObj.setDate(upperLimitObj.getDate() + 7);
+            const upperLimitStr = upperLimitObj.toISOString().split('T')[0];
+
+            const { data, error } = await supabase
+                .from('equi_calendar')
+                .select('id, calendar_title, calendar_date')
+                .eq('user_uuid', session.user.id)
+                .gte('calendar_date', todayStr)
+                .lte('calendar_date', upperLimitStr)
+                .order('calendar_date', { ascending: true })
+                .order('calendar_time', { ascending: true });
+
+            if (!error && data) {
+                setUpcomingEvents(data as QuickEvent[]);
+            }
+        };
+
+        fetchUpcomingAlerts();
+    }, [session]);
+
     return (
         <main>
+
             <div className="home-page">
                 <img src={homeHorse} alt="" />
                 {/* Hero CTA Button: Swaps based on login status */}
@@ -37,8 +76,40 @@ function Home(): React.JSX.Element {
                     )}
                 </div>
             </div>
-
             <div className="page-container">
+                {/* 🚨 UPCOMING EVENTS NOTIFICATION STRIP */}
+                {session && upcomingEvents.length > 0 && (
+
+                    <div className="section-container lightpurple-section-container">
+                        <h2 className="textbig">Your upcoming events</h2>
+
+                        <div>
+                            <p className="marginbsixteen">
+                                <span>📅</span>{' '}-{' '}
+                                <strong className="text-normal">Next 7 Days:</strong>
+                            </p>
+                            {upcomingEvents.map(event => (
+                                <ul key={event.id}>
+                                    <li className="marginbsixteen">
+                                        <Link
+                                            to={`/calendar/edit/${event.id}`}
+                                            key={event.id}
+                                            className="text-normal"
+                                        >
+                                            {event.calendar_title}{' '}-{' '}
+                                            <span>
+                                                ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                            </span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            ))}
+                        </div>
+                    </div>
+                )
+                }
+
+
                 <div className="section-container purple-section-container">
                     <h1 className="textbig">How it works.</h1>
                     <div className="info-bar">
@@ -94,7 +165,7 @@ function Home(): React.JSX.Element {
                     </div>
                 </div>
             </div>
-        </main>
+        </main >
     );
 }
 

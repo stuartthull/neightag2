@@ -125,7 +125,7 @@ export default function EditItem() {
                 <form onSubmit={handleUpdate}>
                     {/* HERO SECTION */}
                     <section className="section-container purple-section-container">
-                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">
                             ← Back to Dashboard
                         </button>
 
@@ -135,14 +135,17 @@ export default function EditItem() {
                                 <p className="text-normal">Updating records for: <strong>{formData.horse_name || 'Unnamed'}</strong></p>
                             </div>
 
-                            <div style={{ background: 'rgba(255,255,255,0.1)', padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <div style={{ padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px', width: '100%' }} className="lightpurple-section-container">
+                                {/* 1. Text description details stay on the left */}
                                 <div>
                                     <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>
                                     <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
                                         {formData.is_public ? "Profile is Live" : "Profile is Hidden"}
                                     </div>
                                 </div>
-                                <label className="switch">
+
+                                {/* 2. Switch pushed all the way to the right side */}
+                                <label className="switch" style={{ flexShrink: 0 }}>
                                     <input type="checkbox" name="is_public" checked={formData.is_public} onChange={handleChange} />
                                     <span className="slider round"></span>
                                 </label>
