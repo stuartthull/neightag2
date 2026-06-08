@@ -13,6 +13,8 @@ import ProtectedRoute from './components/protected-route';
 import CalendarView from './pages/view-calendar';
 import AddCalendarEntry from './pages/add-calendar';
 import EditCalendarEntry from './pages/edit-calendar';
+import HorseboxView from './pages/horsebox-view';
+import HorseboxEdit from './pages/horsebox-edit';
 
 const LogoSvg = () => {
     return (
@@ -48,6 +50,10 @@ export default function App() {
                     {/* Route for handling field-by-field privacy switches */}
                     <Route path="/privacy/:id" element={<ProtectedRoute><FieldPrivacy /></ProtectedRoute>} />
 
+
+                    {/* Route for handling horse box */}
+                    <Route path="/horsebox-view" element={<ProtectedRoute><HorseboxView /></ProtectedRoute>} />
+                    <Route path="/horsebox/edit" element={<ProtectedRoute><HorseboxEdit /></ProtectedRoute>} />
                     {/* 🔒 Protected Calendar Schedule Routes */}
                     <Route
                         path="/calendar"

@@ -69,38 +69,49 @@ export default function Dashboard() {
                     <p className="text-normal">Manage your horses and their medical records.</p>
                 </section>
 
-                <section className="section-container white-section-container purple-border no-print">
-                    {loading ? (
+
+                {loading ? (
+                    <section className="section-container white-section-container purple-border no-print">
                         <p className="text-normal">Loading your stable profile...</p>
-                    ) : myLogs.length === 0 ? (
+                    </section>
+                ) : myLogs.length === 0 ? (
+                    <section className="section-container white-section-container purple-border no-print">
                         <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
-                    ) : (
-                        <div style={{ display: 'grid', gap: '16px', width: '100%' }}>
-                            {myLogs.map(log => (
-                                <>
-                                    <div key={log.id} style={{ paddingBottom: '8px' }}>
-                                        <h2 className="textmedium marginbeight">Registered horse: <strong>{log.horse_name}</strong></h2>
+                    </section>
+                ) : (
 
-                                        <div style={{ margin: '16px 0' }}>
-                                            <ul>
-                                                <li><Link to={`/horse/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Profile</Link></li>
-                                                <li><Link to={`/edit/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Edit Details</Link></li>
-                                                <li><Link to={`/privacy/${log.id}`} className="text-purple" style={{ fontSize: '0.85rem' }}>Privacy Matrix</Link></li>
-                                            </ul>
-                                        </div>
-                                        <hr />
-                                        <div style={{ margin: '16px 0 0' }}>
-                                            <ul>
-                                                <li><Link to={`/calendar`} className="text-purple" style={{ fontSize: '0.85rem' }}>View Calendar</Link></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                    <>{
+                        myLogs.map(log => (
+                            <>
+                                <section className="section-container white-section-container purple-border no-print" key={log.id}>
 
-                                </>
-                            ))}
-                        </div>
-                    )}
-                </section>
+                                    <h2 className="textmedium marginbsixteen">Registered horse: <strong>{log.horse_name}</strong></h2>
+
+                                    <ul>
+                                        <li className='marginbsixteen'><Link to={`/horse/${log.id}`} className="text-purple marginbsixteen">View Profile</Link></li>
+                                        <li className='marginbsixteen'><Link to={`/calendar`} className="text-purple marginbsixteen">View Calendar</Link></li>
+                                    </ul>
+                                    <hr className='marginbsixteen' />
+                                    <ul>
+                                        <li className='marginbsixteen'><Link to={`/edit/${log.id}`} className="text-purple marginbsixteen">Edit Details</Link></li>
+                                        <li className='marginbsixteen'><Link to={`/privacy/${log.id}`} className="text-purple marginbsixteen">Edit Privacy Matrix</Link></li>
+                                    </ul>
+
+                                </section>
+                                <section className="section-container white-section-container purple-border no-print">
+                                    <h2 className="textmedium marginbsixteen">Horse box</h2>
+                                    <ul>
+                                        <li className='marginbsixteen'><Link to={`/horsebox-view`} className="text-purple">View Horsebox Details</Link></li>
+                                    </ul>
+
+                                </section >
+                            </>
+                        ))
+
+                    }</>
+
+                )}
+
 
                 {myLogs.map(log => (
                     <div key={log.id}>

@@ -41,9 +41,8 @@ export default function EditItem() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-
-    // Master state object strictly tracking core vitals fields and visibility
     const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+    const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false); // Visual loading state for the switch
 
     useEffect(() => {
         const fetchCoreVitals = async () => {
@@ -59,12 +58,11 @@ export default function EditItem() {
                 return;
             }
 
-            // Safeguard database nulls into empty strings for controlled inputs
             const safePayload = {};
             Object.keys(data || {}).forEach(key => {
                 if (key in INITIAL_FORM_DATA || key === 'id') {
                     if (key === 'is_public') {
-                        safePayload[key] = data[key] ?? true; // Default to true if unassigned
+                        safePayload[key] = data[key] ?? true;
                     } else {
                         safePayload[key] = data[key] === null ? '' : data[key];
                     }
@@ -78,23 +76,60 @@ export default function EditItem() {
         fetchCoreVitals();
     }, [id, navigate]);
 
-    // ✅ FIXED: Evaluates input element types to handle boolean values correctly
+    // Handle normal form field typing
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+        const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'checkbox' ? checked : value
+            [name]: value
         }));
     };
 
+    // ✅ FIXED: Dedicated instant-save handler for the public profile toggle switch
+    const handlePrivacyToggle = async (e) => {
+        const newPublicStatus = e.target.checked;
+
+        // 1. Instantly update UI state so it feels fast
+        setFormData(prev => ({
+            ...prev,
+            is_public: newPublicStatus
+        }));
+        setIsUpdatingPrivacy(true);
+
+        // 2. Save ONLY this single boolean change straight to Supabase
+        const { error } = await supabase
+            .from('equi_log_main')
+            .update({ is_public: newPublicStatus })
+            .eq('id', id);
+
+        setIsUpdatingPrivacy(false);
+
+        if (error) {
+            // Roll back the UI switch if the database save fails
+            setFormData(prev => ({
+                ...prev,
+                is_public: !newPublicStatus
+            }));
+            alert("Failed to update privacy setting: " + error.message);
+        }
+    };
+
+    // Main manual form submission for text inputs
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        // 1. Build outbound payload from controlled form state
         const vitalsPayload = { ...formData };
 
-        // 2. Explicitly append the boolean flag state onto the outbound payload object
-        vitalsPayload.is_public = Boolean(formData.is_public);
+        if ('id' in vitalsPayload) {
+            delete vitalsPayload.id;
+        }
+
+        // Clean up empty strings to avoid breaking Postgres rules on numerical/date structures
+        Object.keys(vitalsPayload).forEach(key => {
+            if (vitalsPayload[key] === '') {
+                vitalsPayload[key] = null;
+            }
+        });
 
         const { error } = await supabase
             .from('equi_log_main')
@@ -129,24 +164,23 @@ export default function EditItem() {
                             ← Back to Dashboard
                         </button>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                        <div>
                             <div>
-                                <h1 className="textbig">Edit Vital Logs</h1>
-                                <p className="text-normal">Updating records for: <strong>{formData.horse_name || 'Unnamed'}</strong></p>
+                                <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
                             </div>
 
-                            <div style={{ padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px', width: '100%' }} className="lightpurple-section-container">
-                                {/* 1. Text description details stay on the left */}
+                            <div style={{ padding: '15px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '15px', width: '100%', opacity: isUpdatingPrivacy ? 0.6 : 1, transition: 'opacity 0.2s' }} className="lightpurple-section-container">
                                 <div>
                                     <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>
+                                    <p>Turn off to hide your horse's public details</p>
                                     <div style={{ fontSize: '0.8rem', opacity: 0.8 }}>
-                                        {formData.is_public ? "Profile is Live" : "Profile is Hidden"}
+                                        {isUpdatingPrivacy ? "Saving changes..." : formData.is_public ? "Profile is Live" : "Profile is Hidden"}
                                     </div>
                                 </div>
 
-                                {/* 2. Switch pushed all the way to the right side */}
                                 <label className="switch" style={{ flexShrink: 0 }}>
-                                    <input type="checkbox" name="is_public" checked={formData.is_public} onChange={handleChange} />
+                                    {/* ✅ Uses handlePrivacyToggle instead of handleChange */}
+                                    <input type="checkbox" name="is_public" checked={formData.is_public} onChange={handlePrivacyToggle} disabled={isUpdatingPrivacy} />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
@@ -234,12 +268,11 @@ export default function EditItem() {
                         <textarea className="inputText" name="feed_instructions" value={formData.feed_instructions} onChange={handleChange} style={{ height: '120px' }} />
                     </section>
 
+                    {/* ✅ SPACER: Prevents the sticky actions bar from hiding the bottom of the feeding section */}
+                    <div className="form-content-spacer"></div>
 
-
-                    <div style={{ display: 'flex', gap: '15px', justifyContent: 'flex-end', marginBottom: '40px' }}>
-                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain">
-                            Cancel Changes
-                        </button>
+                    {/* ✅ STICKY ACTIONS BAR CONTAINER */}
+                    <div className="sticky-actions-bar">
                         <button type="submit" className="buttonPurple buttonMain">
                             Save Changes
                         </button>

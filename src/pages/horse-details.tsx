@@ -93,31 +93,42 @@ export default function HorseDetails() {
                 </section>
 
                 {/* EMERGENCY SECTION */}
-                {(shouldShow('show_emergency_name_one') || shouldShow('show_emergency_phone_one') || shouldShow('show_emergency_name_two') || shouldShow('show_emergency_phone_two')) && (
-                    <section className="section-container purple-section-container">
-                        <h2 className="textmedium">Emergency Protocols</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginTop: '10px' }}>
+                <section className="section-container white-section-container purple-border">
+                    {(shouldShow('show_emergency_name_one') || shouldShow('show_emergency_phone_one') || shouldShow('show_emergency_name_two') || shouldShow('show_emergency_phone_two')) && (
+                        <>
+                            <h2 className="textbig">
+                                Emergency Protocols
+                            </h2>
                             {(shouldShow('show_emergency_name_one') || shouldShow('show_emergency_phone_one')) && (
-                                <div>
+                                <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal"><strong>Primary Contact:</strong></p>
                                     <p className="text-normal">{horse.emergency_name_one || 'N/A'}</p>
-                                    <p className="text-normal">{horse.emergency_phone_one || 'N/A'}</p>
+                                    <p className="text-normal">
+                                        <a href={`tel:${horse.emergency_phone_one}`} className="horsebox-call-button">
+                                            📞 {horse.emergency_phone_one || 'N/A'}
+                                        </a>
+                                    </p>
                                 </div>
                             )}
                             {(shouldShow('show_emergency_name_two') || shouldShow('show_emergency_phone_two')) && (
-                                <div>
+                                <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal"><strong>Secondary Contact:</strong></p>
                                     <p className="text-normal">{horse.emergency_name_two || 'N/A'}</p>
-                                    <p className="text-normal">{horse.emergency_phone_two || 'N/A'}</p>
+                                    <p className="text-normal">
+                                        <a href={`tel:${horse.emergency_phone_two}`} className="horsebox-call-button">
+                                            📞 {horse.emergency_phone_two || 'N/A'}
+                                        </a>
+                                    </p>
                                 </div>
                             )}
-                        </div>
-                    </section>
-                )}
+                        </>
+                    )
+                    }
+                </section>
 
                 {/* IDENTITY SECTION */}
                 {(isUserOwner || shouldShow('show_dob') || shouldShow('show_passport') || shouldShow('show_last_weighed')) && (
-                    <section className="section-container white-section-container">
+                    <section className="card marginbsixteen">
                         <h2 className="textmedium">Identity & Identification</h2>
                         {shouldShow('show_dob') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Date of Birth:</span> <strong>{horse.horse_dob || 'N/A'}</strong></div>}
                         {shouldShow('show_passport') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Passport Number:</span> <strong>{horse.horse_passport_number || 'N/A'}</strong></div>}
@@ -128,7 +139,7 @@ export default function HorseDetails() {
 
                 {/* VETERINARY SECTION */}
                 {(shouldShow('show_vet_name') || shouldShow('show_vet_practice') || shouldShow('show_vet_phone') || shouldShow('show_medication') || shouldShow('show_allergies')) && (
-                    <section className="section-container purple-section-container">
+                    <section className="card marginbsixteen">
                         <h2 className="textmedium">Veterinary Care</h2>
                         {shouldShow('show_vet_name') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Vet Name:</span> <strong>{horse.horse_vet_name || 'N/A'}</strong></div>}
                         {shouldShow('show_vet_practice') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Practice:</span> <strong>{horse.horse_vet_practice || 'N/A'}</strong></div>}
@@ -140,39 +151,43 @@ export default function HorseDetails() {
 
                 {/* FARRIER SECTION */}
                 {(shouldShow('show_farrier_name') || shouldShow('show_farrier_phone') || shouldShow('show_farrier_email') || shouldShow('show_farrier_last') || shouldShow('show_farrier_next') || shouldShow('show_farrier_notes')) && (
-                    <section className="section-container white-section-container">
-                        <h2 className="textmedium">Farrier Services</h2>
+                    <section className="card marginbsixteen">
+                        <h2 className="textbig">
+                            Farrier
+                        </h2>
                         {shouldShow('show_farrier_name') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Farrier Name:</span> <strong>{horse.farrier_name || 'N/A'}</strong></div>}
                         {shouldShow('show_farrier_phone') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Phone:</span> <strong>{horse.farrier_phone_one || 'N/A'}</strong></div>}
                         {shouldShow('show_farrier_email') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Email:</span> <strong>{horse.farrier_email || 'N/A'}</strong></div>}
                         {shouldShow('show_farrier_last') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Last Visit:</span> <strong>{horse.farrier_last_visit || 'N/A'}</strong></div>}
                         {shouldShow('show_farrier_next') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Next Appointment:</span> <strong>{horse.farrier_next_visit || 'TBC'}</strong></div>}
-                        {shouldShow('show_farrier_notes') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Notes:</span> <strong>{horse.farrier_notes || 'None'}</strong></div>}
+                        {shouldShow('show_farrier_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.farrier_notes || 'None'}</strong></div>}
                     </section>
                 )}
 
                 {/* DENTIST SECTION */}
                 {(shouldShow('show_dentist_name') || shouldShow('show_dentist_phone') || shouldShow('show_dentist_email') || shouldShow('show_dentist_last') || shouldShow('show_dentist_next') || shouldShow('show_dentist_notes')) && (
-                    <section className="section-container purple-section-container">
-                        <h2 className="textmedium">Dental Log</h2>
+                    <section className="card marginbsixteen">
+                        <h2 className="textbig">
+                            Dentist
+                        </h2>
                         {shouldShow('show_dentist_name') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Dentist Name:</span> <strong>{horse.dentist_name || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_phone') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Phone:</span> <strong>{horse.dentist_phone_one || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_email') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Email:</span> <strong>{horse.dentist_email || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_last') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Last Exam:</span> <strong>{horse.dentist_last_visit || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_next') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Next Exam:</span> <strong>{horse.dentist_next_visit || 'TBC'}</strong></div>}
-                        {shouldShow('show_dentist_notes') && <div className="text-normal marginbeight" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Notes:</span> <strong>{horse.dentist_notes || 'None'}</strong></div>}
+                        {shouldShow('show_dentist_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.dentist_notes || 'None'}</strong></div>}
                     </section>
                 )}
 
                 {/* FEEDING SECTION */}
                 {shouldShow('show_feeding') && (
-                    <section className="section-container white-section-container">
-                        <h2 className="textmedium">Feeding & Turnout</h2>
-                        <p className="text-normal">{horse.feed_instructions || 'Standard dietary requirements apply.'}</p>
+                    <section className="card marginbsixteen">
+                        <h2 className="textbig">Feeding & Turnout</h2>
+                        <p className="text-normal"><pre>{horse.feed_instructions || 'N/A'}</pre></p>
                     </section>
                 )}
 
             </div>
-        </div>
+        </div >
     );
 }
