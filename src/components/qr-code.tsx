@@ -50,18 +50,17 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         .stable-card {
                             width: 100%;
                             max-width: 380px;
-                            border: 4px double #581c87;
+                            border: 4px solid #994899;
                             border-radius: 16px;
                             padding: 30px 24px;
                             text-align: center;
                             box-sizing: border-box;
-                            background: #ffffff;
                         }
                         .header-tag {
                             font-size: 10px;
                             text-transform: uppercase;
                             letter-spacing: 2px;
-                            color: #7e22ce;
+                            color: #994899;
                             font-weight: bold;
                             margin-bottom: 6px;
                         }
@@ -111,7 +110,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         <span>
                             <img src="/images/logo.jpg"  class="logo" alt="" />
                         </span>
-                        <div class="header-tag">EquiLog Vital Records</div>
+                        <div class="header-tag">NeighTag Vital Records</div>
                         <h1>${horseName}</h1>
                         <p class="subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>
                         
@@ -145,7 +144,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
             </p>
 
             {/* Hidden source hook used strictly to copy pure SVG structure nodes */}
-            <div ref={qrRef} style={{ display: 'inline-block', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+            <div ref={qrRef} style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                 <QRCodeSVG
                     value={absoluteUrl}
                     size={160}
