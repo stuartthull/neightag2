@@ -44,7 +44,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         display: block !important;
                         position: absolute;
                         left: 50%;
-                        top: 40%;
+                        top: 30%;
                         transform: translate(-50%, -50%);
                         width: 90%;
                         max-width: 380px;
@@ -120,7 +120,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                 </p>
 
                 {/* ✅ FIXED: Changed display from 'none' to 'inline-block' so the component renders beautifully */}
-                <div style={{ display: 'inline-block', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     <QRCodeSVG
                         value={absoluteUrl}
                         size={160}
@@ -151,7 +151,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                 <div className="stable-print-qr-wrapper">
                     <QRCodeSVG
                         value={absoluteUrl}
-                        size={220} // Slightly bigger size for optimal paper scans
+                        size={150} // Slightly bigger size for optimal paper scans
                         bgColor={"#ffffff"}
                         fgColor={"#000000"}
                         level={"H"}
