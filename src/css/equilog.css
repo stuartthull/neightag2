@@ -412,12 +412,12 @@ a:hover {
     cursor: pointer;
     display: inline-block;
     outline: none;
-    height: 52px;
+    height: 40px;
     text-align: center;
     text-decoration: none;
     transition: 0.25s ease-in-out;
-    padding: 14px 34px;
-    border-radius: 40px;
+    padding: 8px 34px;
+    border-radius: 10px;
     min-width: 90px;
     margin: 8px 0;
 }
