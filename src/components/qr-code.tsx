@@ -151,10 +151,9 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
 
             {/* 3. Hidden Print Blueprint Layout (Fixed position layer to bypass nested parent hides) */}
             <div className="stable-card-print-area">
-                <img src="/images/logo.jpg" className="stable-print-logo" alt="" />
                 <div className="stable-print-header-tag">NeighTag Vital Records</div>
                 <h1 className="stable-print-title">{horseName}</h1>
-                <p className="stable-print-subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>
+                {/*<p className="stable-print-subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>*/}
 
                 <div className="stable-print-qr-wrapper">
                     <QRCodeSVG
