@@ -1,0 +1,85 @@
+
+/* ==========================================
+   CALENDAR COMPONENT STYLES
+   ========================================== */
+
+/* Empty State Card Container */
+.calendar-empty-state {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8fafc;
+    border-radius: 12px;
+    border: 1px dashed #cbd5e1;
+}
+
+.calendar-empty-state p {
+    color: #64748b;
+    margin: 0;
+}
+
+.calendar-empty-state-link {
+    color: #6b21a8;
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.calendar-empty-state-link:hover {
+    text-decoration: underline;
+}
+
+/* Event Cards Layout Wrapper */
+.calendar-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Single Event Card */
+.calendar-event-card {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.calendar-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.calendar-card-title {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    color: #1e293b;
+}
+
+/* Badge block detailing date and time parameters */
+.calendar-date-badge {
+    background-color: var(--lightgreen);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: right;
+    min-width: 120px;
+}
+
+.calendar-time-text {
+    margin-top: 2px;
+}
+
+/* Description Text Block */
+.calendar-card-notes {
+    margin: 0;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 8px; /* Adds space before the edit link */
+}
+
+/* Inline operational action anchors */
+.calendar-edit-link {
+    font-weight: 500;
+}

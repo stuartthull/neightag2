@@ -55,7 +55,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         margin: 40px auto 0 auto !important;
                         width: 100% !important;
                         max-width: 380px !important;
-                        border: 4px solid #994899 !important;
+                        border: 4px solid #115E59 !important;
                         border-radius: 16px !important;
                         padding: 30px 24px !important;
                         text-align: center !important;
@@ -123,12 +123,12 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
             {/* 2. Dashboard Screen View Container Box (Disappears when printing) */}
             <div style={styles.qrContainer} className="no-print">
                 <div>
-                    <h3 style={{ margin: '0 0 10px 0', color: '#1e293b' }}>Stable QR Code Tag</h3>
-                    <p style={{ fontSize: '0.85rem', color: '#64748b', margin: '0 0 15px 0', lineHeight: '1.4' }}>
+                    <h3 className={"large-text"}>Stable QR Code Tag</h3>
+                    <p className="text-normal">
                         Generate a door tag for {horseName}'s stable box.
                     </p>
 
-                    <div style={{ display: 'none', padding: '10px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ display: 'none' }}>
                         <QRCodeSVG
                             value={absoluteUrl}
                             size={160}
@@ -141,8 +141,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                     <div style={{ marginTop: '18px' }}>
                         <button
                             onClick={handlePrint}
-                            className="buttonMain buttonPurple"
-                            style={{ padding: '10px 20px', fontSize: '0.9rem', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                            className="buttonMain buttonOrange"
                         >
                             <span>🖨️</span> Print Stable Card
                         </button>

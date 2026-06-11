@@ -1,11 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --purple: #994899;
-    --lightpurple: #f3ebf3;
+    --green: #115E59;
+    --orange: #F59E0B;
+    --lightorange: #ffe7bf;
     --white: #ffffff;
     --black: #000000;
     --darkgrey: #424242;
+    --lightgreen: #d3ecea;
     line-height: 1.5;
     font-weight: 400;
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import '../css/equilog.css';
 
 export default function FieldPrivacy() {
     const { id } = useParams();
@@ -135,9 +134,9 @@ export default function FieldPrivacy() {
                 <section className="section-container white-section-container">
                     <h2 className="textmedium marginbeight">Visibility Settings</h2>
                     {fields.map(field => (
-                        <div key={field.key} className="marginbeight" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
+                        <div key={field.key} className="visibility-settings marginbsixteen">
                             <div>
-                                <div className="text-normal"><strong>{field.label}</strong></div>
+                                <div className="textmedium"><strong>{field.label}</strong></div>
                                 <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
                                     {privacy?.[field.key] ? "🌐 Visible to everyone" : "🔒 Hidden from public view"}
                                 </div>

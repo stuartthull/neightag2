@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabaseClient';
 // @ts-ignore -- CSS side-effect import is resolved by the build tool
-import '../css/equilog.css';
-// @ts-ignore -- CSS side-effect import is resolved by the build tool
 import '../css/reset.css'
+import '../css/home.css';
+import '../css/form-elements.css';
 
 const AccountSvg = () => {
     return (

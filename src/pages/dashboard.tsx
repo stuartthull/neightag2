@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import '../css/equilog.css';
 import HorseQrCode from '../components/qr-code';
 
 type LogRecord = {
@@ -71,11 +70,11 @@ export default function Dashboard() {
 
 
                 {loading ? (
-                    <section className="section-container white-section-container purple-border no-print">
+                    <section className="section-container white-section-container purple-border no-print marginbsixteen">
                         <p className="text-normal">Loading your stable profile...</p>
                     </section>
                 ) : myLogs.length === 0 ? (
-                    <section className="section-container white-section-container purple-border no-print">
+                    <section className="section-container white-section-container purple-border no-print marginbsixteen">
                         <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
                     </section>
                 ) : (
@@ -83,7 +82,7 @@ export default function Dashboard() {
                     <>{
                         myLogs.map(log => (
                             <>
-                                <section className="section-container white-section-container purple-border no-print" key={log.id}>
+                                <section className="section-container white-section-container purple-border no-print marginbsixteen" key={log.id}>
 
                                     <h2 className="textmedium marginbsixteen">Registered horse: <strong>{log.horse_name}</strong></h2>
 
@@ -98,7 +97,7 @@ export default function Dashboard() {
                                     </ul>
 
                                 </section>
-                                <section className="section-container white-section-container purple-border no-print">
+                                <section className="section-container white-section-container purple-border no-print marginbsixteen">
                                     <h2 className="textmedium marginbsixteen">Horse box</h2>
                                     <ul>
                                         <li className='marginbsixteen'><Link to={`/horsebox-view`} className="text-purple">View Horsebox Details</Link></li>
@@ -123,15 +122,16 @@ export default function Dashboard() {
 
                 <section className="section-container white-section-container no-print">
                     <h2 className="textmedium marginbeight">Add a New Horse</h2>
-                    <form onSubmit={addHorse} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <form onSubmit={addHorse}>
                         <input
-                            className="inputText"
+                            className="inputText marginbsixteen"
                             value={horseName}
                             onChange={e => setHorseName(e.target.value)}
                             placeholder="Enter horse name"
                             required
                         />
-                        <button type="submit" className="buttonWhite buttonMain">
+                        <br />
+                        <button type="submit" className="buttonPurple buttonMain">
                             Add new horse to Stable
                         </button>
                     </form>

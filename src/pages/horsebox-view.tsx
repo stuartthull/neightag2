@@ -68,11 +68,15 @@ export default function HorseboxView(): React.JSX.Element {
                     <div>
                         <div className="marginbeight">
                             <h1 className="textbig">My Horsebox: {horsebox.make_model || 'Unspecified Model Setup'}</h1>
-                            <p className="horsebox-reg-plate">{horsebox.registration || 'NO REG'}</p>
+
                         </div>
-                        <Link to="/horsebox/edit" className="buttonSmall buttonPurple">
-                            ✏️ Edit Records
-                        </Link>
+                        <div className="horsebox-action-row">
+                            <p className="horsebox-reg-plate">{horsebox.registration || 'NO REG'}</p>
+                            <Link to="/horsebox/edit" className="buttonSmall buttonPurple">
+                                ✏️ Edit Records
+                            </Link>
+                        </div>
+
 
                         <div className="horsebox-date-grid">
                             <div className="horsebox-date-card">
@@ -92,18 +96,18 @@ export default function HorseboxView(): React.JSX.Element {
                             </div>
                         </div>
 
-                        <div className="horsebox-panel breakdown-panel">
+                        <div className="section-container white-section-container">
                             <h3>Insurance Record Details</h3>
                             <div className="horsebox-data-list">
-                                <div><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></div>
-                                <div><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></div>
+                                <div className='datarow'><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></div>
+                                <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></div>
                             </div>
                         </div>
-                        <div className="horsebox-panel breakdown-panel">
+                        <div className="section-container white-section-container">
                             <h3>🚨 Breakdown Recovery Support</h3>
                             <div className="horsebox-data-list">
-                                <div><span>Provider:</span> <strong>{horsebox.breakdown_provider || 'Not documented'}</strong></div>
-                                <div><span>Policy Number:</span> <strong>{horsebox.breakdown_policy_number || 'Not documented'}</strong></div>
+                                <div className='datarow'><span>Provider:</span> <strong>{horsebox.breakdown_provider || 'Not documented'}</strong></div>
+                                <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.breakdown_policy_number || 'Not documented'}</strong></div>
                                 {horsebox.breakdown_phone && (
                                     <div>
                                         <a href={`tel:${horsebox.breakdown_phone}`} className="horsebox-call-button">
@@ -115,10 +119,10 @@ export default function HorseboxView(): React.JSX.Element {
                         </div>
 
                         {horsebox.general_notes && (
-                            <div className="horsebox-notes-panel">
-                                <h3>Additional Maintenance & Equipment Notes</h3>
+                            <section className="section-container white-section-container">
+                                <h3 className="large-text marginbsixteen">Additional Maintenance & Equipment Notes:</h3>
                                 <p className="horsebox-notes-text">{horsebox.general_notes}</p>
-                            </div>
+                            </section>
                         )}
                     </div>
                 )}

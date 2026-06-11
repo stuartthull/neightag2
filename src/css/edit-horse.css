@@ -1,0 +1,89 @@
+/* ==========================================
+   EDIT ITEM LOG PROFILE STYLES
+   ========================================== */
+
+.privacy-toggle-container {
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    width: 100%;
+    transition: opacity 0.2s;
+}
+
+.privacy-toggle-meta {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.switch-wrapper {
+    flex-shrink: 0;
+}
+
+/* Flex rows for identity and baseline records */
+.form-field-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-field-row input {
+    width: 60%;
+}
+
+/* Grid wrappers for contact and data subsections */
+.form-grid-two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.form-grid-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 12px;
+}
+
+/* Layout blocks for large multiline textareas */
+.textarea-block-group {
+    margin-top: 20px;
+}
+
+.textarea-block-group.spacing-tight {
+    margin-top: 15px;
+}
+
+.textarea-block-group textarea {
+    height: 80px;
+    margin-top: 5px;
+}
+
+/* Mixed horizontal label layout for notes blocks */
+.form-field-row-mixed {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-field-row-mixed textarea {
+    height: 120px;
+    width: 60%;
+}
+
+.textarea-standalone {
+    height: 200px;
+    width: 100%;
+    appearance: none;
+    background-color: var(--white);
+    box-shadow: 0 0 0 1px inset;
+    border: none;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: rgb(36, 45, 61);
+    transition: 0.25s ease-in-out;
+    padding: 4px 12px;
+}
+
