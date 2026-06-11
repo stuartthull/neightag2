@@ -136,7 +136,7 @@ export default function FieldPrivacy() {
                     {fields.map(field => (
                         <div key={field.key} className="visibility-settings marginbsixteen">
                             <div>
-                                <div className="textmedium"><strong>{field.label}</strong></div>
+                                <div className="textmedium">{field.label}</div>
                                 <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
                                     {privacy?.[field.key] ? "🌐 Visible to everyone" : "🔒 Hidden from public view"}
                                 </div>
