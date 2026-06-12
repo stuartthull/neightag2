@@ -18,8 +18,7 @@ const INITIAL_FORM_DATA = {
     farrier_name: '',
     farrier_phone_one: '',
     farrier_email: '',
-    farrier_next_visit: '',
-    farrier_last_visit: '',
+    farrier_next_visit: '', // 🗓️ Populated via equi_calendar
     farrier_notes: '',
     horse_breed: '',
     horse_colour: '',
@@ -27,54 +26,100 @@ const INITIAL_FORM_DATA = {
     dentist_name: '',
     dentist_phone_one: '',
     dentist_email: '',
-    dentist_next_visit: '',
-    dentist_last_visit: '',
+    dentist_next_visit: '', // 🗓️ Populated via equi_calendar
     dentist_notes: '',
     emergency_name_one: '',
     emergency_phone_one: '',
     emergency_name_two: '',
     emergency_phone_two: '',
-    feed_instructions: ''
+    feed_instructions: '',
+    saddle_fitter_name: '',
+    saddle_fitter_phone: '',
+    saddle_fitter_next_visit: '', // 🗓️ Populated via equi_calendar
+    saddle_fitter_notes: '',
+    physio_name: '',
+    physio_phone: '',
+    physio_next_visit: '', // 🗓️ Populated via equi_calendar
+    physio_notes: ''
 };
 
 export default function EditItem(): React.JSX.Element {
-    const { id } = useParams();
+    const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+    const [formData, setFormData] = useState<any>(INITIAL_FORM_DATA);
+    const [originalData, setOriginalData] = useState<any>(INITIAL_FORM_DATA);
     const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false);
+
+    const normalizeDate = (dateVal: any): string => {
+        if (!dateVal) return '';
+        const dateStr = String(dateVal).trim();
+        return dateStr.includes('T') ? dateStr.split('T')[0] : dateStr.substring(0, 10);
+    };
 
     useEffect(() => {
         const fetchCoreVitals = async () => {
-            const { data, error } = await supabase
-                .from('equi_log_main')
-                .select('*')
-                .eq('id', id)
-                .single();
-
-            if (error) {
-                console.error("Error fetching core log payload:", error);
+            if (!horse_uuid) {
+                console.error("No horse_uuid parameter identified in the current layout context.");
                 navigate('/dashboard');
                 return;
             }
 
-            const safePayload = {};
-            Object.keys(data || {}).forEach(key => {
-                if (key in INITIAL_FORM_DATA || key === 'id') {
+            // 1. Fetch main profile data
+            const { data: horseData, error: horseError } = await supabase
+                .from('equi_log_main')
+                .select('*')
+                .eq('horse_uuid', horse_uuid)
+                .single();
+
+            if (horseError) {
+                console.error("Error fetching core log payload:", horseError);
+                navigate('/dashboard');
+                return;
+            }
+
+            // 2. 🗓️ Fetch calendar schedules matching this exact horse
+            const { data: calData, error: calError } = await supabase
+                .from('equi_calendar')
+                .select('calendar_title, calendar_date')
+                .eq('horse_uuid', horse_uuid);
+
+            const calendarMap: any = {};
+            if (!calError && calData) {
+                calData.forEach((event: any) => {
+                    calendarMap[event.calendar_title] = normalizeDate(event.calendar_date);
+                });
+            }
+
+            const safePayload: any = {};
+            Object.keys(horseData || {}).forEach(key => {
+                if (key in INITIAL_FORM_DATA || key === 'user_uuid' || key === 'horse_uuid') {
                     if (key === 'is_public') {
-                        safePayload[key] = data[key] ?? true;
+                        safePayload[key] = horseData[key] ?? true;
                     } else {
-                        safePayload[key] = data[key] === null ? '' : data[key];
+                        if (key === 'horse_dob' || key === 'horse_last_weighed') {
+                            safePayload[key] = horseData[key] ? normalizeDate(horseData[key]) : '';
+                        } else {
+                            safePayload[key] = horseData[key] === null ? '' : horseData[key];
+                        }
                     }
                 }
             });
 
-            setFormData({ ...INITIAL_FORM_DATA, ...safePayload });
+            // Map database calendar dates explicitly back into local state signatures
+            safePayload['farrier_next_visit'] = calendarMap['Farrier Visit'] || '';
+            safePayload['dentist_next_visit'] = calendarMap['Dentist Visit'] || '';
+            safePayload['saddle_fitter_next_visit'] = calendarMap['Saddle Fitter Visit'] || '';
+            safePayload['physio_next_visit'] = calendarMap['Physio Visit'] || '';
+
+            const loadedData = { ...INITIAL_FORM_DATA, ...safePayload };
+            setFormData(loadedData);
+            setOriginalData(loadedData);
             setLoading(false);
         };
 
         fetchCoreVitals();
-    }, [id, navigate]);
+    }, [horse_uuid, navigate]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -86,132 +131,142 @@ export default function EditItem(): React.JSX.Element {
 
     const handlePrivacyToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const newPublicStatus = e.target.checked;
-
-        setFormData(prev => ({
-            ...prev,
-            is_public: newPublicStatus
-        }));
+        setFormData(prev => ({ ...prev, is_public: newPublicStatus }));
         setIsUpdatingPrivacy(true);
 
         const { error } = await supabase
             .from('equi_log_main')
             .update({ is_public: newPublicStatus })
-            .eq('id', id);
+            .eq('horse_uuid', horse_uuid);
 
         setIsUpdatingPrivacy(false);
-
         if (error) {
-            setFormData(prev => ({
-                ...prev,
-                is_public: !newPublicStatus
-            }));
+            setFormData(prev => ({ ...prev, is_public: !newPublicStatus }));
             alert("Failed to update privacy setting: " + error.message);
+        }
+    };
+
+    // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
+    const syncAppointmentsToCalendar = async (current: any, original: any) => {
+        const ownerUuid = current.user_uuid || original.user_uuid;
+        if (!ownerUuid || !horse_uuid) return;
+
+        const appointmentTypes = [
+            { key: 'farrier_next_visit', title: 'Farrier Visit', notes: current.farrier_notes },
+            { key: 'dentist_next_visit', title: 'Dentist Visit', notes: current.dentist_notes },
+            { key: 'saddle_fitter_next_visit', title: 'Saddle Fitter Visit', notes: current.saddle_fitter_notes },
+            { key: 'physio_next_visit', title: 'Physio Visit', notes: current.physio_notes }
+        ];
+
+        for (const appt of appointmentTypes) {
+            const newDate = normalizeDate(current[appt.key]);
+            const oldDate = normalizeDate(original[appt.key]);
+
+            if (newDate !== oldDate) {
+                if (newDate) {
+                    // Match correct public schema column structure
+                    const { error } = await supabase
+                        .from('equi_calendar')
+                        .upsert({
+                            user_uuid: ownerUuid,
+                            horse_uuid: horse_uuid,
+                            calendar_date: newDate,
+                            calendar_title: appt.title,
+                            calendar_notes: appt.notes || ''
+                        }, {
+                            onConflict: 'horse_uuid,calendar_title' // ✅ Matches schema composite constraint key rule
+                        });
+
+                    if (error) console.error(`Error saving ${appt.title}:`, error.message);
+                } else {
+                    // Remove record cleanly if date input cleared completely
+                    const { error } = await supabase
+                        .from('equi_calendar')
+                        .delete()
+                        .eq('horse_uuid', horse_uuid)
+                        .eq('calendar_title', appt.title);
+
+                    if (error) console.error(`Error dropping ${appt.title}:`, error.message);
+                }
+            }
         }
     };
 
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const vitalsPayload: any = { ...formData };
 
-        const vitalsPayload = { ...formData };
-
-        if ('id' in vitalsPayload) {
-            delete vitalsPayload.id;
-        }
+        // Drop out fields not supported inside your equi_log_main schema columns
+        const calendarFields = [
+            'farrier_next_visit', 'dentist_next_visit',
+            'saddle_fitter_next_visit', 'physio_next_visit',
+            'user_uuid', 'horse_uuid', 'id'
+        ];
+        calendarFields.forEach(field => delete vitalsPayload[field]);
 
         Object.keys(vitalsPayload).forEach(key => {
-            if (vitalsPayload[key] === '') {
-                vitalsPayload[key] = null;
-            }
+            if (vitalsPayload[key] === '') vitalsPayload[key] = null;
         });
 
         const { error } = await supabase
             .from('equi_log_main')
             .update(vitalsPayload)
-            .eq('id', id);
+            .eq('horse_uuid', horse_uuid);
 
         if (error) {
             alert("Database Error: " + error.message);
         } else {
+            await syncAppointmentsToCalendar(formData, originalData);
             alert("Changes saved cleanly!");
             navigate('/dashboard');
         }
     };
 
     if (loading) return (
-        <div className="page-wrapper">
-            <div className="page-container">
-                <section className="section-container purple-section-container">
-                    <h1 className="textmedium">Populating comprehensive records...</h1>
-                </section>
-            </div>
-        </div>
+        <div className="page-wrapper"><div className="page-container"><section className="section-container purple-section-container"><h1 className="textmedium">Populating comprehensive records...</h1></section></div></div>
     );
 
     return (
         <div className="page-wrapper">
             <div className="page-container">
                 <form onSubmit={handleUpdate}>
-
                     {/* HERO SECTION */}
                     <section className="section-container purple-section-container">
-                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">
-                            ← Back to Dashboard
-                        </button>
-
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">← Back to Dashboard</button>
                         <div>
-                            <div>
-                                <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
-                            </div>
-
-                            <div
-                                className="orange-section-container privacy-toggle-container"
-                                style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}
-                            >
+                            <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
+                            <div className="orange-section-container privacy-toggle-container" style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}>
                                 <div>
                                     <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>
                                     <p>Turn off to hide your horse's public details</p>
-                                    <div className="privacy-toggle-meta">
-                                        {isUpdatingPrivacy ? "Saving changes..." : formData.is_public ? "Profile is Live" : "Profile is Hidden"}
-                                    </div>
+                                    <div className="privacy-toggle-meta">{isUpdatingPrivacy ? "Saving changes..." : formData.is_public ? "Profile is Live" : "Profile is Hidden"}</div>
                                 </div>
-
                                 <label className="switch switch-wrapper" htmlFor="is_public">
-                                    <input
-                                        type="checkbox"
-                                        id="is_public"
-                                        name="is_public"
-                                        checked={formData.is_public}
-                                        onChange={handlePrivacyToggle}
-                                        disabled={isUpdatingPrivacy}
-                                    />
+                                    <input type="checkbox" id="is_public" name="is_public" checked={formData.is_public} onChange={handlePrivacyToggle} disabled={isUpdatingPrivacy} />
                                     <span className="slider round"></span>
                                 </label>
                             </div>
                         </div>
                     </section>
 
-                    {/* SECTION 6: EMERGENCY CONTACTS */}
+                    {/* EMERGENCY CONTACTS */}
                     <section className="section-container purple-section-container">
                         <h2 className="textmedium marginbeight">Emergency Contacts</h2>
                         <div className="form-grid-two">
                             <div className="form-grid-card">
                                 <p className="text-normal marginbeight"><strong>Primary Contact</strong></p>
-                                <label htmlFor="emergency_name_one" className="sr-only" style={{ display: 'none' }}>Primary Contact Name</label>
-                                <input className="inputText marginbeight" id="emergency_name_one" placeholder="Name" name="emergency_name_one" type="text" value={formData.emergency_name_one} onChange={handleChange} />
-                                <label htmlFor="emergency_phone_one" className="sr-only" style={{ display: 'none' }}>Primary Contact Phone</label>
-                                <input className="inputText" id="emergency_phone_one" placeholder="Phone" name="emergency_phone_one" type="text" value={formData.emergency_phone_one} onChange={handleChange} />
+                                <input className="inputText marginbeight" placeholder="Name" name="emergency_name_one" type="text" value={formData.emergency_name_one} onChange={handleChange} />
+                                <input className="inputText" placeholder="Phone" name="emergency_phone_one" type="text" value={formData.emergency_phone_one} onChange={handleChange} />
                             </div>
                             <div className="form-grid-card">
                                 <p className="text-normal marginbeight"><strong>Secondary Contact</strong></p>
-                                <label htmlFor="emergency_name_two" className="sr-only" style={{ display: 'none' }}>Secondary Contact Name</label>
-                                <input className="inputText marginbeight" id="emergency_name_two" placeholder="Name" name="emergency_name_two" type="text" value={formData.emergency_name_two} onChange={handleChange} />
-                                <label htmlFor="emergency_phone_two" className="sr-only" style={{ display: 'none' }}>Secondary Contact Phone</label>
-                                <input className="inputText" id="emergency_phone_two" placeholder="Phone" name="emergency_phone_two" type="text" value={formData.emergency_phone_two} onChange={handleChange} />
+                                <input className="inputText marginbeight" placeholder="Name" name="emergency_name_two" type="text" value={formData.emergency_name_two} onChange={handleChange} />
+                                <input className="inputText" placeholder="Phone" name="emergency_phone_two" type="text" value={formData.emergency_phone_two} onChange={handleChange} />
                             </div>
                         </div>
                     </section>
 
-                    {/* SECTION 1: CORE PROFILE */}
+                    {/* IDENTITY & PROFILE */}
                     <section className="section-container white-section-container">
                         <h2 className="textmedium marginbsixteen">Horse Identity & Profile</h2>
                         <div className="text-normal marginbeight form-field-row">
@@ -248,7 +303,7 @@ export default function EditItem(): React.JSX.Element {
                         </div>
                     </section>
 
-                    {/* SECTION 2: VETERINARY */}
+                    {/* VETERINARY */}
                     <section className="section-container white-section-container">
                         <h2 className="textmedium marginbsixteen">Veterinary Details</h2>
                         <div className="text-normal marginbeight form-field-row">
@@ -263,7 +318,6 @@ export default function EditItem(): React.JSX.Element {
                             <label htmlFor="horse_vet_phone_one">Vet Phone:</label>
                             <input className="inputText" id="horse_vet_phone_one" name="horse_vet_phone_one" type="text" value={formData.horse_vet_phone_one} onChange={handleChange} />
                         </div>
-
                         <div className="textarea-block-group form-field-row-mixed">
                             <label className="text-normal" htmlFor="horse_medication">Current Medication</label>
                             <textarea className="inputText" id="horse_medication" name="horse_medication" value={formData.horse_medication} onChange={handleChange} />
@@ -274,7 +328,49 @@ export default function EditItem(): React.JSX.Element {
                         </div>
                     </section>
 
-                    {/* SECTION 3: FARRIER */}
+                    {/* SADDLE FITTER */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">Saddle Fitter Details</h2>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="saddle_fitter_name">Fitter Name:</label>
+                            <input className="inputText" id="saddle_fitter_name" name="saddle_fitter_name" type="text" value={formData.saddle_fitter_name} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="saddle_fitter_phone">Phone:</label>
+                            <input className="inputText" id="saddle_fitter_phone" name="saddle_fitter_phone" type="text" value={formData.saddle_fitter_phone} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="saddle_fitter_next_visit">Next Visit:</label>
+                            <input className="inputText" id="saddle_fitter_next_visit" name="saddle_fitter_next_visit" type="date" value={formData.saddle_fitter_next_visit} onChange={handleChange} />
+                        </div>
+                        <div className="textarea-block-group form-field-row-mixed">
+                            <label className="text-normal" htmlFor="saddle_fitter_notes">Saddle Notes</label>
+                            <textarea className="inputText" id="saddle_fitter_notes" name="saddle_fitter_notes" value={formData.saddle_fitter_notes} onChange={handleChange} />
+                        </div>
+                    </section>
+
+                    {/* PHYSIOTHERAPIST */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">Physiotherapist Details</h2>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="physio_name">Physio Name:</label>
+                            <input className="inputText" id="physio_name" name="physio_name" type="text" value={formData.physio_name} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="physio_phone">Phone:</label>
+                            <input className="inputText" id="physio_phone" name="physio_phone" type="text" value={formData.physio_phone} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="physio_next_visit">Next Visit:</label>
+                            <input className="inputText" id="physio_next_visit" name="physio_next_visit" type="date" value={formData.physio_next_visit} onChange={handleChange} />
+                        </div>
+                        <div className="textarea-block-group form-field-row-mixed">
+                            <label className="text-normal" htmlFor="physio_notes">Physio Notes</label>
+                            <textarea className="inputText" id="physio_notes" name="physio_notes" value={formData.physio_notes} onChange={handleChange} />
+                        </div>
+                    </section>
+
+                    {/* FARRIER */}
                     <section className="section-container white-section-container">
                         <h2 className="textmedium marginbsixteen">Farrier Log</h2>
                         <div className="text-normal marginbeight form-field-row">
@@ -290,10 +386,6 @@ export default function EditItem(): React.JSX.Element {
                             <input className="inputText" id="farrier_email" name="farrier_email" type="email" value={formData.farrier_email} onChange={handleChange} />
                         </div>
                         <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="farrier_last_visit">Last Visit:</label>
-                            <input className="inputText" id="farrier_last_visit" name="farrier_last_visit" type="date" value={formData.farrier_last_visit} onChange={handleChange} />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
                             <label htmlFor="farrier_next_visit">Next Visit:</label>
                             <input className="inputText" id="farrier_next_visit" name="farrier_next_visit" type="date" value={formData.farrier_next_visit} onChange={handleChange} />
                         </div>
@@ -303,7 +395,7 @@ export default function EditItem(): React.JSX.Element {
                         </div>
                     </section>
 
-                    {/* SECTION 4: DENTIST */}
+                    {/* DENTIST */}
                     <section className="section-container white-section-container">
                         <h2 className="textmedium marginbsixteen">Equine Dentist Log</h2>
                         <div className="text-normal marginbeight form-field-row">
@@ -319,10 +411,6 @@ export default function EditItem(): React.JSX.Element {
                             <input className="inputText" id="dentist_email" name="dentist_email" type="email" value={formData.dentist_email} onChange={handleChange} />
                         </div>
                         <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="dentist_last_visit">Last Exam:</label>
-                            <input className="inputText" id="dentist_last_visit" name="dentist_last_visit" type="date" value={formData.dentist_last_visit} onChange={handleChange} />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
                             <label htmlFor="dentist_next_visit">Next Appt:</label>
                             <input className="inputText" id="dentist_next_visit" name="dentist_next_visit" type="date" value={formData.dentist_next_visit} onChange={handleChange} />
                         </div>
@@ -332,22 +420,15 @@ export default function EditItem(): React.JSX.Element {
                         </div>
                     </section>
 
-                    {/* SECTION 5: FEED & INSTRUCTIONS */}
+                    {/* FEED & INSTRUCTIONS */}
                     <section className="section-container white-section-container">
-                        <h2 className="textmedium marginbsixteen">
-                            <label htmlFor="feed_instructions">Feeding & Turnout Instructions</label>
-                        </h2>
+                        <h2 className="textmedium marginbsixteen"><label htmlFor="feed_instructions">Feeding & Turnout Instructions</label></h2>
                         <textarea className="textarea-standalone" id="feed_instructions" name="feed_instructions" value={formData.feed_instructions} onChange={handleChange} />
                     </section>
 
-                    {/* SPACER */}
                     <div className="form-content-spacer"></div>
-
-                    {/* STICKY ACTIONS BAR CONTAINER */}
                     <div className="sticky-actions-bar">
-                        <button type="submit" className="buttonSmall buttonPurple">
-                            Save Changes
-                        </button>
+                        <button type="submit" className="buttonSmall buttonPurple">Save Changes</button>
                     </div>
                 </form>
             </div>

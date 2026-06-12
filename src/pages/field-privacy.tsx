@@ -16,11 +16,11 @@ export default function FieldPrivacy() {
             if (horse) setHorseName(horse.horse_name);
 
             // 2. Fetch privacy settings row
-            let { data: settings } = await supabase.from('horse_privacy').select('*').eq('horse_id', id).single();
+            let { data: settings } = await supabase.from('equi_log_show').select('*').eq('horse_id', id).single();
 
             if (!settings) {
                 // Safe backend database backup creation block
-                const { data: newSettings } = await supabase.from('horse_privacy').insert({ horse_id: id }).select().single();
+                const { data: newSettings } = await supabase.from('equi_log_show').insert({ horse_id: id }).select().single();
                 settings = newSettings;
             }
 
@@ -43,7 +43,7 @@ export default function FieldPrivacy() {
 
         // 2. Perform Mutation Call
         const { error, status, statusText } = await supabase
-            .from('horse_privacy')
+            .from('equi_log_show')
             .update({ [columnName]: nextValue })
             .eq('horse_id', id);
 
@@ -84,18 +84,36 @@ export default function FieldPrivacy() {
         { label: "Height (hh)", key: "show_height" },
         { label: "Weight Metrics (kg)", key: "show_weight" },
         { label: "Date of Birth / Age", key: "show_dob" },
-        { label: "Passport Documentation Number", key: "show_passport" },
+        { label: "Passport  Number", key: "show_passport" },
         { label: "Last Date Weighed", key: "show_last_weighed" },
 
+        // --- EMERGENCY PROTOCOLS ---
+        { label: "Primary Emergency Name", key: "show_emergency_name_one" },
+        { label: "Primary Emergency Phone", key: "show_emergency_phone_one" },
+        { label: "Secondary Emergency Contact Name", key: "show_emergency_name_two" },
+        { label: "Secondary Emergency Contact Phone", key: "show_emergency_phone_two" },
+
         // --- VETERINARY CARE DEEP DIVE ---
-        { label: "Veterinarian Doctor Name", key: "show_vet_name" },
-        { label: "Veterinary Clinic / Practice", key: "show_vet_practice" },
-        { label: "Veterinarian Primary Phone", key: "show_vet_phone" },
+        { label: "Vet Name", key: "show_vet_name" },
+        { label: "Vet Clinic / Practice", key: "show_vet_practice" },
+        { label: "Vet Primary Phone", key: "show_vet_phone" },
         { label: "Active Medications Log", key: "show_medication" },
         { label: "Allergy Records & Alerts", key: "show_allergies" },
 
+        // --- ✅ SADDLE FITTER HISTORY ---
+        { label: "Saddle Fitter Name", key: "show_saddle_fitter_name" },
+        { label: "Saddle Fitter Contact Phone", key: "show_saddle_fitter_phone" },
+        { label: "Saddle Fitter Next Appointment Due", key: "show_saddle_fitter_next" },
+        { label: "Saddle Fitter Notes", key: "show_saddle_fitter_notes" },
+
+        // --- ✅ PHYSIOTHERAPIST HISTORY ---
+        { label: "Physiotherapist Name", key: "show_physio_name" },
+        { label: "Physiotherapist Contact Phone", key: "show_physio_phone" },
+        { label: "Physiotherapist Next Appointment Due", key: "show_physio_next" },
+        { label: "Physiotherapist Notes", key: "show_physio_notes" },
+
         // --- FARRIER HISTORY ---
-        { label: "Farrier Specialist Name", key: "show_farrier_name" },
+        { label: "Farrier  Name", key: "show_farrier_name" },
         { label: "Farrier Contact Phone", key: "show_farrier_phone" },
         { label: "Farrier Contact Email", key: "show_farrier_email" },
         { label: "Farrier Last Visit Date", key: "show_farrier_last" },
@@ -103,7 +121,7 @@ export default function FieldPrivacy() {
         { label: "Farrier Technical Shoe/Trim Notes", key: "show_farrier_notes" },
 
         // --- DENTAL HISTORY ---
-        { label: "Equine Dentist Name", key: "show_dentist_name" },
+        { label: "Dentist Name", key: "show_dentist_name" },
         { label: "Dentist Contact Phone", key: "show_dentist_phone" },
         { label: "Dentist Contact Email", key: "show_dentist_email" },
         { label: "Dental Last Exam Date", key: "show_dentist_last" },
@@ -113,11 +131,6 @@ export default function FieldPrivacy() {
         // --- CARE, STABLE, & MANAGEMENT ---
         { label: "Diet & Feeding Instructions text", key: "show_feeding" },
 
-        // --- EMERGENCY PROTOCOLS ---
-        { label: "Primary Emergency Caretaker Name", key: "show_emergency_name_one" },
-        { label: "Primary Emergency Caretaker Phone", key: "show_emergency_phone_one" },
-        { label: "Secondary Emergency Contact Name", key: "show_emergency_name_two" },
-        { label: "Secondary Emergency Contact Phone", key: "show_emergency_phone_two" }
     ];
 
     return (
