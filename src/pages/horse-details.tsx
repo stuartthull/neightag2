@@ -257,7 +257,6 @@ export default function HorseDetails() {
                         ) : (
                             'N/A'
                         )}</strong></div>}
-                        {shouldShow('show_farrier_last') && <div className="text-normal marginbeight datarow"><span>Last Visit:</span> <strong>{formatGBDate(horse.farrier_last_visit) || 'N/A'}</strong></div>}
                         {/* 🗓️ Pulls directly from matching calendar variable */}
                         {shouldShow('show_farrier_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{farrierDate}</strong></div>}
                         {shouldShow('show_farrier_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.farrier_notes || 'None'}</strong></div>}
