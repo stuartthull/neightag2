@@ -121,7 +121,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
             `}</style>
 
             {/* 2. Dashboard Screen View Container Box (Disappears when printing) */}
-            <div style={styles.qrContainer} className="no-print">
+            <div className="no-print qr-container">
                 <div>
                     <h3 className={"large-text"}>Stable QR Code Tag</h3>
                     <p className="text-normal">
@@ -172,16 +172,3 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
         </>
     );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-    qrContainer: {
-        backgroundColor: '#f8fafc',
-        border: '1px solid #e2e8f0',
-        padding: '24px',
-        borderRadius: '12px',
-        textAlign: 'center',
-        width: '100%',
-        margin: '20px 0',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
-    }
-};

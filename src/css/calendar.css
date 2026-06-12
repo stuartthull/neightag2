@@ -41,6 +41,10 @@
     padding: 20px;
     border-radius: 10px;
     background-color: #fff;
+    @media (prefers-color-scheme: dark) {
+        background-color:  black;
+        color: var(--white);
+    }
 }
 
 .calendar-card-header {
@@ -54,6 +58,9 @@
     margin: 0 0 8px 0;
     font-size: 1.2rem;
     color: #1e293b;
+    @media (prefers-color-scheme: dark) {
+        color: var(--white);
+    }
 }
 
 /* Badge block detailing date and time parameters */
@@ -64,6 +71,9 @@
     font-weight: bold;
     text-align: right;
     min-width: 120px;
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--darkgrey);
+    }
 }
 
 .calendar-time-text {
@@ -72,11 +82,13 @@
 
 /* Description Text Block */
 .calendar-card-notes {
-    margin: 0;
+    margin: 0 0 8px;
     color: #475569;
     font-size: 0.95rem;
     line-height: 1.5;
-    margin-bottom: 8px; /* Adds space before the edit link */
+    @media (prefers-color-scheme: dark) {
+    color: var(--white);
+    }
 }
 
 /* Inline operational action anchors */

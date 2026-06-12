@@ -8,6 +8,10 @@ body {
     box-sizing: border-box;
     background-color: #f8fafc;
     color: #1e293b;
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--darkgrey);
+        color: var(--white);
+    }
 }
 
 a {
@@ -15,6 +19,10 @@ a {
     color: var(--darkgrey);
     transition: color 0.2s ease;
     text-underline-offset: 4px;
+
+    @media (prefers-color-scheme: dark) {
+        color: var(--white)
+    }
 }
 a:hover { color: #535bf2; text-decoration: underline; }
 
@@ -103,11 +111,20 @@ pre {
 .lightorange-section-container {
     background-color: var(--lightorange);
     color: var(--black);
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--green);
+        color: var(--white);
+    }
 }
 
 .white-section-container {
     background-color: var(--white);
     border: 1px solid #e2e8f0;
+    @media (prefers-color-scheme: dark) {
+        background-color: black;
+        color: var(--white);
+        border: none;
+    }
 }
 
 /* TYPOGRAPHY BLOCKS */
@@ -304,6 +321,10 @@ pre {
     width: 100%;
     padding: 4px 12px;
     max-width: 500px;
+    @media (prefers-color-scheme: dark) {
+        background-color: black;
+        color: var(--white);
+    }
 }
 
 .buttonaslinker {
@@ -346,6 +367,11 @@ pre {
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
+    @media (prefers-color-scheme: dark) {
+        background-color: black;
+        color: var(--white);
+        border: none;
+    }
 }
 
 .card-title {
@@ -420,6 +446,9 @@ pre {
 .horsebox-panel.breakdown-panel {
     background-color: var(--white);
     margin-bottom: 16px;
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--darkgrey);
+    }
 }
 
 .horsebox-panel.breakdown-panel h3 {
@@ -482,4 +511,17 @@ pre {
     align-items: center;
     border-bottom: 1px solid var(--green);
     padding-bottom: 16px;
+}
+.qr-container {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    margin: 20px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    @media (prefers-color-scheme: dark) {
+        color: var(--green);
+    }
 }
