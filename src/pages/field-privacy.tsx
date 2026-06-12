@@ -137,7 +137,7 @@ export default function FieldPrivacy() {
 
         // --- FARRIER HISTORY ---
         { label: "Farrier Name", key: "show_farrier_name" },
-        { label: "Farrier Contact Phone", key: "show_farrier_phone" },
+        { label: "Farrier Contact Phone", key: "show_farrier_phone_one" },
         { label: "Farrier Contact Email", key: "show_farrier_email" },
         { label: "Farrier Last Visit Date", key: "show_farrier_last" },
         { label: "Farrier Next Appointment Due", key: "show_farrier_next" },
@@ -148,7 +148,7 @@ export default function FieldPrivacy() {
         { label: "Dentist Contact Phone", key: "show_dentist_phone" },
         { label: "Dentist Contact Email", key: "show_dentist_email" },
         { label: "Dental Last Exam Date", key: "show_dentist_last" },
-        { label: "Dental Next Exam Due Date", key: "show_dentist_next" },
+        { label: "Dental Next Appointment Due", key: "show_dentist_next" },
         { label: "Dental Pathology Notes", key: "show_dentist_notes" },
 
         // --- CARE, STABLE, & MANAGEMENT ---

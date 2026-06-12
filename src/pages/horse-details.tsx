@@ -207,7 +207,7 @@ export default function HorseDetails() {
                 {/* SADDLE FITTER SECTION */}
                 {(shouldShow('show_saddle_fitter_name') || shouldShow('show_saddle_fitter_phone') || shouldShow('show_saddle_fitter_next') || shouldShow('show_saddle_fitter_notes')) && (
                     <section className="card marginbsixteen">
-                        <h2 className="textbig">Saddle Fitter</h2>
+                        <h2 className="textmedium">Saddle Fitter</h2>
                         {shouldShow('show_saddle_fitter_name') && <div className="text-normal marginbeight datarow"><span>Fitter Name:</span> <strong>{horse.saddle_fitter_name || 'N/A'}</strong></div>}
                         {shouldShow('show_saddle_fitter_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
                             {horse.saddle_fitter_phone ? (
@@ -225,7 +225,7 @@ export default function HorseDetails() {
                 {/* PHYSIO SECTION */}
                 {(shouldShow('show_physio_name') || shouldShow('show_physio_phone') || shouldShow('show_physio_next') || shouldShow('show_physio_notes')) && (
                     <section className="card marginbsixteen">
-                        <h2 className="textbig">Physiotherapist</h2>
+                        <h2 className="textmedium">Physiotherapist</h2>
                         {shouldShow('show_physio_name') && <div className="text-normal marginbeight datarow"><span>Physio Name:</span> <strong>{horse.physio_name || 'N/A'}</strong></div>}
                         {shouldShow('show_physio_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
                             {horse.physio_phone ? (
@@ -241,11 +241,11 @@ export default function HorseDetails() {
                 )}
 
                 {/* FARRIER SECTION */}
-                {(shouldShow('show_farrier_name') || shouldShow('show_farrier_phone') || shouldShow('show_farrier_email') || shouldShow('show_farrier_last') || shouldShow('show_farrier_next') || shouldShow('show_farrier_notes')) && (
+                {(shouldShow('show_farrier_name') || shouldShow('show_farrier_phone_one') || shouldShow('show_farrier_email') || shouldShow('show_farrier_last') || shouldShow('show_farrier_next') || shouldShow('show_farrier_notes')) && (
                     <section className="card marginbsixteen">
-                        <h2 className="textbig">Farrier</h2>
+                        <h2 className="textmedium">Farrier</h2>
                         {shouldShow('show_farrier_name') && <div className="text-normal marginbeight datarow"><span>Farrier Name:</span> <strong>{horse.farrier_name || 'N/A'}</strong></div>}
-                        {shouldShow('farrier_phone_one') && <div className="text-normal marginbeight datarow"><span>Phone:</span> <strong>
+                        {shouldShow('show_farrier_phone_one') && <div className="text-normal marginbeight datarow"><span>Phone:</span> <strong>
                             {horse.farrier_phone_one ? (
                                 <a href={`tel:${horse.farrier_phone_one}`}>{horse.farrier_phone_one}</a>
                             ) : (
@@ -266,7 +266,7 @@ export default function HorseDetails() {
                 {/* DENTIST SECTION */}
                 {(shouldShow('show_dentist_name') || shouldShow('show_dentist_phone') || shouldShow('show_dentist_email') || shouldShow('show_dentist_last') || shouldShow('show_dentist_next') || shouldShow('show_dentist_notes')) && (
                     <section className="card marginbsixteen">
-                        <h2 className="textbig">Dentist</h2>
+                        <h2 className="textmedium">Dentist</h2>
                         {shouldShow('show_dentist_name') && <div className="text-normal marginbeight datarow"><span>Dentist Name:</span> <strong>{horse.dentist_name || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_phone') && <div className="text-normal marginbeight datarow"><span>Phone:</span> <strong>
                             {horse.dentist_phone_one ? (
@@ -290,7 +290,7 @@ export default function HorseDetails() {
                 {/* FEEDING SECTION */}
                 {shouldShow('show_feeding') && (
                     <section className="card marginbsixteen">
-                        <h2 className="textbig">Feeding & Turnout</h2>
+                        <h2 className="textmedium">Feeding & Turnout</h2>
                         <div className="text-normal"><pre>{horse.feed_instructions || 'N/A'}</pre></div>
                     </section>
                 )}
