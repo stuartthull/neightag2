@@ -3,25 +3,48 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 export default function FieldPrivacy() {
-    const { id } = useParams();
+    // ✅ Updated to cleanly match the unified horse_uuid param token context
+    const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [horseName, setHorseName] = useState('');
-    const [privacy, setPrivacy] = useState(null);
+    const [privacy, setPrivacy] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPrivacySettings = async () => {
-            // 1. Fetch horse name
-            const { data: horse } = await supabase.from('equi_log_main').select('horse_name').eq('id', id).single();
+            if (!horse_uuid) {
+                console.error("Missing Horse UUID parameter context.");
+                navigate('/dashboard');
+                return;
+            }
+
+            // 1. Fetch horse name using horse_uuid
+            const { data: horse } = await supabase
+                .from('equi_log_main')
+                .select('horse_name')
+                .eq('horse_uuid', horse_uuid)
+                .single();
+
             if (horse) setHorseName(horse.horse_name);
 
-            // 2. Fetch privacy settings row
-            let { data: settings } = await supabase.from('equi_log_show').select('*').eq('horse_id', id).single();
+            // 2. Fetch privacy settings row using horse_uuid
+            let { data: settings } = await supabase
+                .from('equi_log_show')
+                .select('*')
+                .eq('horse_uuid', horse_uuid)
+                .maybeSingle(); // Swapped to maybeSingle to handle empty seeds cleanly
 
             if (!settings) {
-                // Safe backend database backup creation block
-                const { data: newSettings } = await supabase.from('equi_log_show').insert({ horse_id: id }).select().single();
-                settings = newSettings;
+                // Safe backend database backup creation block matching new tracking keys
+                const { data: newSettings, error: createError } = await supabase
+                    .from('equi_log_show')
+                    .insert({ horse_uuid: horse_uuid })
+                    .select()
+                    .single();
+
+                if (!createError) {
+                    settings = newSettings;
+                }
             }
 
             setPrivacy(settings);
@@ -29,23 +52,23 @@ export default function FieldPrivacy() {
         };
 
         fetchPrivacySettings();
-    }, [id]);
+    }, [horse_uuid, navigate]);
 
-    const toggleField = async (columnName) => {
-        if (!privacy) return;
+    const toggleField = async (columnName: string) => {
+        if (!privacy || !horse_uuid) return;
 
         const nextValue = !privacy[columnName];
 
         // 1. Optimistic Update (Changes the switch instantly in UI)
-        setPrivacy(prev => ({ ...prev, [columnName]: nextValue }));
+        setPrivacy((prev: any) => ({ ...prev, [columnName]: nextValue }));
 
-        console.log(`Attempting to save: Setting ${columnName} to ${nextValue} for horse ID ${id}`);
+        console.log(`Attempting to save: Setting ${columnName} to ${nextValue} for horse UUID ${horse_uuid}`);
 
-        // 2. Perform Mutation Call
+        // 2. Perform Mutation Call targeting the horse_uuid column
         const { error, status, statusText } = await supabase
             .from('equi_log_show')
             .update({ [columnName]: nextValue })
-            .eq('horse_id', id);
+            .eq('horse_uuid', horse_uuid);
 
         // 3. Error Diagnostics Handler
         if (error) {
@@ -60,7 +83,7 @@ export default function FieldPrivacy() {
             alert(`Failed to save: ${error.message || 'Check browser console for RLS errors.'}`);
 
             // Rollback UI instantly if database rejects the write
-            setPrivacy(prev => ({ ...prev, [columnName]: !nextValue }));
+            setPrivacy((prev: any) => ({ ...prev, [columnName]: !nextValue }));
         } else {
             console.log(`Successfully persisted ${columnName} state change to cloud store!`);
         }
@@ -84,7 +107,7 @@ export default function FieldPrivacy() {
         { label: "Height (hh)", key: "show_height" },
         { label: "Weight Metrics (kg)", key: "show_weight" },
         { label: "Date of Birth / Age", key: "show_dob" },
-        { label: "Passport  Number", key: "show_passport" },
+        { label: "Passport Number", key: "show_passport" },
         { label: "Last Date Weighed", key: "show_last_weighed" },
 
         // --- EMERGENCY PROTOCOLS ---
@@ -100,20 +123,20 @@ export default function FieldPrivacy() {
         { label: "Active Medications Log", key: "show_medication" },
         { label: "Allergy Records & Alerts", key: "show_allergies" },
 
-        // --- ✅ SADDLE FITTER HISTORY ---
+        // --- SADDLE FITTER HISTORY ---
         { label: "Saddle Fitter Name", key: "show_saddle_fitter_name" },
         { label: "Saddle Fitter Contact Phone", key: "show_saddle_fitter_phone" },
         { label: "Saddle Fitter Next Appointment Due", key: "show_saddle_fitter_next" },
         { label: "Saddle Fitter Notes", key: "show_saddle_fitter_notes" },
 
-        // --- ✅ PHYSIOTHERAPIST HISTORY ---
+        // --- PHYSIOTHERAPIST HISTORY ---
         { label: "Physiotherapist Name", key: "show_physio_name" },
         { label: "Physiotherapist Contact Phone", key: "show_physio_phone" },
         { label: "Physiotherapist Next Appointment Due", key: "show_physio_next" },
         { label: "Physiotherapist Notes", key: "show_physio_notes" },
 
         // --- FARRIER HISTORY ---
-        { label: "Farrier  Name", key: "show_farrier_name" },
+        { label: "Farrier Name", key: "show_farrier_name" },
         { label: "Farrier Contact Phone", key: "show_farrier_phone" },
         { label: "Farrier Contact Email", key: "show_farrier_email" },
         { label: "Farrier Last Visit Date", key: "show_farrier_last" },
@@ -130,7 +153,6 @@ export default function FieldPrivacy() {
 
         // --- CARE, STABLE, & MANAGEMENT ---
         { label: "Diet & Feeding Instructions text", key: "show_feeding" },
-
     ];
 
     return (
@@ -138,7 +160,7 @@ export default function FieldPrivacy() {
             <div className="page-container">
                 <section className="section-container purple-section-container">
                     <button onClick={() => navigate(-1)} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
-                        ← Back to Dashboard
+                        ← Back
                     </button>
                     <h1 className="textbig">Public Display Matrix</h1>
                     <p className="text-normal">Control exactly what details the public can see for <strong>{horseName}</strong>.</p>
