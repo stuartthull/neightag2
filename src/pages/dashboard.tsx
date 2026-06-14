@@ -50,14 +50,14 @@ export default function Dashboard() {
         const { error } = await supabase.from('equi_log_main').insert([{
             horse_name: horseName,
             user_uuid: sessionUserId
-            // Note: your database default trigger (gen_random_uuid()) automatically creates the horse_uuid here
         }]);
 
         if (error) {
             alert(error.message);
         } else {
+            // Clear local input memory before waiting for database reads to cycle back
             setHorseName('');
-            fetchMyLogs(sessionUserId);
+            await fetchMyLogs(sessionUserId); // ✅ Awaiting ensures your list updates with complete server records
         }
     };
 

@@ -53,13 +53,10 @@ export default function HorseboxView(): React.JSX.Element {
     return (
         <div className="page-wrapper" >
             <div className="page-container">
-
-
-
                 {!horsebox ? (
-                    <div className="horsebox-empty-card">
+                    <div className="horsebox-panel">
                         <h3>No Vehicle Registered</h3>
-                        <p>Store your insurance policies, breakdown recovery numbers, and MOT dates right here so you can look them up instantly during a roadside inspection or emergency.</p>
+                        <p className="marginbsixteen">Store your insurance policies, breakdown recovery numbers, and MOT dates right here so you can look them up instantly during a roadside inspection or emergency.</p>
                         <Link to="/horsebox/edit" className="buttonMain buttonPurple" style={{ textDecoration: 'none', display: 'inline-block' }}>
                             Setup Horsebox Profile
                         </Link>

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 export default function FieldPrivacy() {
-    // ✅ Updated to cleanly match the unified horse_uuid param token context
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [horseName, setHorseName] = useState('');
@@ -18,32 +17,44 @@ export default function FieldPrivacy() {
                 return;
             }
 
-            // 1. Fetch horse name using horse_uuid
-            const { data: horse } = await supabase
+            // 1. Fetch horse details to get horse_name AND user_uuid
+            const { data: horse, error: horseError } = await supabase
                 .from('equi_log_main')
-                .select('horse_name')
+                .select('horse_name, user_uuid')
                 .eq('horse_uuid', horse_uuid)
                 .single();
 
-            if (horse) setHorseName(horse.horse_name);
+            if (horseError || !horse) {
+                console.error("Could not trace horse records:", horseError?.message);
+                navigate('/dashboard');
+                return;
+            }
+
+            setHorseName(horse.horse_name);
+            const ownerId = horse.user_uuid;
 
             // 2. Fetch privacy settings row using horse_uuid
             let { data: settings } = await supabase
                 .from('equi_log_show')
                 .select('*')
                 .eq('horse_uuid', horse_uuid)
-                .maybeSingle(); // Swapped to maybeSingle to handle empty seeds cleanly
+                .maybeSingle();
 
-            if (!settings) {
-                // Safe backend database backup creation block matching new tracking keys
+            // 3. Fallback Seed: If no row exists, create it using BOTH required IDs
+            if (!settings && ownerId) {
                 const { data: newSettings, error: createError } = await supabase
                     .from('equi_log_show')
-                    .insert({ horse_uuid: horse_uuid })
-                    .select()
+                    .insert({
+                        horse_uuid: horse_uuid,
+                        user_uuid: ownerId
+            })
+            .select()
                     .single();
 
                 if (!createError) {
                     settings = newSettings;
+                } else {
+                    console.error("Failed to seed fallback matrix rows:", createError.message);
                 }
             }
 
@@ -148,12 +159,12 @@ export default function FieldPrivacy() {
         { label: "Dentist Contact Phone", key: "show_dentist_phone" },
         { label: "Dentist Contact Email", key: "show_dentist_email" },
         { label: "Dental Last Exam Date", key: "show_dentist_last" },
-        { label: "Dental Next Appointment Due", key: "show_dentist_next" },
-        { label: "Dental Pathology Notes", key: "show_dentist_notes" },
+        { label: "Dental Next Exam Due Date", key: "show_dentist_next" },
+    { label: "Dental Pathology Notes", key: "show_dentist_notes" },
 
-        // --- CARE, STABLE, & MANAGEMENT ---
-        { label: "Diet & Feeding Instructions text", key: "show_feeding" },
-    ];
+    // --- CARE, STABLE, & MANAGEMENT ---
+    { label: "Diet & Feeding Instructions text", key: "show_feeding" },
+];
 
     return (
         <div className="page-wrapper">
