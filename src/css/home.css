@@ -291,6 +291,9 @@ pre {
 .logo-holder {
     display: flex;
     text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 .nav-buttons {
@@ -523,5 +526,19 @@ pre {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     @media (prefers-color-scheme: dark) {
         color: var(--green);
+    }
+}
+
+.nav-link {
+    &:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+}
+.nav-link-text {
+    color: var(--white);
+    &:link, &:visited {
+        color: var(--white);
+        text-decoration: underline;
     }
 }

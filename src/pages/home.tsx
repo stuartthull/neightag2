@@ -16,9 +16,16 @@ interface QuickEvent {
     calendar_date: string;
 }
 
+// ✅ Structured to match an urgent maintenance deadline notice
+interface HorseBoxAlert {
+    type: 'MOT' | 'Insurance' | 'Service';
+    date: string;
+}
+
 function Home(): React.JSX.Element {
     const [session, setSession] = useState<Session | null>(null);
     const [upcomingEvents, setUpcomingEvents] = useState<QuickEvent[]>([]);
+    const [horseBoxAlerts, setHorseBoxAlerts] = useState<HorseBoxAlert[]>([]); // ✅ Tracks upcoming deadlines
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
@@ -33,26 +40,62 @@ function Home(): React.JSX.Element {
     useEffect(() => {
         if (!session?.user?.id) {
             setUpcomingEvents([]);
+            setHorseBoxAlerts([]);
             return;
         }
 
         const fetchUpcomingAlerts = async () => {
             const todayStr = new Date().toISOString().split('T')[0];
-            const upperLimitObj = new Date();
-            upperLimitObj.setDate(upperLimitObj.getDate() + 7);
-            const upperLimitStr = upperLimitObj.toISOString().split('T')[0];
 
-            const { data, error } = await supabase
+            // --- 1. Fetch 7-Day Calendar Events ---
+            const upperLimit7 = new Date();
+            upperLimit7.setDate(upperLimit7.getDate() + 7);
+            const upperLimit7Str = upperLimit7.toISOString().split('T')[0];
+
+            const { data: calendarData } = await supabase
                 .from('equi_calendar')
                 .select('id, calendar_title, calendar_date')
                 .eq('user_uuid', session.user.id)
                 .gte('calendar_date', todayStr)
-                .lte('calendar_date', upperLimitStr)
+                .lte('calendar_date', upperLimit7Str)
                 .order('calendar_date', { ascending: true })
                 .order('calendar_time', { ascending: true });
 
-            if (!error && data) {
-                setUpcomingEvents(data as QuickEvent[]);
+            if (calendarData) {
+                setUpcomingEvents(calendarData as QuickEvent[]);
+            }
+
+            // --- 2. Fetch Horsebox and Evaluate 30-Day Deadlines ---
+            const upperLimit30 = new Date();
+            upperLimit30.setDate(upperLimit30.getDate() + 30);
+            const upperLimit30Str = upperLimit30.toISOString().split('T')[0];
+
+            const { data: horseboxData } = await supabase
+                .from('equi_horsebox')
+                .select('mot_date, insurance_date, service_date')
+                .eq('user_uuid', session.user.id)
+                .maybeSingle(); // Each user has at most one horsebox profile
+
+            if (horseboxData) {
+                const alerts: HorseBoxAlert[] = [];
+
+                // Helper to check if a specific date falls within the upcoming 30 days
+                const isWithin30Days = (dateStr: string | null) => {
+                    if (!dateStr) return false;
+                    return dateStr >= todayStr && dateStr <= upperLimit30Str;
+                };
+
+                if (isWithin30Days(horseboxData.mot_date)) {
+                    alerts.push({ type: 'MOT', date: horseboxData.mot_date! });
+                }
+                if (isWithin30Days(horseboxData.insurance_date)) {
+                    alerts.push({ type: 'Insurance', date: horseboxData.insurance_date! });
+                }
+                if (isWithin30Days(horseboxData.service_date)) {
+                    alerts.push({ type: 'Service', date: horseboxData.service_date! });
+                }
+
+                setHorseBoxAlerts(alerts);
             }
         };
 
@@ -73,7 +116,8 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container home-layout-grid">
-                {/* UPCOMING EVENTS */}
+
+                {/* 📅 UPCOMING CALENDAR EVENTS (7 DAYS) */}
                 {session && upcomingEvents.length > 0 && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Your upcoming events</h2>
@@ -89,6 +133,31 @@ function Home(): React.JSX.Element {
                                             {event.calendar_title}{' '}-{' '}
                                             <span>
                                                 ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                            </span>
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
+
+                {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
+                {session && horseBoxAlerts.length > 0 && (
+                    <div className="section-container purple-section-container full-width" style={{ backgroundColor: '#fdf2f8', color: '#831843', border: '1px solid #fbcfe8' }}>
+                        <h2 className="textbig" style={{ color: '#9d174d' }}>Horsebox Reminders</h2>
+                        <div>
+                            <p className="marginbsixteen">
+                                <span>🚛</span>{' '}-{' '}
+                                <strong className="text-normal">Due in the Next 30 Days:</strong>
+                            </p>
+                            <ul className="events-list">
+                                {horseBoxAlerts.map((alert, index) => (
+                                    <li key={index} className="marginbsixteen">
+                                        <Link to={`/horsebox-view`} className="text-normal" style={{ color: '#9d174d', fontWeight: '700' }}>
+                                            ⚠️ Your Horsebox {alert.type} is due{' '}-{' '}
+                                            <span>
+                                                ({new Date(alert.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
                                             </span>
                                         </Link>
                                     </li>
@@ -144,11 +213,11 @@ function Home(): React.JSX.Element {
                 </div>
 
                 <div className="section-container white-section-container split-card">
-                    <h2 className="textbig">Your EquiLog calendar.</h2>
+                    <h2 className="textbig">Your NeighTag calendar.</h2>
                     <div className="pricing-content-wrapper">
                         <img className='marginbsixteen pricing-img' src={Calendar} alt="Calendar setup" />
                         <div className="pricing-text">
-                            <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your EquiLog calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our EquiLog calendar.</p>
+                            <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your NeighTag calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our NeighTag calendar.</p>
                             <p className="text-normal marginbsixteen">Get a message reminder a few days before so you dont forget those important dates.</p>
                             {!session && (
                                 <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
