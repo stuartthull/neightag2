@@ -128,7 +128,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         Generate a door tag for {horseName}'s stable box.
                     </p>
 
-                    <div style={{ textAlign: 'center', margin: '16px auto', width: 'fit-content' }}>
+                    <div style={{ visibility: 'hidden', height: '0', overflow: 'hidden' }}>
                         <QRCodeSVG
                             value={absoluteUrl}
                             size={160}
