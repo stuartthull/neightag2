@@ -124,7 +124,7 @@ export default function HorseDetails() {
 
                 {/* OWNER PREVIEW BANNER */}
                 {isUserOwner && (
-                    <div style={{ backgroundColor: '#fef08a', color: '#854d0e', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', border: '1px solid #eab308', fontWeight: '500' }}>
+                    <div style={{ backgroundColor: '#eebf2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', border: '1px solid #eab308', fontWeight: '500' }}>
                         👀 <strong>Owner Preview:</strong> You are seeing this page exactly as it appears to the public based on your privacy settings.
                     </div>
                 )}
@@ -147,10 +147,10 @@ export default function HorseDetails() {
                             {(shouldShow('show_emergency_name_one') || shouldShow('show_emergency_phone_one')) && (
                                 <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal"><strong>Primary Contact:</strong></p>
-                                    {shouldShow('show_emergency_name_one') && <p className="text-normal">{horse.emergency_name_one || 'N/A'}</p>}
+                                    {shouldShow('show_emergency_name_one') && <p className="text-normal marginbsixteen">{horse.emergency_name_one || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_one') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_one}`} className="horsebox-call-button">
+                                            <a href={`tel:${horse.emergency_phone_one}`} className="buttonMain buttonOrange">
                                                 📞 {horse.emergency_phone_one || 'N/A'}
                                             </a>
                                         </p>
@@ -160,10 +160,10 @@ export default function HorseDetails() {
                             {(shouldShow('show_emergency_name_two') || shouldShow('show_emergency_phone_two')) && (
                                 <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal"><strong>Secondary Contact:</strong></p>
-                                    {shouldShow('show_emergency_name_two') && <p className="text-normal">{horse.emergency_name_two || 'N/A'}</p>}
+                                    {shouldShow('show_emergency_name_two') && <p className="text-normal marginbsixteen">{horse.emergency_name_two || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_two') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_two}`} className="horsebox-call-button">
+                                            <a href={`tel:${horse.emergency_phone_two}`} className="buttonMain buttonOrange">
                                                 📞 {horse.emergency_phone_two || 'N/A'}
                                             </a>
                                         </p>

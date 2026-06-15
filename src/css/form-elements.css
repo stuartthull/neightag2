@@ -35,7 +35,7 @@
 }
 
 input:checked+.slider {
-    background-color: var(--green);
+    background-color: var(--primarycolor);
 }
 
 /* Deep matching green when active */

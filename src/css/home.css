@@ -99,20 +99,25 @@ pre {
 }
 
 .purple-section-container {
-    background-color: var(--green);
+    background-color: var(--primarycolor);
     color: var(--white);
 }
 
+.terracota-section-container {
+    background-color: var(--terracota);
+    color: var(--primarycolor);
+}
+
 .orange-section-container {
-    background-color: var(--orange);
+    background-color: var(--secondarycolor);
     color: var(--black);
 }
 
 .lightorange-section-container {
-    background-color: var(--lightorange);
+    background-color: var(--lightprimary);
     color: var(--black);
     @media (prefers-color-scheme: dark) {
-        background-color: var(--green);
+        background-color: var(--primarycolor);
         color: var(--white);
     }
 }
@@ -226,16 +231,17 @@ pre {
     border: none;
 }
 
-.buttonPurple { background-color: var(--green); color: var(--white); }
-.buttonPurple:hover { background-color: #0a4440; color: var(--white); }
+.buttonPurple { background-color: var(--primarycolor); color: var(--white); }
+.buttonPurple:hover { background-color: var(--secondarycolor); color: var(--white); }
 
-.buttonWhite { background-color: var(--white); color: var(--green); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.buttonWhite:hover { background-color: #f8fafc; color: var(--green); }
+.buttonWhite { background-color: var(--white); color: var(--primarycolor); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.buttonWhite:hover { background-color: #f8fafc; color: var(--primarycolor); }
 
-.buttonOrange { background-color: var(--orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.buttonOrange { background-color: var(--orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: var(--black); }
+.buttonOrange:hover { background-color: var(--orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: var(--black); }
 
 .navigation {
-    background: var(--green);
+    background: var(--primarycolor);
 
     max-width: 100%;
 }
@@ -360,7 +366,7 @@ pre {
 }
 
 .purple-border {
-    border: 1px solid var(--green);
+    border: 1px solid var(--primarycolor);
     border-radius: 8px;
 }
 
@@ -397,7 +403,7 @@ pre {
 }
 
 .horsebox-date-card {
-    border: 1px solid var(--orange);
+    border: 1px solid var(--secondarycolor);
     padding: 16px;
     border-radius: 8px;
     background-color: #f8fafc;
@@ -435,14 +441,14 @@ pre {
 }
 
 .horsebox-panel {
-    border: 1px solid var(--orange);
+    border: 1px solid var(--secondarycolor);
     border-radius: 10px;
     padding: 20px;
 }
 
 .horsebox-panel h3 {
     margin: 0 0 12px 0;
-    border-bottom: 1px solid var(--orange);
+    border-bottom: 1px solid var(--secondarycolor);
     padding-bottom: 6px;
 }
 
@@ -455,7 +461,7 @@ pre {
 }
 
 .horsebox-panel.breakdown-panel h3 {
-    border-bottom-color: var(--orange);
+    border-bottom-color: var(--secondarycolor);
 }
 
 .horsebox-data-list {
@@ -471,7 +477,7 @@ pre {
 
 .horsebox-call-button {
     display: inline-block;
-    background-color: var(--orange);
+    background-color: var(--secondarycolor);
     color: #fff;
     text-decoration: none;
     padding: 6px 12px;
@@ -512,11 +518,11 @@ pre {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--green);
+    border-bottom: 1px solid var(--primarycolor);
     padding-bottom: 16px;
 }
 .qr-container {
-    background-color: var(--lightgreen);
+    background-color: var(--lightprimary);
     border: 1px solid #e2e8f0;
     padding: 24px;
     border-radius: 12px;
@@ -525,7 +531,7 @@ pre {
     margin: 20px 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     @media (prefers-color-scheme: dark) {
-        color: var(--green);
+        color: var(--primarycolor);
     }
 }
 
@@ -540,5 +546,36 @@ pre {
     &:link, &:visited {
         color: var(--white);
         text-decoration: underline;
+    }
+}
+
+.sticky-actions-bar {
+    position: -webkit-sticky; /* Safari Support */
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100; /* Keeps it floating above cards and lists */
+
+    /* Layout & Spacing */
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    box-sizing: border-box;
+
+    /* Theme Styling (Using your new Soft Alabaster + a subtle border) */
+    background-color: rgba(248, 246, 242, 0.90); /* Alabaster #F8F6F2 with 90% opacity */
+    -webkit-backdrop-filter: blur(8px); /* Frosted glass effect for Safari */
+    backdrop-filter: blur(8px);          /* Frosted glass effect for Chrome/Firefox */
+    border-top: 1px solid #d3ecea;       /* Clean dividing line using your --lightgreen */
+
+    /* Smooth Shadow to give it a floating appearance */
+    box-shadow: 0 -4px 12px rgba(17, 94, 89, 0.06); /* Tinted with your deep green */
+}
+
+/* 📲 Handle Mobile Notch Displays (iPhone Safe Area) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .sticky-actions-bar {
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 }

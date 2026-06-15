@@ -65,7 +65,7 @@
 
 /* Badge block detailing date and time parameters */
 .calendar-date-badge {
-    background-color: var(--lightgreen);
+    background-color: var(--lightprimary);
     padding: 8px 12px;
     border-radius: 6px;
     font-weight: bold;

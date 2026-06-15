@@ -144,8 +144,8 @@ function Home(): React.JSX.Element {
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
                 {session && horseBoxAlerts.length > 0 && (
-                    <div className="section-container purple-section-container full-width" style={{ backgroundColor: '#fdf2f8', color: '#831843', border: '1px solid #fbcfe8' }}>
-                        <h2 className="textbig" style={{ color: '#9d174d' }}>Horsebox Reminders</h2>
+                    <div className="section-container lightorange-section-container full-width">
+                        <h2 className="textbig">Horsebox Reminders</h2>
                         <div>
                             <p className="marginbsixteen">
                                 <span>🚛</span>{' '}-{' '}
@@ -154,7 +154,7 @@ function Home(): React.JSX.Element {
                             <ul className="events-list">
                                 {horseBoxAlerts.map((alert, index) => (
                                     <li key={index} className="marginbsixteen">
-                                        <Link to={`/horsebox-view`} className="text-normal" style={{ color: '#9d174d', fontWeight: '700' }}>
+                                        <Link to={`/horsebox-view`} className="text-normal">
                                             ⚠️ Your Horsebox {alert.type} is due{' '}-{' '}
                                             <span>
                                                 ({new Date(alert.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})

@@ -107,7 +107,7 @@ export default function HorseboxView(): React.JSX.Element {
                                 <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.breakdown_policy_number || 'Not documented'}</strong></div>
                                 {horsebox.breakdown_phone && (
                                     <div>
-                                        <a href={`tel:${horsebox.breakdown_phone}`} className="horsebox-call-button">
+                                        <a href={`tel:${horsebox.breakdown_phone}`} className="buttonMain buttonOrange">
                                             📞 Call recovery: {horsebox.breakdown_phone}
                                         </a>
                                     </div>

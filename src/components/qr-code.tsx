@@ -141,7 +141,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                     <div style={{ marginTop: '18px' }}>
                         <button
                             onClick={handlePrint}
-                            className="buttonMain buttonOrange"
+                            className="buttonMain buttonPurple"
                         >
                             <span>🖨️</span> Print Stable Card
                         </button>
