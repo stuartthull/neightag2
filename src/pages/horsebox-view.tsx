@@ -95,7 +95,7 @@ export default function HorseboxView(): React.JSX.Element {
 
                         <div className="section-container white-section-container">
                             <h3>Insurance Record Details</h3>
-                            <div className="horsebox-data-list">
+                            <div className="horsebox-data-list ">
                                 <div className='datarow'><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></div>
                                 <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></div>
                             </div>

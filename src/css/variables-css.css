@@ -1,15 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
+    /* --- Your Core Palette --- */
     --primarycolor: #56483b;
     --secondarycolor: #4a100c;
     --tertiarycolor: #ad9e89;
+    --terracota: #834230;
+    --orange: #eebf2f;
+
+    /* --- Interactive Hover Derivatives --- */
+    --secondary-hover: #330b08;
+    --terracotta-hover: #6c3425;
+    --focus-glow: rgba(131, 66, 48, 0.2);
+
+    /* --- Canvas Layout & Border Tints --- */
     --white: #ffffff;
+    --alabaster-bg: #faf8f5;
+    --tertiary-tint: #f1ede6;
+    --lightprimary: #c9c2b8;
+    --light-border: #e9e4dc;
+
+    /* --- High-Contrast Typography & Accents --- */
     --black: #1a1a1c;
     --darkgrey: #424242;
-    --lightprimary: #c9c2b8;
-    --orange: #eebf2f;
-    --terracota: #834230;
+    --hunter-green: #233d34;
+
     line-height: 1.5;
     font-weight: 400;
 

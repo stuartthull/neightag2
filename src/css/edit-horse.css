@@ -11,7 +11,11 @@
     gap: 15px;
     width: 100%;
     transition: opacity 0.2s;
-    color: var(--darkgrey)
+    color: var(--darkgrey);
+    @media (prefers-color-scheme: dark) {
+        background-color:  black;
+        color: var(--white);
+    }
 }
 
 .privacy-toggle-meta {

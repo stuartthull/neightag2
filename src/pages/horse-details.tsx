@@ -124,8 +124,8 @@ export default function HorseDetails() {
 
                 {/* OWNER PREVIEW BANNER */}
                 {isUserOwner && (
-                    <div style={{ backgroundColor: '#eebf2f', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '0.9rem', border: '1px solid #eab308', fontWeight: '500' }}>
-                        👀 <strong>Owner Preview:</strong> You are seeing this page exactly as it appears to the public based on your privacy settings.
+                    <div className="alert-banner-warning">
+                        👀 <strong>Owner Preview:</strong> <br />You are seeing this page exactly as it appears to the public based on your privacy settings.
                     </div>
                 )}
 

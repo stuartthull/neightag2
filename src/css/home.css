@@ -132,6 +132,21 @@ pre {
     }
 }
 
+.alert-banner-warning {
+    background-color: var(--orange);
+    border: 1px solid #eab308;
+    color: #000000; /* Ensures readable contrast against the yellow background */
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-sizing: border-box;
+    @media (prefers-color-scheme: dark) {
+        color: var(--darkgrey);
+    }
+}
+
 /* TYPOGRAPHY BLOCKS */
 .textbig { font-size: 24px; font-weight: 500; margin: 0 0 20px; }
 .textmedium { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
@@ -219,8 +234,9 @@ pre {
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 .buttonMain:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     text-decoration: none;
+    opacity: 0.9;
 }
 
 .buttonSmall {
@@ -231,8 +247,18 @@ pre {
     border: none;
 }
 
-.buttonPurple { background-color: var(--primarycolor); color: var(--white); }
-.buttonPurple:hover { background-color: var(--secondarycolor); color: var(--white); }
+.buttonPurple {
+    background-color: var(--hunter-green);
+    color: var(--white);
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--secondarycolor);
+
+    }
+}
+.buttonPurple:hover {
+    background-color: var(--hunter-green);
+    color: var(--white);
+}
 
 .buttonWhite { background-color: var(--white); color: var(--primarycolor); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 .buttonWhite:hover { background-color: #f8fafc; color: var(--primarycolor); }
@@ -471,10 +497,6 @@ pre {
     font-size: 0.95rem;
 }
 
-.horsebox-data-list span {
-    color: #64748b;
-}
-
 .horsebox-call-button {
     display: inline-block;
     background-color: var(--secondarycolor);
@@ -492,6 +514,9 @@ pre {
     justify-content: space-between;
     border-bottom: 1px dotted #b7bbc1;
     padding-bottom: 8px;
+    @media (prefers-color-scheme: dark) {
+        color: var(--white);
+    }
 }
 
 .horsebox-reg-plate {
@@ -555,22 +580,14 @@ pre {
     bottom: 0;
     left: 0;
     width: 100%;
-    z-index: 100; /* Keeps it floating above cards and lists */
-
-    /* Layout & Spacing */
+    z-index: 100;
     display: flex;
     justify-content: flex-end;
     padding: 16px 20px;
-    box-sizing: border-box;
-
-    /* Theme Styling (Using your new Soft Alabaster + a subtle border) */
-    background-color: rgba(248, 246, 242, 0.90); /* Alabaster #F8F6F2 with 90% opacity */
-    -webkit-backdrop-filter: blur(8px); /* Frosted glass effect for Safari */
-    backdrop-filter: blur(8px);          /* Frosted glass effect for Chrome/Firefox */
-    border-top: 1px solid #d3ecea;       /* Clean dividing line using your --lightgreen */
-
-    /* Smooth Shadow to give it a floating appearance */
-    box-shadow: 0 -4px 12px rgba(17, 94, 89, 0.06); /* Tinted with your deep green */
+    background-color: var(--white);
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--primarycolor);
+    }
 }
 
 /* 📲 Handle Mobile Notch Displays (iPhone Safe Area) */
@@ -579,3 +596,39 @@ pre {
         padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
 }
+
+.horsebox-form-section {
+    border: none;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--white);
+    margin: 16px 0;
+}
+
+
+/* --- Field Blocks --- */
+.horsebox-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.visible-note {
+    font-size: 0.9rem;
+    color: var(--terracota);
+    @media (prefers-color-scheme: dark) {
+        font-size: 0.9rem;
+        color: #00ff00;
+    }
+}
+.visible-note-not {
+    font-size: 0.9rem;
+    color: #ff0000;
+    @media (prefers-color-scheme: dark) {
+        font-size: 0.9rem;
+        color: var(--tertiarycolor);
+    }
+}
+
+

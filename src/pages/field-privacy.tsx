@@ -183,8 +183,8 @@ export default function FieldPrivacy() {
                         <div key={field.key} className="visibility-settings marginbsixteen">
                             <div>
                                 <div className="textmedium">{field.label}</div>
-                                <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                                    {privacy?.[field.key] ? "🌐 Visible to everyone" : "🔒 Hidden from public view"}
+                                <div>
+                                    {privacy?.[field.key] ? <span className="visible-note">🌐 Visible to everyone</span> : <span className="visible-note-not">🔒 Hidden from public view</span>}
                                 </div>
                             </div>
                             <label className="switch">
