@@ -252,11 +252,6 @@ export default function HorseDetails() {
                                 'N/A'
                             )}
                         </strong></div>}
-                        {shouldShow('show_farrier_email') && <div className="text-normal marginbeight datarow"><span>Email:</span> <strong>{horse.farrier_email ? (
-                            <a href={`mailto:${horse.farrier_email}`}>{horse.farrier_email}</a>
-                        ) : (
-                            'N/A'
-                        )}</strong></div>}
                         {/* 🗓️ Pulls directly from matching calendar variable */}
                         {shouldShow('show_farrier_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{farrierDate}</strong></div>}
                         {shouldShow('show_farrier_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.farrier_notes || 'None'}</strong></div>}
@@ -274,13 +269,6 @@ export default function HorseDetails() {
                             ) : (
                                 'N/A'
                             )}</strong></div>}
-                        {shouldShow('show_dentist_email') && <div className="text-normal marginbeight datarow"><span>Email:</span> <strong>
-                            {horse.dentist_email ? (
-                                <a href={`mailto:${horse.dentist_email}`}>{horse.dentist_email}</a>
-                            ) : (
-                                'N/A'
-                            )}
-                        </strong></div>}
                         {/* 🗓️ Pulls directly from matching calendar variable */}
                         {shouldShow('show_dentist_next') && <div className="text-normal marginbeight datarow"><span>Next Exam:</span> <strong>{dentistDate}</strong></div>}
                         {shouldShow('show_dentist_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.dentist_notes || 'None'}</strong></div>}

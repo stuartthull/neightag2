@@ -108,9 +108,9 @@ function Home(): React.JSX.Element {
                 <img src={homeHorse} alt="Equestrian Home" className="hero-bg-img" />
                 <div className="centered-button">
                     {session ? (
-                        <Link to="/dashboard" className="buttonPurple buttonMain">Go to Dashboard</Link>
+                        <Link to="/dashboard" className="buttonOrange buttonMain">Go to Dashboard</Link>
                     ) : (
-                        <Link to="/login?mode=signup" className="buttonPurple buttonMain">Sign up now!</Link>
+                        <Link to="/login?mode=signup" className="buttonOrange buttonMain">Sign up now!</Link>
                     )}
                 </div>
             </div>

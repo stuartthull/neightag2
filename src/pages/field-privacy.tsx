@@ -149,7 +149,6 @@ export default function FieldPrivacy() {
         // --- FARRIER HISTORY ---
         { label: "Farrier Name", key: "show_farrier_name" },
         { label: "Farrier Contact Phone", key: "show_farrier_phone_one" },
-        { label: "Farrier Contact Email", key: "show_farrier_email" },
         { label: "Farrier Last Visit Date", key: "show_farrier_last" },
         { label: "Farrier Next Appointment Due", key: "show_farrier_next" },
         { label: "Farrier Technical Shoe/Trim Notes", key: "show_farrier_notes" },
@@ -157,7 +156,6 @@ export default function FieldPrivacy() {
         // --- DENTAL HISTORY ---
         { label: "Dentist Name", key: "show_dentist_name" },
         { label: "Dentist Contact Phone", key: "show_dentist_phone" },
-        { label: "Dentist Contact Email", key: "show_dentist_email" },
         { label: "Dental Last Exam Date", key: "show_dentist_last" },
         { label: "Dental Next Exam Due Date", key: "show_dentist_next" },
     { label: "Dental Pathology Notes", key: "show_dentist_notes" },
@@ -171,7 +169,7 @@ export default function FieldPrivacy() {
             <div className="page-container">
                 <section className="section-container purple-section-container">
                     <button onClick={() => navigate(-1)} className="buttonWhite buttonMain" style={{ marginBottom: '20px' }}>
-                        ← Back
+                        ← Back to Your Stable
                     </button>
                     <h1 className="textbig">Public Display Matrix</h1>
                     <p className="text-normal">Control exactly what details the public can see for <strong>{horseName}</strong>.</p>

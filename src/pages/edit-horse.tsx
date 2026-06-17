@@ -232,7 +232,7 @@ export default function EditItem(): React.JSX.Element {
                 <form onSubmit={handleUpdate}>
                     {/* HERO SECTION */}
                     <section className="section-container purple-section-container">
-                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">← Back to Dashboard</button>
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">← Back to Your Stable</button>
                         <div>
                             <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
                             <div className="white-section-container privacy-toggle-container" style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}>
@@ -382,10 +382,6 @@ export default function EditItem(): React.JSX.Element {
                             <input className="inputText" id="farrier_phone_one" name="farrier_phone_one" type="text" value={formData.farrier_phone_one} onChange={handleChange} />
                         </div>
                         <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="farrier_email">Email:</label>
-                            <input className="inputText" id="farrier_email" name="farrier_email" type="email" value={formData.farrier_email} onChange={handleChange} />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
                             <label htmlFor="farrier_next_visit">Next Visit:</label>
                             <input className="inputText" id="farrier_next_visit" name="farrier_next_visit" type="date" value={formData.farrier_next_visit} onChange={handleChange} />
                         </div>
@@ -407,10 +403,6 @@ export default function EditItem(): React.JSX.Element {
                             <input className="inputText" id="dentist_phone_one" name="dentist_phone_one" type="text" value={formData.dentist_phone_one} onChange={handleChange} />
                         </div>
                         <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="dentist_email">Email:</label>
-                            <input className="inputText" id="dentist_email" name="dentist_email" type="email" value={formData.dentist_email} onChange={handleChange} />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
                             <label htmlFor="dentist_next_visit">Next Appt:</label>
                             <input className="inputText" id="dentist_next_visit" name="dentist_next_visit" type="date" value={formData.dentist_next_visit} onChange={handleChange} />
                         </div>
@@ -428,7 +420,7 @@ export default function EditItem(): React.JSX.Element {
 
                     <div className="form-content-spacer"></div>
                     <div className="sticky-actions-bar">
-                        <button type="submit" className="buttonMain buttonPurple">Save Changes</button>
+                        <button type="submit" className="buttonMain buttonOrange">Save Changes</button>
                     </div>
                 </form>
             </div>
