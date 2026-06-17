@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import '../css/calendar.css';
 
 export default function EditCalendarEntry(): React.JSX.Element {
     const { id } = useParams<{ id: string }>();
@@ -9,6 +10,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
     const [userId, setUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
+    const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
 
     // Controlled form state matching table schema defaults
     const [title, setTitle] = useState<string>('');
@@ -63,6 +65,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         if (!id || !userId) return;
+        setConfirmationMessage(null);
         setSaving(true);
 
         const { error } = await supabase
@@ -81,8 +84,8 @@ export default function EditCalendarEntry(): React.JSX.Element {
         if (error) {
             alert(`Update failed: ${error.message}`);
         } else {
-            alert('Calendar event updated successfully!');
-            navigate('/calendar');
+            setConfirmationMessage('Calendar event updated successfully.');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
@@ -108,79 +111,97 @@ export default function EditCalendarEntry(): React.JSX.Element {
         }
     };
 
-    if (loading) return <div className="loading" style={{ padding: '40px', textAlign: 'center' }}>Retrieving event specifications...</div>;
+    if (loading) return <div className="loading-indicator">Retrieving event specifications...</div>;
 
     return (
-        <div className="page-container" style={{ maxWidth: '600px', margin: '40px auto', padding: '0 20px' }}>
-            <button onClick={() => navigate('/calendar')} className="back-link" style={{ marginBottom: '20px', background: 'none', border: 'none', cursor: 'pointer', color: '#6b21a8', textDecoration: 'underline' }}>
-                ← Cancel & Return
-            </button>
+        <div className="page-wrapper">
+            <div className="page-container">
+            {/* ALERT NOTIFICATION BANNER */}
+            {confirmationMessage && (
+                <div className="calendar-confirmation-message" role="status" aria-live="polite">
+                    {confirmationMessage}
+                </div>
+            )}
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h2 style={{ margin: 0 }}>Modify Event Details</h2>
-                <button
-                    type="button"
-                    onClick={handleDelete}
-                    disabled={saving}
-                    style={{ background: '#ef4444', color: '#fff' }}
-                    className="buttonSmall"
-                >
-                    Delete Event
-                </button>
-            </div>
+                <section className="section-container purple-section-container">
+                    <button type="button" onClick={() => navigate('/calendar')} className="buttonWhite buttonMain marginbsixteen">
+                        ← Cancel & Return
+                    </button>
 
-            <form onSubmit={handleUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label style={{ fontWeight: '600' }}>Event Title *</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                        <div>
+                            <h1 className="textbig">Modify Event Details</h1>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={handleDelete}
+                            disabled={saving}
+                            className="button-danger-outline"
+                        >
+                            Delete Event
+                        </button>
+                    </div>
+                </section>
+
+
+            {/* MANAGE ENTRY DATA COMPONENT FORM */}
+            <form onSubmit={handleUpdate} className="equi-edit-form">
+
+                {/* EVENT TITLE INPUT */}
+                <div className="horsebox-field-group">
+                    <label className="form-field-label">Event Title *</label>
                     <input
                         type="text"
+                        className="form-input-control"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        style={{ padding: '10px', borderRadius: '6px', border: '1px solid #ddd' }}
                         required
                     />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontWeight: '600' }}>Date *</label>
+                {/* TIMELINE PARAMETERS GRID ROW */}
+                <div className="form-field-grid">
+                    <div className="horsebox-field-group">
+                        <label className="form-field-label">Date *</label>
                         <input
                             type="date"
+                            className="form-input-control"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            style={{ padding: '10px', borderRadius: '6px', border: '1px solid #ddd' }}
                             required
                         />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <label style={{ fontWeight: '600' }}>Time</label>
+                    <div className="horsebox-field-group">
+                        <label className="form-field-label">Time</label>
                         <input
                             type="time"
+                            className="form-input-control"
                             value={time}
                             onChange={(e) => setTime(e.target.value)}
-                            style={{ padding: '10px', borderRadius: '6px', border: '1px solid #ddd' }}
                         />
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                    <label style={{ fontWeight: '600' }}>Notes / Description</label>
+                {/* ADDITIONAL ENTRY DESCRIPTION RECORD NOTES */}
+                <div className="horsebox-field-group">
+                    <label className="form-field-label">Notes / Description</label>
                     <textarea
+                        className="form-textarea-control"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        style={{ padding: '10px', borderRadius: '6px', border: '1px solid #ddd', minHeight: '100px' }}
                     />
                 </div>
 
+                {/* FORM UPDATE SUBMISSION UTILITY BUTTON */}
                 <button
                     type="submit"
                     disabled={saving}
-                    className="buttonMain buttonPurple"
-                    style={{ marginTop: '10px', width: '100%' }}
+                    className="buttonMain buttonPurple form-submit-btn"
                 >
                     {saving ? 'Updating entry context...' : 'Save Changes'}
                 </button>
             </form>
+        </div>
         </div>
     );
 }

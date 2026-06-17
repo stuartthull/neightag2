@@ -55,8 +55,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         margin: 40px auto 0 auto !important;
                         width: 100% !important;
                         max-width: 380px !important;
-                        border: 4px solid #115E59 !important;
-                        border-radius: 16px !important;
+                        border: 10px solid #56483b !important;
                         padding: 30px 24px !important;
                         text-align: center !important;
                         box-sizing: border-box !important;
@@ -99,12 +98,12 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                     }
 
                     .stable-print-alert-footer {
-                        background-color: #fdf2f8 !important;
-                        border: 1px dashed #f472b6;
+                        background-color: #ff0000 !important;
+                        border: 1px dashed #ff0000;
                         border-radius: 8px;
                         padding: 10px;
                         font-size: 11px;
-                        color: #be185d;
+                        color: #ffffff;
                         font-weight: 600;
                         text-transform: uppercase;
                         letter-spacing: 0.5px;

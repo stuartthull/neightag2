@@ -235,7 +235,7 @@ export default function EditItem(): React.JSX.Element {
                         <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">← Back to Dashboard</button>
                         <div>
                             <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
-                            <div className="lightorange-section-container privacy-toggle-container" style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}>
+                            <div className="white-section-container privacy-toggle-container" style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}>
                                 <div>
                                     <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>
                                     <p>Turn off to hide your horse's public details</p>
