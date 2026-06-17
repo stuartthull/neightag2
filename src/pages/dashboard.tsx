@@ -70,18 +70,18 @@ export default function Dashboard() {
                 </section>
 
                 {loading ? (
-                    <section className="section-container white-section-container purple-border no-print marginbsixteen">
+                    <section className="section-container white-section-container no-print marginbsixteen">
                         <p className="text-normal">Loading your stable profile...</p>
                     </section>
                 ) : myLogs.length === 0 ? (
-                    <section className="section-container white-section-container purple-border no-print marginbsixteen">
+                    <section className="section-container white-section-container no-print marginbsixteen">
                         <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>No horses registered under this account yet.</p>
                     </section>
                 ) : (
                     <>
                         {myLogs.map(log => (
                             <React.Fragment key={log.id}>
-                                <section className="section-container white-section-container purple-border no-print marginbsixteen">
+                                <section className="section-container white-section-container no-print marginbsixteen">
                                     <h2 className="textmedium marginbsixteen">Registered horse: <strong>{log.horse_name}</strong></h2>
 
                                     <ul>
@@ -113,7 +113,7 @@ export default function Dashboard() {
                                     </ul>
                                 </section>
 
-                                <section className="section-container white-section-container purple-border no-print marginbsixteen">
+                                <section className="section-container white-section-container no-print marginbsixteen">
                                     <h2 className="textmedium marginbsixteen">Horse box</h2>
                                     <ul>
                                         <li className='marginbsixteen'>

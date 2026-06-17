@@ -76,35 +76,35 @@ export default function HorseboxView(): React.JSX.Element {
 
 
                         <div className="horsebox-date-grid">
-                            <div className="horsebox-date-card">
+                            <p className="horsebox-date-card">
                                 <div className="horsebox-card-icon">🛡️</div>
                                 <strong className="horsebox-card-label">Insurance Renewal</strong>
                                 <span className="horsebox-card-value">{formatDate(horsebox.insurance_date)}</span>
-                            </div>
-                            <div className="horsebox-date-card">
+                            </p>
+                            <p className="horsebox-date-card">
                                 <div className="horsebox-card-icon">📋</div>
                                 <strong className="horsebox-card-label">MOT Expiry Date</strong>
                                 <span className="horsebox-card-value">{formatDate(horsebox.mot_date)}</span>
-                            </div>
-                            <div className="horsebox-date-card">
+                            </p>
+                            <p className="horsebox-date-card">
                                 <div className="horsebox-card-icon">⚙️</div>
                                 <strong className="horsebox-card-label">Last or Next Service</strong>
                                 <span className="horsebox-card-value">{formatDate(horsebox.service_date)}</span>
-                            </div>
+                            </p>
                         </div>
 
                         <div className="section-container white-section-container">
                             <h3>Insurance Record Details</h3>
-                            <div className="horsebox-data-list ">
-                                <div className='datarow'><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></div>
-                                <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></div>
+                            <div className="horsebox-data-list">
+                                <p className='datarow'><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></p>
+                                <p className='datarow'><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></p>
                             </div>
                         </div>
                         <div className="section-container white-section-container">
                             <h3>🚨 Breakdown Recovery Support</h3>
                             <div className="horsebox-data-list">
-                                <div className='datarow'><span>Provider:</span> <strong>{horsebox.breakdown_provider || 'Not documented'}</strong></div>
-                                <div className='datarow'><span>Policy Number:</span> <strong>{horsebox.breakdown_policy_number || 'Not documented'}</strong></div>
+                                <p className='datarow'><span>Provider:</span> <strong>{horsebox.breakdown_provider || 'Not documented'}</strong></p>
+                                <p className='datarow'><span>Policy Number:</span> <strong>{horsebox.breakdown_policy_number || 'Not documented'}</strong></p>
                                 {horsebox.breakdown_phone && (
                                     <div>
                                         <a href={`tel:${horsebox.breakdown_phone}`} className="buttonMain buttonOrange">

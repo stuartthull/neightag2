@@ -222,7 +222,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                     </div>
                     </section>
                     <div className="sticky-actions-bar">
-                        <button type="submit" disabled={saving} className="buttonMain buttonPurple">
+                        <button type="submit" disabled={saving} className="buttonMain buttonOrange">
                             {saving ? 'Saving updates to profile context...' : 'Save Horsebox Logistics Information'}
                         </button>
                     </div>

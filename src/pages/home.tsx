@@ -108,7 +108,7 @@ function Home(): React.JSX.Element {
                 <img src={homeHorse} alt="Equestrian Home" className="hero-bg-img" />
                 <div className="centered-button">
                     {session ? (
-                        <Link to="/dashboard" className="buttonOrange buttonMain">Go to Dashboard</Link>
+                        <Link to="/dashboard" className="buttonOrange buttonMain">Go to Your Stable</Link>
                     ) : (
                         <Link to="/login?mode=signup" className="buttonOrange buttonMain">Sign up now!</Link>
                     )}
@@ -167,7 +167,18 @@ function Home(): React.JSX.Element {
                     </div>
                 )}
 
-                {/* HOW IT WORKS */}
+                {!session && (
+                    <>
+                <div className="section-container white-section-container full-width">
+                    <div className="text-center">
+                    <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
+                    <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
+                    <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every two months (yes, that is literally 50p a month!). See? Proof that not everything in the horse world has to be expensive.</p>
+                    <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
+                    <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
+                    <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
+                    </div>
+                </div>
                 <div className="section-container purple-section-container full-width">
                     <h1 className="textbig">How it works.</h1>
                     <div className="info-bar-grid">
@@ -225,6 +236,8 @@ function Home(): React.JSX.Element {
                         </div>
                     </div>
                 </div>
+                    </>
+                    )}
             </div>
         </main >
     );

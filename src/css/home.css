@@ -66,6 +66,8 @@ pre {
     }
 }
 
+.text-center { text-align: center; }
+
 /* HERO COVER COMPONENT */
 .home-hero {
     position: relative;
@@ -114,10 +116,10 @@ pre {
 }
 
 .lightorange-section-container {
-    background-color: var(--lightprimary);
+    background-color: var(--tertiary-tint);
     color: var(--black);
     @media (prefers-color-scheme: dark) {
-        background-color: var(--primarycolor);
+        background-color: var(--tertiarycolor);
         color: var(--white);
     }
 }
@@ -432,7 +434,7 @@ pre {
     border: 1px solid var(--secondarycolor);
     padding: 16px;
     border-radius: 8px;
-    background-color: #f8fafc;
+    background-color: var(--white);
 }
 
 .horsebox-card-icon {
