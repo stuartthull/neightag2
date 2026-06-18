@@ -46,8 +46,7 @@ export default function Login(): React.JSX.Element {
 
     const handleForgotPassword = async (email: string) => {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            // 🔗 Where to send the user AFTER they click the link in their email
-            redirectTo: 'https://neightag2.netlify.app/update-password',
+            redirectTo: 'https://www.neightag.com/update-password',
         });
 
         if (error) {
