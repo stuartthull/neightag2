@@ -634,3 +634,30 @@ pre {
 }
 
 
+/* Normal browser runtime display rules */
+.print-target-hidden {
+    display: none; /* Keeps all print tags clean and invisible during dashboard browsing */
+}
+
+.print-target-active {
+    display: none; /* Keeps the active target invisible on screen too until printing is called */
+}
+
+/* 🖨️ Global browser hardware printer overlay instruction overrides */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    /* FORCE the selected single active QR code block to turn back on inside the print preview engine */
+    .print-target-active {
+        display: block !important;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    /* Keep the unselected horses hidden from the paper entirely */
+    .print-target-hidden {
+        display: none !important;
+    }
+}
