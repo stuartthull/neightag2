@@ -44,6 +44,19 @@ export default function Login(): React.JSX.Element {
         }
     };
 
+    const handleForgotPassword = async (email: string) => {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            // 🔗 Where to send the user AFTER they click the link in their email
+            redirectTo: 'https://neightag2.netlify.app/update-password',
+        });
+
+        if (error) {
+            alert(`Error: ${error.message}`);
+        } else {
+            alert("Check your inbox! A secure password reset link has been dispatched.");
+        }
+    };
+
     return (
         <div className="page-wrapper">
             <main className="container">
@@ -100,6 +113,14 @@ export default function Login(): React.JSX.Element {
                             }}
                         >
                             {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
+                        </button>
+                        <br /><br />
+                        <button
+                            type="button"
+                            className="buttonaslinker"
+                            onClick={() => handleForgotPassword(email)}
+                        >
+                            Forgot your password?
                         </button>
 
                     </section>
