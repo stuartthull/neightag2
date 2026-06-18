@@ -16,7 +16,6 @@ interface QuickEvent {
     calendar_date: string;
 }
 
-// ✅ Structured to match an urgent maintenance deadline notice
 interface HorseBoxAlert {
     type: 'MOT' | 'Insurance' | 'Service';
     date: string;
@@ -25,7 +24,7 @@ interface HorseBoxAlert {
 function Home(): React.JSX.Element {
     const [session, setSession] = useState<Session | null>(null);
     const [upcomingEvents, setUpcomingEvents] = useState<QuickEvent[]>([]);
-    const [horseBoxAlerts, setHorseBoxAlerts] = useState<HorseBoxAlert[]>([]); // ✅ Tracks upcoming deadlines
+    const [horseBoxAlerts, setHorseBoxAlerts] = useState<HorseBoxAlert[]>([]);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
@@ -47,21 +46,23 @@ function Home(): React.JSX.Element {
         const fetchUpcomingAlerts = async () => {
             const todayStr = new Date().toISOString().split('T')[0];
 
-            // --- 1. Fetch 7-Day Calendar Events ---
+            // --- 1. Fetch 7-Day Calendar Events (Isolated Explicit Columns) ---
             const upperLimit7 = new Date();
             upperLimit7.setDate(upperLimit7.getDate() + 7);
             const upperLimit7Str = upperLimit7.toISOString().split('T')[0];
 
-            const { data: calendarData } = await supabase
+            const { data: calendarData, error: calendarError } = await supabase
                 .from('equi_calendar')
+                // ⚡ FORCE clean isolated data extraction, ignoring any table cross-linking loops
                 .select('id, calendar_title, calendar_date')
                 .eq('user_uuid', session.user.id)
                 .gte('calendar_date', todayStr)
                 .lte('calendar_date', upperLimit7Str)
-                .order('calendar_date', { ascending: true })
-                .order('calendar_time', { ascending: true });
+                .order('calendar_date', { ascending: true });
 
-            if (calendarData) {
+            if (calendarError) {
+                console.error("Homepage calendar cache bypass log:", calendarError.message);
+            } else if (calendarData) {
                 setUpcomingEvents(calendarData as QuickEvent[]);
             }
 
@@ -74,12 +75,11 @@ function Home(): React.JSX.Element {
                 .from('equi_horsebox')
                 .select('mot_date, insurance_date, service_date')
                 .eq('user_uuid', session.user.id)
-                .maybeSingle(); // Each user has at most one horsebox profile
+                .maybeSingle();
 
             if (horseboxData) {
                 const alerts: HorseBoxAlert[] = [];
 
-                // Helper to check if a specific date falls within the upcoming 30 days
                 const isWithin30Days = (dateStr: string | null) => {
                     if (!dateStr) return false;
                     return dateStr >= todayStr && dateStr <= upperLimit30Str;
@@ -129,7 +129,8 @@ function Home(): React.JSX.Element {
                             <ul className="events-list">
                                 {upcomingEvents.map(event => (
                                     <li key={event.id} className="marginbsixteen">
-                                        <Link to={`/calendar/edit/${event.id}`} className="text-normal">
+                                        {/* 🛠️ Adjusted to match your edit component routing strategy path cleanly */}
+                                        <Link to={`/calendar`} className="text-normal">
                                             {event.calendar_title}{' '}-{' '}
                                             <span>
                                                 ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
@@ -169,75 +170,74 @@ function Home(): React.JSX.Element {
 
                 {!session && (
                     <>
-                <div className="section-container white-section-container full-width">
-                    <div className="text-center">
-                    <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
-                    <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
-                    <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every two months (yes, that is literally 50p a month!). See? Proof that not everything in the horse world has to be expensive.</p>
-                    <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
-                    <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
-                    <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
-                    </div>
-                </div>
-                <div className="section-container purple-section-container full-width">
-                    <h1 className="textbig">How it works.</h1>
-                    <div className="info-bar-grid">
-                        <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Upload your details</h2>
-                                <p className="text-normal">Fill in the information about your horse. Choose what you wish to show and what to keep hidden in your account area.</p>
+                        <div className="section-container white-section-container full-width">
+                            <div className="text-center">
+                                <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
+                                <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
+                                <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every two months (yes, that is literally 50p a month!). See? Proof that not everything in the horse world has to be expensive.</p>
+                                <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
+                                <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
+                                <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
+                            </div>
+                        </div>
+                        <div className="section-container purple-section-container full-width">
+                            <h1 className="textbig">How it works.</h1>
+                            <div className="info-bar-grid">
+                                <div className="info-bar">
+                                    <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
+                                    <div className="info-bar-column">
+                                        <h2 className="textmedium">Upload your details</h2>
+                                        <p className="text-normal">Fill in the information about your horse. Choose what you wish to show and what to keep hidden in your account area.</p>
+                                    </div>
+                                </div>
+
+                                <div className="info-bar">
+                                    <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
+                                    <div className="info-bar-column">
+                                        <h2 className="textmedium">Get your QR code</h2>
+                                        <p className="text-normal">Either purchase a waterproof plastic tag for your stable. Or simple print it out and stick it on your stable.</p>
+                                    </div>
+                                </div>
+
+                                <div className="info-bar">
+                                    <div className="info-bar-fixed"><img src={ScanCode} alt="Access info" /></div>
+                                    <div className="info-bar-column">
+                                        <h2 className="textmedium">Access vital info instantly</h2>
+                                        <p className="text-normal">Emergency contacts, medical details, and stable information are instantly accessible for both rider and horse.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Get your QR code</h2>
-                                <p className="text-normal">Either purchase a waterproof plastic tag for your stable. Or simple print it out and stick it on your stable.</p>
+                        <div className="section-container white-section-container split-card">
+                            <h2 className="textbig">How much does it cost.</h2>
+                            <div className="pricing-content-wrapper">
+                                <img className='marginbsixteen pricing-img' src={Money} alt='Pricing' />
+                                <div className="pricing-text">
+                                    <p className='marginbsixteen'>Opening an account and adding details is free. You can store all the information you need for your horse and we wont need a penny.</p>
+                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code. We charge a <strong>bi-monthly fee of £1</strong>. Yes that's <strong>50p a month</strong>. </p>
+                                    <p className='marginbsixteen'>See, not all horse related things are expensive.</p>
+                                    <p className='marginbsixteen'>You can cancel your QR code view anytime, and we will retain your horse information for you.</p>
+                                    <p className='marginbsixteen'><strong>Whats not to like?</strong></p>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={ScanCode} alt="Access info" /></div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Access vital info instantly</h2>
-                                <p className="text-normal">Emergency contacts, medical details, and stable information are instantly accessible for both rider and horse.</p>
+                        <div className="section-container white-section-container split-card">
+                            <h2 className="textbig">Your NeighTag calendar.</h2>
+                            <div className="pricing-content-wrapper">
+                                <img className='marginbsixteen pricing-img' src={Calendar} alt="Calendar setup" />
+                                <div className="pricing-text">
+                                    <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your NeighTag calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our NeighTag calendar.</p>
+                                    <p className="text-normal marginbsixteen">Get a message reminder a few days before so you dont forget those important dates.</p>
+                                    {!session && (
+                                        <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                {/* PRICING & CALENDAR SPLIT ROW ON DESKTOP */}
-                <div className="section-container white-section-container split-card">
-                    <h2 className="textbig">How much does it cost.</h2>
-                    <div className="pricing-content-wrapper">
-                        <img className='marginbsixteen pricing-img' src={Money} alt='Pricing' />
-                        <div className="pricing-text">
-                            <p className='marginbsixteen'>Opening an account and adding details is free. You can store all the information you need for your horse and we wont need a penny.</p>
-                            <p className='marginbsixteen'>If you wish to share your horse details via the QR code. We charge a <strong>bi-monthly fee of £1</strong>. Yes that's <strong>50p a month</strong>. </p>
-                            <p className='marginbsixteen'>See, not all horse related things are expensive.</p>
-                            <p className='marginbsixteen'>You can cancel your QR code view anytime, and we will retain your horse information for you.</p>
-                            <p className='marginbsixteen'><strong>Whats not to like?</strong></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="section-container white-section-container split-card">
-                    <h2 className="textbig">Your NeighTag calendar.</h2>
-                    <div className="pricing-content-wrapper">
-                        <img className='marginbsixteen pricing-img' src={Calendar} alt="Calendar setup" />
-                        <div className="pricing-text">
-                            <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your NeighTag calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our NeighTag calendar.</p>
-                            <p className="text-normal marginbsixteen">Get a message reminder a few days before so you dont forget those important dates.</p>
-                            {!session && (
-                                <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
-                            )}
-                        </div>
-                    </div>
-                </div>
                     </>
-                    )}
+                )}
             </div>
         </main >
     );

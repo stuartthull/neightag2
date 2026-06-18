@@ -25,17 +25,10 @@ export default function HorseDetails() {
                 const { data: { session } } = await supabase.auth.getSession();
                 const currentUserId = session?.user?.id || null;
 
-                // 2. Fetch Horse Data filtered via unique horse_uuid along with its sub-query calendar arrays
+                // 2. Fetch Horse Data by itself (Explicit columns to bypass join loops)
                 const { data: horseData, error: horseError } = await supabase
                     .from('equi_log_main')
-                    .select(`
-                        *,
-                        equi_calendar (
-                            calendar_title,
-                            calendar_date,
-                            calendar_notes
-                        )
-                    `)
+                    .select('id, user_uuid, horse_uuid, horse_name, horse_breed, horse_colour, emergency_name_one, emergency_phone_one, emergency_name_two, emergency_phone_two, horse_dob, horse_passport_number, horse_height, horse_weight_kg, horse_last_weighed, horse_vet_name, horse_vet_practice, horse_vet_phone_one, horse_medication, horse_allergies, saddle_fitter_name, saddle_fitter_phone, saddle_fitter_notes, physio_name, physio_phone, physio_notes, farrier_name, farrier_phone_one, farrier_notes, dentist_name, dentist_phone_one, dentist_notes, feed_instructions, is_public')
                     .eq('horse_uuid', horse_uuid)
                     .single();
 
@@ -60,7 +53,7 @@ export default function HorseDetails() {
                     return;
                 }
 
-                // 5. Fetch granular matrix matching row parameters safely using the horse_uuid
+                // 5. Fetch granular privacy configurations safely
                 const { data: privacyData, error: privacyError } = await supabase
                     .from('equi_log_show')
                     .select('*')
@@ -71,15 +64,24 @@ export default function HorseDetails() {
                     console.error("Error reading privacy configurations:", privacyError.message);
                 }
 
-                // 6. Map the inner array from equi_calendar securely to easily readable key/values
-                const innerCalendarRows = horseData.equi_calendar || [];
+                // ⚡ 6. ISOLATED QUERY: Fetch calendar details explicitly by horse_uuid
+                const { data: calendarData, error: calendarError } = await supabase
+                    .from('equi_calendar')
+                    .select('calendar_title, calendar_date, calendar_notes')
+                    .eq('horse_uuid', horse_uuid);
+
                 const scheduleLookups: Record<string, string> = {};
-                innerCalendarRows.forEach((item: any) => {
-                    if (item.calendar_title && item.calendar_date) {
-                        // Keep just the date portion string cleanly
-                        scheduleLookups[item.calendar_title] = String(item.calendar_date).split('T')[0];
-                    }
-                });
+
+                if (calendarError) {
+                    console.error("Error reading isolated calendar data:", calendarError.message);
+                } else if (calendarData) {
+                    // Map the rows securely into your key/value lookups exactly like before
+                    calendarData.forEach((item: any) => {
+                        if (item.calendar_title && item.calendar_date) {
+                            scheduleLookups[item.calendar_title] = String(item.calendar_date).split('T')[0];
+                        }
+                    });
+                }
 
                 setHorse(horseData);
                 setPrivacySettings(privacyData);
@@ -150,7 +152,7 @@ export default function HorseDetails() {
                                     {shouldShow('show_emergency_name_one') && <p className="text-normal marginbsixteen">{horse.emergency_name_one || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_one') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_one}`} className="buttonMain buttonOrange">
+                                            <a href={`tel:${horse.emergency_phone_one}`} className="buttonSmall buttonOrange">
                                                 📞 {horse.emergency_phone_one || 'N/A'}
                                             </a>
                                         </p>
@@ -163,7 +165,7 @@ export default function HorseDetails() {
                                     {shouldShow('show_emergency_name_two') && <p className="text-normal marginbsixteen">{horse.emergency_name_two || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_two') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_two}`} className="buttonMain buttonOrange">
+                                            <a href={`tel:${horse.emergency_phone_two}`} className="buttonSmall buttonOrange">
                                                 📞 {horse.emergency_phone_two || 'N/A'}
                                             </a>
                                         </p>

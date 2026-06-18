@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import HorseQrCode from '../components/qr-code';
 
@@ -66,6 +66,25 @@ export default function Dashboard() {
         }
     };
 
+    const handleDeleteHorseComplete = async (horseUuid: string, userId: string) => {
+        const confirmDelete = window.confirm("Are you sure? This will permanently wipe this horse, its entire calendar, and all its associated records. These can not be recovered.");
+        if (!confirmDelete) return;
+
+        // ⚡ This single query triggers a chain reaction that clears everything
+        const { error } = await supabase
+            .from('equi_log_main')
+            .delete()
+            .eq('horse_uuid', horseUuid)
+            .eq('user_uuid', userId); // 🔒 Security check
+
+        if (error) {
+            alert(`Deletion failed: ${error.message}`);
+        } else {
+            alert("Horse and all associated records have been completely purged.");
+            window.location.reload();
+        }
+    };
+
     const triggerPrint = (horseUuid: string) => {
         setActivePrintId(horseUuid);
         // Small timeout allows React to apply the active print class before triggering the browser dialog
@@ -103,21 +122,20 @@ export default function Dashboard() {
                                     {/* 🖨️ Action button to lock focus onto this specific horse asset */}
                                     <button
                                         onClick={() => triggerPrint(log.horse_uuid)}
-                                        className="buttonPurple"
-                                        style={{ padding: '6px 12px', fontSize: '0.85rem', borderRadius: '4px', cursor: 'pointer' }}
+                                        className="buttonPurple buttonSmall"
                                     >
-                                        Print QR Tag 🖨️
+                                        🖨️ Print QR Tag
                                     </button>
                                 </div>
                                 <ul>
                                     <li className='marginbsixteen'>
                                         <Link to={`/horse-details/${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                            View {log.horse_name}'s Details
+                                            View {log.horse_name}'s details
                                         </Link>
                                     </li>
                                     <li className='marginbsixteen'>
                                         <Link to={`/calendar`} className="text-purple marginbsixteen">
-                                            View Calendar
+                                            View your calendar
                                         </Link>
                                     </li>
                                 </ul>
@@ -125,15 +143,19 @@ export default function Dashboard() {
                                 <ul>
                                     <li className='marginbsixteen'>
                                         <Link to={`/edit-horse/${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                            Edit {log.horse_name}'s Details
+                                            Edit {log.horse_name}'s details
                                         </Link>
                                     </li>
                                     <li className='marginbsixteen'>
                                         <Link to={`/privacy/${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                            Edit Privacy Matrix
+                                            Edit {log.horse_name}'s privacy matrix
                                         </Link>
                                     </li>
                                 </ul>
+
+                                <button type="button" className="buttonOrange buttonSmall" onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
+                                    🚨&nbsp;Delete horse
+                                </button>
                             </section>
                         ))}
 
@@ -142,7 +164,7 @@ export default function Dashboard() {
                             <h2 className="textmedium marginbsixteen">Horse box</h2>
                             <ul>
                                 <li className='marginbsixteen'>
-                                    <Link to={`/horsebox-view`} className="text-purple">View Horsebox Details</Link>
+                                    <Link to={`/horsebox-view`} className="text-purple">View your horsebox details</Link>
                                 </li>
                             </ul>
                         </section>

@@ -99,7 +99,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
         const { error } = await supabase
             .from('equi_calendar')
             .delete()
-            .eq('id', id)
+            .eq('id', parseInt(id, 10)) // 🛠️ FIX: Convert string parameter to Number matching BIGINT
             .eq('user_uuid', userId); // 🔒 Ensures users can't delete rows blindly
 
         setSaving(false);
