@@ -15,7 +15,6 @@ export default function Dashboard() {
     const [horseName, setHorseName] = useState('');
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-
     // 🔍 1. Track which horse profile is currently selected for printing
     const [activePrintId, setActivePrintId] = useState<string | null>(null);
 
