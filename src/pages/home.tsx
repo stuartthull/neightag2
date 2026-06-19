@@ -9,6 +9,7 @@ import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
 import Calendar from '../assets/calendar.jpg';
+import Janeone from "../assets/jane1.jpg";
 
 interface QuickEvent {
     id: number;
@@ -186,7 +187,7 @@ function Home(): React.JSX.Element {
                                 <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
                                 <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
                                 <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
-                                <p className="text-normal marginbsixteen"><a href="/about-us">About us</a></p>
+                                <p className="text-normal marginbsixteen"><Link to="/about-us">About us</Link></p>
                             </div>
                         </div>
                         )
@@ -219,6 +220,32 @@ function Home(): React.JSX.Element {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div className="section-container white-section-container full-width">
+                    <div className="about-split-row">
+
+                        {/* Left Side: Text Column */}
+                        <div className="about-text-col">
+                            <h3 className="textmedium marginbeight">Meet Jane, Our Inspiration</h3>
+                            <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
+                                Our absolute pride and joy is <strong>Jane</strong>, our Irish Sports Horse.
+                                She is the true inspiration behind everything we do here.
+                            </p>
+                            <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
+                                Jane loves nothing more than leaving a massive gallop track across an open field,
+                                tackling bold cross-country lines, and jumping her heart out. She keeps us on our toes,
+                                teaches us something new every day, and reminds us why we fell in love with horses in the first place.
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                <Link to="/about-us">Read more about us</Link>
+                            </p>
+                        </div>
+
+                        {/* Right Side: Image Column */}
+                        <img src={Janeone} alt="Jane our horse" className="jane-image" />
+                    </div>
+
                 </div>
 
                 {!session && (
