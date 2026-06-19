@@ -270,6 +270,10 @@ pre {
 .buttonPurple:hover {
     background-color: var(--hunter-green);
     color: var(--white);
+    @media (prefers-color-scheme: dark) {
+        background-color: var(--secondarycolor);
+
+    }
 }
 
 .buttonWhite { background-color: var(--white); color: var(--primarycolor); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
@@ -352,6 +356,11 @@ pre {
     position: relative;
     margin-bottom: 4px;
     transition: 0.25s ease-in-out;
+}
+.labelFormIntense {
+    @media (prefers-color-scheme: dark) {
+        color: var(--white);
+    }
 }
 
 .inputText {

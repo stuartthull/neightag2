@@ -68,7 +68,7 @@ export default function Login(): React.JSX.Element {
 
                         <form onSubmit={handleAuth}>
                             <div className="marginbsixteen">
-                                <label className="labelForm" htmlFor="email">Email address</label>
+                                <label className="labelForm labelFormIntense" htmlFor="email">Email address</label>
                                 <input
                                     id="email"
                                     className="inputText"
@@ -81,7 +81,7 @@ export default function Login(): React.JSX.Element {
                             </div>
 
                             <div className="marginbsixteen">
-                                <label className="labelForm" htmlFor="password">Password</label>
+                                <label className="labelForm labelFormIntense" htmlFor="password">Password</label>
                                 <input
                                     id="password"
                                     className="inputText"
