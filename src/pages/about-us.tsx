@@ -59,7 +59,7 @@ export default function AboutUs(): React.JSX.Element {
                     <div className="horsebox-panel breakdown-panel" style={{ backgroundColor: '#fef3c7', borderColor: '#fde68a', padding: '20px', borderRadius: '8px' }}>
                         <p className="text-normal" style={{ color: '#78350f', margin: 0, lineHeight: '1.6' }}>
                             💡 We built <strong>NeighTag</strong> to provide a simple, stress-free, and highly affordable way for riders to
-                            organize their stables and protect their horses. We kept our digital profile and calendar tools
+                            organise their stables and protect their horses. We kept our digital profile and calendar tools
                             <strong className="text-purple"> 100% free</strong>, and made our emergency QR code system
                             <strong className="text-purple"> just £1 a month</strong>. We wanted to prove that keeping your horse safe
                             doesn't have to break the bank.
