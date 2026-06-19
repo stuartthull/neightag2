@@ -241,7 +241,7 @@ export default function EditItem(): React.JSX.Element {
 
         const filePath = `${ownerId}/${horse_uuid}-${Date.now()}.jpg`;
 
-        const { data, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
             .from('horse-photos')
             .upload(filePath, file, { upsert: true });
 
