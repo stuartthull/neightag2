@@ -17,6 +17,7 @@ import HorseboxView from './pages/horsebox-view';
 import HorseboxEdit from './pages/horsebox-edit';
 import UpdatePassword from'./pages/update-password'
 import AboutUs from "./pages/about-us";
+import ScrollToTop from './components/scroll-to-top';
 
 const LogoSvg = () => {
     return (
@@ -32,6 +33,7 @@ export default function App() {
     return (
 
         <Router>
+            <ScrollToTop />
             <div className="container">
 
                 <Navigation />
