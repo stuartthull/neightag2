@@ -19,6 +19,9 @@ export default function Footer(): React.JSX.Element {
                 {/* Navigation Links */}
                 <ul className="footer-links">
                     <li>
+                        <Link to="/" className="text-normal footer-link">Home</Link>
+                    </li>
+                    <li>
                         <Link to="/about-us" className="text-normal footer-link">About Us</Link>
                     </li>
                     <li>

@@ -163,7 +163,7 @@ export default function HorseDetails() {
                                     {shouldShow('show_emergency_name_one') && <p className="text-normal marginbsixteen">{horse.emergency_name_one || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_one') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_one}`} className="buttonSmall buttonOrange">
+                                            <a href={`tel:${horse.emergency_phone_one}`} className="buttonMain buttonOrange">
                                                 📞 {horse.emergency_phone_one || 'N/A'}
                                             </a>
                                         </p>
@@ -176,7 +176,7 @@ export default function HorseDetails() {
                                     {shouldShow('show_emergency_name_two') && <p className="text-normal marginbsixteen">{horse.emergency_name_two || 'N/A'}</p>}
                                     {shouldShow('show_emergency_phone_two') && (
                                         <p className="text-normal">
-                                            <a href={`tel:${horse.emergency_phone_two}`} className="buttonSmall buttonOrange">
+                                            <a href={`tel:${horse.emergency_phone_two}`} className="buttonMain buttonOrange">
                                                 📞 {horse.emergency_phone_two || 'N/A'}
                                             </a>
                                         </p>
@@ -209,49 +209,13 @@ export default function HorseDetails() {
                         {shouldShow('show_vet_practice') && <div className="text-normal marginbeight datarow"><span>Practice:</span> <strong>{horse.horse_vet_practice || 'N/A'}</strong></div>}
                         {shouldShow('show_vet_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
                             {horse.horse_vet_phone_one ? (
-                                <a href={`tel:${horse.horse_vet_phone_one}`}>{horse.horse_vet_phone_one}</a>
+                                <a href={`tel:${horse.horse_vet_phone_one}`} className="buttonSmall buttonOrange">📞 {horse.horse_vet_phone_one}</a>
                             ) : (
                                 'N/A'
                             )}
                         </strong></div>}
                         {shouldShow('show_medication') && <p className="text-normal marginbsixteen">Medication Log: <br /><strong>{horse.horse_medication || 'None'}</strong></p>}
                         {shouldShow('show_allergies') && <p className="text-normal">Allergies: <br /><strong>{horse.horse_allergies || 'None'}</strong></p>}
-                    </section>
-                )}
-
-                {/* SADDLE FITTER SECTION */}
-                {(shouldShow('show_saddle_fitter_name') || shouldShow('show_saddle_fitter_phone') || shouldShow('show_saddle_fitter_next') || shouldShow('show_saddle_fitter_notes')) && (
-                    <section className="card marginbsixteen">
-                        <h2 className="textmedium">Saddle Fitter</h2>
-                        {shouldShow('show_saddle_fitter_name') && <div className="text-normal marginbeight datarow"><span>Fitter Name:</span> <strong>{horse.saddle_fitter_name || 'N/A'}</strong></div>}
-                        {shouldShow('show_saddle_fitter_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
-                            {horse.saddle_fitter_phone ? (
-                                <a href={`tel:${horse.saddle_fitter_phone}`}>{horse.saddle_fitter_phone}</a>
-                            ) : (
-                                'N/A'
-                            )}
-                        </strong></div>}
-                        {/* 🗓️ Pulls directly from matching calendar variable */}
-                        {shouldShow('show_saddle_fitter_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{saddleFitterDate}</strong></div>}
-                        {shouldShow('show_saddle_fitter_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.saddle_fitter_notes || 'None'}</strong></div>}
-                    </section>
-                )}
-
-                {/* PHYSIO SECTION */}
-                {(shouldShow('show_physio_name') || shouldShow('show_physio_phone') || shouldShow('show_physio_next') || shouldShow('show_physio_notes')) && (
-                    <section className="card marginbsixteen">
-                        <h2 className="textmedium">Physiotherapist</h2>
-                        {shouldShow('show_physio_name') && <div className="text-normal marginbeight datarow"><span>Physio Name:</span> <strong>{horse.physio_name || 'N/A'}</strong></div>}
-                        {shouldShow('show_physio_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
-                            {horse.physio_phone ? (
-                                <a href={`tel:${horse.physio_phone}`}>{horse.physio_phone}</a>
-                            ) : (
-                                'N/A'
-                            )}
-                        </strong></div>}
-                        {/* 🗓️ Pulls directly from matching calendar variable */}
-                        {shouldShow('show_physio_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{physioDate}</strong></div>}
-                        {shouldShow('show_physio_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.physio_notes || 'None'}</strong></div>}
                     </section>
                 )}
 
@@ -262,7 +226,7 @@ export default function HorseDetails() {
                         {shouldShow('show_farrier_name') && <div className="text-normal marginbeight datarow"><span>Farrier Name:</span> <strong>{horse.farrier_name || 'N/A'}</strong></div>}
                         {shouldShow('show_farrier_phone_one') && <div className="text-normal marginbeight datarow"><span>Phone:</span> <strong>
                             {horse.farrier_phone_one ? (
-                                <a href={`tel:${horse.farrier_phone_one}`}>{horse.farrier_phone_one}</a>
+                                <a href={`tel:${horse.farrier_phone_one}`} className="buttonSmall buttonOrange">📞 {horse.farrier_phone_one}</a>
                             ) : (
                                 'N/A'
                             )}
@@ -280,13 +244,49 @@ export default function HorseDetails() {
                         {shouldShow('show_dentist_name') && <div className="text-normal marginbeight datarow"><span>Dentist Name:</span> <strong>{horse.dentist_name || 'N/A'}</strong></div>}
                         {shouldShow('show_dentist_phone') && <div className="text-normal marginbeight datarow"><span>Phone:</span> <strong>
                             {horse.dentist_phone_one ? (
-                                <a href={`tel:${horse.dentist_phone_one}`}>{horse.dentist_phone_one}</a>
+                                <a href={`tel:${horse.dentist_phone_one}`} className="buttonSmall buttonOrange">📞 {horse.dentist_phone_one}</a>
                             ) : (
                                 'N/A'
                             )}</strong></div>}
                         {/* 🗓️ Pulls directly from matching calendar variable */}
                         {shouldShow('show_dentist_next') && <div className="text-normal marginbeight datarow"><span>Next Exam:</span> <strong>{dentistDate}</strong></div>}
                         {shouldShow('show_dentist_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.dentist_notes || 'None'}</strong></div>}
+                    </section>
+                )}
+
+                {/* SADDLE FITTER SECTION */}
+                {(shouldShow('show_saddle_fitter_name') || shouldShow('show_saddle_fitter_phone') || shouldShow('show_saddle_fitter_next') || shouldShow('show_saddle_fitter_notes')) && (
+                    <section className="card marginbsixteen">
+                        <h2 className="textmedium">Saddle Fitter</h2>
+                        {shouldShow('show_saddle_fitter_name') && <div className="text-normal marginbeight datarow"><span>Fitter Name:</span> <strong>{horse.saddle_fitter_name || 'N/A'}</strong></div>}
+                        {shouldShow('show_saddle_fitter_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
+                            {horse.saddle_fitter_phone ? (
+                                <a href={`tel:${horse.saddle_fitter_phone}`} className="buttonSmall buttonOrange">📞 {horse.saddle_fitter_phone}</a>
+                            ) : (
+                                'N/A'
+                            )}
+                        </strong></div>}
+                        {/* 🗓️ Pulls directly from matching calendar variable */}
+                        {shouldShow('show_saddle_fitter_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{saddleFitterDate}</strong></div>}
+                        {shouldShow('show_saddle_fitter_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.saddle_fitter_notes || 'None'}</strong></div>}
+                    </section>
+                )}
+
+                {/* PHYSIO SECTION */}
+                {(shouldShow('show_physio_name') || shouldShow('show_physio_phone') || shouldShow('show_physio_next') || shouldShow('show_physio_notes')) && (
+                    <section className="card marginbsixteen">
+                        <h2 className="textmedium">Physiotherapist</h2>
+                        {shouldShow('show_physio_name') && <div className="text-normal marginbeight datarow"><span>Physio Name:</span> <strong>{horse.physio_name || 'N/A'}</strong></div>}
+                        {shouldShow('show_physio_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
+                            {horse.physio_phone ? (
+                                <a href={`tel:${horse.physio_phone}`} className="buttonSmall buttonOrange">{horse.physio_phone}</a>
+                            ) : (
+                                'N/A'
+                            )}
+                        </strong></div>}
+                        {/* 🗓️ Pulls directly from matching calendar variable */}
+                        {shouldShow('show_physio_next') && <div className="text-normal marginbeight datarow"><span>Next Appointment:</span> <strong>{physioDate}</strong></div>}
+                        {shouldShow('show_physio_notes') && <div className="text-normal marginbeight"><span>Notes:</span><br /><strong>{horse.physio_notes || 'None'}</strong></div>}
                     </section>
                 )}
 
