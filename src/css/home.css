@@ -680,3 +680,42 @@ pre {
         display: none !important;
     }
 }
+
+/* Container defaults to side-by-side row on desktop and tablet */
+.about-split-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 24px;
+    width: 100%;
+}
+
+/* Allow text column to absorb remaining layout space */
+.about-text-col {
+    flex: 1;
+}
+
+/* Style your horse image cleanly */
+.jane-image {
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    @media (max-width: 900px) {
+        max-width: 300px;
+    }
+}
+
+/* 📱 Responsive break: Stack layout vertically if screen goes below 400px */
+@media (max-width: 700px) {
+    .about-split-row {
+        flex-direction: column-reverse; /* Reverses order so image stacks on top of the text block */
+        gap: 16px;
+    }
+
+    .jane-image {
+        max-width: 100%; /* Image stretches wide to match text width on mobile views */
+    }
+}
+

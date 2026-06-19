@@ -117,31 +117,40 @@ function Home(): React.JSX.Element {
 
             <div className="page-container home-layout-grid">
 
-                {/* 📅 UPCOMING CALENDAR EVENTS (7 DAYS) */}
-                {session && upcomingEvents.length > 0 && (
-                    <div className="section-container lightorange-section-container full-width">
-                        <h2 className="textbig">Your upcoming events</h2>
-                        <div>
-                            <p className="marginbsixteen">
-                                <span>📅</span>{' '}-{' '}
-                                <strong className="text-normal">Next 7 Days:</strong>
-                            </p>
-                            <ul className="events-list">
-                                {upcomingEvents.map(event => (
-                                    <li key={event.id} className="marginbsixteen">
-                                        {/* 🛠️ Adjusted to match your edit component routing strategy path cleanly */}
-                                        <Link to={`/calendar`} className="text-normal">
-                                            {event.calendar_title}{' '}-{' '}
-                                            <span>
-                                                ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
-                                            </span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
+                    {session && (
+                        <div className="section-container lightorange-section-container full-width">
+                            <h2 className="textbig">Your upcoming events</h2>
+                            {upcomingEvents.length > 0 ? (
+                            <div>
+                                <p className="marginbsixteen">
+                                    <span>📅</span>{' '}-{' '}
+                                    <strong className="text-normal">Next 7 Days:</strong>
+                                </p>
+                                <ul className="events-list">
+                                    {upcomingEvents.map(event => (
+                                        <li key={event.id} className="marginbsixteen">
+                                            {/* 🛠️ Adjusted to match your edit component routing strategy path cleanly */}
+                                            <Link to={`/calendar`} className="text-normal">
+                                                {event.calendar_title}{' '}-{' '}
+                                                <span>
+                                                    ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                                </span>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                    ) : (
+                        <p className="marginbsixteen">
+                            <span>📅</span>{' '}-{' '}
+                            <strong className="text-normal">You have no entries in your calendar.</strong>
+                        </p>
+                    )}
                         </div>
-                    </div>
-                )}
+                    )}
+
+
+
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
                 {session && horseBoxAlerts.length > 0 && (
@@ -177,6 +186,7 @@ function Home(): React.JSX.Element {
                                 <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
                                 <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
                                 <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
+                                <p className="text-normal marginbsixteen"><a href="/about-us">About us</a></p>
                             </div>
                         </div>
                         )
