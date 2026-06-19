@@ -169,7 +169,6 @@ function Home(): React.JSX.Element {
                 )}
 
                 {!session && (
-                    <>
                         <div className="section-container white-section-container full-width">
                             <div className="text-center">
                                 <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
@@ -180,35 +179,40 @@ function Home(): React.JSX.Element {
                                 <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
                             </div>
                         </div>
-                        <div className="section-container purple-section-container full-width">
-                            <h1 className="textbig">How it works.</h1>
-                            <div className="info-bar-grid">
-                                <div className="info-bar">
-                                    <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
-                                    <div className="info-bar-column">
-                                        <h2 className="textmedium">Upload your details</h2>
-                                        <p className="text-normal">Fill in the information about your horse. Choose what you wish to show and what to keep hidden in your account area.</p>
-                                    </div>
-                                </div>
+                        )
+                }
 
-                                <div className="info-bar">
-                                    <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
-                                    <div className="info-bar-column">
-                                        <h2 className="textmedium">Get your QR code</h2>
-                                        <p className="text-normal">Either purchase a waterproof plastic tag for your stable. Or simple print it out and stick it on your stable.</p>
-                                    </div>
-                                </div>
-
-                                <div className="info-bar">
-                                    <div className="info-bar-fixed"><img src={ScanCode} alt="Access info" /></div>
-                                    <div className="info-bar-column">
-                                        <h2 className="textmedium">Access vital info instantly</h2>
-                                        <p className="text-normal">Emergency contacts, medical details, and stable information are instantly accessible for both rider and horse.</p>
-                                    </div>
-                                </div>
+                <div className="section-container purple-section-container full-width">
+                    <h1 className="textbig">How it works.</h1>
+                    <div className="info-bar-grid">
+                        <div className="info-bar">
+                            <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
+                            <div className="info-bar-column">
+                                <h2 className="textmedium">Upload your details</h2>
+                                <p className="text-normal">Fill in the information about your horse. Choose what you wish to show and what to keep hidden in your account area.</p>
                             </div>
                         </div>
 
+                        <div className="info-bar">
+                            <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
+                            <div className="info-bar-column">
+                                <h2 className="textmedium">Get your QR code</h2>
+                                <p className="text-normal">Either purchase a waterproof plastic tag for your stable. Or simple print it out and stick it on your stable.</p>
+                            </div>
+                        </div>
+
+                        <div className="info-bar">
+                            <div className="info-bar-fixed"><img src={ScanCode} alt="Access info" /></div>
+                            <div className="info-bar-column">
+                                <h2 className="textmedium">Access vital info instantly</h2>
+                                <p className="text-normal">Emergency contacts, medical details, and stable information are instantly accessible for both rider and horse.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {!session && (
+                    <>
                         <div className="section-container white-section-container split-card">
                             <h2 className="textbig">How much does it cost.</h2>
                             <div className="pricing-content-wrapper">
