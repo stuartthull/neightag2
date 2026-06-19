@@ -215,7 +215,7 @@ function Home(): React.JSX.Element {
                                 <img className='marginbsixteen pricing-img' src={Money} alt='Pricing' />
                                 <div className="pricing-text">
                                     <p className='marginbsixteen'>Opening an account and adding details is free. You can store all the information you need for your horse and we wont need a penny.</p>
-                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code. We charge a <strong>bi-monthly fee of £1</strong>. Yes that's <strong>50p a month</strong>. </p>
+                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code. We charge a <strong>monthly fee of £1</strong>.</p>
                                     <p className='marginbsixteen'>See, not all horse related things are expensive.</p>
                                     <p className='marginbsixteen'>You can cancel your QR code view anytime, and we will retain your horse information for you.</p>
                                     <p className='marginbsixteen'><strong>Whats not to like?</strong></p>
