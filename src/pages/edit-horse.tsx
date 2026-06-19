@@ -40,7 +40,8 @@ const INITIAL_FORM_DATA = {
     physio_name: '',
     physio_phone: '',
     physio_next_visit: '', // 🗓️ Populated via equi_calendar
-    physio_notes: ''
+    physio_notes: '',
+    horse_image_url: ''
 };
 
 export default function EditItem(): React.JSX.Element {
@@ -222,6 +223,96 @@ export default function EditItem(): React.JSX.Element {
         }
     };
 
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+            alert("Please upload a valid image file (.jpg, .png, or .webp)");
+            return;
+        }
+
+        const ownerId = formData.user_uuid || originalData.user_uuid;
+
+        if (!ownerId) {
+            alert("Error: Could not verify owner account ID. Please refresh and try again.");
+            return;
+        }
+
+        const filePath = `${ownerId}/${horse_uuid}-${Date.now()}.jpg`;
+
+        const { data, error: uploadError } = await supabase.storage
+            .from('horse-photos')
+            .upload(filePath, file, { upsert: true });
+
+        if (uploadError) {
+            console.error("Upload error:", uploadError.message);
+            alert("Failed to upload image to server storage.");
+            return;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+            .from('horse-photos')
+            .getPublicUrl(filePath);
+
+        const { error: dbError } = await supabase
+            .from('equi_log_main')
+            .update({ horse_image_url: publicUrl })
+            .eq('horse_uuid', horse_uuid);
+
+        if (!dbError) {
+            setFormData((prev: any) => ({ ...prev, horse_image_url: publicUrl }));
+            setOriginalData((prev: any) => ({ ...prev, horse_image_url: publicUrl }));
+            alert("Profile photo updated successfully!");
+        } else {
+            console.error("Database link error:", dbError.message);
+        }
+    };
+
+    // 🗑️ Clears image relationship fields from storage, state, and db profiles safely
+    const handleRemoveImage = async () => {
+        if (!window.confirm("Are you sure you want to remove this profile photo?")) return;
+
+        const currentImageUrl = formData.horse_image_url;
+
+        if (currentImageUrl) {
+            try {
+                // Extract the path after '/horse-photos/' from the public URL
+                // Example: "owner_id/horse_id-timestamp.jpg"
+                const urlParts = currentImageUrl.split('/horse-photos/');
+                if (urlParts.length === 2) {
+                    const storagePath = urlParts[1];
+
+                    // 1. Delete the actual file asset from your Supabase bucket
+                    const { error: storageError } = await supabase.storage
+                        .from('horse-photos')
+                        .remove([storagePath]);
+
+                    if (storageError) {
+                        console.error("Storage cleanup warning:", storageError.message);
+                        // We continue anyway so the user isn't stuck with an un-removable link if the file was already missing
+                    }
+                }
+            } catch (err) {
+                console.error("Failed parsing storage key path context:", err);
+            }
+        }
+
+        // 2. Remove the link reference inside your database record
+        const { error: dbError } = await supabase
+            .from('equi_log_main')
+            .update({ horse_image_url: null })
+            .eq('horse_uuid', horse_uuid);
+
+        if (!dbError) {
+            setFormData((prev: any) => ({ ...prev, horse_image_url: '' }));
+            setOriginalData((prev: any) => ({ ...prev, horse_image_url: '' }));
+            alert("Profile photo removed cleanly!");
+        } else {
+            alert("Failed to update profile record: " + dbError.message);
+        }
+    };
+
     if (loading) return (
         <div className="page-wrapper"><div className="page-container"><section className="section-container purple-section-container"><h1 className="textmedium">Populating comprehensive records...</h1></section></div></div>
     );
@@ -235,6 +326,58 @@ export default function EditItem(): React.JSX.Element {
                         <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">← Back to Your Stable</button>
                         <div>
                             <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
+
+                            {/* 📸 PROFILE IMAGE MANAGER PANEL */}
+                            <div style={{ marginBottom: '16px', display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+                                <div style={{ position: 'relative' }}>
+                                    {formData.horse_image_url ? (
+                                        <img
+                                            src={formData.horse_image_url}
+                                            alt="Horse preview"
+                                            style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <div style={{ backgroundColor: 'white', width: '100px', height: '100px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
+                                            🐴
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <p className="text-normal"><strong>Profile Picture</strong></p>
+
+                                    {/* 🎛️ Conditional Template Toggle Engine */}
+                                    {formData.horse_image_url ? (
+                                        <div>
+                                            <p className="text-normal marginbsixteen">✓ Photo uploaded successfully</p>
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveImage}
+                                                className="buttonMain buttonOrange"
+                                            >
+                                                Remove Photo
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <p style={{ fontSize: '0.85rem', marginBottom: '8px' }}>Upload a photo of your horse (.jpg, .png, .webp)</p>
+                                            {/* 🏷️ The visible, styled click target */}
+                                            <label htmlFor="horse_image_input" className="buttonMain buttonOrange file-upload-button">
+                                                Choose Photo
+                                            </label>
+
+                                            {/* 📦 The hidden functional input */}
+                                            <input
+                                                type="file"
+                                                id="horse_image_input"
+                                                accept="image/*"
+                                                onChange={handleImageUpload}
+                                                className="visually-hidden-file-input"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
                             <div className="white-section-container privacy-toggle-container" style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}>
                                 <div>
                                     <div className="text-normal"><strong>🌐 Global Public Profile</strong></div>

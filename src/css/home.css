@@ -793,3 +793,31 @@ pre {
         gap: 12px;
     }
 }
+
+/* Completely hides the ugly default browser file input box layout */
+.visually-hidden-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Turns the label into a perfect inline block match for your other buttons */
+.file-upload-button {
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Optional styling tweak for the subtitle label above it */
+.image-upload-helper-text {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 0;
+    margin-bottom: 12px;
+}

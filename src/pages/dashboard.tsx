@@ -152,9 +152,11 @@ export default function Dashboard() {
                                     </li>
                                 </ul>
 
-                                <button type="button" className="buttonOrange buttonSmall" onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
-                                    🚨&nbsp;Delete horse
-                                </button>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                    <button type="button" className="buttonOrange buttonSmall" onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
+                                        🚨&nbsp;Delete horse
+                                    </button>
+                                </div>
                             </section>
                         ))}
 

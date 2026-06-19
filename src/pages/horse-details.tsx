@@ -29,7 +29,7 @@ export default function HorseDetails() {
                 // 2. Fetch Horse Data by itself (Explicit columns to bypass join loops)
                 const { data: horseData, error: horseError } = await supabase
                     .from('equi_log_main')
-                    .select('id, user_uuid, horse_uuid, horse_name, horse_breed, horse_colour, emergency_name_one, emergency_phone_one, emergency_name_two, emergency_phone_two, horse_dob, horse_passport_number, horse_height, horse_weight_kg, horse_last_weighed, horse_vet_name, horse_vet_practice, horse_vet_phone_one, horse_medication, horse_allergies, saddle_fitter_name, saddle_fitter_phone, saddle_fitter_notes, physio_name, physio_phone, physio_notes, farrier_name, farrier_phone_one, farrier_notes, dentist_name, dentist_phone_one, dentist_notes, feed_instructions, is_public')
+                    .select('id, user_uuid, horse_uuid, horse_name, horse_breed, horse_colour, emergency_name_one, emergency_phone_one, emergency_name_two, emergency_phone_two, horse_dob, horse_passport_number, horse_height, horse_weight_kg, horse_last_weighed, horse_vet_name, horse_vet_practice, horse_vet_phone_one, horse_medication, horse_allergies, saddle_fitter_name, saddle_fitter_phone, saddle_fitter_notes, physio_name, physio_phone, physio_notes, farrier_name, farrier_phone_one, farrier_notes, dentist_name, dentist_phone_one, dentist_notes, feed_instructions, horse_image_url, is_public')
                     .eq('horse_uuid', horse_uuid)
                     .single();
 
@@ -139,12 +139,17 @@ export default function HorseDetails() {
 
                 {/* HERO SECTION */}
                 <section className="section-container purple-section-container">
-                    {shouldShow('show_name') && <h1 className="textbig">{horse.horse_name}</h1>}
-
-                    <div style={{ marginTop: '10px' }}>
-                        {shouldShow('show_breed') && <div className="text-normal marginbeight"><span>Breed:</span> <strong>{horse.horse_breed || 'N/A'}</strong></div>}
-                        {shouldShow('show_colour') && <div className="text-normal marginbeight"><span>Color:</span> <strong>{horse.horse_colour || 'N/A'}</strong></div>}
-                    </div>
+                    {shouldShow('show_name') && <h1 className="textbig marginbeight"><strong>{horse.horse_name}'s</strong> Record</h1>}
+                    {horse.horse_image_url && (
+                        <div className="horse-profile-image-wrapper">
+                            <img
+                                src={horse.horse_image_url}
+                                alt={horse.horse_name}
+                                className="horse-profile-image"
+                                style={{ width: '300px', height: '300px', borderRadius: '50%', objectFit: 'cover', margin: '0 auto 16px' }}
+                            />
+                        </div>
+                    )}
                 </section>
 
                 {/* EMERGENCY SECTION */}
@@ -186,6 +191,8 @@ export default function HorseDetails() {
                 {(shouldShow('show_dob') || shouldShow('show_passport') || shouldShow('show_last_weighed') || shouldShow('show_height') || shouldShow('show_weight')) && (
                     <section className="card marginbsixteen">
                         <h2 className="textmedium marginbsixteen">Identity & Identification</h2>
+                        {shouldShow('show_breed') && <div className="text-normal marginbeight datarow"><span>Breed:</span> <strong>{horse.horse_breed || 'N/A'}</strong></div>}
+                        {shouldShow('show_colour') && <div className="text-normal marginbeight datarow"><span>Color:</span> <strong>{horse.horse_colour || 'N/A'}</strong></div>}
                         {shouldShow('show_dob') && <div className="text-normal marginbeight datarow"><span>Date of Birth:</span> <strong>{formatGBDate(horse.horse_dob) || 'N/A'}</strong></div>}
                         {shouldShow('show_passport') && <div className="text-normal marginbeight datarow"><span>Passport Number:</span> <strong>{horse.horse_passport_number || 'N/A'}</strong></div>}
                         {shouldShow('show_height') && <div className="text-normal marginbeight datarow"><span>Height:</span> <strong>{horse.horse_height || 'N/A'} hh</strong></div>}
