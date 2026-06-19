@@ -245,7 +245,6 @@ function Home(): React.JSX.Element {
                         {/* Right Side: Image Column */}
                         <img src={Janeone} alt="Jane our horse" className="jane-image" />
                     </div>
-
                 </div>
 
                 {!session && (
@@ -279,6 +278,17 @@ function Home(): React.JSX.Element {
                         </div>
                     </>
                 )}
+                <div className="section-container full-width">
+                    <footer  style={{ textAlign: 'center' }}>
+                        <p className="text-normal">
+                            Thank you for being part of the NeighTag family. We’ll see you out on the cross-country course!
+                        </p>
+                        <p className="text-purple" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
+                            — The NeighTag Family (Mandy, Abs and Jane! 🥕)
+                        </p>
+                    </footer>
+                </div>
+
             </div>
         </main >
     );
