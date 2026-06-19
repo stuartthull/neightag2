@@ -328,7 +328,7 @@ export default function EditItem(): React.JSX.Element {
                             <h1 className="textbig">Edit {formData.horse_name || 'Unnamed'}'s Record</h1>
 
                             {/* 📸 PROFILE IMAGE MANAGER PANEL */}
-                            <div style={{ marginBottom: '16px', display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+                            <div style={{ marginBottom: '32px', display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
                                 <div style={{ position: 'relative' }}>
                                     {formData.horse_image_url ? (
                                         <img
