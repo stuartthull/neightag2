@@ -1,9 +1,16 @@
 import React from 'react';
 import Janeone from "../assets/jane1.jpg";
+import { Helmet } from 'react-helmet-async';
+
 
 export default function AboutUs(): React.JSX.Element {
     return (
         <main className="page-wrapper">
+            <Helmet>
+                <title>About Us | Meet the Family Behind NeighTag</title>
+                <meta name="description" content="Meet the horse-loving family behind NeighTag. Read about our Irish Sports Horse Jane, our cross-country adventures, and our mission to make stable management affordable." />
+                <meta property="og:title" content="About Us | Meet the Family Behind NeighTag" />
+            </Helmet>
             <div className="page-container">
 
                 {/* HERO SECTION */}

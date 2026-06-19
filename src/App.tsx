@@ -1,10 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+
 import NavBar from './components/navbar';
 import Home from './pages/home';
 import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import EditItem from './pages/edit-horse';
+import ContactUs from './pages/contact-us';
 
 // Your newly implemented views
 import HorseDetails from './pages/horse-details';
@@ -18,6 +21,7 @@ import HorseboxEdit from './pages/horsebox-edit';
 import UpdatePassword from'./pages/update-password'
 import AboutUs from "./pages/about-us";
 import ScrollToTop from './components/scroll-to-top';
+import Footer from "./components/footer";
 
 const LogoSvg = () => {
     return (
@@ -31,7 +35,7 @@ const HamburgerSvg = () => {
 
 export default function App() {
     return (
-
+        <HelmetProvider>
         <Router>
             <ScrollToTop />
             <div className="container">
@@ -44,6 +48,7 @@ export default function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/update-password" element={<UpdatePassword />} />
                     <Route path="/about-us" element={<AboutUs />} />
+                    <Route path="/contact-us" element={<ContactUs />} />
 
                     {/* Dynamic Parameterized Route for single-horse public/owner views */}
                     <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />
@@ -87,9 +92,10 @@ export default function App() {
                         }
                     />
                 </Routes>
+                <Footer />
             </div>
         </Router >
-
+        </HelmetProvider>
     );
 }
 

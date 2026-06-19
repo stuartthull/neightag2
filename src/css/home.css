@@ -38,7 +38,7 @@ pre {
 
 /* LAYOUT CONTAINER */
 .page-wrapper {
-    min-height: 100vh;
+    min-height: 70vh;
     width: 100%;
 }
 
@@ -595,7 +595,6 @@ pre {
 }
 
 .sticky-actions-bar {
-    position: -webkit-sticky; /* Safari Support */
     position: sticky;
     bottom: 0;
     left: 0;
@@ -718,3 +717,79 @@ pre {
     }
 }
 
+/* Layout utility wrapper to ensure footer stays pinned to the bottom */
+.app-layout-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-main-content {
+    flex: 1;
+}
+
+/* Main Footer Structural Frame */
+.main-footer {
+    background-color: #0f172a; /* Deep slate theme background */
+    border-top: 1px solid #1e293b;
+    padding: 32px 0;
+    width: 100%;
+}
+
+/* Horizontal Alignment Constraints Container */
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Brand Text Styling overrides */
+.footer-title {
+    font-weight: bold;
+    color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.footer-copyright {
+    font-size: 0.85rem;
+    color: #94a3b8 !important;
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+}
+
+/* Navigation Links Row */
+.footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Interactive Link Hover Engine */
+.footer-link {
+    color: #94a3b8 !important;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+    color: #f1f5f9 !important; /* Lights up nicely when hovered */
+}
+
+/* 📱 Responsive break: Collapse and stack columns underneath 500px */
+@media (max-width: 500px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { formatGBDate } from "../utils/date-format";
+import {Helmet} from "react-helmet-async";
 
 export default function HorseDetails() {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
@@ -121,7 +122,12 @@ export default function HorseDetails() {
     const dentistDate = calendarMap['Dentist Visit'] ? formatGBDate(calendarMap['Dentist Visit']) : 'TBC';
 
     return (
-        <div className="page-wrapper">
+        <main className="page-wrapper">
+            <Helmet>
+                <title>{`${horse.horse_name} | Equine Digital Profile`}</title>
+                <meta name="description" content={`View emergency protocols, medical parameters, and schedule details for ${horse.horse_name} securely on NeighTag.`} />
+                <meta property="og:title" content={`${horse.horse_name} | Equine Profile`} />
+            </Helmet>
             <div className="page-container">
 
                 {/* OWNER PREVIEW BANNER */}
@@ -286,6 +292,6 @@ export default function HorseDetails() {
                 )}
 
             </div>
-        </div>
+        </main>
     );
 }
