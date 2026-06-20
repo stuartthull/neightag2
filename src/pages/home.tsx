@@ -117,6 +117,10 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container home-layout-grid">
+ <p className="text-normal">DONT WORRY WE WONT TAKE ANY PAYMENT, THIS IS A YRST PHASE. YOUR EMAIL AND PASSWORD ARE JUST DUMMY DATA AND WILL NOT BE STORED. IF YOU ENTER YOUR REAL EMAIL ADDRESS YOU WILL BE ENTERED INTO A DRAW TO WIN £50 OF VOUCHERS FOR YOUR LOCAL EQUESTRIAN STORE. <p>
+            </div>
+
+            <div className="page-container home-layout-grid">
 
                     {session && (
                         <div className="section-container lightorange-section-container full-width">
