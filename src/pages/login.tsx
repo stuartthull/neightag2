@@ -29,7 +29,7 @@ export default function Login(): React.JSX.Element {
             if (isSignUp) {
                 const { error } = await supabase.auth.signUp({ email, password });
                 if (error) throw error;
-                alert('Great, you are in. we wont keep your details after the trial.');
+                alert('Great you are in. We wont keep your details after the trial.');
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
