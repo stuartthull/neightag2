@@ -13,6 +13,7 @@ interface HorseboxData {
     breakdown_provider: string;
     breakdown_policy_number: string;
     breakdown_phone: string;
+    insurance_phone: string;
     general_notes: string;
 }
 
@@ -94,10 +95,17 @@ export default function HorseboxView(): React.JSX.Element {
                         </div>
 
                         <div className="section-container white-section-container">
-                            <h3>Insurance Record Details</h3>
+                            <h3>🛡️ Insurance Record Details</h3>
                             <div className="horsebox-data-list">
                                 <p className='datarow'><span>Provider:</span> <strong>{horsebox.insurance_provider || 'Not documented'}</strong></p>
                                 <p className='datarow'><span>Policy Number:</span> <strong>{horsebox.insurance_policy_number || 'Not documented'}</strong></p>
+                                {horsebox.insurance_phone && (
+                                    <div>
+                                        <a href={`tel:${horsebox.insurance_phone}`} className="buttonMain buttonOrange">
+                                            📞 Call recovery: {horsebox.insurance_phone}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="section-container white-section-container">

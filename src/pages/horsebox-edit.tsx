@@ -18,6 +18,7 @@ export default function HorseboxEdit(): React.JSX.Element {
     const [bdProvider, setBdProvider] = useState<string>('');
     const [bdPolicy, setBdPolicy] = useState<string>('');
     const [bdPhone, setBdPhone] = useState<string>('');
+    const [insPhone, setInsPhone] = useState<string>('');
     const [notes, setNotes] = useState<string>('');
 
     useEffect(() => {
@@ -45,6 +46,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                 setBdProvider(data.breakdown_provider || '');
                 setBdPolicy(data.breakdown_policy_number || '');
                 setBdPhone(data.breakdown_phone || '');
+                setInsPhone(data.insurance_phone || '');
                 setNotes(data.general_notes || '');
             }
             setLoading(false);
@@ -70,6 +72,7 @@ export default function HorseboxEdit(): React.JSX.Element {
             breakdown_provider: bdProvider.trim(),
             breakdown_policy_number: bdPolicy.trim(),
             breakdown_phone: bdPhone.trim(),
+            insurance_phone: insPhone.trim(),
             general_notes: notes.trim(),
             updated_at: new Date().toISOString()
         };
@@ -163,9 +166,23 @@ export default function HorseboxEdit(): React.JSX.Element {
                                     value={insPolicy}
                                     onChange={e => setInsPolicy(e.target.value)}
                                     className="form-input-control"
-                                    placeholder="e.g., HP-98421-X"
                                 />
                             </div>
+
+                        <div className="horsebox-field-group">
+                            <label htmlFor="insPhone" className="horsebox-form-label">
+                                Emergency Hotline Phone
+                            </label>
+                            <input
+                                type="tel"
+                                id="insPhone"
+                                value={insPhone}
+                                onChange={e => setInsPhone(e.target.value)}
+                                className="form-input-control"
+                                autoComplete="tel"
+                                placeholder="e.g., 0800 777777"
+                            />
+                        </div>
                     </section>
                         <section className="section-container white-section-container">
                             <h3 className="textmedium">Roadside Breakdown Assistance</h3>
@@ -194,7 +211,6 @@ export default function HorseboxEdit(): React.JSX.Element {
                                     value={bdPolicy}
                                     onChange={e => setBdPolicy(e.target.value)}
                                     className="form-input-control"
-                                    placeholder="e.g., ERS-M-5510"
                                 />
                             </div>
 

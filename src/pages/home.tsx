@@ -146,10 +146,13 @@ function Home(): React.JSX.Element {
                                 </ul>
                             </div>
                     ) : (
+                        <>
                         <p className="marginbsixteen">
                             <span>📅</span>{' '}-{' '}
-                            <strong className="text-normal">You have no entries in your calendar.</strong>
+                            <strong className="text-normal">You have no events in the next 7 days.</strong>
                         </p>
+                            <p><Link to="/calendar">View Calendar</Link></p>
+                        </>
                     )}
                         </div>
                     )}
