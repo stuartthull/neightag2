@@ -366,6 +366,7 @@ pre {
     appearance: none;
     background-color: var(--white);
     border: 1px solid var(--primarycolor);
+    color: var(--primarycolor);
     border-radius: 8px;
     box-sizing: border-box;
     height: 52px;
