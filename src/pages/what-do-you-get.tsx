@@ -1,0 +1,76 @@
+import React from 'react';
+import { Helmet } from 'react-helmet-async';
+import BoxPoster from "../assets/horsebox-poster.jpg";
+import StableSpoter from "../assets/stable-poster.jpg";
+
+export default function WhatDoYouGet(): React.JSX.Element {
+    return (
+        <main className="page-wrapper">
+            <Helmet>
+                <title>About Us | Contact NeighTag</title>
+                <meta name="description" content="Contact the horse-loving family behind NeighTag." />
+                <meta property="og:title" content="About Us | Contact NeighTag" />
+            </Helmet>
+            <div className="page-container">
+
+                {/* HERO SECTION */}
+                <section className="section-container white-section-container">
+                    <h1 className="textbig marginbsixteen">What Do You Get with NeighTag?</h1>
+
+                    <p className="text-normal marginbsixteen">When you join NeighTag, you aren't just getting QR codes—you're getting a complete, real-time safety ecosystem for your horse. Every account includes access to your digital stable dashboard and a suite of high-visibility, scannable assets designed for the yard and the road.</p>
+
+                    <p className="textmedium marginbsixteen">The NeighTag Safety Suite Includes:</p>
+                    <div className="neightag-feature-container">
+
+                        <img src={StableSpoter} alt="Stable QR code" className="jane-image" />
+
+                        <div className="neightag-feature-text">
+                            <h2 className="textmedium">🏢 1. The Printable Stable Door Tag</h2>
+                            <p className="text-normal">Perfect for the yard, this high-contrast door card gives yard managers, grooms, and visiting vets immediate access to day-to-day care routines without cluttering your stable door with messy whiteboards.</p>
+
+                            <p className="text-normal">Instant Routines: Scans reveal exact feeding instructions, turnout rules, and medication logs.</p>
+
+                            <p className="text-normal">Professional Layout: Designed to fit perfectly on standard stable doors or clipboards.</p>
+
+                            <p className="text-normal">Live Updates: Changed your feed or supplements this morning? Update it on your phone, and the stable tag updates instantly.</p>
+                        </div>
+                    </div>
+                    <div className="neightag-feature-container">
+                        {/* 📸 Image is placed first/on top for clean mobile stacking */}
+                        <img src={BoxPoster} alt="Horse box emergency poster" className="jane-image" />
+
+                        {/* 📝 Text content grouped together safely */}
+                        <div className="neightag-feature-text">
+                            <h2 className="textmedium">🚛 2. The Horsebox Emergency Poster</h2>
+                            <p className="text-normal marginbsixteen">Designed for the showground, this essential safety sign looks out for your horse when you have to step away—whether you're walking a course, collecting numbers, or grabbing a quick coffee.</p>
+
+                            <ul>
+                                <li className="text-normal"><strong>Crisis Management:</strong> If your horse becomes distressed in the box, bystanders just scan the code.</li>
+                                <li className="text-normal"><strong>Tap-to-Call Functionality:</strong> Instantly displays your emergency contact names and phone numbers with direct, clickable links for a rapid response.</li>
+                                <li className="text-normal"><strong>Peace of Mind:</strong> Gives you the freedom to navigate a busy event knowing help is always one tap away.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h2 className="textmedium">📱 3. Your Live Digital Care Matrix</h2>
+                    <p className="text-normal">Behind every QR code is a secure, mobile-optimised profile page unique to each horse in your stable.</p>
+
+                    <p className="text-normal">Comprehensive Medical Logs: Store passport details, allergies, and current medications securely.</p>
+
+                    <p className="text-normal">Dynamic Calendar Sync: Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</p>
+
+                    <p className="text-normal marginbsixteen">Smart Privacy Matrix: You choose exactly what the public sees. Toggle your horse’s profile between completely public or hidden with a single flick of a switch.</p>
+
+                    <h2 className="textmedium">One Dashboard. Unlimited Control.</h2>
+                    <p className="text-normal marginbsixteen">No reprints required. If your emergency contact changes mid-journey or your vet prescribes a new medication, simply log into your NeighTag account from your phone. Update the details in seconds, and your printable stable tags and horsebox posters are instantly updated in real time.</p>
+
+                    <p className="text-normal marginbsixteen"><strong>Always linked. Always protected.</strong></p>
+
+                    <p className="text-normal" style={{ marginTop: '16px', lineHeight: '1.6' }}>
+                        If you wish to get in touch, email us on <a href="mailto:info@neightag.com">info@neightag.com</a>.
+                    </p>
+                </section>
+            </div>
+        </main>
+    );
+}

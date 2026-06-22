@@ -22,6 +22,7 @@ import UpdatePassword from'./pages/update-password'
 import AboutUs from "./pages/about-us";
 import ScrollToTop from './components/scroll-to-top';
 import Footer from "./components/footer";
+import WhatDoYouGet from "./pages/what-do-you-get";
 
 const LogoSvg = () => {
     return (
@@ -49,6 +50,7 @@ export default function App() {
                     <Route path="/update-password" element={<UpdatePassword />} />
                     <Route path="/about-us" element={<AboutUs />} />
                     <Route path="/contact-us" element={<ContactUs />} />
+                    <Route path="/what-you-get" element={<WhatDoYouGet />} />
 
                     {/* Dynamic Parameterized Route for single-horse public/owner views */}
                     <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />

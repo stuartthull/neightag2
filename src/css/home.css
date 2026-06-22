@@ -821,3 +821,39 @@ pre {
     margin-top: 0;
     margin-bottom: 12px;
 }
+
+
+/* 💻 Desktop & Tablet Mode (Default view) */
+.neightag-feature-container {
+    display: flex;
+    flex-direction: row-reverse; /* 🔄 Pushes the image to the right side */
+    align-items: center;        /* Centers text vertically alongside the image */
+    gap: 32px;                  /* Generates breathing room between image and text */
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.neightag-feature-text {
+    flex: 1;                    /* Allows text container to expand naturally */
+}
+
+.jane-image {
+    width: 100%;
+    max-width: 320px;           /* Adjust this width constraint to match your design look */
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* 📱 Responsive Mobile Stack Trigger */
+@media (max-width: 850px) {
+    .neightag-feature-container {
+        flex-direction: column; /* 🥞 Stack everything vertically */
+        align-items: flex-start; /* Left-align items cleanly */
+        gap: 20px;              /* Tighten spacing for compact mobile displays */
+    }
+
+    .jane-image {
+        max-width: 100%;        /* Allows the image to span full width on small phones */
+    }
+}
