@@ -54,37 +54,44 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         visibility: visible !important;
                         margin: 40px auto 0 auto !important;
                         width: 100% !important;
-                        max-width: 380px !important;
-                        border: 10px solid #56483b !important;
-                        padding: 30px 24px !important;
+                        max-width: 300px !important;
+                        border: 10px solid #000000 !important;
+                        padding: 24px !important;
                         text-align: center !important;
                         box-sizing: border-box !important;
-                        background: #ffffff !important;
+                        background: #ffffff url('/images/aluminium.jpg') center / cover no-repeat !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
                         page-break-inside: avoid;
                     }
 
                     .stable-print-header-tag {
-                        font-size: 10px;
+                        font-size: 14px;
                         text-transform: uppercase;
                         letter-spacing: 2px;
-                        color: #994899;
+                        color: #000000;
+                        font-weight: bold;
+                        margin-bottom: 6px;
+                    }
+                    
+                    .stable-print-footer-tag {
+                        font-size: 12px;
+                        letter-spacing: 2px;
+                        color: #000000;
                         font-weight: bold;
                         margin-bottom: 6px;
                     }
 
                     .stable-print-title {
-                        font-size: 28px;
-                        color: #1e293b;
+                        font-size: 24px;
                         margin: 0 0 8px 0;
                         font-weight: 800;
-                        border-bottom: 2px solid #f3e8ff;
-                        padding-bottom: 12px;
+                        color: #000000;
                     }
 
                     .stable-print-subtitle {
-                        font-size: 13px;
-                        color: #475569;
-                        margin: 0 0 25px 0;
+                        font-size: 12px;
+                        margin: 0 0 8px 0;
                         line-height: 1.4;
                     }
 
@@ -92,23 +99,23 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         display: inline-block;
                         padding: 14px;
                         background: #ffffff;
-                        border: 1px solid #e2e8f0;
+                        border: 1px solid #000000;
                         border-radius: 12px;
-                        margin-bottom: 25px;
+                        margin-bottom: 16px;
                     }
 
                     .stable-print-alert-footer {
                         background-color: #ff0000 !important;
-                        border: 1px dashed #ff0000;
                         border-radius: 8px;
                         padding: 10px;
                         font-size: 11px;
-                        color: #ffffff;
+                        color: #ffff00;
                         font-weight: 600;
                         text-transform: uppercase;
                         letter-spacing: 0.5px;
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
+                        border: 1px solid #000000;
                     }
 
                     .stable-print-logo {
@@ -150,23 +157,23 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
 
             {/* 3. Hidden Print Blueprint Layout (Fixed position layer to bypass nested parent hides) */}
             <div className="stable-card-print-area">
-                <div className="stable-print-header-tag">NeighTag Vital Records</div>
+                <div className="stable-print-header-tag">NeighTag Records</div>
                 <h1 className="stable-print-title">{horseName}</h1>
                 {/*<p className="stable-print-subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>*/}
 
                 <div className="stable-print-qr-wrapper">
                     <QRCodeSVG
                         value={absoluteUrl}
-                        size={150}
+                        size={100}
                         bgColor={"#ffffff"}
                         fgColor={"#000000"}
                         level={"H"}
                     />
                 </div>
-
-                <div className="stable-print-alert-footer">
-                    ⚠️ In Case of Emergency Scan Badge
-                </div>
+                <div className="stable-print-footer-tag">www.neightag.com</div>
+                {/*<div className="stable-print-alert-footer">*/}
+                {/*    ⚠️ Scan In Case of Emergency*/}
+                {/*</div>*/}
             </div>
         </>
     );
