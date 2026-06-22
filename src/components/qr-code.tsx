@@ -54,9 +54,9 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         visibility: visible !important;
                         margin: 40px auto 0 auto !important;
                         width: 100% !important;
-                        max-width: 300px !important;
+                        max-width: 340px !important;
                         border: 10px solid #000000 !important;
-                        padding: 24px !important;
+                        padding: 12px 60px !important;
                         text-align: center !important;
                         box-sizing: border-box !important;
                         background: #ffffff url('/images/aluminium.jpg') center / cover no-repeat !important;
@@ -107,8 +107,8 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                     .stable-print-alert-footer {
                         background-color: #ff0000 !important;
                         border-radius: 8px;
-                        padding: 10px;
-                        font-size: 11px;
+                        padding: 4px;
+                        font-size: 10px;
                         color: #ffff00;
                         font-weight: 600;
                         text-transform: uppercase;
@@ -116,6 +116,7 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
                         border: 1px solid #000000;
+                        margin-bottom: 16px;
                     }
 
                     .stable-print-logo {
@@ -164,16 +165,17 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                 <div className="stable-print-qr-wrapper">
                     <QRCodeSVG
                         value={absoluteUrl}
-                        size={100}
+                        size={120}
                         bgColor={"#ffffff"}
                         fgColor={"#000000"}
                         level={"H"}
                     />
                 </div>
-                <div className="stable-print-footer-tag">www.neightag.com</div>
-                {/*<div className="stable-print-alert-footer">*/}
-                {/*    ⚠️ Scan In Case of Emergency*/}
-                {/*</div>*/}
+                <p className="stable-print-alert-footer">
+                    ⚠️ Scan In Case of Emergency
+                </p>
+                <p className="stable-print-footer-tag">www.neightag.com</p>
+
             </div>
         </>
     );
