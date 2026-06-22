@@ -374,10 +374,6 @@ pre {
     width: 100%;
     padding: 4px 12px;
     max-width: 500px;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: black;*/
-    /*    color: var(--white);*/
-    /*}*/
 }
 
 .buttonaslinker {
