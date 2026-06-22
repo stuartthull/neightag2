@@ -116,7 +116,7 @@ function Home(): React.JSX.Element {
                 </div>
             </div>
 
-            <div className="page-container home-layout-grid">
+            <div className="page-container full-width">
  <p className="text-normal">DONT WORRY WE WONT TAKE ANY PAYMENT, THIS IS A TEST PHASE. YOUR EMAIL AND PASSWORD ARE JUST DUMMY DATA AND WILL NOT BE STORED. IF YOU ENTER YOUR REAL EMAIL ADDRESS YOU WILL BE ENTERED INTO A DRAW TO WIN £50 OF VOUCHERS FOR YOUR LOCAL EQUESTRIAN STORE. </p>
             </div>
 
