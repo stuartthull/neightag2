@@ -34,7 +34,6 @@ export default function Login(): React.JSX.Element {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
             }
-Mo
             // ✅ Only navigate home if auth is completely successful
             navigate('/dashboard');
         } catch (error: any) {
