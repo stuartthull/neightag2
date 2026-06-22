@@ -30,11 +30,11 @@ export default function WhatDoYouGet(): React.JSX.Element {
                             <p className="text-normal marginbsixteen">Perfect for the yard, this high-contrast door card gives yard managers, grooms, and visiting vets immediate access to day-to-day care routines without cluttering your stable door with messy whiteboards.</p>
 
                             <ul>
-                                <li className="text-normal"><strong>Instant Routines:</strong> Scans reveal exact feeding instructions, turnout rules, and medication logs.</li>
+                                <li className="text-normal marginbeight"><strong>Instant Routines:</strong> Scans reveal exact feeding instructions, turnout rules, and medication logs.</li>
 
-                                <li className="text-normal"><strong>Professional Layout:</strong> Designed to fit perfectly on standard stable doors or clipboards.</li>
+                                <li className="text-normal marginbeight"><strong>Professional Layout:</strong> Designed to fit perfectly on standard stable doors or clipboards.</li>
 
-                                <li className="text-normal"><strong>Live Updates:</strong> Changed your feed or supplements this morning? Update it on your phone, and the stable tag updates instantly.</li>
+                                <li className="text-normal marginbeight"><strong>Live Updates:</strong> Changed your feed or supplements this morning? Update it on your phone, and the stable tag updates instantly.</li>
                             </ul>
                         </div>
                     </div>
@@ -48,9 +48,9 @@ export default function WhatDoYouGet(): React.JSX.Element {
                             <p className="text-normal marginbsixteen">Designed for the showground, this essential safety sign looks out for your horse when you have to step away—whether you're walking a course, collecting numbers, or grabbing a quick coffee.</p>
 
                             <ul>
-                                <li className="text-normal"><strong>Crisis Management:</strong> If your horse becomes distressed in the box, bystanders just scan the code.</li>
-                                <li className="text-normal"><strong>Tap-to-Call Functionality:</strong> Instantly displays your emergency contact names and phone numbers with direct, clickable links for a rapid response.</li>
-                                <li className="text-normal"><strong>Peace of Mind:</strong> Gives you the freedom to navigate a busy event knowing help is always one tap away.</li>
+                                <li className="text-normal marginbeight"><strong>Crisis Management:</strong> If your horse becomes distressed in the box, bystanders just scan the code.</li>
+                                <li className="text-normal marginbeight"><strong>Tap-to-Call Functionality:</strong> Instantly displays your emergency contact names and phone numbers with direct, clickable links for a rapid response.</li>
+                                <li className="text-normal marginbeight"><strong>Peace of Mind:</strong> Gives you the freedom to navigate a busy event knowing help is always one tap away.</li>
                             </ul>
                         </div>
                     </div>
@@ -63,9 +63,9 @@ export default function WhatDoYouGet(): React.JSX.Element {
                             <p className="text-normal marginbsixteen">Behind every QR code is a secure, mobile-optimised profile page unique to each horse in your stable.</p>
 
                             <ul>
-                                <li className="text-normal"><strong>Comprehensive Medical Logs:</strong> Store passport details, allergies, and current medications securely.</li>
+                                <li className="text-normal marginbeight"><strong>Comprehensive Medical Logs:</strong> Store passport details, allergies, and current medications securely.</li>
 
-                                <li className="text-normal"><strong>Dynamic Calendar Sync:</strong> Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</li>
+                                <li className="text-normal marginbeight"><strong>Dynamic Calendar Sync:</strong> Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</li>
 
                                 <li className="text-normal marginbsixteen"><strong>Smart Privacy Matrix:</strong> You choose exactly what the public sees. Toggle your horse’s profile between completely public or hidden with a single flick of a switch.</li>
                             </ul>
