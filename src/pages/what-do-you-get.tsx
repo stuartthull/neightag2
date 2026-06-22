@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import BoxPoster from "../assets/horsebox-poster.jpg";
 import StableSpoter from "../assets/stable-poster.jpg";
+import PhoneApp from "../assets/phone-app.jpg";
 
 export default function WhatDoYouGet(): React.JSX.Element {
     return (
@@ -26,13 +27,15 @@ export default function WhatDoYouGet(): React.JSX.Element {
 
                         <div className="neightag-feature-text">
                             <h2 className="textmedium">🏢 1. The Printable Stable Door Tag</h2>
-                            <p className="text-normal">Perfect for the yard, this high-contrast door card gives yard managers, grooms, and visiting vets immediate access to day-to-day care routines without cluttering your stable door with messy whiteboards.</p>
+                            <p className="text-normal marginbsixteen">Perfect for the yard, this high-contrast door card gives yard managers, grooms, and visiting vets immediate access to day-to-day care routines without cluttering your stable door with messy whiteboards.</p>
 
-                            <p className="text-normal">Instant Routines: Scans reveal exact feeding instructions, turnout rules, and medication logs.</p>
+                            <ul>
+                                <li className="text-normal"><strong>Instant Routines:</strong> Scans reveal exact feeding instructions, turnout rules, and medication logs.</li>
 
-                            <p className="text-normal">Professional Layout: Designed to fit perfectly on standard stable doors or clipboards.</p>
+                                <li className="text-normal"><strong>Professional Layout:</strong> Designed to fit perfectly on standard stable doors or clipboards.</li>
 
-                            <p className="text-normal">Live Updates: Changed your feed or supplements this morning? Update it on your phone, and the stable tag updates instantly.</p>
+                                <li className="text-normal"><strong>Live Updates:</strong> Changed your feed or supplements this morning? Update it on your phone, and the stable tag updates instantly.</li>
+                            </ul>
                         </div>
                     </div>
                     <div className="neightag-feature-container">
@@ -52,15 +55,22 @@ export default function WhatDoYouGet(): React.JSX.Element {
                         </div>
                     </div>
 
-                    <h2 className="textmedium">📱 3. Your Live Digital Care Matrix</h2>
-                    <p className="text-normal">Behind every QR code is a secure, mobile-optimised profile page unique to each horse in your stable.</p>
+                    <div className="neightag-feature-container">
+                        <img src={PhoneApp} alt="Public matrix" className="jane-image" />
 
-                    <p className="text-normal">Comprehensive Medical Logs: Store passport details, allergies, and current medications securely.</p>
+                        <div className="neightag-feature-text">
+                            <h2 className="textmedium">📱 3. Your Live Digital Care Matrix</h2>
+                            <p className="text-normal marginbsixteen">Behind every QR code is a secure, mobile-optimised profile page unique to each horse in your stable.</p>
 
-                    <p className="text-normal">Dynamic Calendar Sync: Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</p>
+                            <ul>
+                                <li className="text-normal"><strong>Comprehensive Medical Logs:</strong> Store passport details, allergies, and current medications securely.</li>
 
-                    <p className="text-normal marginbsixteen">Smart Privacy Matrix: You choose exactly what the public sees. Toggle your horse’s profile between completely public or hidden with a single flick of a switch.</p>
+                                <li className="text-normal"><strong>Dynamic Calendar Sync:</strong> Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</li>
 
+                                <li className="text-normal marginbsixteen"><strong>Smart Privacy Matrix:</strong> You choose exactly what the public sees. Toggle your horse’s profile between completely public or hidden with a single flick of a switch.</li>
+                            </ul>
+                        </div>
+                    </div>
                     <h2 className="textmedium">One Dashboard. Unlimited Control.</h2>
                     <p className="text-normal marginbsixteen">No reprints required. If your emergency contact changes mid-journey or your vet prescribes a new medication, simply log into your NeighTag account from your phone. Update the details in seconds, and your printable stable tags and horsebox posters are instantly updated in real time.</p>
 
