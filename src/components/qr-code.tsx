@@ -4,39 +4,33 @@ import { QRCodeSVG } from 'qrcode.react';
 interface HorseQrCodeProps {
     horseId: number | string;
     horseName: string;
+    variant?: 'default' | 'dashboard';
 }
 
-export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): React.JSX.Element {
+export default function HorseQrCode({ horseId, horseName, variant = 'default' }: HorseQrCodeProps): React.JSX.Element {
     const absoluteUrl = `https://www.neightag.com/horse-details/${horseId}`;
 
-    const handlePrint = (): void => {
-        window.print();
-    };
+    const AccountSvg = () => {
+        return (
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="m71.61 61.24h10.47c.92 0 2.5 1.71 2.49 2.7-.3 4.43.45 9.49.02 13.84-.1 1.03-1.45 3.02-2.52 3.02h-10.47v6.49c0 3.43-3.83 6.1-7 6.32-9.29.65-19.34-.48-28.71-.03-2.89-.03-6.51-3.4-6.51-6.29v-6.49h-10.47c-.85 0-2.53-1.91-2.49-2.87.22-4.39-.35-9.14-.02-13.49.07-.9.25-1.53.87-2.19.25-.27 1.35-1 1.64-1h10.47v-48.54c0-3.43 3.83-6.1 7-6.32 9.29-.65 19.34.48 28.71.03 2.91.05 6.51 3.38 6.51 6.29v48.53zm-1.21 0v-49.05c0-1.71-2.98-4.51-4.77-4.57l-29.75-.02c-1.98-.23-5.27 2.76-5.27 4.59v49.05h39.8zm-42.4 7.25.29-1.21c-1.92-1.15-6.01-1.04-6.15 1.85s4.61 2.28 4.97 3.47c.68 2.21-3.62 1.38-4.64.57l-.45 1.22c1.8 1.45 6.69 1.56 6.76-1.47.05-2.33-2.2-2.19-3.75-2.73-.57-.2-1.3-.4-1.26-1.08.11-1.77 3.15-1.04 4.22-.62zm5.68-1.84c-6.54.73-4.33 10.71 2.24 8.47.41-.14 1.72-.81 1.59-1.3l-.78-.8c-1.39 1.23-3.79 1.37-4.88-.3-2.09-3.2 2.14-6.42 4.73-3.7l.94-1.1c-.85-1.08-2.52-1.42-3.83-1.27zm13.19 8.6-3.72-8.3-1.8-.15-3.65 8.46c2.1.39 1.57-.7 2.54-1.87l4.23.07.7 1.77 1.7.03zm1.04-8.47v8.48h1.56v-5.54c.41-.11.29.11.4.22 1.47 1.64 2.7 3.52 4.18 5.15l1.48.16v-8.48h-1.56v5.54l-1.03-.96-3.54-4.42-1.48-.16zm13.15 0v8.48h1.56v-5.36l2.85 4.35.79-.27 2.59-4.08v5.36h1.56v-8.48l-1.47.17-3.03 5.36-3.37-5.37-1.47-.17zm17.82 0h-6.23v8.48h6.4v-1.38h-4.84v-2.25h4.15v-1.38h-4.15v-2.08h4.41l.23-.29zm-8.48 14.01h-39.79c.27 3.66-1.13 7.76 2.17 10.38.8.64 1.9 1.13 2.93 1.22 9.56-.58 19.97.74 29.43 0 2.55-.2 4.99-2.36 5.27-4.94.23-2.07-.15-4.55 0-6.66z"/><g fill="#fff"><path d="m70.4 61.24h-39.79v-49.05c0-1.83 3.29-4.83 5.27-4.59l29.75.02c1.79.06 4.77 2.86 4.77 4.57zm-24.86-51c-.75.75-.52 2.51.74 2.71s7.14.21 8.46 0c1.64-.26 1.53-2.82-.17-3.09-1.43-.23-6.44-.18-7.95-.01-.29.03-.88.21-1.07.4zm-3.73 14.18c-2.59-.36-6.83-.91-7.23 2.65-.09.83-.11 3.01 0 3.82.05.4.28.9.76.76.79-.23.35-3.9.45-4.75.29-2.49 4.32-1 5.77-1.49.36-.12.52-.71.25-.98zm17.39.01c-.33.32-.2.83.25.96 1.44.43 5.4-.88 5.75 1.34.14.88-.35 4.67.47 4.91.49.14.71-.36.76-.76.14-1.03.08-3.84-.27-4.76-.45-1.19-1.56-1.75-2.78-1.89-.65-.08-3.84-.13-4.18.2zm-12.67 3.76h-7.96v7.96h7.96zm6.74 0h-1.04v1.21h1.04zm9.17 0h-7.96v7.96h7.96zm-12.45 4.67c-.4-.02-.81.02-1.21 0l.03-2.14c.16-.49 1.79-.33 2.22-.11v-1.21s-2.25 0-2.25 0v1.21s-1.04-.17-1.04-.17v6.92h1.04v3.46c-.74 0-1.51.03-2.25 0 0-.4 0-.81 0-1.21.4-.01.81.01 1.21 0 .15-1.21-.17-1.25-1.21-1.21-.01-.34.01-.69 0-1.04h-5.71s0 1.04 0 1.04l1.05.07.16 1.14h1.04c-.14-.96.13-1.58 1.13-1.05l.07 1.05c.34 0 .69-.01 1.04 0 0 .18.03 1.06.16 1.13.34.16.7.07 1.05.08 0 .35.01.69 0 1.04-.32.01-.79-.08-1.05.08v1.05s1.05.08 1.05.08c0-.4-.01-.81 0-1.21.75-.03 1.5.02 2.25 0 0 .4.02.81 0 1.21-.35.01-.69-.01-1.04 0v1.04s1.04 0 1.04 0c.01-.34-.01-.69 0-1.04.75-.03 1.5.02 2.25 0v1.04s1.21 0 1.21 0v1.21s-1.22.1-1.22.1v.94c.38.02 1.05-.15 1.19.28.03.71.05 1.43.02 2.14-.4-.01-.81 0-1.21 0v1.04s1.21 0 1.21 0c0-.34-.01-.69 0-1.04.34.01.69-.02 1.03 0v1.03s1.22 0 1.22 0v-1.04c-.37-.02-1.05.15-1.19-.28v-1.85c.15-.45 1.89-.3 2.4-.28-.03.8.02 1.62 0 2.42h1.04c-.01.35.01.69 0 1.04l-1.04.1v1.11s1.04 0 1.04 0v1.04s1.21 0 1.21 0v-2.25h1.04v2.25h2.25s0-1.04 0-1.04h-1.04s0-1.21 0-1.21c-.4 0-.81 0-1.21 0 0-.75 0-1.5 0-2.25h-1.04c.11 1.32-.1 1.2-1.21 1.21.03-.8-.02-1.62 0-2.42-.34 0-.69.01-1.04 0 .01-.35-.01-.69 0-1.04h1.04s0-1.21 0-1.21h-1.03s0-1.04 0-1.04h-1.21s0-1.21 0-1.21l-1.14.16-.07 1.05h-1.04s0-1.21 0-1.21h-1.21c-.01-.34.01-.69 0-1.04.31-.02.95.11 1.14-.16.14-.34.06-.7.08-1.05.35 0 .69-.01 1.04 0 .01.31-.1.95.16 1.14l1.05.08v-1.21c-.4 0-.81.01-1.21 0-.1-2.24.07-4.51 0-6.75l-1.97-.02c-.43-.14-.26-.81-.28-1.19h-.94c-.19.03-.09.96-.1 1.21zm-10.21 6.75c-.01-.75 0-1.5 0-2.25h-1.21v2.25c.4.01.81-.02 1.21 0 0 .4-.02.81 0 1.21-.4.02-.81-.02-1.21 0v2.25h4.5v-2.25s-1.04 0-1.04 0l-.1 1.04h-2.15c-.01-.35.01-.7 0-1.04 1.06-.07 1.11.04 1.04-1.21-.34-.01-.69.02-1.04 0zm21.45 0c-.35-.01-.69 0-1.04 0v-2.25s-5.71 0-5.71 0v1.04s1.14.16 1.14.16l.07 1.05h1.04c.02-.3-.08-.82.08-1.05.48-.7 1.53.19 1.14 1.05-.4 0-.81 0-1.21 0-.02.4.02.81 0 1.21h-1.04s0 1.04 0 1.04h1.04s0 1.21 0 1.21c.4.01.81-.02 1.21 0-.03 1.09.02 2.2 0 3.29.75.02 1.5-.03 2.25 0v1.21h1.04s0-1.21 0-1.21c-.34 0-.69.01-1.04 0 0-.35 0-.69 0-1.04h1.04s0-1.21 0-1.21h-2.25s0-1.04 0-1.04c-.34-.01-.69.02-1.04 0 .01-.4 0-.81 0-1.21.75.02 1.5-.03 2.25 0v1.21h1.04s0-1.21 0-1.21c-.34 0-.69.01-1.04 0 0-.35 0-.69 0-1.04h1.04c.01-.4-.02-.81 0-1.21.4.01.81 0 1.21 0 .12-1.1-.09-1.37-1.13-1.06-.16.28-.06.73-.08 1.05zm-14.7 4.5h-7.96v7.96h7.96zm2.25 5.71c.01-.34-.01-.69 0-1.04.37-.02 1.05.15 1.19-.28v-1.85c-.14-.43-.81-.26-1.19-.28v-1.04s-1.04 0-1.04 0v4.5c.34.01.69-.02 1.04 0-.02.4.02.81 0 1.21-.34.01-.69-.01-1.04 0v1.04s1.04 0 1.04 0c.01-.34-.01-.69 0-1.04.4-.02.81 0 1.21 0 .02.34-.01.69 0 1.04h2.25v-1.04c-.75 0-1.5 0-2.25 0-.02-.4.02-.81 0-1.21-.4-.01-.81.02-1.21 0zm-14.19-.78v4.67c0 .87 1.48 2.19 2.35 2.32.7.11 3.83.13 4.48 0 .24-.04.4-.14.53-.35l-.1-.69h-4.76c-.34 0-1.21-.86-1.29-1.31-.19-1.13.66-5.82-1.22-4.66zm31.83 4.67c.19-1.17 0-3.36 0-4.67 0-.23-.7-.48-1.01.03-.71 1.18.43 4.48-.68 5.42-.11.1-.92.52-.99.52h-4.59l-.1.69c.13.2.3.3.53.35.65.12 3.79.1 4.48 0 .96-.15 2.19-1.37 2.35-2.32zm-11.93-2.68h-1.21s0 1.04 0 1.04h1.21s0-1.04 0-1.04z"/><path d="m49.99 32.86c.34.02.69-.01 1.04 0v1.04s1.21 0 1.21 0v2.25c-.4 0-.81-.01-1.21 0-.01-.34.01-.69 0-1.04-.35 0-.69 0-1.04 0 0-.75-.02-1.5 0-2.25z"/><path d="m49.99 35.11c0 .35-.01.69 0 1.04-.4-.01-.81.01-1.21 0v-.94c.02-.18.96-.1 1.21-.1z"/><path d="m51.02 36.15c.02.4 0 .81 0 1.21-.34-.02-.69.01-1.04 0 0-.4.01-.81 0-1.21.34.01.7.01 1.04 0z"/><path d="m49.99 40.82c-.02.34.01.69 0 1.04-.4 0-.81-.01-1.21 0 0-.35 0-.69 0-1.04z"/><path d="m51.02 39.61c0 .4-.02.81 0 1.21-.34.02-.69 0-1.04 0 .02-.4-.02-.81 0-1.21.34-.01.69.01 1.04 0z"/><path d="m46.53 38.4c.02.4 0 .81 0 1.21-.4.01-.81.02-1.21 0 0-.31-.1-.95.16-1.14.34-.14.7-.06 1.05-.08z"/><path d="m51.02 37.36c.4.02.81-.02 1.21 0-.03.75.03 1.5 0 2.25-.4 0-.81-.02-1.21 0 0-.75 0-1.5 0-2.25z"/><path d="m70.4 80.79c-.15 2.12.23 4.59 0 6.66-.28 2.58-2.72 4.74-5.27 4.94-9.46.74-19.87-.58-29.43 0-1.03-.09-2.13-.59-2.93-1.22-3.3-2.62-1.9-6.72-2.17-10.38z"/><path d="m61.06 66.78 1.47.17 3.37 5.36 3.03-5.36 1.47-.17v8.47h-1.55v-5.36l-2.59 4.08-.79.26-2.85-4.34v5.36h-1.56z"/><path d="m47.91 66.78 1.48.16 3.54 4.42 1.03.96v-5.54h1.56v8.48l-1.48-.16c-1.48-1.63-2.71-3.51-4.18-5.15-.1-.12.01-.33-.4-.22v5.54h-1.56v-8.48z"/><path d="m78.88 66.78-.03 1.09-.23.29h-4.41v2.08h4.15v1.38h-4.15v2.25h4.84v1.38h-6.4v-8.47z"/><path d="m46.87 75.25-1.7-.03-.7-1.77-4.23-.07c-.97 1.17-.44 2.26-2.54 1.87l3.65-8.46 1.8.15 3.72 8.3zm-3.11-3.28-1.39-3.46c-.25-.2-1.5 3.2-1.73 3.46h3.11z"/><path d="m28 68.49c-1.07-.42-4.12-1.15-4.22.62-.04.68.69.88 1.26 1.08 1.56.54 3.81.41 3.75 2.73-.07 3.03-4.96 2.92-6.76 1.47l.45-1.22c1.02.81 5.31 1.64 4.64-.57-.36-1.19-5.11-.63-4.97-3.47s4.23-3 6.15-1.85l-.29 1.21z"/><path d="m33.68 66.65c1.32-.15 2.98.2 3.83 1.27l-.94 1.1c-2.59-2.72-6.82.5-4.73 3.7 1.09 1.67 3.49 1.53 4.88.3l.78.8c.13.5-1.18 1.16-1.59 1.3-6.57 2.24-8.78-7.74-2.24-8.47z"/></g><path d="m46.53 44.11v7.96h-7.96v-7.96zm-1.22 1.21h-5.54v5.54h5.54z"/><path d="m46.53 28.19v7.96h-7.96v-7.96zm-1.22 1.21h-5.54v5.54h5.54z"/><path d="m62.44 28.19v7.96h-7.96v-7.96zm-1.21 1.21h-5.54v5.71c1.75-.25 3.78-.25 5.54 0z"/><path d="m45.54 10.24c.19-.19.78-.37 1.07-.4 1.51-.17 6.53-.21 7.95.01 1.7.27 1.81 2.84.17 3.09-1.32.21-7.14.21-8.46 0s-1.49-1.96-.74-2.71z"/><path d="m48.78 40.82c0-1.15 0-2.31 0-3.46h-1.04s0-6.92 0-6.92l1.04.17v-1.21s2.25 0 2.25 0v1.21c-.44-.22-2.07-.38-2.23.11l-.03 2.14c.4.01.81-.02 1.21 0-.02.74 0 1.5 0 2.25-.25 0-1.19-.08-1.21.1v.94c.4 0 .81-.01 1.21 0 .01.4-.01.81 0 1.21.34.01.69-.02 1.04 0v2.25c-.34.01-.69-.01-1.04 0-.01.4.02.81 0 1.21-.4 0-.81 0-1.21 0z"/><path d="m46.53 38.4c1.04-.04 1.37 0 1.21 1.21-.4 0-.81-.01-1.21 0 0-.4.02-.81 0-1.21z"/><path d="m45.31 39.61c-.34-.01-.69.01-1.04 0l-.07-1.05c-1-.53-1.27.09-1.13 1.05h-1.04s-.16-1.14-.16-1.14l-1.05-.07v-1.04s5.71 0 5.71 0c.01.34-.01.69 0 1.04-.35.01-.71-.07-1.05.08-.26.18-.15.83-.16 1.14z"/><path d="m49.99 32.86c0-.26-.09-1.19.1-1.21h.94c.02.38-.15 1.05.28 1.19l1.97.02c.07 2.24-.1 4.51 0 6.75.4.01.81-.01 1.21 0v1.21s-1.05-.08-1.05-.08c-.26-.19-.15-.83-.16-1.14-.34-.01-.69 0-1.04 0 .03-.75-.02-1.5 0-2.25-.4-.01-.81.02-1.21 0 0-.4.02-.81 0-1.21.4-.01.81.01 1.21 0v-2.25s-1.21 0-1.21 0v-1.04c-.34-.01-.69.02-1.04 0z"/><path d="m46.53 39.61v1.21c.74.03 1.5 0 2.25 0v1.04c-.75.02-1.5-.03-2.25 0-.01.4.01.81 0 1.21l-1.05-.08v-1.05c.26-.16.74-.07 1.05-.08.01-.35 0-.69 0-1.04-.35-.02-.72.07-1.05-.08-.12-.06-.16-.95-.16-1.13.4.02.81.01 1.21 0z"/><path d="m51.02 40.82c.01.34-.01.69 0 1.04h1.21s0 1.21 0 1.21h1.04s.07-1.05.07-1.05l1.14-.16v1.21s1.21 0 1.21 0v1.03s1.04 0 1.04 0v1.21s-1.04 0-1.04 0c0 .34.01.69 0 1.04.35.01.69-.01 1.04 0-.02.8.03 1.62 0 2.42 1.11-.02 1.32.11 1.21-1.21h1.04v2.25h1.21v1.21s1.04 0 1.04 0v1.04s-2.25 0-2.25 0c0-.75 0-1.5 0-2.25-.35 0-.69 0-1.04 0v2.25s-1.21 0-1.21 0v-1.04s-1.04 0-1.04 0v-1.11s1.04-.1 1.04-.1c0-.34-.01-.69 0-1.04-.35 0-.69 0-1.04 0 .02-.8-.03-1.62 0-2.42-.51-.02-2.25-.17-2.4.28v1.85c.14.43.81.26 1.19.28v1.04s-1.21 0-1.21 0v-1.03c-.35-.03-.69 0-1.04 0-.01.35.01.69 0 1.04h-1.21s0-1.04 0-1.04c.4 0 .81-.01 1.21 0 .03-.71 0-1.43-.02-2.14-.14-.43-.81-.26-1.19-.28v-.94s1.21-.1 1.21-.1v-1.21s-1.21 0-1.21 0v-1.04c-.75.02-1.5-.03-2.25 0-.01.34.01.69 0 1.04h-1.04s0-1.04 0-1.04c.34 0 .69.01 1.04 0 .02-.4 0-.81 0-1.21.4-.01.81 0 1.21 0 .01-.34-.02-.69 0-1.04.34 0 .69.02 1.04 0zm3.47 3.29-1.14.16-.08 1.05h1.21s0-1.21 0-1.21z"/><path d="m52.24 39.61c-.02.35.07.71-.08 1.05-.19.27-.82.15-1.14.16-.02-.4 0-.81 0-1.21.4-.02.81 0 1.21 0z"/><path d="m49.99 35.11h1.04c.01.34-.01.69 0 1.04-.34.01-.7.01-1.04 0-.01-.35 0-.69 0-1.04z"/><path d="m56.73 39.61c-.35 0-.69 0-1.04 0l-.07-1.05-1.14-.16v-1.04h5.71v2.25c.34 0 .69-.01 1.04 0 .02-.33-.08-.77.08-1.05 1.04-.31 1.25-.05 1.13 1.06-.4 0-.81.01-1.21 0-.02.4.01.81 0 1.21h-1.04v1.04c.35.01.69-.01 1.04 0v1.21s-1.04 0-1.04 0c0-.4 0-.81 0-1.21-.75-.03-1.5.02-2.25 0 0 .4.01.81 0 1.21.34.02.69-.01 1.04 0v1.04s2.25 0 2.25 0v1.21s-1.04 0-1.04 0v1.04c.35.01.69-.01 1.04 0v1.21s-1.04 0-1.04 0c0-.4 0-.81 0-1.21-.75-.03-1.5.02-2.25 0 .02-1.09-.03-2.2 0-3.29-.4-.02-.81.02-1.21 0v-1.21s-1.04 0-1.04 0v-1.04s1.04 0 1.04 0c.02-.4-.02-.81 0-1.21h1.21c.4-.85-.65-1.74-1.14-1.05-.16.23-.06.75-.08 1.05z"/><path d="m41.81 24.42c.27.27.12.85-.25.98-1.45.49-5.48-1-5.77 1.49-.1.85.34 4.52-.45 4.75-.49.14-.71-.36-.76-.76-.11-.8-.09-2.99 0-3.82.4-3.56 4.64-3.01 7.23-2.65z"/><path d="m59.2 24.43c.34-.33 3.53-.27 4.18-.2 1.22.14 2.33.7 2.78 1.89.35.93.41 3.74.27 4.76-.05.4-.28.9-.76.76-.81-.24-.33-4.03-.47-4.91-.35-2.22-4.31-.91-5.75-1.34-.45-.13-.58-.64-.25-.96z"/><path d="m66.42 53.71c-.16.95-1.38 2.17-2.35 2.32-.69.11-3.83.13-4.48 0-.24-.04-.4-.14-.53-.35l.1-.69h4.59c.07 0 .88-.42.99-.52 1.11-.94-.03-4.24.68-5.42.31-.51 1.01-.26 1.01-.03 0 1.31.19 3.5 0 4.67z"/><path d="m34.59 49.04c1.88-1.16 1.03 3.53 1.22 4.66.07.44.94 1.31 1.29 1.31h4.76l.1.69c-.13.2-.3.3-.53.35-.66.12-3.79.1-4.48 0-.87-.14-2.35-1.45-2.35-2.32v-4.67z"/><path d="m39.78 39.61c-.4-.02-.81.02-1.21 0v-2.25h1.21c0 .75-.01 1.5 0 2.25.34.02.69-.01 1.04 0 .07 1.25.02 1.15-1.04 1.21.01.34-.01.69 0 1.04h2.15s.1-1.04.1-1.04h1.04s0 2.25 0 2.25h-4.5v-2.25c.4-.02.81.03 1.21 0-.02-.4 0-.81 0-1.21z"/><path d="m48.78 49.82c-.34-.02-.69.01-1.04 0v-4.5s1.04 0 1.04 0v1.04c.37.02 1.04-.15 1.19.28v1.85c-.14.43-.81.26-1.19.28 0 .34.01.69 0 1.04.4.02.81-.02 1.21 0 .01.4-.02.81 0 1.21h2.25v1.04h-2.25c-.01-.34.02-.69 0-1.04-.4 0-.81-.02-1.21 0-.01.34.01.69 0 1.04h-1.04s0-1.04 0-1.04c.34-.01.69.01 1.04 0 .02-.4-.02-.81 0-1.21z"/><path d="m52.23 28.19h1.04v1.21h-1.04z"/><path d="m53.27 51.03h1.21v1.04h-1.21z"/><path d="m43.76 71.97h-3.11c.23-.26 1.47-3.66 1.73-3.46l1.39 3.46z"/><path d="m45.31 45.32v5.54h-5.54v-5.54zm-1.03 4.5v-3.2l-.26-.26h-2.94l-.26.26v3.2z" fill="#fff"/><path d="m45.31 29.4v5.54h-5.54v-5.54zm-1.03 4.5v-3.2l-.35-.19c-.89.29-1.9 0-2.75 0-.2 0-.22.01-.35.19v3.2h3.46z" fill="#fff"/><path d="m61.23 29.4v5.71c-1.76-.25-3.78-.25-5.54 0v-5.71zm-1.03 4.5v-3.2c-.41-.39-1.21-.08-1.82-.08-.56 0-1.26-.34-1.64.08v3.2z" fill="#fff"/><path d="m54.49 44.11v1.21h-1.22l.08-1.05z" fill="#fff"/><path d="m44.28 49.82h-3.46v-3.2l.26-.26h2.94l.26.26z"/><path d="m44.28 33.9h-3.46v-3.2c.13-.18.15-.19.35-.19.86 0 1.87.29 2.75 0l.35.19v3.2z"/><path d="m60.2 33.9h-3.46v-3.2c.38-.41 1.08-.07 1.64-.08.61 0 1.41-.31 1.82.08z"/></svg>        )
+    }
 
     return (
         <>
             {/* 1. Global Print CSS Targets */}
             <style>{`
-                /* 🖥️ Default screen state for print blueprint layout */
-                .stable-card-print-area {
-                    display: none;
+                /* 🖥️ Default hidden screen state */
+                .stable-card-print-area,
+                .dashboard-badge-print-area {
+                    display: none !important;
                 }
 
                 /* 🖨️ Targeted Print Rules */
                 @media print {
-                    /* ✅ Hide the interactive screen card and global components cleanly */
-                    .no-print, 
-                    nav, 
-                    header, 
-                    footer, 
-                    button,
-                    aside,
-                    #sidebar,
-                    .navbar {
+                    .no-print, nav, header, footer, button, aside, #sidebar, .navbar {
                         display: none !important;
                     }
 
-                    /* Unbind paper margins */
                     @page {
                         size: auto;
                         margin: 15mm;
@@ -48,18 +42,33 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         padding: 0 !important;
                     }
 
-                    /* ✅ Force display blueprint card as standard block container flow */
+                    /* 🏢 Only shows if 'default' layout button was targeted */
                     .stable-card-print-area {
-                        display: block !important;
-                        visibility: visible !important;
+                        display: ${variant === 'default' ? 'block !important' : 'none !important'};
+                        visibility: ${variant === 'default' ? 'visible !important' : 'hidden !important'};
                         margin: 40px auto 0 auto !important;
                         width: 100% !important;
-                        max-width: 340px !important;
+                        max-width: 360px !important;
                         border: 10px solid #000000 !important;
-                        padding: 12px 60px !important;
+                        padding: 12px 20px !important;
                         text-align: center !important;
                         box-sizing: border-box !important;
                         background: #ffffff url('/images/aluminium.jpg') center / cover no-repeat !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        page-break-inside: avoid;
+                    }
+
+                    /* 📊 Only shows if 'dashboard' layout button was targeted */
+                    .dashboard-badge-print-area {
+                        display: ${variant === 'dashboard' ? 'block !important' : 'none !important'};
+                        visibility: ${variant === 'dashboard' ? 'visible !important' : 'hidden !important'};
+                        margin: 0px auto 0 auto !important;
+                        width: 100% !important;
+                        padding: 20px !important;
+                        text-align: center !important;
+                        box-sizing: border-box !important;
+                        background: #ffffff !important;
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
                         page-break-inside: avoid;
@@ -89,10 +98,19 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         color: #000000;
                     }
 
-                    .stable-print-subtitle {
-                        font-size: 12px;
-                        margin: 0 0 8px 0;
-                        line-height: 1.4;
+                    .dashboard-badge-title {
+                        font-size: 70px;
+                        margin: 0 0 4px 0;
+                        font-weight: 400;
+                        letter-spacing: 5px;
+                        text-transform: uppercase;
+                    }
+
+                    .dashboard-badge-subtitle {
+                        font-size: 35px;
+                        margin: 0 0 16px 0;
+                        letter-spacing: 3px;
+                        text-transform: uppercase;
                     }
 
                     .stable-print-qr-wrapper {
@@ -118,64 +136,81 @@ export default function HorseQrCode({ horseId, horseName }: HorseQrCodeProps): R
                         border: 1px solid #000000;
                         margin-bottom: 16px;
                     }
-
-                    .stable-print-logo {
-                        max-width: 100px;
-                        margin: 0 auto 16px;
-                        display: block;
+             
+                    .dashboard-badge-alert-footer {
+                        background-color: #ff0000 !important;
+                        border-radius: 8px;
+                        padding: 4px;
+                        font-size: 12px;
+                        color: #ffff00;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                        border: 1px solid #000000;
+                        width: 300px;
+                        margin: 0 auto 24px;
+                    }
+                    
+                    .dashboard-badge-qr-wrapper {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 400px;
+                        margin: 80px auto;
+                        padding: 48px;
+                        border: 2px dashed #000000;
+                    }
+                    
+                    .dashboard-badge-footer-text {
+                        font-size: 16px;
+                        margin: 0 0 16px 0;
+                        letter-spacing: 3px;
+                        text-transform: uppercase;
+                    }
+                    .dashboard-badge-footer-container {
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+                        background-color: #56483b;
+                        color: #ffffff;
+                        padding: 16px 52px;
+                    }
+                    
+                    .scan-qr-container svg {
+                        width: 80px;
+                        margin: 0 auto;
                     }
                 }
             `}</style>
 
-            {/* 2. Dashboard Screen View Container Box (Disappears when printing) */}
-            <div className="no-print qr-container">
-                <div>
-                    <h3 className={"large-text"}>Stable QR Code Tag</h3>
-                    <p className="text-normal">
-                        Generate a door tag for {horseName}'s stable box.
-                    </p>
-
-                    <div style={{ visibility: 'hidden', height: '0', overflow: 'hidden' }}>
-                        <QRCodeSVG
-                            value={absoluteUrl}
-                            size={160}
-                            bgColor={"#ffffff"}
-                            fgColor={"#000000"}
-                            level={"H"}
-                        />
-                    </div>
-
-                    <div style={{ marginTop: '18px' }}>
-                        <button
-                            onClick={handlePrint}
-                            className="buttonMain buttonPurple"
-                        >
-                            <span>🖨️</span> Print Stable Card
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* 3. Hidden Print Blueprint Layout (Fixed position layer to bypass nested parent hides) */}
+            {/* 2. Hidden Print Component Template A */}
             <div className="stable-card-print-area">
                 <div className="stable-print-header-tag">NeighTag Records</div>
                 <h1 className="stable-print-title">{horseName}</h1>
-                {/*<p className="stable-print-subtitle">Scan this QR code with any smartphone camera to instantly view emergency contacts, medical logs, and dietary history.</p>*/}
-
                 <div className="stable-print-qr-wrapper">
-                    <QRCodeSVG
-                        value={absoluteUrl}
-                        size={120}
-                        bgColor={"#ffffff"}
-                        fgColor={"#000000"}
-                        level={"H"}
-                    />
+                    <QRCodeSVG value={absoluteUrl} size={120} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} />
                 </div>
-                <p className="stable-print-alert-footer">
-                    ⚠️ Scan In Case of Emergency
-                </p>
-                <p className="stable-print-footer-tag">www.neightag.com</p>
+                <p className="stable-print-alert-footer">⚠️ Scan In Case of Emergency</p>
+                <p className="stable-print-footer-tag">Powered by neightag.com</p>
+            </div>
 
+            {/* 3. Hidden Print Component Template B */}
+            <div className="dashboard-badge-print-area">
+                <p className="dashboard-badge-title">Emergency</p>
+                <p className="dashboard-badge-subtitle">Contact Information</p>
+                <div className="dashboard-badge-qr-wrapper">
+                    <QRCodeSVG value={absoluteUrl} size={300} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} />
+                </div>
+                <p className="dashboard-badge-alert-footer">⚠️ Scan In Case of Emergency</p>
+                <div className="dashboard-badge-footer-container">
+
+                    <div><p className="dashboard-badge-footer-text">www.neightag.com</p></div>
+                    <div style={{ marginLeft: 'auto' }} className="scan-qr-container">
+                        <AccountSvg />
+                    </div>
+                </div>
             </div>
         </>
     );

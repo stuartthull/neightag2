@@ -15,8 +15,10 @@ export default function Dashboard() {
     const [horseName, setHorseName] = useState('');
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    // 🔍 1. Track which horse profile is currently selected for printing
+
+    // 🔍 Track which horse AND which design variant is active for printing
     const [activePrintId, setActivePrintId] = useState<string | null>(null);
+    const [activePrintVariant, setActivePrintVariant] = useState<'default' | 'dashboard'>('default');
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -36,7 +38,6 @@ export default function Dashboard() {
         } else {
             const logs = (data as LogRecord[]) || [];
             setMyLogs(logs);
-            // Default to the first horse if available so there's always a backup target
             if (logs.length > 0) setActivePrintId(logs[0].horse_uuid);
         }
         setLoading(false);
@@ -69,12 +70,11 @@ export default function Dashboard() {
         const confirmDelete = window.confirm("Are you sure? This will permanently wipe this horse, its entire calendar, and all its associated records. These can not be recovered.");
         if (!confirmDelete) return;
 
-        // ⚡ This single query triggers a chain reaction that clears everything
         const { error } = await supabase
             .from('equi_log_main')
             .delete()
             .eq('horse_uuid', horseUuid)
-            .eq('user_uuid', userId); // 🔒 Security check
+            .eq('user_uuid', userId);
 
         if (error) {
             alert(`Deletion failed: ${error.message}`);
@@ -84,9 +84,10 @@ export default function Dashboard() {
         }
     };
 
-    const triggerPrint = (horseUuid: string) => {
+    // 🖨️ Explicitly accept the layout variant alongside the horse id
+    const triggerPrint = (horseUuid: string, variant: 'default' | 'dashboard') => {
         setActivePrintId(horseUuid);
-        // Small timeout allows React to apply the active print class before triggering the browser dialog
+        setActivePrintVariant(variant);
         setTimeout(() => {
             window.print();
         }, 100);
@@ -115,16 +116,18 @@ export default function Dashboard() {
                         {/* 🐴 HORSE MANAGEMENT ROSTER */}
                         {myLogs.map(log => (
                             <section key={log.id} className="section-container white-section-container no-print marginbsixteen">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} className="marginbsixteen">
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
                                     <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
 
-                                    {/* 🖨️ Action button to lock focus onto this specific horse asset */}
-                                    <button
-                                        onClick={() => triggerPrint(log.horse_uuid)}
-                                        className="buttonPurple buttonSmall"
-                                    >
-                                        🖨️ Print QR Tag
-                                    </button>
+                                    {/* 🖨️ Dual Print Action Row */}
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <button
+                                            onClick={() => triggerPrint(log.horse_uuid, 'default')}
+                                            className="buttonPurple buttonSmall"
+                                        >
+                                            🖨️ Print Stable Tag
+                                        </button>
+                                    </div>
                                 </div>
                                 <ul>
                                     <li className='marginbsixteen'>
@@ -168,6 +171,24 @@ export default function Dashboard() {
                                     <Link to={`/horsebox-view`} className="text-purple">View your horsebox details</Link>
                                 </li>
                             </ul>
+
+                            {myLogs.map(log => (
+                                <section key={log.id} className="section-container white-section-container no-print marginbsixteen">
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
+                                        <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
+
+                                        {/* 🖨️ Dual Print Action Row */}
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button
+                                                onClick={() => triggerPrint(log.horse_uuid, 'dashboard')}
+                                                className="buttonPurple buttonSmall"
+                                            >
+                                                🖨️ Print Horsebox Poster
+                                            </button>
+                                        </div>
+                                    </div>
+                                </section>
+                                    ))}
                         </section>
                     </>
                 )}
@@ -178,7 +199,8 @@ export default function Dashboard() {
                         key={`qr-${log.id}`}
                         className={`stable-qr-print-block ${log.horse_uuid === activePrintId ? 'print-target-active' : 'print-target-hidden'}`}
                     >
-                        <HorseQrCode horseId={log.horse_uuid} horseName={log.horse_name} />
+                        {/* Passes dynamic layout instructions straight to the renderer child block */}
+                        <HorseQrCode horseId={log.horse_uuid} horseName={log.horse_name} variant={activePrintVariant} />
                     </div>
                 ))}
 
