@@ -47,8 +47,8 @@ export default function FieldPrivacy() {
                     .insert({
                         horse_uuid: horse_uuid,
                         user_uuid: ownerId
-            })
-            .select()
+                    })
+                    .select()
                     .single();
 
                 if (!createError) {
@@ -110,59 +110,83 @@ export default function FieldPrivacy() {
         </div>
     );
 
-    const fields = [
-        // --- BASIC IDENTITY & DATA ---
-        { label: "Horse Name", key: "show_name" },
-        { label: "Breed / Pedigree Type", key: "show_breed" },
-        { label: "Coat Colour", key: "show_colour" },
-        { label: "Height (hh)", key: "show_height" },
-        { label: "Weight Metrics (kg)", key: "show_weight" },
-        { label: "Date of Birth / Age", key: "show_dob" },
-        { label: "Passport Number", key: "show_passport" },
-        { label: "Last Date Weighed", key: "show_last_weighed" },
-
-        // --- EMERGENCY PROTOCOLS ---
-        { label: "Primary Emergency Name", key: "show_emergency_name_one" },
-        { label: "Primary Emergency Phone", key: "show_emergency_phone_one" },
-        { label: "Secondary Emergency Contact Name", key: "show_emergency_name_two" },
-        { label: "Secondary Emergency Contact Phone", key: "show_emergency_phone_two" },
-
-        // --- VETERINARY CARE DEEP DIVE ---
-        { label: "Vet Name", key: "show_vet_name" },
-        { label: "Vet Clinic / Practice", key: "show_vet_practice" },
-        { label: "Vet Primary Phone", key: "show_vet_phone" },
-        { label: "Active Medications Log", key: "show_medication" },
-        { label: "Allergy Records & Alerts", key: "show_allergies" },
-
-        // --- SADDLE FITTER HISTORY ---
-        { label: "Saddle Fitter Name", key: "show_saddle_fitter_name" },
-        { label: "Saddle Fitter Contact Phone", key: "show_saddle_fitter_phone" },
-        { label: "Saddle Fitter Next Appointment Due", key: "show_saddle_fitter_next" },
-        { label: "Saddle Fitter Notes", key: "show_saddle_fitter_notes" },
-
-        // --- PHYSIOTHERAPIST HISTORY ---
-        { label: "Physiotherapist Name", key: "show_physio_name" },
-        { label: "Physiotherapist Contact Phone", key: "show_physio_phone" },
-        { label: "Physiotherapist Next Appointment Due", key: "show_physio_next" },
-        { label: "Physiotherapist Notes", key: "show_physio_notes" },
-
-        // --- FARRIER HISTORY ---
-        { label: "Farrier Name", key: "show_farrier_name" },
-        { label: "Farrier Contact Phone", key: "show_farrier_phone_one" },
-        { label: "Farrier Last Visit Date", key: "show_farrier_last" },
-        { label: "Farrier Next Appointment Due", key: "show_farrier_next" },
-        { label: "Farrier Technical Shoe/Trim Notes", key: "show_farrier_notes" },
-
-        // --- DENTAL HISTORY ---
-        { label: "Dentist Name", key: "show_dentist_name" },
-        { label: "Dentist Contact Phone", key: "show_dentist_phone" },
-        { label: "Dental Last Exam Date", key: "show_dentist_last" },
-        { label: "Dental Next Exam Due Date", key: "show_dentist_next" },
-    { label: "Dental Pathology Notes", key: "show_dentist_notes" },
-
-    // --- CARE, STABLE, & MANAGEMENT ---
-    { label: "Diet & Feeding Instructions text", key: "show_feeding" },
-];
+    // 🗺️ Categorized Sections Structured Object Map
+    const fieldSections = [
+        {
+            sectionTitle: "Basic Identity & Data",
+            items: [
+                { label: "Horse Name", key: "show_name" },
+                { label: "Breed / Pedigree Type", key: "show_breed" },
+                { label: "Coat Colour", key: "show_colour" },
+                { label: "Height (hh)", key: "show_height" },
+                { label: "Weight Metrics (kg)", key: "show_weight" },
+                { label: "Date of Birth / Age", key: "show_dob" },
+                { label: "Passport Number", key: "show_passport" },
+                { label: "Last Date Weighed", key: "show_last_weighed" },
+            ]
+        },
+        {
+            sectionTitle: "Emergency Protocols",
+            items: [
+                { label: "Primary Emergency Name", key: "show_emergency_name_one" },
+                { label: "Primary Emergency Phone", key: "show_emergency_phone_one" },
+                { label: "Secondary Emergency Contact Name", key: "show_emergency_name_two" },
+                { label: "Secondary Emergency Contact Phone", key: "show_emergency_phone_two" },
+            ]
+        },
+        {
+            sectionTitle: "Veterinary",
+            items: [
+                { label: "Vet Name", key: "show_vet_name" },
+                { label: "Vet Clinic / Practice", key: "show_vet_practice" },
+                { label: "Vet Primary Phone", key: "show_vet_phone" },
+                { label: "Active Medications Log", key: "show_medication" },
+                { label: "Allergy Records & Alerts", key: "show_allergies" },
+            ]
+        },
+        {
+            sectionTitle: "Care, Stable, & Management",
+            items: [
+                { label: "Diet & Feeding Instructions", key: "show_feeding" },
+            ]
+        },
+        {
+            sectionTitle: "Farrier History",
+            items: [
+                { label: "Farrier Name", key: "show_farrier_name" },
+                { label: "Farrier Contact Phone", key: "show_farrier_phone_one" },
+                { label: "Farrier Next Appointment Due", key: "show_farrier_next" },
+                { label: "Farrier Technical Shoe/Trim Notes", key: "show_farrier_notes" },
+            ]
+        },
+        {
+            sectionTitle: "Dental History",
+            items: [
+                { label: "Dentist Name", key: "show_dentist_name" },
+                { label: "Dentist Contact Phone", key: "show_dentist_phone" },
+                { label: "Dental Next Exam Due Date", key: "show_dentist_next" },
+                { label: "Dental Pathology Notes", key: "show_dentist_notes" },
+            ]
+        },
+        {
+            sectionTitle: "Physiotherapist History",
+            items: [
+                { label: "Physiotherapist Name", key: "show_physio_name" },
+                { label: "Physiotherapist Contact Phone", key: "show_physio_phone" },
+                { label: "Physiotherapist Next Appointment Due", key: "show_physio_next" },
+                { label: "Physiotherapist Notes", key: "show_physio_notes" },
+            ]
+        },
+        {
+            sectionTitle: "Saddle Fitter History",
+            items: [
+                { label: "Saddle Fitter Name", key: "show_saddle_fitter_name" },
+                { label: "Saddle Fitter Contact Phone", key: "show_saddle_fitter_phone" },
+                { label: "Saddle Fitter Next Appointment Due", key: "show_saddle_fitter_next" },
+                { label: "Saddle Fitter Notes", key: "show_saddle_fitter_notes" },
+            ]
+        }
+    ];
 
     return (
         <div className="page-wrapper">
@@ -176,23 +200,41 @@ export default function FieldPrivacy() {
                 </section>
 
                 <section className="section-container white-section-container">
-                    <h2 className="textmedium marginbeight">Visibility Settings</h2>
-                    {fields.map(field => (
-                        <div key={field.key} className="visibility-settings marginbsixteen">
-                            <div>
-                                <div className="textmedium">{field.label}</div>
-                                <div>
-                                    {privacy?.[field.key] ? <span className="visible-note">🌐 Visible to everyone</span> : <span className="visible-note-not">🔒 Hidden from public view</span>}
+                    <h2 className="textmedium" style={{ marginBottom: '24px', borderBottom: '2px solid #f1f5f9', paddingBottom: '12px' }}>
+                        Visibility Settings
+                    </h2>
+
+                    {/* 🔄 Double Map Loop processing structured Section containers */}
+                    {fieldSections.map((section, idx) => (
+                        <div key={`section-${idx}`} style={{ marginBottom: '48px' }}>
+                            {/* Section Header Title Banner */}
+                            <h3 className="textbig">
+                                {section.sectionTitle}
+                            </h3>
+
+                            {/* Category setting cards array mapping row loop */}
+                            {section.items.map(field => (
+                                <div key={field.key} className="visibility-settings marginbsixteen">
+                                    <div>
+                                        <div className="textmedium">{field.label}</div>
+                                        <div>
+                                            {privacy?.[field.key] ? (
+                                                <span className="visible-note">🌐 Visible to everyone</span>
+                                            ) : (
+                                                <span className="visible-note-not">🔒 Hidden from public view</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={privacy?.[field.key] || false}
+                                            onChange={() => toggleField(field.key)}
+                                        />
+                                        <span className="slider round"></span>
+                                    </label>
                                 </div>
-                            </div>
-                            <label className="switch">
-                                <input
-                                    type="checkbox"
-                                    checked={privacy?.[field.key] || false}
-                                    onChange={() => toggleField(field.key)}
-                                />
-                                <span className="slider round"></span>
-                            </label>
+                            ))}
                         </div>
                     ))}
                 </section>

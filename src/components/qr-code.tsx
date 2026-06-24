@@ -53,7 +53,6 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
                         padding: 12px 20px !important;
                         text-align: center !important;
                         box-sizing: border-box !important;
-                        background: #ffffff url('/images/aluminium.jpg') center / cover no-repeat !important;
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
                         page-break-inside: avoid;

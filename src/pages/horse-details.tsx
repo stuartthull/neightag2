@@ -220,7 +220,7 @@ export default function HorseDetails() {
                 )}
 
                 {/* FARRIER SECTION */}
-                {(shouldShow('show_farrier_name') || shouldShow('show_farrier_phone_one') || shouldShow('show_farrier_email') || shouldShow('show_farrier_last') || shouldShow('show_farrier_next') || shouldShow('show_farrier_notes')) && (
+                {(shouldShow('show_farrier_name') || shouldShow('show_farrier_phone_one') || shouldShow('show_farrier_last') || shouldShow('show_farrier_next') || shouldShow('show_farrier_notes')) && (
                     <section className="card marginbsixteen">
                         <h2 className="textmedium">Farrier</h2>
                         {shouldShow('show_farrier_name') && <div className="text-normal marginbeight datarow"><span>Farrier Name:</span> <strong>{horse.farrier_name || 'N/A'}</strong></div>}
@@ -238,7 +238,7 @@ export default function HorseDetails() {
                 )}
 
                 {/* DENTIST SECTION */}
-                {(shouldShow('show_dentist_name') || shouldShow('show_dentist_phone') || shouldShow('show_dentist_email') || shouldShow('show_dentist_last') || shouldShow('show_dentist_next') || shouldShow('show_dentist_notes')) && (
+                {(shouldShow('show_dentist_name') || shouldShow('show_dentist_phone') || shouldShow('show_dentist_last') || shouldShow('show_dentist_next') || shouldShow('show_dentist_notes')) && (
                     <section className="card marginbsixteen">
                         <h2 className="textmedium">Dentist</h2>
                         {shouldShow('show_dentist_name') && <div className="text-normal marginbeight datarow"><span>Dentist Name:</span> <strong>{horse.dentist_name || 'N/A'}</strong></div>}
