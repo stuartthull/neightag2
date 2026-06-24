@@ -98,7 +98,7 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
                     }
 
                     .dashboard-badge-title {
-                        font-size: 60px;
+                        font-size: 70px;
                         margin: 0 0 4px 0;
                         font-weight: 600;
                         letter-spacing: 5px;
@@ -106,7 +106,7 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
                     }
 
                     .dashboard-badge-subtitle {
-                        font-size: 30px;
+                        font-size: 40px;
                         margin: 0 0 16px 0;
                         letter-spacing: 3px;
                         font-weight: 600;
@@ -198,8 +198,8 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
 
             {/* 3. Hidden Print Component Template B */}
             <div className="dashboard-badge-print-area">
-                <p className="dashboard-badge-title">Emergency</p>
-                <p className="dashboard-badge-subtitle">Contact Information</p>
+                <p className="dashboard-badge-title">Contact</p>
+                <p className="dashboard-badge-subtitle">Information</p>
                 <div className="dashboard-badge-qr-wrapper">
                     <QRCodeSVG value={absoluteUrl} size={300} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} />
                 </div>
