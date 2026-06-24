@@ -125,7 +125,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
 
                 <section className="section-container purple-section-container">
                     <button type="button" onClick={() => navigate('/calendar')} className="buttonWhite buttonMain marginbsixteen">
-                        ← Cancel & Return
+                        ← Return
                     </button>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>

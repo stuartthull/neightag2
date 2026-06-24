@@ -15,6 +15,9 @@ interface QuickEvent {
     id: number;
     calendar_title: string;
     calendar_date: string;
+    equi_log_main?: {
+        horse_name: string;
+    };
 }
 
 interface HorseBoxAlert {
@@ -47,15 +50,21 @@ function Home(): React.JSX.Element {
         const fetchUpcomingAlerts = async () => {
             const todayStr = new Date().toISOString().split('T')[0];
 
-            // --- 1. Fetch 7-Day Calendar Events (Isolated Explicit Columns) ---
+            // --- 1. Fetch 7-Day Calendar Events with Relational Horse Name Join ---
             const upperLimit7 = new Date();
             upperLimit7.setDate(upperLimit7.getDate() + 7);
             const upperLimit7Str = upperLimit7.toISOString().split('T')[0];
 
             const { data: calendarData, error: calendarError } = await supabase
                 .from('equi_calendar')
-                // ⚡ FORCE clean isolated data extraction, ignoring any table cross-linking loops
-                .select('id, calendar_title, calendar_date')
+                .select(`
+                    id, 
+                    calendar_title, 
+                    calendar_date,
+                    equi_log_main (
+                        horse_name
+                    )
+                `)
                 .eq('user_uuid', session.user.id)
                 .gte('calendar_date', todayStr)
                 .lte('calendar_date', upperLimit7Str)
@@ -64,7 +73,7 @@ function Home(): React.JSX.Element {
             if (calendarError) {
                 console.error("Homepage calendar cache bypass log:", calendarError.message);
             } else if (calendarData) {
-                setUpcomingEvents(calendarData as QuickEvent[]);
+                setUpcomingEvents(calendarData as any[]);
             }
 
             // --- 2. Fetch Horsebox and Evaluate 30-Day Deadlines ---
@@ -117,48 +126,47 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container full-width">
- <p className="text-normal">DONT WORRY WE WONT TAKE ANY PAYMENT, THIS IS A TEST PHASE. YOUR EMAIL AND PASSWORD ARE JUST DUMMY DATA AND WILL NOT BE STORED. IF YOU ENTER YOUR REAL EMAIL ADDRESS YOU WILL BE ENTERED INTO A DRAW TO WIN £50 OF VOUCHERS FOR YOUR LOCAL EQUESTRIAN STORE. </p>
+                <p className="text-normal">DONT WORRY WE WONT TAKE ANY PAYMENT, THIS IS A TEST PHASE. YOUR EMAIL AND PASSWORD ARE JUST DUMMY DATA AND WILL NOT BE STORED. IF YOU ENTER YOUR REAL EMAIL ADDRESS YOU WILL BE ENTERED INTO A DRAW TO WIN £50 OF VOUCHERS FOR YOUR LOCAL EQUESTRIAN STORE. </p>
             </div>
 
             <div className="page-container home-layout-grid">
 
-                    {session && (
-                        <div className="section-container lightorange-section-container full-width">
-                            <h2 className="textbig">Your upcoming events</h2>
-                            {upcomingEvents.length > 0 ? (
+                {session && (
+                    <div className="section-container lightorange-section-container full-width">
+                        <h2 className="textbig">Your upcoming events</h2>
+                        {upcomingEvents.length > 0 ? (
                             <div>
                                 <p className="marginbsixteen">
                                     <span>📅</span>{' '}-{' '}
                                     <strong className="text-normal">Next 7 Days:</strong>
                                 </p>
                                 <ul className="events-list">
-                                    {upcomingEvents.map(event => (
-                                        <li key={event.id} className="marginbsixteen">
-                                            {/* 🛠️ Adjusted to match your edit component routing strategy path cleanly */}
-                                            <Link to={`/calendar`} className="text-normal">
-                                                {event.calendar_title}{' '}-{' '}
-                                                <span>
-                                                    ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
-                                                </span>
-                                            </Link>
-                                        </li>
-                                    ))}
+                                    {upcomingEvents.map(event => {
+                                        const horseName = event.equi_log_main?.horse_name;
+                                        return (
+                                            <li key={event.id} className="marginbsixteen">
+                                                <Link to={`/calendar`} className="text-normal">
+                                                    {horseName ? `${horseName} • ` : ''}{event.calendar_title}{' '}-{' '}
+                                                    <span>
+                                                        ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                                    </span>
+                                                </Link>
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
-                    ) : (
-                        <>
-                        <p className="marginbsixteen">
-                            <span>📅</span>{' '}-{' '}
-                            <strong className="text-normal">You have no events in the next 7 days.</strong>
-                        </p>
-                            <p><Link to="/calendar">View Calendar</Link></p>
-                        </>
-                    )}
-                        </div>
-                    )}
-
-
-
+                        ) : (
+                            <>
+                                <p className="marginbsixteen">
+                                    <span>📅</span>{' '}-{' '}
+                                    <strong className="text-normal">You have no events in the next 7 days.</strong>
+                                </p>
+                                <p><Link to="/calendar">View Calendar</Link></p>
+                            </>
+                        )}
+                    </div>
+                )}
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
                 {session && horseBoxAlerts.length > 0 && (
@@ -186,19 +194,18 @@ function Home(): React.JSX.Element {
                 )}
 
                 {!session && (
-                        <div className="section-container white-section-container full-width">
-                            <div className="text-center">
-                                <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
-                                <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
-                                <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every month. See? Proof that not everything in the horse world has to be expensive.</p>
-                                <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
-                                <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
-                                <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
-                                <p className="text-normal marginbsixteen"><Link to="/about-us">About us</Link></p>
-                            </div>
+                    <div className="section-container white-section-container full-width">
+                        <div className="text-center">
+                            <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
+                            <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
+                            <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every month. See? Proof that not everything in the horse world has to be expensive.</p>
+                            <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
+                            <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
+                            <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
+                            <p className="text-normal marginbsixteen"><Link to="/about-us">About us</Link></p>
                         </div>
-                        )
-                }
+                    </div>
+                )}
 
                 <div className="section-container purple-section-container full-width">
                     <h1 className="textbig">How it works.</h1>
@@ -231,7 +238,6 @@ function Home(): React.JSX.Element {
 
                 <div className="section-container white-section-container full-width">
                     <div className="about-split-row">
-
                         {/* Left Side: Text Column */}
                         <div className="about-text-col">
                             <h3 className="textmedium marginbeight">Meet Jane, Our Inspiration</h3>
@@ -286,12 +292,12 @@ function Home(): React.JSX.Element {
                     </>
                 )}
                 <div className="section-container full-width" style={{ textAlign: 'center' }}>
-                        <p className="text-normal">
-                            Thank you for being part of the NeighTag family. We’ll see you out on the cross-country course!
-                        </p>
-                        <p className="text-purple" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
-                            — The NeighTag Family (Mandy, Abs and Jane! 🥕)
-                        </p>
+                    <p className="text-normal">
+                        Thank you for being part of the NeighTag family. We’ll see you out on the cross-country course!
+                    </p>
+                    <p className="text-purple" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
+                        — The NeighTag Family (Mandy, Abs and Jane! 🥕)
+                    </p>
                 </div>
 
             </div>
