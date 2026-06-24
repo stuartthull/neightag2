@@ -24,6 +24,7 @@ import ScrollToTop from './components/scroll-to-top';
 import Footer from "./components/footer";
 import WhatDoYouGet from "./pages/what-do-you-get";
 import CookiePolicy from "./pages/cookie-policy";
+import PrivacyPolicy from "./pages/privacy-policy";
 
 const LogoSvg = () => {
     return (
@@ -53,6 +54,7 @@ export default function App() {
                     <Route path="/contact-us" element={<ContactUs />} />
                     <Route path="/what-you-get" element={<WhatDoYouGet />} />
                     <Route path="/cookie-policy" element={<CookiePolicy />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
                     {/* Dynamic Parameterized Route for single-horse public/owner views */}
                     <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />

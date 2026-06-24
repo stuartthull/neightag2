@@ -33,6 +33,9 @@ export default function Footer(): React.JSX.Element {
                     <li>
                         <Link to="/cookie-policy" className="text-normal footer-link">Cookies</Link>
                     </li>
+                    <li>
+                        <Link to="/privacy-policy" className="text-normal footer-link">Privacy Policy</Link>
+                    </li>
                 </ul>
 
             </div>

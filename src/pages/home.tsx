@@ -126,7 +126,9 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container full-width">
-                <p className="text-normal">DONT WORRY WE WONT TAKE ANY PAYMENT, THIS IS A TEST PHASE. YOUR EMAIL AND PASSWORD ARE JUST DUMMY DATA AND WILL NOT BE STORED. IF YOU ENTER YOUR REAL EMAIL ADDRESS YOU WILL BE ENTERED INTO A DRAW TO WIN £50 OF VOUCHERS FOR YOUR LOCAL EQUESTRIAN STORE. </p>
+                <div className="section-container lightorange-section-container marginbsixteen" style={{ borderLeft: '4px solid #f97316' }}>
+                    <p className="text-normal">Don't worry we won't take any payment, this is a test phase. Your email and password are just used so you can log back in. If you enter your real email address you will be entered into a draw to win £50 of vouchers for your local equestrian store.</p>
+                </div>
             </div>
 
             <div className="page-container home-layout-grid">
