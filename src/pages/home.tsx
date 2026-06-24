@@ -218,7 +218,7 @@ function Home(): React.JSX.Element {
                             <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
                             <div className="info-bar-column">
                                 <h2 className="textmedium">Get your QR code</h2>
-                                <p className="text-normal">Either purchase a waterproof plastic tag for your stable. Or simple print it out and stick it on your stable.</p>
+                                <p className="text-normal">Simply print it out and stick it on your stable.</p>
                             </div>
                         </div>
 
