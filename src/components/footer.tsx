@@ -31,7 +31,7 @@ export default function Footer(): React.JSX.Element {
                         <Link to="/contact-us" className="text-normal footer-link">Contact Us</Link>
                     </li>
                     <li>
-                        <Link to="/login" className="text-normal footer-link">Login / Sign Up</Link>
+                        <Link to="/cookie-policy" className="text-normal footer-link">Cookies</Link>
                     </li>
                 </ul>
 
