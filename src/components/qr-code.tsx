@@ -98,17 +98,18 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
                     }
 
                     .dashboard-badge-title {
-                        font-size: 70px;
+                        font-size: 60px;
                         margin: 0 0 4px 0;
-                        font-weight: 400;
+                        font-weight: 600;
                         letter-spacing: 5px;
                         text-transform: uppercase;
                     }
 
                     .dashboard-badge-subtitle {
-                        font-size: 35px;
+                        font-size: 30px;
                         margin: 0 0 16px 0;
                         letter-spacing: 3px;
+                        font-weight: 600;
                         text-transform: uppercase;
                     }
 
@@ -156,7 +157,7 @@ export default function HorseQrCode({ horseId, horseName, variant = 'default' }:
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        width: 400px;
+                        width: 370px;
                         margin: 80px auto;
                         padding: 48px;
                         border: 2px dashed #000000;
