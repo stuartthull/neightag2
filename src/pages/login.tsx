@@ -28,16 +28,31 @@ export default function Login(): React.JSX.Element {
         try {
             if (isSignUp) {
                 const { error } = await supabase.auth.signUp({ email, password });
-                if (error) throw error;
-                alert('Great you are in. We wont keep your details after the trial.');
+
+                // ✅ Read standard .message from AuthError directly
+                if (error) {
+                    alert(error.message);
+                    setLoading(false);
+                    return;
+                }
+
+                alert('Great, you are almost in! Please check your inbox and click the confirmation link to activate your account.');
+                setLoading(false);
+                return;
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
-                if (error) throw error;
+
+                if (error) {
+                    alert(error.message);
+                    setLoading(false);
+                    return;
+                }
+
+                navigate('/dashboard');
             }
-            // ✅ Only navigate home if auth is completely successful
-            navigate('/dashboard');
         } catch (error: any) {
-            alert(error.error_description || error.message);
+            // Handles unexpected generic exceptions cleanly
+            alert(error?.message || "An unexpected error occurred.");
         } finally {
             setLoading(false);
         }
