@@ -194,8 +194,7 @@ function Home(): React.JSX.Element {
                         <div className="text-center">
                             <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
                             <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
-                            <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's just £1 billed every month. See? Proof that not everything in the horse world has to be expensive.</p>
-                            <p className="text-normal marginbsixteen">No Contracts: Cancel your QR code subscription at any time.</p>
+                            <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's less than £1 per month, billed annually. See? Proof that not everything in the horse world has to be expensive.</p>
                             <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
                             <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
                             <p className="text-normal marginbsixteen"><Link to="/about-us">About us</Link></p>
@@ -204,7 +203,7 @@ function Home(): React.JSX.Element {
                 )}
 
                 <div className="section-container purple-section-container full-width">
-                    <h1 className="textbig">How it works.</h1>
+                    <h1 className="textbig">How it works if you subscribe for less than £1 per month.</h1>
                     <div className="info-bar-grid">
                         <div className="info-bar">
                             <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
@@ -264,21 +263,22 @@ function Home(): React.JSX.Element {
                                 <img className='marginbsixteen pricing-img' src={Money} alt='Pricing' />
                                 <div className="pricing-text">
                                     <p className='marginbsixteen'>Opening an account and adding details is free. You can store all the information you need for your horse and we wont need a penny.</p>
-                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code. We charge a <strong>monthly fee of £1</strong>.</p>
+                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code, use the calendar and horsebox feature it will be <strong>less than £1 a month.</strong></p>
                                     <p className='marginbsixteen'>See, not all horse related things are expensive.</p>
-                                    <p className='marginbsixteen'>You can cancel your QR code view anytime, and we will retain your horse information for you.</p>
+                                    <p className='marginbsixteen'>£11 will be charge for a 12 month subscription. Your details will be retained for you even if you dont re-subscribe.</p>
                                     <p className='marginbsixteen'><strong>Whats not to like?</strong></p>
                                 </div>
                             </div>
                         </div>
 
                         <div className="section-container white-section-container split-card">
-                            <h2 className="textbig">Your NeighTag calendar.</h2>
+                            <h2 className="textbig">Your extras.</h2>
                             <div className="pricing-content-wrapper">
                                 <img className='marginbsixteen pricing-img' src={Calendar} alt="Calendar setup" />
                                 <div className="pricing-text">
                                     <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your NeighTag calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our NeighTag calendar.</p>
-                                    <p className="text-normal marginbsixteen">Get a message reminder a few days before so you dont forget those important dates.</p>
+                                    <p className="text-normal marginbsixteen">Get a shareable QR code. Also add your horse box details, insurance, breakdown, MOT dates etc.</p>
+                                    <p className="text-normal marginbsixteen">Get a reminder a few days before so you dont forget those important dates.</p>
                                     {!session && (
                                         <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
                                     )}

@@ -11,6 +11,10 @@ export default function Login(): React.JSX.Element {
     const [password, setPassword] = useState<string>('');
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
 
+    // New states to handle inline messages and styling variables
+    const [message, setMessage] = useState<string>('');
+    const [isError, setIsError] = useState<boolean>(false);
+
     // Sync state with URL parameter on mount (e.g., /login?mode=signup)
     useEffect(() => {
         const mode = searchParams.get('mode');
@@ -19,31 +23,51 @@ export default function Login(): React.JSX.Element {
         } else {
             setIsSignUp(false);
         }
+        // Clear old messages if the user toggles between sign up and login views
+        setMessage('');
     }, [searchParams]);
 
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setLoading(true);
+        setMessage(''); // Reset any existing messages upon form submission
+        setIsError(false);
 
         try {
             if (isSignUp) {
                 const { error } = await supabase.auth.signUp({ email, password });
 
-                // ✅ Read standard .message from AuthError directly
                 if (error) {
-                    alert(error.message);
+                    setIsError(true);
+                    setMessage(`Oh no, we are sorry but ${error.message}`);
                     setLoading(false);
                     return;
                 }
 
-                alert('Great, you are almost in! Please check your inbox and click the confirmation link to activate your account.');
+                setIsError(false);
+                setMessage('Great, you are almost in! Please check your inbox and click the confirmation link to activate your account.');
                 setLoading(false);
                 return;
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
 
                 if (error) {
-                    alert(error.message);
+                    setIsError(true);
+
+                    // Intercept the specific Supabase error message
+                    if (error.message === 'Email not confirmed') {
+                        setMessage('Your email address hasn\'t been verified yet. Please check your inbox (and spam folder) for the activation link.');
+                    } else {
+                        setMessage(error.message);
+                    }
+
+                    setLoading(false);
+                    return;
+                }
+
+                if (error) {
+                    setIsError(true);
+                    setMessage(`Oh no, we are sorry but "${error.message}"`);
                     setLoading(false);
                     return;
                 }
@@ -51,22 +75,33 @@ export default function Login(): React.JSX.Element {
                 navigate('/dashboard');
             }
         } catch (error: any) {
-            // Handles unexpected generic exceptions cleanly
-            alert(error?.message || "An unexpected error occurred.");
+            setIsError(true);
+            setMessage(error?.message || "An unexpected error occurred.");
         } finally {
             setLoading(false);
         }
     };
 
     const handleForgotPassword = async (email: string) => {
+        setMessage('');
+        setIsError(false);
+
+        if (!email) {
+            setIsError(true);
+            setMessage("Please enter your email address first so we can send a reset link.");
+            return;
+        }
+
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo: 'https://www.neightag.com/update-password',
         });
 
         if (error) {
-            alert(`Error: ${error.message}`);
+            setIsError(true);
+            setMessage(`Error: ${error.message}`);
         } else {
-            alert("Check your inbox! A secure password reset link has been dispatched.");
+            setIsError(false);
+            setMessage("Check your inbox! A secure password reset link has been dispatched.");
         }
     };
 
@@ -77,8 +112,24 @@ export default function Login(): React.JSX.Element {
                     <section className="section-container white-section-container">
                         <h2 className="textbig text-purple">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
                         <p className="text-normal marginbsixteen">
-                            {isSignUp ? 'Sign up to start managing your data' : 'Login to edit your entries'}
+                            {isSignUp ? 'Sign up to start managing your data' : 'Login to see your stable dashboard'}
                         </p>
+
+                        {/* ✅ INLINE MESSAGE DISPLAY BLOCK */}
+                        {message && (
+                            <div className={`message-banner ${isError ? 'message-error' : 'message-success'}`} style={{
+                                padding: '12px 16px',
+                                borderRadius: '6px',
+                                marginBottom: '20px',
+                                fontSize: '14px',
+                                lineHeight: '1.5',
+                                backgroundColor: isError ? '#fdf2f2' : '#56483b',
+                                color: isError ? '#de350b' : '#ffffff',
+                                border: `1px solid ${isError ? '#f8b4b4' : '#56483b'}`
+                            }}>
+                                {message}
+                            </div>
+                        )}
 
                         <form onSubmit={handleAuth}>
                             <div className="marginbsixteen">
@@ -117,7 +168,6 @@ export default function Login(): React.JSX.Element {
                             onClick={() => {
                                 const nextMode = !isSignUp;
                                 setIsSignUp(nextMode);
-                                // Sync the URL parameters with the newly toggled state
                                 if (nextMode) {
                                     navigate('/login?mode=signup', { replace: true });
                                 } else {

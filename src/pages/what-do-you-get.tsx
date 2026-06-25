@@ -18,7 +18,7 @@ export default function WhatDoYouGet(): React.JSX.Element {
                 <section className="section-container white-section-container">
                     <h1 className="textbig marginbsixteen">What Do You Get with NeighTag?</h1>
 
-                    <p className="text-normal marginbsixteen">When you join NeighTag, you aren't just getting QR codes—you're getting a complete, real-time safety ecosystem for your horse. Every account includes access to your digital stable dashboard and a suite of high-visibility, scannable assets designed for the yard and the road.</p>
+                    <p className="text-normal marginbsixteen">For less than £1 a month, when you join NeighTag, you aren't just getting QR codes—you're getting a complete, real-time safety ecosystem for your horse. Every account includes access to your digital stable dashboard and a suite of high-visibility, scannable assets designed for the yard and the road.</p>
 
                     <p className="textmedium marginbsixteen">The NeighTag Safety Suite Includes:</p>
                     <div className="neightag-feature-container">
