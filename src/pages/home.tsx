@@ -193,6 +193,7 @@ function Home(): React.JSX.Element {
                     <div className="section-container white-section-container full-width">
                         <div className="text-center">
                             <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
+                            <p className="text-normal marginbsixteen">This is much more than a horse emergency QR code. It's a complete, real-time stable help ecosystem for your horse.</p>
                             <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
                             <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's less than £1 per month, billed annually. See? Proof that not everything in the horse world has to be expensive.</p>
                             <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
