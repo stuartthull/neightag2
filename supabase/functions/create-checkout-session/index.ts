@@ -36,7 +36,7 @@ serve(async (req) => {
       line_items: [
     {
       // Make sure this value isn't undefined or pointing to a test-mode ID!
-      price: Deno.env.get('STRIPE_LIVE_PRICE_ID') || 'price_1LIVE_ID_FROM_STRIPE_DASHBOARD', 
+      price: Deno.env.get('STRIPE_LIVE_PRICE_ID') || 'price_1TmbeUIfQpTOfYRJ1TtPIqP4', 
       quantity: 1,
     },
   ],
