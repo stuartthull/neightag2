@@ -33,11 +33,13 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
-      line_items: [{
-        // This price ID comes from your environment configuration
-        price: Deno.env.get('STRIPE_MICROPAYMENT_PRICE_ID'), 
-        quantity: 1,
-      }],
+      line_items: [
+    {
+      // Make sure this value isn't undefined or pointing to a test-mode ID!
+      price: Deno.env.get('STRIPE_LIVE_PRICE_ID') || 'price_1LIVE_ID_FROM_STRIPE_DASHBOARD', 
+      quantity: 1,
+    },
+  ],
       // 🔑 CRITICAL: Passing metadata so Stripe forwards it to your webhook handler
       metadata: { user_uuid, horse_uuid },
       subscription_data: {
