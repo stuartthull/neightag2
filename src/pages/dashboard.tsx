@@ -98,24 +98,38 @@ export default function Dashboard() {
                     </section>
                 ) : (
                     <>
+                        {myLogs.map(log => (
+                            <section key={log.id} className="section-container white-section-container no-print" style={{ display: 'flex', gap: '20px' }}>
+                                {/* 🖨️ Direct Link Canvas for Stable Tag */}
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <a
+                                        href={`/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="buttonOrange buttonSmall"
+                                        style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+                                    >
+                                        🖨️ Print Stable Tag
+                                    </a>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <a
+                                        href={`/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="buttonOrange buttonSmall"
+                                        style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
+                                    >
+                                        🖨️ Print Horsebox Poster
+                                    </a>
+                                </div>
+                            </section>
+                        ))}
                         {/* 🐴 HORSE MANAGEMENT ROSTER */}
                         {myLogs.map(log => (
                             <section key={log.id} className="section-container white-section-container no-print marginbsixteen">
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
                                     <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
-
-                                    {/* 🖨️ Direct Link Canvas for Stable Tag */}
-                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                        <a
-                                            href={`/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="buttonPurple buttonSmall"
-                                            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
-                                        >
-                                            🖨️ Print Stable Tag
-                                        </a>
-                                    </div>
                                 </div>
                                 <ul>
                                     <li className='marginbsixteen'>
@@ -144,8 +158,8 @@ export default function Dashboard() {
                                 </ul>
 
                                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                    <button type="button" className="buttonOrange buttonSmall" onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
-                                        🚨&nbsp;Delete horse
+                                    <button type="button" className="buttonSmall" style={{ backgroundColor: '#ff0000', color: '#ffffff', fontWeight: 'bold' }} onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
+                                        Delete horse
                                     </button>
                                 </div>
                             </section>
@@ -159,27 +173,6 @@ export default function Dashboard() {
                                     <Link to={`/horsebox-view`} className="text-purple">View your horsebox details</Link>
                                 </li>
                             </ul>
-
-                            {myLogs.map(log => (
-                                <section key={log.id} className="section-container white-section-container no-print marginbsixteen">
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
-                                        <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
-
-                                        {/* 🖨️ Direct Link Canvas for Horsebox Poster */}
-                                        <div style={{ display: 'flex', gap: '8px' }}>
-                                            <a
-                                                href={`/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="buttonPurple buttonSmall"
-                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
-                                            >
-                                                🖨️ Print Horsebox Poster
-                                            </a>
-                                        </div>
-                                    </div>
-                                </section>
-                            ))}
                         </section>
                     </>
                 )}
