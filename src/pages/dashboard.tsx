@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import HorseQrCode from '../components/qr-code';
 
 type LogRecord = {
     id: number;
@@ -15,10 +14,6 @@ export default function Dashboard() {
     const [horseName, setHorseName] = useState('');
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-
-    // 🔍 Track which horse AND which design variant is active for printing
-    const [activePrintId, setActivePrintId] = useState<string | null>(null);
-    const [activePrintVariant, setActivePrintVariant] = useState<'default' | 'dashboard'>('default');
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -38,7 +33,6 @@ export default function Dashboard() {
         } else {
             const logs = (data as LogRecord[]) || [];
             setMyLogs(logs);
-            if (logs.length > 0) setActivePrintId(logs[0].horse_uuid);
         }
         setLoading(false);
     };
@@ -84,15 +78,6 @@ export default function Dashboard() {
         }
     };
 
-    // 🖨️ Explicitly accept the layout variant alongside the horse id
-    const triggerPrint = (horseUuid: string, variant: 'default' | 'dashboard') => {
-        setActivePrintId(horseUuid);
-        setActivePrintVariant(variant);
-        setTimeout(() => {
-            window.print();
-        }, 100);
-    };
-
     return (
         <div className="page-wrapper">
             <div className="page-container">
@@ -119,14 +104,17 @@ export default function Dashboard() {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
                                     <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
 
-                                    {/* 🖨️ Dual Print Action Row */}
+                                    {/* 🖨️ Direct Link Canvas for Stable Tag */}
                                     <div style={{ display: 'flex', gap: '8px' }}>
-                                        <button
-                                            onClick={() => triggerPrint(log.horse_uuid, 'default')}
+                                        <a
+                                            href={`/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             className="buttonPurple buttonSmall"
+                                            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
                                         >
                                             🖨️ Print Stable Tag
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                                 <ul>
@@ -177,32 +165,24 @@ export default function Dashboard() {
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
                                         <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
 
-                                        {/* 🖨️ Dual Print Action Row */}
+                                        {/* 🖨️ Direct Link Canvas for Horsebox Poster */}
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button
-                                                onClick={() => triggerPrint(log.horse_uuid, 'dashboard')}
+                                            <a
+                                                href={`/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 className="buttonPurple buttonSmall"
+                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
                                             >
                                                 🖨️ Print Horsebox Poster
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </section>
-                                    ))}
+                            ))}
                         </section>
                     </>
                 )}
-
-                {/* 🖨️ TARGETED QR PRINTER CONTAINER */}
-                {myLogs.map(log => (
-                    <div
-                        key={`qr-${log.id}`}
-                        className={`stable-qr-print-block ${log.horse_uuid === activePrintId ? 'print-target-active' : 'print-target-hidden'}`}
-                    >
-                        {/* Passes dynamic layout instructions straight to the renderer child block */}
-                        <HorseQrCode horseId={log.horse_uuid} horseName={log.horse_name} variant={activePrintVariant} />
-                    </div>
-                ))}
 
                 {/* ➕ ADD NEW HORSE UTILITY */}
                 <section className="section-container white-section-container no-print">

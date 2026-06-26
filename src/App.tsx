@@ -26,6 +26,8 @@ import Footer from "./components/footer";
 import WhatDoYouGet from "./pages/what-do-you-get";
 import CookiePolicy from "./pages/cookie-policy";
 import PrivacyPolicy from "./pages/privacy-policy";
+import PrintStableTag from "./pages/print-stable-tag";
+import PrintHorseboxPoster from "./pages/print-horsebox-poster";
 
 const LogoSvg = () => {
     return (
@@ -42,17 +44,18 @@ function MainLayoutWrapper({ children }: { children: React.ReactNode }): React.J
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Automatically acts when a user clicks their Supabase confirmation email link
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'SIGNED_IN' && session) {
-                console.log("Authentication confirmation caught successfully!");
-                navigate('/dashboard');
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+            if (event === 'SIGNED_IN') {
+                const currentPath = window.location.pathname;
+
+                // Only force redirect to dashboard if they are coming from the landing or login page
+                if (currentPath === '/' || currentPath === '/login') {
+                    navigate('/dashboard');
+                }
             }
         });
 
-        return () => {
-            subscription.unsubscribe();
-        };
+        return () => subscription.unsubscribe();
     }, [navigate]);
 
     return <>{children}</>;
@@ -92,6 +95,8 @@ export default function App() {
                             {/* Route for handling horse box */}
                             <Route path="/horsebox-view" element={<ProtectedRoute><HorseboxView /></ProtectedRoute>} />
                             <Route path="/horsebox/edit" element={<ProtectedRoute><HorseboxEdit /></ProtectedRoute>} />
+                            <Route path="/print-stable-tag" element={<ProtectedRoute><PrintStableTag /></ProtectedRoute>} />
+                            <Route path="/print-horsebox-poster" element={<ProtectedRoute><PrintHorseboxPoster /></ProtectedRoute>} />
 
                             {/* 🔒 Protected Calendar Schedule Routes */}
                             <Route
