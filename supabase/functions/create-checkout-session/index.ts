@@ -46,8 +46,8 @@ serve(async (req) => {
         metadata: { user_uuid, horse_uuid }
       },
       // Redirect paths back to your application front-end
-      success_url: `http://localhost:3000/dashboard?payment=success`,
-      cancel_url: `http://localhost:3000/dashboard?payment=cancelled`,
+      success_url: `http://neightag.com/dashboard?payment=success`,
+      cancel_url: `http://neightag.com/dashboard?payment=cancelled`,
     });
 
     // 4. Return the checkout session URL back to the frontend
