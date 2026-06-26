@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { supabase } from '../supabaseClient'; // 👈 Make sure this relative path correctly points to your file location!
 
 export default function BuyTag(): React.JSX.Element {
     const [searchParams] = useSearchParams();
     const horseId = searchParams.get('id') || '';
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    
+    // 🔑 Track the dynamically logged-in user account ID
+    const [userId, setUserId] = useState<string | null>(null);
 
-    // Mocking a user ID for testing purposes. 
-    // Replace this with your actual logged-in auth user UUID (e.g., from Supabase auth state)
-    const mockUserId = "u_live_user_998877";
+    // Fetch the active user session automatically as soon as this component loads
+    useEffect(() => {
+        const fetchSessionUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setUserId(user.id);
+            }
+        };
+        
+        fetchSessionUser();
+    }, []);
 
     const handleCheckout = async () => {
         if (!horseId) {
@@ -17,25 +29,29 @@ export default function BuyTag(): React.JSX.Element {
             return;
         }
 
+        // Safety gate if a non-logged-in visitor accidentally hits this button
+        if (!userId) {
+            setError("You must be logged in to activate a live tag subscription.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
 
         try {
-            // Point this to your local Docker edge function endpoint 
-            // Or change to your live production Supabase URL when deployed!
-            const endpoint = 'http://localhost:54321/functions/v1/create-checkout-session';
+            const endpoint = 'https://vjyvikuyuzkmyrtcuznc.supabase.co/functions/v1/create-checkout-session';
 
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    // 🔑 BOTH of these are required by the local gateway router to allow CORS
-                    'apikey': 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH',
-                    'Authorization': 'Bearer sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH'
+                    // Both variables now safely leverage your verified live anon production key string
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqeXZpa3V5dXprbXlydGN1em5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMjY5MDksImV4cCI6MjA5NTkwMjkwOX0.CVg4HbusPRVlrSoMtF5VKc268jLHf8WGUYp6lyJ4deA',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZqeXZpa3V5dXprbXlydGN1em5jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMjY5MDksImV4cCI6MjA5NTkwMjkwOX0.CVg4HbusPRVlrSoMtF5VKc268jLHf8WGUYp6lyJ4deA'
                 },
                 body: JSON.stringify({
                     horse_uuid: horseId,
-                    user_uuid: mockUserId
+                    user_uuid: userId // Passes the verified live logged-in user UUID to Stripe
                 }),
             });
 
