@@ -192,7 +192,7 @@ export default function Dashboard() {
                                                 className="buttonOrange buttonSmall"
                                                 style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
                                             >
-                                                {!isSubbed ? '🔒 ' : '🖨️ '}Print Horsebox Poster
+                                                {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Horsebox Poster
                                             </a>
                                         </div>
                                     </div>
