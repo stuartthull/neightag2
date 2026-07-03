@@ -1030,7 +1030,7 @@ pre {
     margin-bottom: 16px;
     border-radius: 16px;
 
-    @media (max-width: 600px) {
+    @media (max-width: 500px) {
         border-radius: 0;
         background-color: var(--white);
         margin-top: -60px;
