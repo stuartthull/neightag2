@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // 💳 Added useLocation
 import { supabase } from '../supabaseClient';
 
 type LogRecord = {
@@ -9,7 +9,6 @@ type LogRecord = {
     horse_name: string;
 };
 
-// 💳 Type to map active status per horse
 type SubscriptionMap = {
     [horseUuid: string]: boolean;
 };
@@ -19,9 +18,12 @@ export default function Dashboard() {
     const [horseName, setHorseName] = useState('');
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-
-    // 💳 Dictionary of horse_uuid -> is_active
     const [activeSubscriptions, setActiveSubscriptions] = useState<SubscriptionMap>({});
+
+    // 💳 Track if we are actively waiting for Stripe's webhook to finish updating
+    const [isVerifyingPayment, setIsVerifyingPayment] = useState<boolean>(false);
+
+    const location = useLocation();
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -29,9 +31,8 @@ export default function Dashboard() {
         });
     }, []);
 
-    const fetchMyLogsAndSubscriptions = async (userId: string) => {
-        setLoading(true);
-
+    // 💳 Extracted logic into a helper that returns whether an active subscription was found
+    const fetchMyLogsAndSubscriptions = async (userId: string): Promise<boolean> => {
         // 1. Fetch horse logs
         const { data: logData, error: logError } = await supabase
             .from('equi_log_main')
@@ -40,14 +41,13 @@ export default function Dashboard() {
 
         if (logError) {
             console.error("Error fetching segmented records:", logError.message);
-            setLoading(false);
-            return;
+            return false;
         }
 
         const logs = (logData as LogRecord[]) || [];
         setMyLogs(logs);
 
-        // 2. Fetch subscription status for all the user's horses in one go
+        // 2. Fetch subscription status
         if (logs.length > 0) {
             const { data: subData, error: subError } = await supabase
                 .from('equi_subscriptions')
@@ -57,26 +57,63 @@ export default function Dashboard() {
 
             if (subError) {
                 console.error("Error fetching subscriptions:", subError.message);
-            } else {
-                // Transform array into a handy key-value map for quick O(1) lookups
+            } else if (subData && subData.length > 0) {
                 const subMap: SubscriptionMap = {};
-                subData?.forEach(sub => {
+                subData.forEach(sub => {
                     if (sub.horse_uuid) {
                         subMap[sub.horse_uuid] = true;
                     }
                 });
                 setActiveSubscriptions(subMap);
+                return true; // Found active subscription(s)
             }
         }
 
-        setLoading(false);
+        // If we got here, no active subscriptions were found
+        setActiveSubscriptions({});
+        return false;
     };
 
+    // Main data coordinator effect
     useEffect(() => {
-        if (sessionUserId) {
-            fetchMyLogsAndSubscriptions(sessionUserId);
-        }
-    }, [sessionUserId]);
+        if (!sessionUserId) return;
+
+        const queryParams = new URLSearchParams(location.search);
+        const isPaymentSuccess = queryParams.get('payment') === 'success';
+
+        const initializeDashboard = async () => {
+            setLoading(true);
+            const hasSub = await fetchMyLogsAndSubscriptions(sessionUserId);
+
+            // 💳 If the URL says success, but our DB says otherwise, start polling!
+            if (isPaymentSuccess && !hasSub) {
+                setIsVerifyingPayment(true);
+
+                let attempts = 0;
+                const maxAttempts = 5; // Poll 5 times
+                const intervalTime = 2000; // Every 2 seconds
+
+                const intervalId = setInterval(async () => {
+                    attempts += 1;
+                    console.log(`Polling DB for webhook update... Attempt ${attempts}`);
+
+                    const updatedHasSub = await fetchMyLogsAndSubscriptions(sessionUserId);
+
+                    if (updatedHasSub || attempts >= maxAttempts) {
+                        clearInterval(intervalId);
+                        setIsVerifyingPayment(false);
+                        setLoading(false);
+                    }
+                }, intervalTime);
+
+                return () => clearInterval(intervalId);
+            } else {
+                setLoading(false);
+            }
+        };
+
+        initializeDashboard();
+    }, [sessionUserId, location.search]);
 
     // 🗓️ Compute globally if the user has any active subscriptions
     const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(isActive => isActive === true);
@@ -91,7 +128,6 @@ export default function Dashboard() {
         e.preventDefault();
         if (!horseName || !sessionUserId) return;
 
-        // Boundary safety check
         if (isHorseLimitReached) {
             alert("Stable limit reached. Please upgrade your subscription to add more horses.");
             return;
@@ -106,7 +142,9 @@ export default function Dashboard() {
             alert(error.message);
         } else {
             setHorseName('');
+            setLoading(true);
             await fetchMyLogsAndSubscriptions(sessionUserId);
+            setLoading(false);
         }
     };
 
@@ -134,11 +172,20 @@ export default function Dashboard() {
                 <section className="section-container purple-section-container no-print">
                     <h1 className="textbig">Your Stable</h1>
                     <p className="text-normal">Manage your horses and their medical records.</p>
-                    {!hasAnyActiveSubscription && <p className="text-normal">🔒 Some features are locked until you activate a subscription for at least one horse.</p>}
 
+                    {/* 💳 Show a reassuring status indicator while polling */}
+                    {isVerifyingPayment && (
+                        <p className="text-normal" style={{ background: '#fef08a', color: '#854d0e', padding: '8px 12px', borderRadius: '6px', fontWeight: 'bold', marginTop: '10px' }}>
+                            🔄 Confirming your payment details with Stripe... The page will unlock automatically in a moment.
+                        </p>
+                    )}
+
+                    {!hasAnyActiveSubscription && !isVerifyingPayment && (
+                        <p className="text-normal">🔒 Some features are locked until you activate a subscription for at least one horse.</p>
+                    )}
                 </section>
 
-                {loading ? (
+                {loading && !isVerifyingPayment ? (
                     <section className="section-container white-section-container no-print marginbsixteen">
                         <p className="text-normal">Loading your stable profile...</p>
                     </section>
@@ -167,8 +214,6 @@ export default function Dashboard() {
                     </section>
                 ) : (
                     <>
-
-
                         {/* 2. HORSE MANAGEMENT ROSTER */}
                         {myLogs.map(log => {
                             const isSubbed = !!activeSubscriptions[log.horse_uuid];
@@ -245,7 +290,7 @@ export default function Dashboard() {
                             })}
                         </section>
 
-                        {/* 3. USER ASSETS PANEL (Global modules grouped together) */}
+                        {/* 3. USER ASSETS PANEL */}
                         <section className="section-container white-section-container no-print marginbsixteen">
                             <h2 className="textmedium marginbsixteen">Global Tools & Assets</h2>
                             <ul>
@@ -260,7 +305,6 @@ export default function Dashboard() {
                                     </Link>
                                 </li>
                             </ul>
-
                         </section>
 
                         {/* ➕ CONDITIONAL ADD NEW HORSE UTILITY */}
@@ -295,6 +339,6 @@ export default function Dashboard() {
                     </>
                 )}
             </div>
-        </div >
+        </div>
     );
 }

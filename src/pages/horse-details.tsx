@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import { formatGBDate } from "../utils/date-format";
 import { Helmet } from "react-helmet-async";
 import withSubscriptionProtection from '../components/with-subscription-protection';
+import genericHorse from '../assets/generic-horse.jpg';
 
 function HorseDetails() {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
@@ -177,11 +178,19 @@ function HorseDetails() {
 
                 {/* HERO SECTION */}
                 <section className="section-container purple-section-container horse-hero-section">
-                    {horse.horse_image_url && (
+                    {horse.horse_image_url ? (
                         <div className="horse-profile-image-wrapper">
                             <img
                                 src={horse.horse_image_url}
                                 alt={horse.horse_name}
+                                className="horse-profile-image"
+                            />
+                        </div>
+                    ) : (
+                        <div className="horse-profile-image-wrapper">
+                            <img
+                                src={genericHorse}
+                                alt=''
                                 className="horse-profile-image"
                             />
                         </div>
