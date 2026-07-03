@@ -1,6 +1,8 @@
 @import 'variables-css.css';
 
-/* BASE GLOBAL RESETS */
+/* ==========================================================================
+   BASE GLOBAL RESETS
+   ========================================================================== */
 body {
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
@@ -9,10 +11,6 @@ body {
     box-sizing: border-box;
     background-color: #f8fafc;
     color: var(--primarycolor);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--darkgrey);*/
-    /*    color: var(--white);*/
-    /*}*/
 }
 
 a {
@@ -20,10 +18,6 @@ a {
     color: var(--darkgrey);
     transition: color 0.2s ease;
     text-underline-offset: 4px;
-
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    color: var(--white)*/
-    /*}*/
 }
 
 a:hover {
@@ -36,7 +30,9 @@ pre {
     font-family: "Montserrat", sans-serif;
 }
 
-/* UTILITY SPACING CLASSES */
+/* ==========================================================================
+   UTILITY SPACING CLASSES
+   ========================================================================== */
 .marginbeight {
     margin-bottom: 8px;
 }
@@ -45,47 +41,42 @@ pre {
     margin-bottom: 16px;
 }
 
-/* LAYOUT CONTAINER */
+.marginteight {
+    margin-top: 8px;
+}
+
+.margintsixteen {
+    margin-top: 16px;
+}
+
+/* ==========================================================================
+   LAYOUT CONTAINER & ENGINE
+   ========================================================================== */
 .page-wrapper {
     min-height: 70vh;
     width: 100%;
 }
 
-/* FLUID CORE LAYOUT ENGINE */
 .page-container {
     max-width: 1100px;
-    /* Expands site window gracefully */
     margin: 0 auto;
     padding: 24px 16px;
     box-sizing: border-box;
 }
 
-/* RESPONSIVE LAYOUT MATRIX */
 .home-layout-grid {
     display: flex;
     flex-direction: column;
     gap: 24px;
 }
 
-@media (min-width: 850px) {
-    .home-layout-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        /* Splitting row options on desktop displays */
-    }
-
-    .full-width {
-        grid-column: span 2;
-        /* Force hero boxes across both layout columns */
-    }
-}
-
 .text-center {
     text-align: center;
 }
 
-/* HERO COVER COMPONENT */
-
+/* ==========================================================================
+   HERO COVER COMPONENT
+   ========================================================================== */
 .logo-image {
     width: 100%;
     max-width: 100px;
@@ -113,7 +104,9 @@ pre {
     z-index: 10;
 }
 
-/* SECTION CARDS UI */
+/* ==========================================================================
+   SECTION CARDS UI
+   ========================================================================== */
 .section-container {
     border-radius: 16px;
     padding: 24px;
@@ -139,40 +132,28 @@ pre {
 .lightorange-section-container {
     background-color: var(--tertiary-tint);
     color: var(--black);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--tertiarycolor);*/
-    /*    color: var(--white);*/
-    /*}*/
 }
 
 .white-section-container {
     background-color: var(--white);
     border: 1px solid #e2e8f0;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: black;*/
-    /*    color: var(--white);*/
-    /*    border: none;*/
-    /*}*/
 }
 
 .alert-banner-warning {
     background-color: var(--orange);
     border: 1px solid #eab308;
     color: #000000;
-    /* Ensures readable contrast against the yellow background */
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.9rem;
     font-weight: 500;
     box-sizing: border-box;
-
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    color: var(--darkgrey);*/
-    /*}*/
 }
 
-/* TYPOGRAPHY BLOCKS */
+/* ==========================================================================
+   TYPOGRAPHY BLOCKS
+   ========================================================================== */
 .textbig {
     font-size: 24px;
     font-weight: 500;
@@ -197,24 +178,13 @@ pre {
     margin: 0;
 }
 
-
-
-
-
-/* THE "HOW IT WORKS" GRID FLOW */
+/* ==========================================================================
+   THE "HOW IT WORKS" GRID FLOW
+   ========================================================================== */
 .info-bar-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-@media (min-width: 768px) {
-    .info-bar-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        /* 3 Columns side-by-side on broad viewports */
-        gap: 24px;
-    }
 }
 
 .info-bar {
@@ -238,7 +208,9 @@ pre {
     margin-left: 16px;
 }
 
-/* DYNAMIC PRICING FLEX WRAPPER */
+/* ==========================================================================
+   DYNAMIC PRICING FLEX WRAPPER
+   ========================================================================== */
 .pricing-content-wrapper {
     display: flex;
     flex-direction: column;
@@ -252,27 +224,18 @@ pre {
     border-radius: 12px;
 }
 
-@media (min-width: 600px) {
-    .pricing-content-wrapper {
-        flex-direction: row;
-        /* Horizontal alignment on large spaces */
-        align-items: flex-start;
-    }
-
-    .pricing-img {
-        width: 200px;
-        flex-shrink: 0;
-    }
-}
-
-/* SEMANTIC LINK LISTING FIX */
+/* ==========================================================================
+   SEMANTIC LINK LISTING FIX
+   ========================================================================== */
 .events-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* BUTTON CONTROLS */
+/* ==========================================================================
+   BUTTON CONTROLS
+   ========================================================================== */
 .buttonMain {
     font-size: 15px;
     font-weight: 700;
@@ -314,17 +277,11 @@ pre {
 .buttonPurple {
     background-color: var(--hunter-green);
     color: var(--white);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--secondarycolor);*/
-    /*}*/
 }
 
 .buttonPurple:hover {
     background-color: var(--hunter-green);
     color: var(--white);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--secondarycolor);*/
-    /*}*/
 }
 
 .buttonWhite {
@@ -350,9 +307,19 @@ pre {
     color: var(--black);
 }
 
+.buttonaslinker {
+    margin-top: 1rem;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   NAVIGATION COMPONENTS
+   ========================================================================== */
 .navigation {
     background: var(--primarycolor);
-
     max-width: 100%;
 }
 
@@ -378,15 +345,29 @@ pre {
     border: none;
     min-width: 100px;
     text-decoration: none;
-
-    svg {
-        width: 24px;
-        height: 24px;
-        fill: white;
-        margin: 0 auto;
-    }
 }
 
+.nav-link svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+    margin: 0 auto;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.nav-link-text {
+    color: var(--white);
+}
+
+.nav-link-text:link,
+.nav-link-text:visited {
+    color: var(--white);
+    text-decoration: underline;
+}
 
 .neightag-logo {
     display: block;
@@ -409,10 +390,10 @@ pre {
 .logo-holder {
     display: flex;
     text-decoration: none;
+}
 
-    &:hover {
-        text-decoration: none !important;
-    }
+.logo-holder:hover {
+    text-decoration: none !important;
 }
 
 .nav-buttons {
@@ -421,18 +402,15 @@ pre {
     margin-right: 16px;
 }
 
+/* ==========================================================================
+   FORMS & INPUTS
+   ========================================================================== */
 .labelForm {
     display: block;
     color: rgb(12, 18, 51);
     position: relative;
     margin-bottom: 4px;
     transition: 0.25s ease-in-out;
-}
-
-.labelFormIntense {
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    color: var(--white);*/
-    /*}*/
 }
 
 .inputText {
@@ -451,30 +429,24 @@ pre {
     max-width: 500px;
 }
 
-.buttonaslinker {
-    margin-top: 1rem;
-    background: none;
+.horsebox-form-section {
     border: none;
-    text-decoration: underline;
-    cursor: pointer;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: var(--white);
+    margin: 16px 0;
 }
 
-.marginbeight {
-    margin-bottom: 8px;
-}
-
-.marginbsixteen {
+.horsebox-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     margin-bottom: 16px;
 }
 
-.marginteight {
-    margin-top: 8px;
-}
-
-.margintsixteen {
-    margin-top: 16px;
-}
-
+/* ==========================================================================
+   CARDS & PROFILES
+   ========================================================================== */
 .purple-border {
     border: 1px solid var(--primarycolor);
     border-radius: 8px;
@@ -486,11 +458,6 @@ pre {
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: black;*/
-    /*    color: var(--white);*/
-    /*    border: none;*/
-    /*}*/
 }
 
 .card-title {
@@ -506,19 +473,6 @@ pre {
 .horse-hero-section {
     max-width: 1100px;
     margin: 0 auto;
-
-    @media (max-width: 600px) {
-        padding: 0;
-        margin-left: -16px;
-        margin-right: -16px;
-    }
-}
-
-.horse-page-container {
-    @media (max-width: 600px) {
-        margin-top: 0;
-        padding-top: 0;
-    }
 }
 
 .horse-profile-image {
@@ -528,15 +482,8 @@ pre {
     object-fit: cover;
     margin: 0 auto 16px;
     z-index: 0;
-
-    @media (max-width: 600px) {
-        width: 100%;
-        height: auto;
-        border-radius: 0;
-    }
 }
 
-/* Grids & Panels */
 .horsebox-date-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -577,12 +524,6 @@ pre {
     margin-bottom: 24px;
 }
 
-@media (max-width: 600px) {
-    .horsebox-provider-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 .horsebox-panel {
     border: 1px solid var(--secondarycolor);
     border-radius: 10px;
@@ -598,9 +539,6 @@ pre {
 .horsebox-panel.breakdown-panel {
     background-color: var(--white);
     margin-bottom: 16px;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--darkgrey);*/
-    /*}*/
 }
 
 .horsebox-panel.breakdown-panel h3 {
@@ -631,9 +569,6 @@ pre {
     justify-content: space-between;
     border-bottom: 1px dotted #b7bbc1;
     padding-bottom: 8px;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    color: var(--white);*/
-    /*}*/
 }
 
 .horsebox-reg-plate {
@@ -654,7 +589,6 @@ pre {
     align-items: center;
     width: 100%;
     gap: 16px;
-    /* Prevents text from slamming into the button on small viewports */
 }
 
 .visibility-settings {
@@ -674,117 +608,32 @@ pre {
     width: 100%;
     margin: 20px 0;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    color: var(--primarycolor);*/
-    /*}*/
-}
-
-.nav-link {
-    &:hover {
-        text-decoration: underline;
-        text-underline-offset: 4px;
-    }
-}
-
-.nav-link-text {
-    color: var(--white);
-
-    &:link,
-    &:visited {
-        color: var(--white);
-        text-decoration: underline;
-    }
-}
-
-.sticky-actions-bar {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px 20px;
-    background-color: var(--white);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    background-color: var(--primarycolor);*/
-    /*}*/
-}
-
-/* 📲 Handle Mobile Notch Displays (iPhone Safe Area) */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-    .sticky-actions-bar {
-        padding-bottom: calc(16px + env(safe-area-inset-bottom));
-    }
-}
-
-.horsebox-form-section {
-    border: none;
-    border-radius: 8px;
-    padding: 20px;
-    background-color: var(--white);
-    margin: 16px 0;
-}
-
-
-/* --- Field Blocks --- */
-.horsebox-field-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
 }
 
 .visible-note {
     font-size: 0.9rem;
     color: var(--terracota);
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    font-size: 0.9rem;*/
-    /*    color: #00ff00;*/
-    /*}*/
 }
 
 .visible-note-not {
     font-size: 0.9rem;
     color: #ff0000;
-    /*@media (prefers-color-scheme: dark) {*/
-    /*    font-size: 0.9rem;*/
-    /*    color: var(--tertiarycolor);*/
-    /*}*/
 }
 
-
-/* Normal browser runtime display rules */
+/* ==========================================================================
+   PRINT TARGET RULES
+   ========================================================================== */
 .print-target-hidden {
     display: none;
-    /* Keeps all print tags clean and invisible during dashboard browsing */
 }
 
 .print-target-active {
     display: none;
-    /* Keeps the active target invisible on screen too until printing is called */
 }
 
-/* 🖨️ Global browser hardware printer overlay instruction overrides */
-@media print {
-    .no-print {
-        display: none !important;
-    }
-
-    /* FORCE the selected single active QR code block to turn back on inside the print preview engine */
-    .print-target-active {
-        display: block !important;
-        width: 100%;
-        page-break-inside: avoid;
-    }
-
-    /* Keep the unselected horses hidden from the paper entirely */
-    .print-target-hidden {
-        display: none !important;
-    }
-}
-
-/* Container defaults to side-by-side row on desktop and tablet */
+/* ==========================================================================
+   ABOUT & FEATURE SPLITS
+   ========================================================================== */
 .about-split-row {
     display: flex;
     flex-direction: row;
@@ -793,39 +642,18 @@ pre {
     width: 100%;
 }
 
-/* Allow text column to absorb remaining layout space */
 .about-text-col {
     flex: 1;
 }
 
-/* Style your horse image cleanly */
 .jane-image {
-    max-width: 400px;
     width: 100%;
+    max-width: 320px;
     height: auto;
-    border-radius: 8px;
     object-fit: cover;
-
-    @media (max-width: 900px) {
-        max-width: 300px;
-    }
+    border-radius: 12px;
 }
 
-/* 📱 Responsive break: Stack layout vertically if screen goes below 400px */
-@media (max-width: 700px) {
-    .about-split-row {
-        flex-direction: column-reverse;
-        /* Reverses order so image stacks on top of the text block */
-        gap: 16px;
-    }
-
-    .jane-image {
-        max-width: 100%;
-        /* Image stretches wide to match text width on mobile views */
-    }
-}
-
-/* Layout utility wrapper to ensure footer stays pinned to the bottom */
 .app-layout-wrapper {
     display: flex;
     flex-direction: column;
@@ -836,16 +664,16 @@ pre {
     flex: 1;
 }
 
-/* Main Footer Structural Frame */
+/* ==========================================================================
+   FOOTER ELEMENTS
+   ========================================================================== */
 .main-footer {
     background-color: var(--primarycolor);
-    /* Deep slate theme background */
     border-top: 1px solid #1e293b;
     padding: 32px 0;
     width: 100%;
 }
 
-/* Horizontal Alignment Constraints Container */
 .footer-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -855,7 +683,6 @@ pre {
     align-items: center;
 }
 
-/* Brand Text Styling overrides */
 .footer-title {
     font-weight: bold;
     color: #ffffff !important;
@@ -869,7 +696,6 @@ pre {
     color: #ffffff !important;
 }
 
-/* Navigation Links Row */
 .footer-links {
     display: flex;
     gap: 24px;
@@ -878,7 +704,6 @@ pre {
     padding: 0;
 }
 
-/* Interactive Link Hover Engine */
 .footer-link {
     text-decoration: none;
     transition: color 0.2s ease-in-out;
@@ -887,24 +712,11 @@ pre {
 
 .footer-link:hover {
     color: #ffffff !important;
-    /* Lights up nicely when hovered */
 }
 
-/* 📱 Responsive break: Collapse and stack columns underneath 500px */
-@media (max-width: 500px) {
-    .footer-container {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-    }
-
-    .footer-links {
-        flex-direction: column;
-        gap: 12px;
-    }
-}
-
-/* Completely hides the ugly default browser file input box layout */
+/* ==========================================================================
+   FILE UPLOADS
+   ========================================================================== */
 .visually-hidden-file-input {
     position: absolute;
     width: 1px;
@@ -916,7 +728,6 @@ pre {
     border: 0;
 }
 
-/* Turns the label into a perfect inline block match for your other buttons */
 .file-upload-button {
     display: inline-block;
     cursor: pointer;
@@ -924,7 +735,6 @@ pre {
     font-size: 0.9rem;
 }
 
-/* Optional styling tweak for the subtitle label above it */
 .image-upload-helper-text {
     font-size: 0.85rem;
     color: #64748b;
@@ -932,52 +742,22 @@ pre {
     margin-bottom: 12px;
 }
 
-
-/* 💻 Desktop & Tablet Mode (Default view) */
 .neightag-feature-container {
     display: flex;
     flex-direction: row-reverse;
-    /* 🔄 Pushes the image to the right side */
     align-items: center;
-    /* Centers text vertically alongside the image */
     gap: 32px;
-    /* Generates breathing room between image and text */
     width: 100%;
     margin-bottom: 40px;
 }
 
 .neightag-feature-text {
     flex: 1;
-    /* Allows text container to expand naturally */
 }
 
-.jane-image {
-    width: 100%;
-    max-width: 320px;
-    /* Adjust this width constraint to match your design look */
-    height: auto;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-/* 📱 Responsive Mobile Stack Trigger */
-@media (max-width: 850px) {
-    .neightag-feature-container {
-        flex-direction: column;
-        /* 🥞 Stack everything vertically */
-        align-items: flex-start;
-        /* Left-align items cleanly */
-        gap: 20px;
-        /* Tighten spacing for compact mobile displays */
-    }
-
-    .jane-image {
-        max-width: 100%;
-        /* Allows the image to span full width on small phones */
-    }
-}
-
-/* Tabs Container Structure */
+/* ==========================================================================
+   TABS UI COMPONENT
+   ========================================================================== */
 .tabs-navigation {
     display: flex;
     gap: 8px;
@@ -1012,7 +792,6 @@ pre {
     background-color: var(--primarycolor);
 }
 
-/* Tab Panel visibility controller */
 .tab-panel {
     display: block;
 }
@@ -1026,12 +805,235 @@ pre {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     margin-bottom: 16px;
     border-radius: 16px;
+}
 
-    @media (max-width: 700px) {
+.sticky-actions-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    background-color: var(--white);
+}
+
+
+/* ==========================================================================
+   GLOBAL UN-NESTED MEDIA QUERIES (RESPONSIVE VIEWPORTS)
+   ========================================================================== */
+
+/* 📱 Small mobile devices & layouts (under 600px) */
+@media (max-width: 600px) {
+    .horse-hero-section {
+        padding: 0;
+        margin-left: -16px;
+        margin-right: -16px;
+    }
+
+    .horse-page-container {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .horse-profile-image {
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+    }
+
+    .horsebox-provider-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 📱 Responsive break for about rows & layouts (under 700px) */
+@media (max-width: 700px) {
+    .about-split-row {
+        flex-direction: column-reverse;
+        gap: 16px;
+    }
+
+    /* Target specific version of .jane-image on mobile if needed */
+    .about-split-row .jane-image {
+        max-width: 100%;
+    }
+
+    .tab-container {
         border-radius: 0;
         background-color: var(--white);
         margin-top: -60px;
         z-index: 10;
         position: relative;
+    }
+}
+
+/* 💻 Mobile Break for Pricing layouts (600px and up) */
+@media (min-width: 600px) {
+    .pricing-content-wrapper {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .pricing-img {
+        width: 200px;
+        flex-shrink: 0;
+    }
+}
+
+/* 💻 Medium Devices / Info bars (768px and up) */
+@media (min-width: 768px) {
+    .info-bar-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+}
+
+/* 💻 Desktop Main Grids / Feature containers (850px and up) */
+@media (min-width: 850px) {
+    .home-layout-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .full-width {
+        grid-column: span 2;
+    }
+}
+
+/* 💻 Feature Container specific mobile rules (under 850px) */
+@media (max-width: 850px) {
+    .neightag-feature-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .neightag-feature-container .jane-image {
+        max-width: 100%;
+    }
+}
+
+/* 💻 Intermediate sizes for About-page images (under 900px) */
+@media (max-width: 900px) {
+    .about-split-row .jane-image {
+        max-width: 300px;
+    }
+}
+
+/* 📱 Handle Mobile Notch Displays (iPhone Safe Area) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .sticky-actions-bar {
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    }
+}
+
+/* 📱 Responsive break for footer columns (under 500px) */
+@media (max-width: 500px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+
+/* ==========================================================================
+   PREFERS-COLOR-SCHEME (DARK MODE INTERFACES)
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: var(--darkgrey);
+        color: var(--white);
+    }
+
+    a {
+        color: var(--white);
+    }
+
+    .lightorange-section-container {
+        background-color: var(--tertiarycolor);
+        color: var(--white);
+    }
+
+    .white-section-container {
+        background-color: black;
+        color: var(--white);
+        border: none;
+    }
+
+    .alert-banner-warning {
+        color: var(--darkgrey);
+    }
+
+    .buttonPurple {
+        background-color: var(--secondarycolor);
+    }
+
+    .buttonPurple:hover {
+        background-color: var(--secondarycolor);
+    }
+
+    .labelFormIntense {
+        color: var(--white);
+    }
+
+    .card {
+        background-color: black;
+        color: var(--white);
+        border: none;
+    }
+
+    .horsebox-panel.breakdown-panel {
+        background-color: var(--darkgrey);
+    }
+
+    .datarow {
+        color: var(--white);
+    }
+
+    .qr-container {
+        color: var(--primarycolor);
+    }
+
+    .sticky-actions-bar {
+        background-color: var(--primarycolor);
+    }
+
+    .visible-note {
+        font-size: 0.9rem;
+        color: #00ff00;
+    }
+
+    .visible-note-not {
+        font-size: 0.9rem;
+        color: var(--tertiarycolor);
+    }
+}
+
+
+/* ==========================================================================
+   HARDWARE PRINTER ENGINE OVERLAYS
+   ========================================================================== */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .print-target-active {
+        display: block !important;
+        width: 100%;
+        page-break-inside: avoid;
+    }
+
+    .print-target-hidden {
+        display: none !important;
     }
 }
