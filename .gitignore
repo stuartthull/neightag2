@@ -6,3 +6,9 @@ node_modules
 
 # Supabase function environment sub-folders
 supabase/functions/*/.env
+
+/build
+/dist
+/out
+/.next
+/out-tsc

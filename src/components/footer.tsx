@@ -10,7 +10,7 @@ export default function Footer(): React.JSX.Element {
 
                 {/* Brand / Copyright Info */}
                 <div className="footer-brand">
-                    <p className="text-normal footer-title">NeighTag 🐴</p>
+                    <p className="text-normal footer-title">NeighTag</p>
                     <p className="text-normal footer-copyright">
                         &copy; {currentYear} NeighTag. All rights reserved.
                     </p>

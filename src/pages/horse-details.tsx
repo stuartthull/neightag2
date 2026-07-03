@@ -129,6 +129,21 @@ function HorseDetails() {
                 <meta name="description" content={`View emergency protocols, medical parameters, and schedule details for ${horse.horse_name} securely on NeighTag.`} />
                 <meta property="og:title" content={`${horse.horse_name} | Equine Profile`} />
             </Helmet>
+            <style>{`
+                @media screen {
+                    body { background-color: #f1f5f9 !important; }
+                    .dashboard-badge-print-area { 
+                        box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15); 
+                    }
+                }
+                @media print {
+                    body, html { background: #ffffff !important; margin: 0 !important; padding: 0 !important; }
+                    .dashboard-badge-print-area { display: block !important; margin: 10mm auto !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+                }
+                .navigation.no-print, .main-footer {
+                    display: none;
+                }
+            `}</style>
             <div className="page-container">
 
                 {/* OWNER PREVIEW BANNER */}

@@ -136,7 +136,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
 
                     <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
-                        <a href={`/horse-details/${horse.horse_uuid}`} target="_blank" rel="noreferrer" className="buttonSmall buttonPurple" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                        <a href={`/horse-details/${horse.horse_uuid}`} className="buttonSmall buttonPurple" style={{ textDecoration: 'none', display: 'inline-block' }}>
                             🔗 Test your NeighTag public view
                         </a>
                     </div>

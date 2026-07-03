@@ -25,7 +25,11 @@ a {
     /*    color: var(--white)*/
     /*}*/
 }
-a:hover { color: #535bf2; text-decoration: underline; }
+
+a:hover {
+    color: #535bf2;
+    text-decoration: underline;
+}
 
 pre {
     white-space: pre-wrap;
@@ -33,8 +37,13 @@ pre {
 }
 
 /* UTILITY SPACING CLASSES */
-.marginbeight { margin-bottom: 8px; }
-.marginbsixteen { margin-bottom: 16px; }
+.marginbeight {
+    margin-bottom: 8px;
+}
+
+.marginbsixteen {
+    margin-bottom: 16px;
+}
 
 /* LAYOUT CONTAINER */
 .page-wrapper {
@@ -44,7 +53,8 @@ pre {
 
 /* FLUID CORE LAYOUT ENGINE */
 .page-container {
-    max-width: 1100px; /* Expands site window gracefully */
+    max-width: 1100px;
+    /* Expands site window gracefully */
     margin: 0 auto;
     padding: 24px 16px;
     box-sizing: border-box;
@@ -60,16 +70,27 @@ pre {
 @media (min-width: 850px) {
     .home-layout-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* Splitting row options on desktop displays */
+        grid-template-columns: 1fr 1fr;
+        /* Splitting row options on desktop displays */
     }
+
     .full-width {
-        grid-column: span 2; /* Force hero boxes across both layout columns */
+        grid-column: span 2;
+        /* Force hero boxes across both layout columns */
     }
 }
 
-.text-center { text-align: center; }
+.text-center {
+    text-align: center;
+}
 
 /* HERO COVER COMPONENT */
+
+.logo-image {
+    width: 100%;
+    max-width: 100px;
+}
+
 .home-hero {
     position: relative;
     width: 100%;
@@ -137,22 +158,45 @@ pre {
 .alert-banner-warning {
     background-color: var(--orange);
     border: 1px solid #eab308;
-    color: #000000; /* Ensures readable contrast against the yellow background */
+    color: #000000;
+    /* Ensures readable contrast against the yellow background */
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.9rem;
     font-weight: 500;
     box-sizing: border-box;
+    position: fixed;
+    bottom: 10px;
+    left: 5%;
+    width: 90%;
     /*@media (prefers-color-scheme: dark) {*/
     /*    color: var(--darkgrey);*/
     /*}*/
 }
 
 /* TYPOGRAPHY BLOCKS */
-.textbig { font-size: 24px; font-weight: 500; margin: 0 0 20px; }
-.textmedium { font-size: 18px; font-weight: 600; margin: 0 0 6px; }
-.text-normal { font-size: 15px; line-height: 1.6; margin: 0; }
+.textbig {
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 20px;
+}
+
+.textmedium {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.text-normal {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+
+
 
 /* THE "HOW IT WORKS" GRID FLOW */
 .info-bar-grid {
@@ -164,7 +208,8 @@ pre {
 @media (min-width: 768px) {
     .info-bar-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 Columns side-by-side on broad viewports */
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 Columns side-by-side on broad viewports */
         gap: 24px;
     }
 }
@@ -177,6 +222,7 @@ pre {
 .info-bar-fixed {
     flex: 0 0 55px;
 }
+
 .info-bar-fixed img {
     width: 100%;
     height: auto;
@@ -205,9 +251,11 @@ pre {
 
 @media (min-width: 600px) {
     .pricing-content-wrapper {
-        flex-direction: row; /* Horizontal alignment on large spaces */
+        flex-direction: row;
+        /* Horizontal alignment on large spaces */
         align-items: flex-start;
     }
+
     .pricing-img {
         width: 200px;
         flex-shrink: 0;
@@ -232,9 +280,10 @@ pre {
     text-decoration: none;
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
+
 .buttonMain:hover {
     transform: translateY(-2px);
     text-decoration: none;
@@ -251,6 +300,7 @@ pre {
     font-weight: 500;
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
+
 .buttonSmall:hover {
     transform: translateY(-2px);
     text-decoration: none;
@@ -265,6 +315,7 @@ pre {
     /*    background-color: var(--secondarycolor);*/
     /*}*/
 }
+
 .buttonPurple:hover {
     background-color: var(--hunter-green);
     color: var(--white);
@@ -273,11 +324,28 @@ pre {
     /*}*/
 }
 
-.buttonWhite { background-color: var(--white); color: var(--primarycolor); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.buttonWhite:hover { background-color: #f8fafc; color: var(--primarycolor); }
+.buttonWhite {
+    background-color: var(--white);
+    color: var(--primarycolor);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
 
-.buttonOrange { background-color: var(--orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: var(--black); }
-.buttonOrange:hover { background-color: var(--orange); box-shadow: 0 4px 6px rgba(0,0,0,0.05); color: var(--black); }
+.buttonWhite:hover {
+    background-color: #f8fafc;
+    color: var(--primarycolor);
+}
+
+.buttonOrange {
+    background-color: var(--orange);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    color: var(--black);
+}
+
+.buttonOrange:hover {
+    background-color: var(--orange);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    color: var(--black);
+}
 
 .navigation {
     background: var(--primarycolor);
@@ -296,7 +364,8 @@ pre {
     color: var(--white);
 }
 
-.nav-link, .nav-link:visited {
+.nav-link,
+.nav-link:visited {
     display: inline-block;
     align-content: center;
     font-size: 0.9em;
@@ -336,6 +405,7 @@ pre {
 .logo-holder {
     display: flex;
     text-decoration: none;
+
     &:hover {
         text-decoration: none !important;
     }
@@ -354,6 +424,7 @@ pre {
     margin-bottom: 4px;
     transition: 0.25s ease-in-out;
 }
+
 .labelFormIntense {
     /*@media (prefers-color-scheme: dark) {*/
     /*    color: var(--white);*/
@@ -398,11 +469,6 @@ pre {
 
 .margintsixteen {
     margin-top: 16px;
-}
-
-.text-normal {
-    font-size: 16px;
-    padding: 0;
 }
 
 .purple-border {
@@ -550,7 +616,8 @@ pre {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 16px; /* Prevents text from slamming into the button on small viewports */
+    gap: 16px;
+    /* Prevents text from slamming into the button on small viewports */
 }
 
 .visibility-settings {
@@ -560,6 +627,7 @@ pre {
     border-bottom: 1px solid var(--primarycolor);
     padding-bottom: 16px;
 }
+
 .qr-container {
     background-color: var(--lightprimary);
     border: 1px solid #e2e8f0;
@@ -580,9 +648,12 @@ pre {
         text-underline-offset: 4px;
     }
 }
+
 .nav-link-text {
     color: var(--white);
-    &:link, &:visited {
+
+    &:link,
+    &:visited {
         color: var(--white);
         text-decoration: underline;
     }
@@ -635,6 +706,7 @@ pre {
     /*    color: #00ff00;*/
     /*}*/
 }
+
 .visible-note-not {
     font-size: 0.9rem;
     color: #ff0000;
@@ -647,11 +719,13 @@ pre {
 
 /* Normal browser runtime display rules */
 .print-target-hidden {
-    display: none; /* Keeps all print tags clean and invisible during dashboard browsing */
+    display: none;
+    /* Keeps all print tags clean and invisible during dashboard browsing */
 }
 
 .print-target-active {
-    display: none; /* Keeps the active target invisible on screen too until printing is called */
+    display: none;
+    /* Keeps the active target invisible on screen too until printing is called */
 }
 
 /* 🖨️ Global browser hardware printer overlay instruction overrides */
@@ -694,6 +768,7 @@ pre {
     height: auto;
     border-radius: 8px;
     object-fit: cover;
+
     @media (max-width: 900px) {
         max-width: 300px;
     }
@@ -702,12 +777,14 @@ pre {
 /* 📱 Responsive break: Stack layout vertically if screen goes below 400px */
 @media (max-width: 700px) {
     .about-split-row {
-        flex-direction: column-reverse; /* Reverses order so image stacks on top of the text block */
+        flex-direction: column-reverse;
+        /* Reverses order so image stacks on top of the text block */
         gap: 16px;
     }
 
     .jane-image {
-        max-width: 100%; /* Image stretches wide to match text width on mobile views */
+        max-width: 100%;
+        /* Image stretches wide to match text width on mobile views */
     }
 }
 
@@ -724,7 +801,8 @@ pre {
 
 /* Main Footer Structural Frame */
 .main-footer {
-    background-color: #0f172a; /* Deep slate theme background */
+    background-color: var(--primarycolor);
+    /* Deep slate theme background */
     border-top: 1px solid #1e293b;
     padding: 32px 0;
     width: 100%;
@@ -749,9 +827,9 @@ pre {
 
 .footer-copyright {
     font-size: 0.85rem;
-    color: #94a3b8 !important;
     margin-top: 4px !important;
     margin-bottom: 0 !important;
+    color: #ffffff !important;
 }
 
 /* Navigation Links Row */
@@ -765,13 +843,14 @@ pre {
 
 /* Interactive Link Hover Engine */
 .footer-link {
-    color: #94a3b8 !important;
     text-decoration: none;
     transition: color 0.2s ease-in-out;
+    color: #ffffff !important;
 }
 
 .footer-link:hover {
-    color: #f1f5f9 !important; /* Lights up nicely when hovered */
+    color: #ffffff !important;
+    /* Lights up nicely when hovered */
 }
 
 /* 📱 Responsive break: Collapse and stack columns underneath 500px */
@@ -820,20 +899,25 @@ pre {
 /* 💻 Desktop & Tablet Mode (Default view) */
 .neightag-feature-container {
     display: flex;
-    flex-direction: row-reverse; /* 🔄 Pushes the image to the right side */
-    align-items: center;        /* Centers text vertically alongside the image */
-    gap: 32px;                  /* Generates breathing room between image and text */
+    flex-direction: row-reverse;
+    /* 🔄 Pushes the image to the right side */
+    align-items: center;
+    /* Centers text vertically alongside the image */
+    gap: 32px;
+    /* Generates breathing room between image and text */
     width: 100%;
     margin-bottom: 40px;
 }
 
 .neightag-feature-text {
-    flex: 1;                    /* Allows text container to expand naturally */
+    flex: 1;
+    /* Allows text container to expand naturally */
 }
 
 .jane-image {
     width: 100%;
-    max-width: 320px;           /* Adjust this width constraint to match your design look */
+    max-width: 320px;
+    /* Adjust this width constraint to match your design look */
     height: auto;
     object-fit: cover;
     border-radius: 12px;
@@ -842,12 +926,16 @@ pre {
 /* 📱 Responsive Mobile Stack Trigger */
 @media (max-width: 850px) {
     .neightag-feature-container {
-        flex-direction: column; /* 🥞 Stack everything vertically */
-        align-items: flex-start; /* Left-align items cleanly */
-        gap: 20px;              /* Tighten spacing for compact mobile displays */
+        flex-direction: column;
+        /* 🥞 Stack everything vertically */
+        align-items: flex-start;
+        /* Left-align items cleanly */
+        gap: 20px;
+        /* Tighten spacing for compact mobile displays */
     }
 
     .jane-image {
-        max-width: 100%;        /* Allows the image to span full width on small phones */
+        max-width: 100%;
+        /* Allows the image to span full width on small phones */
     }
 }

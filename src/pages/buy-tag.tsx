@@ -7,7 +7,7 @@ export default function BuyTag(): React.JSX.Element {
     const horseId = searchParams.get('id') || '';
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     // 🔑 Track the dynamically logged-in user account ID
     const [userId, setUserId] = useState<string | null>(null);
 
@@ -19,7 +19,7 @@ export default function BuyTag(): React.JSX.Element {
                 setUserId(user.id);
             }
         };
-        
+
         fetchSessionUser();
     }, []);
 
@@ -77,16 +77,18 @@ export default function BuyTag(): React.JSX.Element {
     };
 
     return (
-        <div style={{ maxWidth: '450px', margin: '60px auto', padding: '24px', fontFamily: 'sans-serif', border: '1px solid #e2e8f0', borderRadius: '12px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', textAlign: 'center', backgroundColor: '#ffffff' }}>
-            <h2 style={{ fontSize: '24px', marginBottom: '8px', fontWeight: 'bold' }}>Activate Live Tag Protection</h2>
-            <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px' }}>Secure instant emergency medical tracking access profile for your horse.</p>
+        <div style={{ maxWidth: '450px', margin: '60px auto', padding: '24px', border: '1px solid #e2e8f0', borderRadius: '12px', textAlign: 'center' }}>
+            <h2 className="textmedium">Activate Live Tag Protection</h2>
+            <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
+            <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
 
-            <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '8px', marginBottom: '24px', fontSize: '13px', textAlign: 'left', color: '#334155' }}>
-                <strong>Configuration Target:</strong>
-                <code style={{ display: 'block', marginTop: '4px', background: '#e2e8f0', padding: '4px 8px', borderRadius: '4px' }}>
+            <div>
+                <code className='marginbsixteen' style={{ display: 'block', marginTop: '4px', background: '#e2e8f0', padding: '4px 8px', borderRadius: '4px' }}>
                     Horse ID: {horseId || "No horse selected"}
                 </code>
             </div>
+            <p className='text-normal marginbsixteen'>Your yearly subscription of £11 will be billed automatically.</p>
+
 
             {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px' }}>❌ {error}</p>}
 
