@@ -167,45 +167,14 @@ export default function Dashboard() {
                     </section>
                 ) : (
                     <>
-                        {/* 1. PRINTING UTILITIES BLOCK */}
-                        <section className="section-container white-section-container no-print">
-                            {myLogs.map(log => {
-                                const isSubbed = !!activeSubscriptions[log.horse_uuid];
-                                return (
-                                    <div key={`print-${log.id}`}>
-                                        <div className="marginbsixteen">
-                                            <a
-                                                href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
-                                                rel="noopener noreferrer"
-                                                target={isSubbed ? "_blank" : "_self"}
-                                                className="buttonOrange buttonSmall"
-                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
-                                            >
-                                                {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Stable Tag
-                                            </a>
-                                        </div>
-                                        <div className="marginbsixteen">
-                                            <a
-                                                href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
-                                                rel="noopener noreferrer"
-                                                target={isSubbed ? "_blank" : "_self"}
-                                                className="buttonOrange buttonSmall"
-                                                style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}
-                                            >
-                                                {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Horsebox Poster
-                                            </a>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </section>
+
 
                         {/* 2. HORSE MANAGEMENT ROSTER */}
                         {myLogs.map(log => {
                             const isSubbed = !!activeSubscriptions[log.horse_uuid];
                             return (
                                 <section key={`manage-${log.id}`} className="section-container white-section-container no-print marginbsixteen">
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }} className="marginbsixteen">
+                                    <div className="marginbsixteen">
                                         <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
                                     </div>
                                     <ul>
@@ -237,6 +206,44 @@ export default function Dashboard() {
                                 </section>
                             );
                         })}
+
+                        {/* 1. PRINTING UTILITIES BLOCK */}
+                        <section className="section-container white-section-container no-print">
+                            <div className="marginbsixteen">
+                                <h2 className="textmedium" style={{ margin: 0 }}>Print your tags</h2>
+                            </div>
+                            {myLogs.map(log => {
+                                const isSubbed = !!activeSubscriptions[log.horse_uuid];
+                                return (
+                                    <ul key={`print-${log.id}`}>
+                                        <li className='marginbsixteen'>
+                                            <div className="marginbsixteen">
+                                                <a
+                                                    href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
+                                                    rel="noopener noreferrer"
+                                                    target={isSubbed ? "_blank" : "_self"}
+                                                    className="text-normal"
+                                                >
+                                                    {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Stable Tag
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div className="marginbsixteen">
+                                                <a
+                                                    href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
+                                                    rel="noopener noreferrer"
+                                                    target={isSubbed ? "_blank" : "_self"}
+                                                    className="text-normal"
+                                                >
+                                                    {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Horsebox Poster
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                );
+                            })}
+                        </section>
 
                         {/* 3. USER ASSETS PANEL (Global modules grouped together) */}
                         <section className="section-container white-section-container no-print marginbsixteen">
@@ -288,6 +295,6 @@ export default function Dashboard() {
                     </>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
