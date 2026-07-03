@@ -83,16 +83,18 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
         // 2. Strict Authentication Wall
         if (options.requireAuthentication && !isAuthenticated) {
             return (
-                <div style={containerStyle}>
-                    <div style={cardStyle}>
-                        <h2 className="textmedium">🔒 Authentication Required</h2>
-                        <p className="text-normal marginbsixteen">Please log in to your account to view this secure panel.</p>
-                        <button
-                            onClick={() => window.location.href = '/login'}
-                            className="buttonMain buttonPurple"
-                        >
-                            Go to Login
-                        </button>
+                <div className="page-container">
+                    <div className="section-container white-section-container">
+                        <div style={cardStyle}>
+                            <h2 className="textmedium">🔒 Authentication Required</h2>
+                            <p className="text-normal marginbsixteen">Please log in to your account to view this secure panel.</p>
+                            <button
+                                onClick={() => window.location.href = '/login'}
+                                className="buttonMain buttonPurple"
+                            >
+                                Go to Login
+                            </button>
+                        </div>
                     </div>
                 </div>
             );
@@ -102,30 +104,34 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
         if (!hasSubscription) {
             if (isAuthenticated) {
                 return (
-                    <div style={containerStyle}>
-                        <div style={cardStyle}>
-                            <h2 className="textmedium">⭐ Premium Feature Locked</h2>
-                            <p className="text-normal marginbsixteen">
-                                {horseId
-                                    ? "This section requires an active Live Tag Protection subscription for this horse."
-                                    : "This section requires at least one active horse subscription on your account."}
-                            </p>
-                            <button
-                                onClick={() => window.location.href = horseId ? `/buy-tag?id=${horseId}` : '/dashboard'}
-                                className="buttonMain buttonPurple"
-                            >
-                                {horseId ? "Activate Subscription" : "Go to Dashboard"}
-                            </button>
+                    <div className="page-container">
+                        <div className="section-container white-section-container">
+                            <div style={cardStyle}>
+                                <h2 className="textmedium">⭐ Premium Feature Locked</h2>
+                                <p className="text-normal marginbsixteen">
+                                    {horseId
+                                        ? "This section requires an active Live Tag Protection subscription for this horse."
+                                        : "This section requires at least one active horse subscription on your account."}
+                                </p>
+                                <button
+                                    onClick={() => window.location.href = horseId ? `/buy-tag?id=${horseId}` : '/dashboard'}
+                                    className="buttonMain buttonPurple"
+                                >
+                                    {horseId ? "Activate Subscription" : "Go to Dashboard"}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 );
             }
 
             return (
-                <div style={containerStyle}>
-                    <div style={cardStyle}>
-                        <h2 className="textmedium">🚫 Profile Unavailable</h2>
-                        <p className="text-normal marginbsixteen">The emergency tracking profile for this view is not active.</p>
+                <div className="page-container">
+                    <div className="section-container white-section-container">
+                        <div style={cardStyle}>
+                            <h2 className="textmedium">🚫 Profile Unavailable</h2>
+                            <p className="text-normal marginbsixteen">The emergency tracking profile for this view is not active.</p>
+                        </div>
                     </div>
                 </div>
             );

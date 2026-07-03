@@ -77,28 +77,29 @@ export default function BuyTag(): React.JSX.Element {
     };
 
     return (
-        <div style={{ maxWidth: '450px', margin: '60px auto', padding: '24px', border: '1px solid #e2e8f0', borderRadius: '12px', textAlign: 'center' }}>
-            <h2 className="textmedium">Activate Live Tag Protection</h2>
-            <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
-            <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
+        <div className="page-container">
+            <div className="section-container white-section-container">            <h2 className="textmedium">Activate Live Tag Protection</h2>
+                <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
+                <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
 
-            <div>
-                <code className='marginbsixteen' style={{ display: 'block', marginTop: '4px', background: '#e2e8f0', padding: '4px 8px', borderRadius: '4px' }}>
-                    Horse ID: {horseId || "No horse selected"}
-                </code>
+                <div>
+                    <code className='marginbsixteen' style={{ display: 'block', marginTop: '4px', background: '#e2e8f0', padding: '4px 8px', borderRadius: '4px' }}>
+                        Horse ID: {horseId || "No horse selected"}
+                    </code>
+                </div>
+                <p className='text-normal marginbsixteen'>Your yearly subscription of £11 will be billed automatically.</p>
+
+
+                {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px' }}>❌ {error}</p>}
+
+                <button
+                    onClick={handleCheckout}
+                    disabled={loading || !horseId}
+                    style={{ width: '100%', padding: '14px', background: '#000000', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, transition: 'background 0.2s' }}
+                >
+                    {loading ? 'Opening Secure Portal...' : 'Activate Subscription'}
+                </button>
             </div>
-            <p className='text-normal marginbsixteen'>Your yearly subscription of £11 will be billed automatically.</p>
-
-
-            {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px' }}>❌ {error}</p>}
-
-            <button
-                onClick={handleCheckout}
-                disabled={loading || !horseId}
-                style={{ width: '100%', padding: '14px', background: '#000000', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, transition: 'background 0.2s' }}
-            >
-                {loading ? 'Opening Secure Portal...' : 'Activate Subscription'}
-            </button>
         </div>
     );
 }
