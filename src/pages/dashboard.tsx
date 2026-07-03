@@ -78,9 +78,24 @@ export default function Dashboard() {
         }
     }, [sessionUserId]);
 
+    // 🗓️ Compute globally if the user has any active subscriptions
+    const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(isActive => isActive === true);
+
+    // 🐴 Check if the user is locked out from adding more horses
+    const isHorseLimitReached = myLogs.length >= 1 && !hasAnyActiveSubscription;
+
+    // 🏷️ Get the ID of the first horse to link it directly to the purchase system
+    const baseHorseId = myLogs[0]?.horse_uuid ?? '';
+
     const addHorse = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!horseName || !sessionUserId) return;
+
+        // Boundary safety check
+        if (isHorseLimitReached) {
+            alert("Stable limit reached. Please upgrade your subscription to add more horses.");
+            return;
+        }
 
         const { error = null } = await supabase.from('equi_log_main').insert([{
             horse_name: horseName,
@@ -113,15 +128,14 @@ export default function Dashboard() {
         }
     };
 
-    // 🗓️ Compute globally if the user has any active subscriptions
-    const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(isActive => isActive === true);
-
     return (
         <div className="page-wrapper">
             <div className="page-container">
                 <section className="section-container purple-section-container no-print">
                     <h1 className="textbig">Your Stable</h1>
                     <p className="text-normal">Manage your horses and their medical records.</p>
+                    {!hasAnyActiveSubscription && <p className="text-normal">🔒 Some features are locked until you activate a subscription for at least one horse.</p>}
+
                 </section>
 
                 {loading ? (
@@ -133,6 +147,23 @@ export default function Dashboard() {
                         <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>
                             No horses registered under this account yet.
                         </p>
+
+                        <section className="section-container white-section-container no-print">
+                            <h2 className="textmedium marginbeight">Add your First Horse</h2>
+                            <form onSubmit={addHorse}>
+                                <input
+                                    className="inputText marginbsixteen"
+                                    value={horseName}
+                                    onChange={e => setHorseName(e.target.value)}
+                                    placeholder="Enter horse name"
+                                    required
+                                />
+                                <br />
+                                <button type="submit" className="buttonPurple buttonMain">
+                                    Add new horse to Stable
+                                </button>
+                            </form>
+                        </section>
                     </section>
                 ) : (
                     <>
@@ -144,7 +175,7 @@ export default function Dashboard() {
                                     <div key={`print-${log.id}`}>
                                         <div className="marginbsixteen">
                                             <a
-                                                href={`/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                                href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
                                                 rel="noopener noreferrer"
                                                 target={isSubbed ? "_blank" : "_self"}
                                                 className="buttonOrange buttonSmall"
@@ -155,7 +186,7 @@ export default function Dashboard() {
                                         </div>
                                         <div className="marginbsixteen">
                                             <a
-                                                href={`/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`}
+                                                href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
                                                 rel="noopener noreferrer"
                                                 target={isSubbed ? "_blank" : "_self"}
                                                 className="buttonOrange buttonSmall"
@@ -192,7 +223,7 @@ export default function Dashboard() {
                                             </Link>
                                         </li>
                                         <li className='marginbsixteen'>
-                                            <Link to={`/privacy/${log.horse_uuid}`} className="text-purple marginbsixteen">
+                                            <Link to={isSubbed ? `/privacy/${log.horse_uuid}` : `/activate-tag?id=${log.horse_uuid}`} className="text-purple marginbsixteen">
                                                 {!isSubbed && '🔒 '}Edit {log.horse_name}'s privacy matrix
                                             </Link>
                                         </li>
@@ -211,39 +242,51 @@ export default function Dashboard() {
                         <section className="section-container white-section-container no-print marginbsixteen">
                             <h2 className="textmedium marginbsixteen">Global Tools & Assets</h2>
                             <ul>
-                                {/* 🗓️ Global User Calendar Link */}
                                 <li className='marginbsixteen'>
-                                    <Link to={`/calendar`} className="text-purple">
+                                    <Link to={hasAnyActiveSubscription ? `/calendar` : `/activate-tag?id=${baseHorseId}`} className="text-purple">
                                         {!hasAnyActiveSubscription && '🔒 '}View your stable calendar
                                     </Link>
                                 </li>
                                 <li className='marginbsixteen'>
-                                    <Link to={`/horsebox-view`} className="text-purple">
+                                    <Link to={hasAnyActiveSubscription ? `/horsebox-view` : `/activate-tag?id=${baseHorseId}`} className="text-purple">
                                         {!hasAnyActiveSubscription && '🔒 '}View your horsebox details
                                     </Link>
                                 </li>
                             </ul>
+
                         </section>
+
+                        {/* ➕ CONDITIONAL ADD NEW HORSE UTILITY */}
+                        {isHorseLimitReached ? (
+                            <section className="section-container white-section-container no-print">
+                                <h2 className="textmedium marginbeight">🔒 Add a New Horse</h2>
+                                <p className="text-normal" style={{ color: '#64748b', marginBottom: '12px' }}>
+                                    Free accounts are limited to one horse profile. Purchase a plan for your current horse to unlock additional slots.
+                                </p>
+                                <a href={`/activate-tag?id=${baseHorseId}`} className="buttonOrange buttonMain" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center' }}>
+                                    Add a subscription
+                                </a>
+                            </section>
+                        ) : (
+                            <section className="section-container white-section-container no-print">
+                                <h2 className="textmedium marginbeight">Add a New Horse</h2>
+                                <form onSubmit={addHorse}>
+                                    <input
+                                        className="inputText marginbsixteen"
+                                        value={horseName}
+                                        onChange={e => setHorseName(e.target.value)}
+                                        placeholder="Enter horse name"
+                                        required
+                                    />
+                                    <br />
+                                    <button type="submit" className="buttonPurple buttonMain">
+                                        Add new horse to Stable
+                                    </button>
+                                </form>
+                            </section>
+                        )}
                     </>
                 )}
-
-                {/* ➕ ADD NEW HORSE UTILITY */}
-                <section className="section-container white-section-container no-print">
-                    <h2 className="textmedium marginbeight">Add a New Horse</h2>
-                    <form onSubmit={addHorse}>
-                        <input
-                            className="inputText marginbsixteen"
-                            value={horseName}
-                            onChange={e => setHorseName(e.target.value)}
-                            placeholder="Enter horse name"
-                            required
-                        />
-                        <br />
-                        <button type="submit" className="buttonPurple buttonMain">
-                            Add new horse to Stable
-                        </button>
-                    </form>
-                </section>
             </div>
         </div>
     );
