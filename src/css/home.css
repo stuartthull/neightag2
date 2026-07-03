@@ -518,7 +518,7 @@ pre {
 
 .horse-details-header {
     @media (max-width: 600px) {
-        margin-top: -50px;
+        margin-top: -60px;
         z-index: 10;
         position: relative;
     }
@@ -1038,8 +1038,6 @@ pre {
     border-radius: 16px;
 
     @media (max-width: 600px) {
-        margin-left: -16px;
-        margin-right: -16px;
         border-radius: 0;
         background-color: var(--white);
     }

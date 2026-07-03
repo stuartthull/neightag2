@@ -78,7 +78,8 @@ export default function BuyTag(): React.JSX.Element {
 
     return (
         <div className="page-container">
-            <div className="section-container white-section-container">            <h2 className="textmedium">Activate Live Tag Protection</h2>
+            <div className="section-container white-section-container">
+                <h2 className="textmedium">Activate Live Tag Protection</h2>
                 <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
                 <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
 
