@@ -236,10 +236,6 @@ function HorseDetails() {
                     </div>
                 </section>
 
-                <div style={{ padding: '10px', background: '#e2e8f0', borderRadius: '4px', display: 'inline-block' }}>
-                    🖥️ Load Width: <strong>{window.innerWidth}px</strong>
-                </div>
-
                 {/* OWNER PREVIEW BANNER */}
                 {isUserOwner && (
                     <div className="alert-banner-warning">
