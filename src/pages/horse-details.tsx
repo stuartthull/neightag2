@@ -171,12 +171,7 @@ function HorseDetails() {
                 }
             `}</style>
 
-            {/* OWNER PREVIEW BANNER */}
-            {isUserOwner && (
-                <div className="alert-banner-warning">
-                    👀 <strong>Owner Preview:</strong> <br />You are seeing this page exactly as it appears to the public based on your privacy settings.
-                </div>
-            )}
+
 
             <div className="page-container horse-page-container">
 
@@ -241,6 +236,16 @@ function HorseDetails() {
                     </div>
                 </section>
 
+                <div style={{ padding: '10px', background: '#e2e8f0', borderRadius: '4px', display: 'inline-block' }}>
+                    🖥️ Load Width: <strong>{window.innerWidth}px</strong>
+                </div>
+
+                {/* OWNER PREVIEW BANNER */}
+                {isUserOwner && (
+                    <div className="alert-banner-warning">
+                        👀 <strong>Owner Preview:</strong> <br />You are seeing this page exactly as it appears to the public based on your privacy settings.
+                    </div>
+                )}
                 {/* ========================================== */}
                 {/* TAB 1: EMERGENCY AND VET DETAILS          */}
                 {/* ========================================== */}

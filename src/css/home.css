@@ -166,10 +166,7 @@ pre {
     font-size: 0.9rem;
     font-weight: 500;
     box-sizing: border-box;
-    position: fixed;
-    bottom: 10px;
-    left: 5%;
-    width: 90%;
+
     /*@media (prefers-color-scheme: dark) {*/
     /*    color: var(--darkgrey);*/
     /*}*/
@@ -1030,7 +1027,7 @@ pre {
     margin-bottom: 16px;
     border-radius: 16px;
 
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
         border-radius: 0;
         background-color: var(--white);
         margin-top: -60px;
