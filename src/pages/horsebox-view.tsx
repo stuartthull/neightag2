@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import withSubscriptionProtection from '../components/with-subscription-protection';
 
 interface HorseboxData {
     registration: string;
@@ -17,7 +18,7 @@ interface HorseboxData {
     general_notes: string;
 }
 
-export default function HorseboxView(): React.JSX.Element {
+function HorseboxView(): React.JSX.Element {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(true);
     const [horsebox, setHorsebox] = useState<HorseboxData | null>(null);
@@ -135,3 +136,5 @@ export default function HorseboxView(): React.JSX.Element {
         </div >
     );
 }
+
+export default withSubscriptionProtection(HorseboxView, { requireAuthentication: true });

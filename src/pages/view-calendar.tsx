@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { CalendarEntry } from '../utils/calendar-types';
 import '../css/calendar.css';
+import withSubscriptionProtection from '../components/with-subscription-protection';
 
 // Extend the core CalendarEntry type to include our optional joined horse object metadata
 interface ExtendedCalendarEntry extends CalendarEntry {
@@ -11,7 +12,7 @@ interface ExtendedCalendarEntry extends CalendarEntry {
     };
 }
 
-export default function CalendarView(): React.JSX.Element {
+function CalendarView(): React.JSX.Element {
     const navigate = useNavigate();
     const [events, setEvents] = useState<ExtendedCalendarEntry[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -164,3 +165,5 @@ export default function CalendarView(): React.JSX.Element {
         </div>
     );
 }
+
+export default withSubscriptionProtection(CalendarView, { requireAuthentication: true });

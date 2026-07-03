@@ -29,6 +29,7 @@ import PrivacyPolicy from "./pages/privacy-policy";
 import PrintStableTag from "./pages/print-stable-tag";
 import PrintHorseboxPoster from "./pages/print-horsebox-poster";
 import BuyTag from './pages/buy-tag';
+import OwnerHorseDetails from './pages/owner-horse-details';
 
 const LogoSvg = () => {
     return (
@@ -87,6 +88,7 @@ export default function App() {
 
                             {/* Dynamic Parameterized Route for single-horse public/owner views */}
                             <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />
+                            <Route path="/owner-horse-details/:horse_uuid" element={<ProtectedRoute><OwnerHorseDetails /></ProtectedRoute>} />
 
                             {/* Protected Owner/Dashboard Operations */}
                             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

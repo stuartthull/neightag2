@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import { formatGBDate } from "../utils/date-format";
-import {Helmet} from "react-helmet-async";
+import { Helmet } from "react-helmet-async";
+import withSubscriptionProtection from '../components/with-subscription-protection';
 
-export default function HorseDetails() {
+function HorseDetails() {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [horse, setHorse] = useState<any>(null);
@@ -302,3 +303,5 @@ export default function HorseDetails() {
         </main>
     );
 }
+
+export default withSubscriptionProtection(HorseDetails, { requireAuthentication: false });

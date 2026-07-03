@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
+import withSubscriptionProtection from '../components/with-subscription-protection';
 
-export default function PrintStableTag(): React.JSX.Element {
+function PrintStableTag(): React.JSX.Element {
     const [searchParams] = useSearchParams();
     const horseId = searchParams.get('id') || '';
     const horseName = searchParams.get('name') || 'Horse Records';
@@ -83,3 +84,4 @@ export default function PrintStableTag(): React.JSX.Element {
         </div>
     );
 }
+export default withSubscriptionProtection(PrintStableTag);

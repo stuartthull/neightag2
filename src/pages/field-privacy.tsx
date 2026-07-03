@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import withSubscriptionProtection from '../components/with-subscription-protection';
 
-export default function FieldPrivacy() {
+function FieldPrivacy() {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [horseName, setHorseName] = useState('');
@@ -242,3 +243,5 @@ export default function FieldPrivacy() {
         </div>
     );
 }
+
+export default withSubscriptionProtection(FieldPrivacy, { requireAuthentication: true });

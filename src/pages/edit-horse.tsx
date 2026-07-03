@@ -41,7 +41,11 @@ const INITIAL_FORM_DATA = {
     physio_phone: '',
     physio_next_visit: '', // 🗓️ Populated via equi_calendar
     physio_notes: '',
-    horse_image_url: ''
+    horse_image_url: '',
+    insurance_provider: '',
+    insurance_policy_number: '',
+    insurance_date: '',
+    insurance_phone: ''
 };
 
 export default function EditItem(): React.JSX.Element {
@@ -406,6 +410,27 @@ export default function EditItem(): React.JSX.Element {
                                 <input className="inputText marginbeight" placeholder="Name" name="emergency_name_two" type="text" value={formData.emergency_name_two} onChange={handleChange} />
                                 <input className="inputText" placeholder="Phone" name="emergency_phone_two" type="text" value={formData.emergency_phone_two} onChange={handleChange} />
                             </div>
+                        </div>
+                    </section>
+
+                    {/* HORSE INSURANCE */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">Horse Identity & Profile</h2>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_provider">Horse Insurer:</label>
+                            <input className="inputText" id="insurance_provider" name="insurance_provider" type="text" value={formData.insurance_provider} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_policy_number">Policy Number:</label>
+                            <input className="inputText" id="insurance_policy_number" name="insurance_policy_number" type="text" value={formData.insurance_policy_number} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_date">Renewal Date:</label>
+                            <input className="inputText" id="insurance_date" name="insurance_date" type="date" value={formData.insurance_date} onChange={handleChange} />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_phone">Claims Phone:</label>
+                            <input className="inputText" id="insurance_phone" name="insurance_phone" type="text" value={formData.insurance_phone} onChange={handleChange} />
                         </div>
                     </section>
 
