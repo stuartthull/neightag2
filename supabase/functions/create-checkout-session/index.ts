@@ -33,6 +33,7 @@ serve(async (req) => {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'subscription',
+      allow_promotion_codes: true,
       line_items: [
     {
       // Make sure this value isn't undefined or pointing to a test-mode ID!

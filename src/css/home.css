@@ -819,6 +819,11 @@ pre {
     background-color: var(--white);
 }
 
+.activate-tag-section {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 
 /* ==========================================================================
    GLOBAL UN-NESTED MEDIA QUERIES (RESPONSIVE VIEWPORTS)

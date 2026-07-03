@@ -78,7 +78,7 @@ export default function BuyTag(): React.JSX.Element {
 
     return (
         <div className="page-container">
-            <div className="section-container white-section-container">
+            <div className="section-container white-section-container activate-tag-section">
                 <h2 className="textmedium">Activate Live Tag Protection</h2>
                 <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
                 <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
@@ -96,7 +96,7 @@ export default function BuyTag(): React.JSX.Element {
                 <button
                     onClick={handleCheckout}
                     disabled={loading || !horseId}
-                    style={{ width: '100%', padding: '14px', background: '#000000', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, transition: 'background 0.2s' }}
+                    style={{ width: '100%', padding: '14px', background: '#000000', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, transition: 'background 0.2s', marginTop: '24px' }}
                 >
                     {loading ? 'Opening Secure Portal...' : 'Activate Subscription'}
                 </button>
