@@ -384,7 +384,8 @@ pre {
 
     svg {
         width: 24px;
-        fill: var(--white);
+        height: 24px;
+        fill: white;
         margin: 0 auto;
     }
 }
