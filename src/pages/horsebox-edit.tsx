@@ -33,6 +33,7 @@ export default function HorseboxEdit(): React.JSX.Element {
             const { data, error } = await supabase
                 .from('equi_horsebox')
                 .select('*')
+                .eq('user_uuid', session.user.id)
                 .maybeSingle();
 
             if (!error && data) {
@@ -123,51 +124,51 @@ export default function HorseboxEdit(): React.JSX.Element {
 
 
                     <section className="section-container white-section-container">
-                    <h3 className="textmedium">Compliance Deadlines</h3>
-                    <div className="horsebox-form-grid-1">
-                        <div className="horsebox-field-group marginbsixteen">
-                            <label>Insurance Expiry</label>
-                            <input type="date" value={insuranceDate} onChange={e => setInsuranceDate(e.target.value)} />
+                        <h3 className="textmedium">Compliance Deadlines</h3>
+                        <div className="horsebox-form-grid-1">
+                            <div className="horsebox-field-group marginbsixteen">
+                                <label>Insurance Expiry</label>
+                                <input type="date" value={insuranceDate} onChange={e => setInsuranceDate(e.target.value)} />
+                            </div>
+                            <div className="horsebox-field-group marginbsixteen">
+                                <label>MOT Expiry</label>
+                                <input type="date" value={motDate} onChange={e => setMotDate(e.target.value)} />
+                            </div>
+                            <div className="horsebox-field-group marginbsixteen">
+                                <label>Vehicle Service</label>
+                                <input type="date" value={serviceDate} onChange={e => setServiceDate(e.target.value)} />
+                            </div>
                         </div>
-                        <div className="horsebox-field-group marginbsixteen">
-                            <label>MOT Expiry</label>
-                            <input type="date" value={motDate} onChange={e => setMotDate(e.target.value)} />
-                        </div>
-                        <div className="horsebox-field-group marginbsixteen">
-                            <label>Vehicle Service</label>
-                            <input type="date" value={serviceDate} onChange={e => setServiceDate(e.target.value)} />
-                        </div>
-                    </div>
                     </section>
                     <section className="section-container white-section-container">
-                            <h3 className="textmedium">Insurance</h3>
+                        <h3 className="textmedium">Insurance</h3>
 
-                            <div className="horsebox-field-group">
-                                <label htmlFor="insProvider" className="horsebox-form-label">
-                                    Insurance Provider Underwriter
-                                </label>
-                                <input
-                                    type="text"
-                                    id="insProvider"
-                                    value={insProvider}
-                                    onChange={e => setInsProvider(e.target.value)}
-                                    className="form-input-control"
-                                    placeholder="e.g., NFU Mutual"
-                                />
-                            </div>
+                        <div className="horsebox-field-group">
+                            <label htmlFor="insProvider" className="horsebox-form-label">
+                                Insurance Provider Underwriter
+                            </label>
+                            <input
+                                type="text"
+                                id="insProvider"
+                                value={insProvider}
+                                onChange={e => setInsProvider(e.target.value)}
+                                className="form-input-control"
+                                placeholder="e.g., NFU Mutual"
+                            />
+                        </div>
 
-                            <div className="horsebox-field-group">
-                                <label htmlFor="insPolicy" className="horsebox-form-label">
-                                    Policy Reference Number
-                                </label>
-                                <input
-                                    type="text"
-                                    id="insPolicy"
-                                    value={insPolicy}
-                                    onChange={e => setInsPolicy(e.target.value)}
-                                    className="form-input-control"
-                                />
-                            </div>
+                        <div className="horsebox-field-group">
+                            <label htmlFor="insPolicy" className="horsebox-form-label">
+                                Policy Reference Number
+                            </label>
+                            <input
+                                type="text"
+                                id="insPolicy"
+                                value={insPolicy}
+                                onChange={e => setInsPolicy(e.target.value)}
+                                className="form-input-control"
+                            />
+                        </div>
 
                         <div className="horsebox-field-group">
                             <label htmlFor="insPhone" className="horsebox-form-label">
@@ -184,58 +185,58 @@ export default function HorseboxEdit(): React.JSX.Element {
                             />
                         </div>
                     </section>
-                        <section className="section-container white-section-container">
-                            <h3 className="textmedium">Roadside Breakdown Assistance</h3>
+                    <section className="section-container white-section-container">
+                        <h3 className="textmedium">Roadside Breakdown Assistance</h3>
 
-                            <div className="horsebox-field-group">
-                                <label htmlFor="bdProvider" className="horsebox-form-label">
-                                    Breakdown Recovery Provider
-                                </label>
-                                <input
-                                    type="text"
-                                    id="bdProvider"
-                                    value={bdProvider}
-                                    onChange={e => setBdProvider(e.target.value)}
-                                    className="form-input-control"
-                                    placeholder="e.g., Equine Rescue Services"
-                                />
-                            </div>
+                        <div className="horsebox-field-group">
+                            <label htmlFor="bdProvider" className="horsebox-form-label">
+                                Breakdown Recovery Provider
+                            </label>
+                            <input
+                                type="text"
+                                id="bdProvider"
+                                value={bdProvider}
+                                onChange={e => setBdProvider(e.target.value)}
+                                className="form-input-control"
+                                placeholder="e.g., Equine Rescue Services"
+                            />
+                        </div>
 
-                            <div className="horsebox-field-group">
-                                <label htmlFor="bdPolicy" className="horsebox-form-label">
-                                    Member Association ID
-                                </label>
-                                <input
-                                    type="text"
-                                    id="bdPolicy"
-                                    value={bdPolicy}
-                                    onChange={e => setBdPolicy(e.target.value)}
-                                    className="form-input-control"
-                                />
-                            </div>
+                        <div className="horsebox-field-group">
+                            <label htmlFor="bdPolicy" className="horsebox-form-label">
+                                Member Association ID
+                            </label>
+                            <input
+                                type="text"
+                                id="bdPolicy"
+                                value={bdPolicy}
+                                onChange={e => setBdPolicy(e.target.value)}
+                                className="form-input-control"
+                            />
+                        </div>
 
-                            <div className="horsebox-field-group">
-                                <label htmlFor="bdPhone" className="horsebox-form-label">
-                                    Emergency Hotline Phone
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="bdPhone"
-                                    value={bdPhone}
-                                    onChange={e => setBdPhone(e.target.value)}
-                                    className="form-input-control"
-                                    autoComplete="tel"
-                                    placeholder="e.g., 07700 900077"
-                                />
-                            </div>
+                        <div className="horsebox-field-group">
+                            <label htmlFor="bdPhone" className="horsebox-form-label">
+                                Emergency Hotline Phone
+                            </label>
+                            <input
+                                type="tel"
+                                id="bdPhone"
+                                value={bdPhone}
+                                onChange={e => setBdPhone(e.target.value)}
+                                className="form-input-control"
+                                autoComplete="tel"
+                                placeholder="e.g., 07700 900077"
+                            />
+                        </div>
                     </section>
                     <section className="section-container white-section-container">
                         <h3 className="horsebox-form-section-title marginbsixteen">Horsebox Extras</h3>
 
-                    <div className="horsebox-field-group margintsixteen">
-                        <label>Notes</label>
-                        <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Tyre pressure specs, lockbox codes..." style={{ minHeight: '100px' }} />
-                    </div>
+                        <div className="horsebox-field-group margintsixteen">
+                            <label>Notes</label>
+                            <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Tyre pressure specs, lockbox codes..." style={{ minHeight: '100px' }} />
+                        </div>
                     </section>
                     <div className="sticky-actions-bar">
                         <button type="submit" disabled={saving} className="buttonMain buttonOrange">

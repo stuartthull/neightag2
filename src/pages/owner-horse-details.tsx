@@ -27,11 +27,18 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     return;
                 }
 
+                const { data: { user } } = await supabase.auth.getUser();
+                if (!user) {
+                    navigate('/login');
+                    return;
+                }
+
                 // 1. Fetch complete horse columns (now includes new insurance parameters automatically via '*')
                 const { data: horseData, error: horseError } = await supabase
                     .from('equi_log_main')
                     .select('*')
                     .eq('horse_uuid', horse_uuid)
+                    .eq('user_uuid', user.id)
                     .single();
 
                 if (horseError || !horseData) {
@@ -46,13 +53,15 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     .from('equi_subscriptions')
                     .select('status, current_period_end')
                     .eq('horse_uuid', horse_uuid)
+                    .eq('user_uuid', user.id)
                     .maybeSingle();
 
                 // 3. Fetch calendar details map
                 const { data: calendarData } = await supabase
                     .from('equi_calendar')
                     .select('calendar_title, calendar_date')
-                    .eq('horse_uuid', horse_uuid);
+                    .eq('horse_uuid', horse_uuid)
+                    .eq('user_uuid', user.id);
 
                 const scheduleLookups: Record<string, string> = {};
                 if (calendarData) {

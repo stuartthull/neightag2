@@ -55,6 +55,7 @@ export default function EditItem(): React.JSX.Element {
     const [formData, setFormData] = useState<any>(INITIAL_FORM_DATA);
     const [originalData, setOriginalData] = useState<any>(INITIAL_FORM_DATA);
     const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false);
+    const [currentUserId, setCurrentUserId] = useState<string>('');
 
     const normalizeDate = (dateVal: any): string => {
         if (!dateVal) return '';
@@ -70,11 +71,20 @@ export default function EditItem(): React.JSX.Element {
                 return;
             }
 
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                navigate('/login');
+                return;
+            }
+
+            setCurrentUserId(user.id);
+
             // 1. Fetch main profile data
             const { data: horseData, error: horseError } = await supabase
                 .from('equi_log_main')
                 .select('*')
                 .eq('horse_uuid', horse_uuid)
+                .eq('user_uuid', user.id)
                 .single();
 
             if (horseError) {
@@ -87,7 +97,8 @@ export default function EditItem(): React.JSX.Element {
             const { data: calData, error: calError } = await supabase
                 .from('equi_calendar')
                 .select('calendar_title, calendar_date')
-                .eq('horse_uuid', horse_uuid);
+                .eq('horse_uuid', horse_uuid)
+                .eq('user_uuid', user.id);
 
             const calendarMap: any = {};
             if (!calError && calData) {
@@ -135,6 +146,8 @@ export default function EditItem(): React.JSX.Element {
     };
 
     const handlePrivacyToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!currentUserId) return;
+
         const newPublicStatus = e.target.checked;
         setFormData(prev => ({ ...prev, is_public: newPublicStatus }));
         setIsUpdatingPrivacy(true);
@@ -142,7 +155,8 @@ export default function EditItem(): React.JSX.Element {
         const { error } = await supabase
             .from('equi_log_main')
             .update({ is_public: newPublicStatus })
-            .eq('horse_uuid', horse_uuid);
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
 
         setIsUpdatingPrivacy(false);
         if (error) {
@@ -152,8 +166,7 @@ export default function EditItem(): React.JSX.Element {
     };
 
     // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
-    const syncAppointmentsToCalendar = async (current: any, original: any) => {
-        const ownerUuid = current.user_uuid || original.user_uuid;
+    const syncAppointmentsToCalendar = async (current: any, original: any, ownerUuid: string) => {
         if (!ownerUuid || !horse_uuid) return;
 
         const appointmentTypes = [
@@ -189,6 +202,7 @@ export default function EditItem(): React.JSX.Element {
                         .from('equi_calendar')
                         .delete()
                         .eq('horse_uuid', horse_uuid)
+                        .eq('user_uuid', ownerUuid)
                         .eq('calendar_title', appt.title);
 
                     if (error) console.error(`Error dropping ${appt.title}:`, error.message);
@@ -216,12 +230,13 @@ export default function EditItem(): React.JSX.Element {
         const { error } = await supabase
             .from('equi_log_main')
             .update(vitalsPayload)
-            .eq('horse_uuid', horse_uuid);
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
 
         if (error) {
             alert("Database Error: " + error.message);
         } else {
-            await syncAppointmentsToCalendar(formData, originalData);
+            await syncAppointmentsToCalendar(formData, originalData, currentUserId);
             alert("Changes saved cleanly!");
             navigate('/dashboard');
         }
@@ -262,7 +277,8 @@ export default function EditItem(): React.JSX.Element {
         const { error: dbError } = await supabase
             .from('equi_log_main')
             .update({ horse_image_url: publicUrl })
-            .eq('horse_uuid', horse_uuid);
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
 
         if (!dbError) {
             setFormData((prev: any) => ({ ...prev, horse_image_url: publicUrl }));
@@ -306,7 +322,8 @@ export default function EditItem(): React.JSX.Element {
         const { error: dbError } = await supabase
             .from('equi_log_main')
             .update({ horse_image_url: null })
-            .eq('horse_uuid', horse_uuid);
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
 
         if (!dbError) {
             setFormData((prev: any) => ({ ...prev, horse_image_url: '' }));

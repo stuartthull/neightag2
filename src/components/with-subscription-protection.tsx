@@ -38,8 +38,12 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
                     let query = supabase.from('equi_subscriptions').select('status');
 
                     if (horseId) {
-                        // Page has a specific horse context (e.g. Horse Details)
+                        // Horse-scoped access: authenticated users must own the horse.
                         query = query.eq('horse_uuid', horseId).eq('status', 'active');
+
+                        if (user) {
+                            query = query.eq('user_uuid', user.id);
+                        }
                     } else if (user) {
                         // User-level view without horse context (e.g. HorseboxView)
                         // Checks if this user has *any* active horse subscriptions

@@ -9,6 +9,7 @@ function FieldPrivacy() {
     const [horseName, setHorseName] = useState('');
     const [privacy, setPrivacy] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [currentUserId, setCurrentUserId] = useState<string>('');
 
     useEffect(() => {
         const fetchPrivacySettings = async () => {
@@ -18,11 +19,20 @@ function FieldPrivacy() {
                 return;
             }
 
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) {
+                navigate('/login');
+                return;
+            }
+
+            setCurrentUserId(user.id);
+
             // 1. Fetch horse details to get horse_name AND user_uuid
             const { data: horse, error: horseError } = await supabase
                 .from('equi_log_main')
                 .select('horse_name, user_uuid')
                 .eq('horse_uuid', horse_uuid)
+                .eq('user_uuid', user.id)
                 .single();
 
             if (horseError || !horse) {
@@ -39,6 +49,7 @@ function FieldPrivacy() {
                 .from('equi_log_show')
                 .select('*')
                 .eq('horse_uuid', horse_uuid)
+                .eq('user_uuid', user.id)
                 .maybeSingle();
 
             // 3. Fallback Seed: If no row exists, create it using BOTH required IDs
@@ -68,6 +79,7 @@ function FieldPrivacy() {
 
     const toggleField = async (columnName: string) => {
         if (!privacy || !horse_uuid) return;
+        if (!currentUserId) return;
 
         const nextValue = !privacy[columnName];
 
@@ -80,7 +92,8 @@ function FieldPrivacy() {
         const { error, status, statusText } = await supabase
             .from('equi_log_show')
             .update({ [columnName]: nextValue })
-            .eq('horse_uuid', horse_uuid);
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
 
         // 3. Error Diagnostics Handler
         if (error) {

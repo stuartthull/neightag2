@@ -34,6 +34,7 @@ function HorseboxView(): React.JSX.Element {
             const { data, error } = await supabase
                 .from('equi_horsebox')
                 .select('*')
+                .eq('user_uuid', session.user.id)
                 .maybeSingle();
 
             if (!error && data) {
