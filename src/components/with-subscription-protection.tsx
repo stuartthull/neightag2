@@ -16,6 +16,7 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
         const [loading, setLoading] = useState<boolean>(true);
         const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
         const [hasSubscription, setHasSubscription] = useState<boolean>(false);
+        const [horseContextStatus, setHorseContextStatus] = useState<'unknown' | 'exists' | 'missing' | 'forbidden'>('unknown');
 
         const params = useParams();
         const [searchParams] = useSearchParams();
@@ -34,7 +35,40 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
                         return;
                     }
 
-                    // 2. Query subscription status
+                    // 2. Validate horse context early so random IDs don't hit paywall UX.
+                    if (horseId) {
+                        const { data: horseRecord, error: horseError } = await supabase
+                            .from('equi_log_main')
+                            .select('horse_uuid, user_uuid')
+                            .eq('horse_uuid', horseId)
+                            .maybeSingle();
+
+                        if (horseError) {
+                            console.error("Horse context check error:", horseError.message);
+                            setHorseContextStatus('missing');
+                            setHasSubscription(false);
+                            setLoading(false);
+                            return;
+                        }
+
+                        if (!horseRecord) {
+                            setHorseContextStatus('missing');
+                            setHasSubscription(false);
+                            setLoading(false);
+                            return;
+                        }
+
+                        if (options.requireAuthentication && user && horseRecord.user_uuid !== user.id) {
+                            setHorseContextStatus('forbidden');
+                            setHasSubscription(false);
+                            setLoading(false);
+                            return;
+                        }
+
+                        setHorseContextStatus('exists');
+                    }
+
+                    // 3. Query subscription status
                     let query = supabase.from('equi_subscriptions').select('status');
 
                     if (horseId) {
@@ -104,7 +138,21 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
             );
         }
 
-        // 3. Subscription Paywall Case
+        // 3. Invalid horse context (unknown or not owned for secure routes)
+        if (horseId && (horseContextStatus === 'missing' || horseContextStatus === 'forbidden')) {
+            return (
+                <div className="page-container">
+                    <div className="section-container white-section-container">
+                        <div style={cardStyle}>
+                            <h2 className="textmedium">🚫 Profile Unavailable</h2>
+                            <p className="text-normal marginbsixteen">The requested horse profile could not be found or is not available for this account.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // 4. Subscription Paywall Case
         if (!hasSubscription) {
             if (isAuthenticated) {
                 return (
@@ -141,10 +189,10 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
             );
         }
 
-        // 4. Access Granted
+        // 5. Access Granted
         return <WrappedComponent {...props} />;
     };
 }
 
 const containerStyle: React.CSSProperties = { display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh', padding: '20px', fontFamily: 'sans-serif' };
-const cardStyle: React.CSSProperties = { maxWidth: '400px', width: '100%', padding: '32px', textAlign: 'center', border: '1px solid #e2e8f0', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.05)', backgroundColor: '#ffffff' };
+const cardStyle: React.CSSProperties = { maxWidth: '400px', width: '100%', padding: '32px', textAlign: 'center', border: '1px solid #e2e8f0', borderRadius: '16px', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.05)', backgroundColor: '#ffffff', margin: '0 auto' };
