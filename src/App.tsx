@@ -64,11 +64,14 @@ const HIDE_CHROME_ROUTES = ['/print-stable-tag', '/print-horsebox-poster'];
 
 function AppContent(): React.JSX.Element {
     const location = useLocation();
-    const showLayoutChrome = !HIDE_CHROME_ROUTES.includes(location.pathname);
+    const isHorseDetailsRoute = location.pathname.startsWith('/horse-details/');
+    const hideAllChrome = HIDE_CHROME_ROUTES.includes(location.pathname);
+    const showHeader = !hideAllChrome && !isHorseDetailsRoute;
+    const showFooter = !hideAllChrome;
 
     return (
         <div className="container">
-            {showLayoutChrome && <Navigation />}
+            {showHeader && <Navigation />}
 
             <Routes>
                 {/* Public Global Views */}
@@ -128,7 +131,7 @@ function AppContent(): React.JSX.Element {
                 />
             </Routes>
 
-            {showLayoutChrome && <Footer />}
+            {showFooter && <Footer />}
         </div>
     );
 }
