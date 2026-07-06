@@ -507,6 +507,7 @@ pre {
 .print-horsebox-poster-page {
     background-color: #ffffff;
     min-height: 100vh;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -521,16 +522,24 @@ pre {
     text-align: center;
     box-sizing: border-box;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
 }
 
 .dashboard-badge-title {
-    font-size: 70px;
-    margin: 0 0 4px 0;
+    font-size: 50px;
     font-weight: 600;
     letter-spacing: 5px;
     text-transform: uppercase;
-    color: #000000;
+    line-height: 1em;
+    padding: 20px 0;
+}
+
+.dashboard-badge-wrapper {
+    color: #ffffff;
+    border-radius: 8px;
+    background-image: var(--stable-print-bg-image);
+    background-size: cover;
+    background-position: bottom;
+    padding-bottom: 60px;
 }
 
 .dashboard-badge-subtitle {
@@ -547,10 +556,11 @@ pre {
     justify-content: center;
     align-items: center;
     width: 370px;
-    margin: 40px auto;
-    padding: 35px;
+    margin: 50px auto 70px;
+    padding: 30px;
     border: 2px dashed #000000;
     background: #ffffff;
+    border-radius: 24px;
 }
 
 .dashboard-badge-alert-footer {
@@ -571,7 +581,7 @@ pre {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #56483b;
+    background-color: var(--primarycolor);
     color: #ffffff;
     padding: 16px 32px;
     border-radius: 4px;
@@ -580,18 +590,13 @@ pre {
 .dashboard-badge-footer-text {
     font-size: 18px;
     margin: 0;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+    letter-spacing: 2px;
     font-weight: 700;
 }
 
 @media screen {
     body:has(.print-horsebox-poster-page) {
         background-color: #f1f5f9 !important;
-    }
-
-    .dashboard-badge-print-area {
-        box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15);
     }
 }
 
