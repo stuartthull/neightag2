@@ -30,6 +30,7 @@ import PrintStableTag from "./pages/print-stable-tag";
 import PrintHorseboxPoster from "./pages/print-horsebox-poster";
 import BuyTag from './pages/buy-tag';
 import OwnerHorseDetails from './pages/owner-horse-details';
+import CookieConsentBanner from './components/cookie-consent-banner';
 
 import mainLogo from './assets/main-logo.png';
 
@@ -130,6 +131,8 @@ function AppContent(): React.JSX.Element {
                     }
                 />
             </Routes>
+
+            {!hideAllChrome && <CookieConsentBanner />}
 
             {showFooter && <Footer />}
         </div>
