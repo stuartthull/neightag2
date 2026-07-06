@@ -32,6 +32,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 16px;
 }
 
 .form-field-row input {
@@ -91,4 +92,3 @@
     transition: 0.25s ease-in-out;
     padding: 4px 12px;
 }
-

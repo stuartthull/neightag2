@@ -1,16 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.4b99b4ec.css",
-    "main.js": "/static/js/main.835cd83b.js",
+    "main.css": "/static/css/main.63edea32.css",
+    "main.js": "/static/js/main.6f0fdad3.js",
     "static/js/453.8d3170cf.chunk.js": "/static/js/453.8d3170cf.chunk.js",
-    "static/media/home-horse.jpg": "/static/media/home-horse.67c6c818cbe8d097691a.jpg",
+    "static/media/home-horse2.jpg": "/static/media/home-horse2.797f098a3924a5e7e760.jpg",
+    "static/media/stable-poster.jpg": "/static/media/stable-poster.17e6cd23f401d47a3a83.jpg",
+    "static/media/jane1.jpg": "/static/media/jane1.13840e2e51a743fe6471.jpg",
+    "static/media/horsebox-poster.jpg": "/static/media/horsebox-poster.0babc2a59074cbd0aa94.jpg",
+    "static/media/phone-app.jpg": "/static/media/phone-app.3b18f063968f1acbb4b0.jpg",
+    "static/media/generic-horse.jpg": "/static/media/generic-horse.e91683eaaa168f9ee07d.jpg",
+    "static/media/money.jpg": "/static/media/money.d454444680326d0a0349.jpg",
+    "static/media/calendar.jpg": "/static/media/calendar.db4a2991a85b54c9a8b4.jpg",
+    "static/media/main-logo.png": "/static/media/main-logo.767f755b79d43f1058b7.png",
     "index.html": "/index.html",
-    "main.4b99b4ec.css.map": "/static/css/main.4b99b4ec.css.map",
-    "main.835cd83b.js.map": "/static/js/main.835cd83b.js.map",
+    "main.63edea32.css.map": "/static/css/main.63edea32.css.map",
+    "main.6f0fdad3.js.map": "/static/js/main.6f0fdad3.js.map",
     "453.8d3170cf.chunk.js.map": "/static/js/453.8d3170cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4b99b4ec.css",
-    "static/js/main.835cd83b.js"
+    "static/css/main.63edea32.css",
+    "static/js/main.6f0fdad3.js"
   ]
 }

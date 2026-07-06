@@ -415,7 +415,7 @@ export default function EditItem(): React.JSX.Element {
 
                     {/* HORSE INSURANCE */}
                     <section className="section-container white-section-container">
-                        <h2 className="textmedium marginbsixteen">Horse Identity & Profile</h2>
+                        <h2 className="textmedium marginbsixteen">Horse Insurance Details</h2>
                         <div className="text-normal marginbeight form-field-row">
                             <label htmlFor="insurance_provider">Horse Insurer:</label>
                             <input className="inputText" id="insurance_provider" name="insurance_provider" type="text" value={formData.insurance_provider} onChange={handleChange} />

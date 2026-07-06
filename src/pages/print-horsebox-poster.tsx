@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import '../css/form-elements.css';
+import '../css/home.css';
 import withSubscriptionProtection from '../components/with-subscription-protection';
 
 function PrintHorseboxPoster(): React.JSX.Element {
@@ -15,87 +16,7 @@ function PrintHorseboxPoster(): React.JSX.Element {
     );
 
     return (
-        <div style={{ backgroundColor: '#ffffff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-            <style>{`
-                @media screen {
-                    body { background-color: #f1f5f9 !important; }
-                    .dashboard-badge-print-area { 
-                        box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15); 
-                    }
-                }
-                @media print {
-                    body, html { background: #ffffff !important; margin: 0 !important; padding: 0 !important; }
-                    .dashboard-badge-print-area { display: block !important; margin: 10mm auto !important; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
-                }
-                .navigation.no-print, .main-footer {
-                    display: none;
-                }
-                .dashboard-badge-print-area {
-                    width: 100%;
-                    max-width: 600px;
-                    padding: 40px 20px;
-                    text-align: center;
-                    box-sizing: border-box;
-                    background: #ffffff;
-                    border: 1px solid #e2e8f0;
-                }
-                .dashboard-badge-title {
-                    font-size: 70px;
-                    margin: 0 0 4px 0;
-                    font-weight: 600;
-                    letter-spacing: 5px;
-                    text-transform: uppercase;
-                    color: #000000;
-                }
-                .dashboard-badge-subtitle {
-                    font-size: 40px;
-                    margin: 0 0 16px 0;
-                    letter-spacing: 3px;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    color: #000000;
-                }
-                .dashboard-badge-qr-wrapper {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 370px;
-                    margin: 40px auto;
-                    padding: 35px;
-                    border: 2px dashed #000000;
-                    background: #ffffff;
-                }
-                .dashboard-badge-alert-footer {
-                    background-color: #ff0000 !important;
-                    border-radius: 8px;
-                    padding: 6px;
-                    font-size: 13px;
-                    color: #ffff00;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    border: 1px solid #000000;
-                    width: 300px;
-                    margin: 0 auto 32px;
-                }
-                .dashboard-badge-footer-container {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    background-color: #56483b;
-                    color: #ffffff;
-                    padding: 16px 32px;
-                    border-radius: 4px;
-                }
-                .dashboard-badge-footer-text {
-                    font-size: 18px;
-                    margin: 0;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    font-weight: bold;
-                }
-            `}</style>
-
+        <div className="print-horsebox-poster-page">
             <div className="dashboard-badge-print-area">
                 <h1 className="dashboard-badge-title">Contact</h1>
                 <h2 className="dashboard-badge-subtitle">Information</h2>

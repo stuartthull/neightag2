@@ -12,3 +12,4 @@ supabase/functions/*/.env
 /out
 /.next
 /out-tsc
+.DS_Store
