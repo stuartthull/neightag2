@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import BoxPoster from "../assets/horsebox-poster.jpg";
 import StableSpoter from "../assets/stable-poster.jpg";
 import PhoneApp from "../assets/phone-app.jpg";
+import TapTag from "../assets/taptag.jpg";
 
 export default function WhatDoYouGet(): React.JSX.Element {
     return (
@@ -68,6 +69,21 @@ export default function WhatDoYouGet(): React.JSX.Element {
                                 <li className="text-normal marginbeight"><strong>Dynamic Calendar Sync:</strong> Tracks upcoming visits for your farrier, vet, dentist, physio, and saddle fitter, displaying them transparently to anyone caring for your horse.</li>
 
                                 <li className="text-normal marginbsixteen"><strong>Smart Privacy Matrix:</strong> You choose exactly what the public sees. Toggle your horse’s profile between completely public or hidden with a single flick of a switch.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="neightag-feature-container">
+                        <img src={TapTag} alt="Public matrix" className="jane-image" />
+
+                        <div className="neightag-feature-text">
+                            <h2 className="textmedium">📱 4. Introducing TagTag</h2>
+                            <p className="text-normal marginbsixteen">We now can offer TapTag's.</p>
+
+                            <ul>
+                                <li className="text-normal marginbeight"><strong>Tap and view:</strong> No need to open your phone to scan the QR.</li>
+
+                                <li className="text-normal marginbeight"><strong>Feel safe when out and about:</strong> Put it on your saddle, reigns or on your person.</li>
                             </ul>
                         </div>
                     </div>
