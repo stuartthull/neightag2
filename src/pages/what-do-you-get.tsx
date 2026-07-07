@@ -57,10 +57,26 @@ export default function WhatDoYouGet(): React.JSX.Element {
                     </div>
 
                     <div className="neightag-feature-container">
+                        <img src={TapTag} alt="Public matrix" className="jane-image" />
+
+                        <div className="neightag-feature-text">
+                            <h2 className="textmedium">📱 3. Introducing &copy;TapTag</h2>
+                            <p className="text-normal marginbsixteen">We now can offer &copy;TapTag's.</p>
+
+                            <ul>
+                                <li className="text-normal marginbeight"><strong>Tap and view:</strong> No need to open your phone to scan the QR.</li>
+
+                                <li className="text-normal marginbeight"><strong>Feel safe when out and about:</strong> Put it on your saddle, reigns or on your person.</li>
+                                <li className="text-normal marginbeight"><strong>Get instant access:</strong> Get instant access to your emergency and contact details.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="neightag-feature-container">
                         <img src={PhoneApp} alt="Public matrix" className="jane-image" />
 
                         <div className="neightag-feature-text">
-                            <h2 className="textmedium">📱 3. Your Live Digital Care Matrix</h2>
+                            <h2 className="textmedium">📱 4. Your Live Digital Care Matrix</h2>
                             <p className="text-normal marginbsixteen">Behind every QR code is a secure, mobile-optimised profile page unique to each horse in your stable.</p>
 
                             <ul>
@@ -73,20 +89,7 @@ export default function WhatDoYouGet(): React.JSX.Element {
                         </div>
                     </div>
 
-                    <div className="neightag-feature-container">
-                        <img src={TapTag} alt="Public matrix" className="jane-image" />
 
-                        <div className="neightag-feature-text">
-                            <h2 className="textmedium">📱 4. Introducing TagTag</h2>
-                            <p className="text-normal marginbsixteen">We now can offer TapTag's.</p>
-
-                            <ul>
-                                <li className="text-normal marginbeight"><strong>Tap and view:</strong> No need to open your phone to scan the QR.</li>
-
-                                <li className="text-normal marginbeight"><strong>Feel safe when out and about:</strong> Put it on your saddle, reigns or on your person.</li>
-                            </ul>
-                        </div>
-                    </div>
                     <h2 className="textmedium">One Dashboard. Unlimited Control.</h2>
                     <p className="text-normal marginbsixteen">No reprints required. If your emergency contact changes mid-journey or your vet prescribes a new medication, simply log into your NeighTag account from your phone. Update the details in seconds, and your printable stable tags and horsebox posters are instantly updated in real time.</p>
 
