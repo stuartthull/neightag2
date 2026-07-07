@@ -27,4 +27,4 @@ function PrintStableTag(): React.JSX.Element {
         </div>
     );
 }
-export default withSubscriptionProtection(PrintStableTag);
+export default withSubscriptionProtection(PrintStableTag, { requireAuthentication: true });

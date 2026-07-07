@@ -506,19 +506,18 @@ pre {
    ========================================================================== */
 .print-horsebox-poster-page {
     background-color: #ffffff;
-    min-height: 100vh;
-    width: 100vw;
+    width: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 0px;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
 .dashboard-badge-print-area {
     width: 100%;
-    max-width: 600px;
-    padding: 40px 20px;
+    padding: 0;
     text-align: center;
     box-sizing: border-box;
     background: #ffffff;
@@ -898,6 +897,42 @@ pre {
     justify-content: space-between;
     align-items: center;
 }
+.social-container {
+    max-width: 1200px;
+    margin: 16px auto 0;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: end;
+    gap: 16px;
+}
+
+@media (max-width: 700px) {
+    .social-container {
+        justify-content: center;
+    }
+}
+
+.social-container svg {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    transition: transform 0.2s ease-in-out;
+    fill: var(--white);
+}
+
+.footer-coffee-button {
+    width: 100px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.footer-coffee-button:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
 
 .footer-title {
     font-weight: bold;
@@ -1152,7 +1187,7 @@ pre {
 }
 
 /* 📱 Responsive break for footer columns (under 500px) */
-@media (max-width: 500px) {
+@media (max-width: 700px) {
     .footer-container {
         flex-direction: column;
         gap: 20px;

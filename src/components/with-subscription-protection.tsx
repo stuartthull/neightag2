@@ -72,10 +72,10 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
                     let query = supabase.from('equi_subscriptions').select('status');
 
                     if (horseId) {
-                        // Horse-scoped access: authenticated users must own the horse.
+                        // Public horse profiles are horse-scoped; secure routes are owner-scoped.
                         query = query.eq('horse_uuid', horseId).eq('status', 'active');
 
-                        if (user) {
+                        if (options.requireAuthentication && user) {
                             query = query.eq('user_uuid', user.id);
                         }
                     } else if (user) {
