@@ -217,8 +217,8 @@ function Home(): React.JSX.Element {
                         <div className="info-bar">
                             <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
                             <div className="info-bar-column">
-                                <h2 className="textmedium">Get your QR code</h2>
-                                <p className="text-normal">Simply print it out and stick it on your stable.</p>
+                                <h2 className="textmedium">Get your Stable card</h2>
+                                <p className="text-normal">Simply print it out and stick it on your stable. Or even get one of our TagCards for your stable. No need to scan.</p>
                             </div>
                         </div>
 
@@ -237,11 +237,11 @@ function Home(): React.JSX.Element {
                         {/* Left Side: Text Column */}
                         <div className="about-text-col">
                             <h3 className="textmedium marginbeight">Meet Jane, Our Inspiration</h3>
-                            <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
+                            <p className="text-normal marginbsixteen">
                                 Our absolute pride and joy is <strong>Jane</strong>, our Irish Sports Horse.
                                 She is the true inspiration behind everything we do here.
                             </p>
-                            <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
+                            <p className="text-normal marginbsixteen">
                                 Jane loves nothing more than leaving a massive gallop track across an open field,
                                 tackling bold cross-country lines, and jumping her heart out. She keeps us on our toes,
                                 teaches us something new every day, and reminds us why we fell in love with horses in the first place.

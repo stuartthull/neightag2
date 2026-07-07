@@ -163,19 +163,17 @@ pre {
 .textmedium {
     font-size: 18px;
     font-weight: 600;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
 }
 
 .text-normal {
     font-size: 15px;
     line-height: 1.6;
-    margin: 0;
 }
 
 .text-small {
     font-size: 13px;
     line-height: 1.6;
-    margin: 0;
 }
 
 /* ==========================================================================

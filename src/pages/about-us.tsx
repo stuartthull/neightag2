@@ -16,9 +16,6 @@ export default function AboutUs(): React.JSX.Element {
                 {/* HERO SECTION */}
                 <section className="section-container purple-section-container">
                     <h1 className="textbig">About Us</h1>
-                    <h2 className="textmedium" style={{ color: '#f1f5f9', marginTop: '8px' }}>
-                        Welcome to NeighTag! 🐴
-                    </h2>
                     <p className="text-normal" style={{ marginTop: '16px', lineHeight: '1.6' }}>
                         We are a small, horse-loving family who live and breathe the equestrian world.
                         If we aren't at the yard, you will usually find us loaded up in the horsebox,
@@ -39,7 +36,7 @@ export default function AboutUs(): React.JSX.Element {
                                 Our absolute pride and joy is <strong>Jane</strong>, our Irish Sports Horse.
                                 She is the true inspiration behind everything we do here.
                             </p>
-                            <p className="text-normal" style={{ lineHeight: '1.6' }}>
+                            <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
                                 Jane loves nothing more than leaving a massive gallop track across an open field,
                                 tackling bold cross-country lines, and jumping her heart out. She keeps us on our toes,
                                 teaches us something new every day, and reminds us why we fell in love with horses in the first place.
