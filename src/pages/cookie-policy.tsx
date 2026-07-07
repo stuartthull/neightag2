@@ -64,7 +64,7 @@ export default function CookiePolicy(): React.JSX.Element {
                             </tr>
                             <tr style={{ borderBottom: '1px solid #edf2f7' }}>
                                 <td style={{ padding: '12px', fontWeight: '600' }}>Functionality Preferences</td>
-                                <td style={{ padding: '12px', color: '#475569' }}>These remember choices you make, such as keeping specific layout components or form memory settings persistent across pages.</td>
+                                <td style={{ padding: '12px', color: '#475569' }}>These remember choices you make, such as keeping specific layout components, cookie consent choices, or form memory settings persistent across pages.</td>
                                 <td style={{ padding: '12px', color: '#4b5563' }}>No</td>
                             </tr>
                             </tbody>
@@ -84,7 +84,7 @@ export default function CookiePolicy(): React.JSX.Element {
                     {/* SECTION 4 */}
                     <h2 className="textmedium marginbeight" style={{ marginTop: '24px' }}>4. Controlling Your Cookie Choices</h2>
                     <p className="text-normal marginbsixteen" style={{ lineHeight: '1.6' }}>
-                        You have the right to decide whether to accept or reject cookies. You can configure or amend your web browser controls to accept or refuse cookies by looking into your specific browser's settings dashboard menu.
+                        You have the right to decide whether to accept or reject cookies. We remember your cookie banner choice for up to 395 days using browser storage and a first-party consent cookie, so we do not need to ask on every visit. You can configure or amend your web browser controls to accept or refuse cookies by looking into your specific browser's settings dashboard menu.
                     </p>
 
                     <div className="section-container lightorange-section-container marginbsixteen" style={{ borderLeft: '4px solid #f97316' }}>
