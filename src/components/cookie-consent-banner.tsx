@@ -4,9 +4,70 @@ import { Link } from 'react-router-dom';
 type ConsentChoice = 'accepted' | 'rejected';
 
 const COOKIE_CONSENT_KEY = 'neightag_cookie_consent';
+const CONSENT_DURATION_DAYS = 395;
+const CONSENT_DURATION_MS = CONSENT_DURATION_DAYS * 24 * 60 * 60 * 1000;
+
+interface StoredConsent {
+    choice: ConsentChoice;
+    expiresAt: number;
+}
+
+function isConsentChoice(value: string | null): value is ConsentChoice {
+    return value === 'accepted' || value === 'rejected';
+}
+
+function getCookieValue(name: string): string | null {
+    const cookie = document.cookie
+        .split('; ')
+        .find((entry) => entry.startsWith(`${name}=`));
+
+    return cookie ? decodeURIComponent(cookie.split('=').slice(1).join('=')) : null;
+}
+
+function writeConsentCookie(consent: StoredConsent) {
+    const maxAgeSeconds = Math.floor(CONSENT_DURATION_MS / 1000);
+    const secureAttribute = window.location.protocol === 'https:' ? '; Secure' : '';
+
+    document.cookie = `${COOKIE_CONSENT_KEY}=${encodeURIComponent(JSON.stringify(consent))}; Max-Age=${maxAgeSeconds}; Path=/; SameSite=Lax${secureAttribute}`;
+}
+
+function readStoredConsent(): ConsentChoice | null {
+    const saved = localStorage.getItem(COOKIE_CONSENT_KEY) || getCookieValue(COOKIE_CONSENT_KEY);
+
+    if (isConsentChoice(saved)) {
+        return saved;
+    }
+
+    if (!saved) {
+        return null;
+    }
+
+    try {
+        const parsed = JSON.parse(saved) as Partial<StoredConsent>;
+
+        if (isConsentChoice(parsed.choice || null) && typeof parsed.expiresAt === 'number') {
+            if (parsed.expiresAt > Date.now()) {
+                return parsed.choice;
+            }
+
+            localStorage.removeItem(COOKIE_CONSENT_KEY);
+            document.cookie = `${COOKIE_CONSENT_KEY}=; Max-Age=0; Path=/; SameSite=Lax`;
+        }
+    } catch {
+        localStorage.removeItem(COOKIE_CONSENT_KEY);
+    }
+
+    return null;
+}
 
 function persistConsent(choice: ConsentChoice) {
-    localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+    const consent = {
+        choice,
+        expiresAt: Date.now() + CONSENT_DURATION_MS
+    };
+
+    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(consent));
+    writeConsentCookie(consent);
 
     // Emit a global event so analytics integrations can listen and react.
     window.dispatchEvent(
@@ -21,8 +82,8 @@ export default function CookieConsentBanner(): React.JSX.Element | null {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        const saved = localStorage.getItem(COOKIE_CONSENT_KEY);
-        if (saved === 'accepted' || saved === 'rejected') {
+        const saved = readStoredConsent();
+        if (saved) {
             setConsentChoice(saved);
         }
         setIsReady(true);
