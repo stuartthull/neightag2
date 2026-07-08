@@ -84,7 +84,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/what-you-get" element={<WhatDoYouGet />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/buy-tag" element={<BuyTag />} />
+                <Route path="/activate-tag" element={<BuyTag />} />
 
                 {/* Dynamic Parameterized Route for single-horse public/owner views */}
                 <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />

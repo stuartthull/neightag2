@@ -166,7 +166,7 @@ export default function withSubscriptionProtection<T extends WithSubscriptionPro
                                         : "This section requires at least one active horse subscription on your account."}
                                 </p>
                                 <button
-                                    onClick={() => window.location.href = horseId ? `/buy-tag?id=${horseId}` : '/dashboard'}
+                                    onClick={() => window.location.href = horseId ? `/activate-tag?id=${horseId}` : '/dashboard'}
                                     className="buttonMain buttonPurple"
                                 >
                                     {horseId ? "Activate Subscription" : "Go to Dashboard"}
