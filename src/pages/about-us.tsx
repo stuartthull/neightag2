@@ -1,6 +1,7 @@
 import React from 'react';
 import Janeone from "../assets/jane1.jpg";
 import { Helmet } from 'react-helmet-async';
+import { LocalPrice } from "../components/local-price";
 
 
 export default function AboutUs(): React.JSX.Element {
@@ -65,7 +66,7 @@ export default function AboutUs(): React.JSX.Element {
                             💡 We built <strong>NeighTag</strong> to provide a simple, stress-free, and highly affordable way for riders to
                             organise their stables and protect their horses. We kept our digital profile system
                             <strong className="text-purple"> 100% free</strong>, and made our stable help QR code system, calendar and horsebox feature
-                            <strong className="text-purple"> less than £1 per month</strong>. We wanted to prove that keeping your horse safe
+                            <strong className="text-purple"> less than <LocalPrice basePriceGbp={1} /> per month</strong>. We wanted to prove that keeping your horse safe
                             doesn't have to break the bank.
                         </p>
                     </div>
