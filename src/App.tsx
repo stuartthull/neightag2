@@ -26,8 +26,8 @@ import Footer from "./components/footer";
 import WhatDoYouGet from "./pages/what-do-you-get";
 import CookiePolicy from "./pages/cookie-policy";
 import PrivacyPolicy from "./pages/privacy-policy";
-import PrintStableTag from "./pages/print-stable-tag";
-import PrintHorseboxPoster from "./pages/print-horsebox-poster";
+import PrintStableTag, { DummyPrintStableTag } from "./pages/print-stable-tag";
+import PrintHorseboxPoster, { DummyPrintHorseboxPoster } from "./pages/print-horsebox-poster";
 import BuyTag from './pages/buy-tag';
 import OwnerHorseDetails from './pages/owner-horse-details';
 import CookieConsentBanner from './components/cookie-consent-banner';
@@ -62,7 +62,7 @@ function MainLayoutWrapper({ children }: { children: React.ReactNode }): React.J
     return <>{children}</>;
 }
 
-const HIDE_CHROME_ROUTES = ['/print-stable-tag', '/print-horsebox-poster'];
+const HIDE_CHROME_ROUTES = ['/print-stable-tag', '/print-stable-tag-dummy', '/print-horsebox-poster', '/print-horsebox-poster-dummy'];
 
 function AppContent(): React.JSX.Element {
     const location = useLocation();
@@ -103,7 +103,9 @@ function AppContent(): React.JSX.Element {
                 <Route path="/horsebox-view" element={<ProtectedRoute><HorseboxView /></ProtectedRoute>} />
                 <Route path="/horsebox/edit" element={<ProtectedRoute><HorseboxEdit /></ProtectedRoute>} />
                 <Route path="/print-stable-tag" element={<ProtectedRoute><PrintStableTag /></ProtectedRoute>} />
+                <Route path="/print-stable-tag-dummy" element={<DummyPrintStableTag />} />
                 <Route path="/print-horsebox-poster" element={<ProtectedRoute><PrintHorseboxPoster /></ProtectedRoute>} />
+                <Route path="/print-horsebox-poster-dummy" element={<DummyPrintHorseboxPoster />} />
 
                 {/* 🔒 Protected Calendar Schedule Routes */}
                 <Route

@@ -3,11 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import withSubscriptionProtection from '../components/with-subscription-protection';
 
-function PrintStableTag(): React.JSX.Element {
-    const [searchParams] = useSearchParams();
-    const horseId = searchParams.get('id') || '';
-
-    const absoluteUrl = `https://www.neightag.com/horse-details/${horseId}`;
+function StableTag({ qrValue }: { qrValue: string }): React.JSX.Element {
     const backgroundUrl = `${process.env.PUBLIC_URL}/images/print-bg.jpg`;
 
     return (
@@ -19,12 +15,24 @@ function PrintStableTag(): React.JSX.Element {
                 <div className="stable-print-header-tag"><img width="100" src={`${process.env.PUBLIC_URL}/images/logo-png.png`} alt="NeighTag Logo" /></div>
                 <p className="stable-print-alert-footer">⚠️ Scan In Case of Emergency</p>
                 <div className="stable-print-qr-wrapper">
-                    <QRCodeSVG value={absoluteUrl} size={120} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} />
+                    <QRCodeSVG value={qrValue} size={120} bgColor={"#ffffff"} fgColor={"#000000"} level={"H"} />
                 </div>
-
+                <p>{!qrValue.includes('horse-details') && 'This is a dummy example of what you would get.'}</p>
                 <p className="stable-print-footer-tag">Powered by www.neightag.com</p>
             </div>
         </div>
     );
 }
+
+function PrintStableTag(): React.JSX.Element {
+    const [searchParams] = useSearchParams();
+    const horseId = searchParams.get('id') || '';
+
+    return <StableTag qrValue={`https://www.neightag.com/horse-details/${horseId}`} />;
+}
+
+export function DummyPrintStableTag(): React.JSX.Element {
+    return <StableTag qrValue="https://www.neightag.com" />;
+}
+
 export default withSubscriptionProtection(PrintStableTag, { requireAuthentication: true });

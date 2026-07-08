@@ -264,24 +264,24 @@ export default function Dashboard() {
                                         <li className='marginbsixteen'>
                                             <div className="marginbsixteen">
                                                 <a
-                                                    href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
+                                                    href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : '/print-stable-tag-dummy'}
                                                     rel="noopener noreferrer"
-                                                    target={isSubbed ? "_blank" : "_self"}
+                                                    target="_blank"
                                                     className="text-normal"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Stable Tag
+                                                    🖨️ Print {log.horse_name}'s Stable Tag{!isSubbed && ' preview'}
                                                 </a>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="marginbsixteen">
                                                 <a
-                                                    href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : `/activate-tag?id=${log.horse_uuid}`}
+                                                    href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : '/print-horsebox-poster-dummy'}
                                                     rel="noopener noreferrer"
-                                                    target={isSubbed ? "_blank" : "_self"}
+                                                    target="_blank"
                                                     className="text-normal"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '🖨️ '}Print {log.horse_name}'s Horsebox Poster
+                                                    🖨️ Print {log.horse_name}'s Horsebox Poster{!isSubbed && ' preview'}
                                                 </a>
                                             </div>
                                         </li>

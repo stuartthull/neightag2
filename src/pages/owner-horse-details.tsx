@@ -105,7 +105,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
     return (
         <main className="page-wrapper">
             <Helmet>
-                <title>{`👑 Administrative Console | ${horse.horse_name}`}</title>
+                <title>{`Administrative Console | ${horse.horse_name}`}</title>
             </Helmet>
             <div className="page-container">
 
