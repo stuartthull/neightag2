@@ -31,6 +31,7 @@ import PrintHorseboxPoster from "./pages/print-horsebox-poster";
 import BuyTag from './pages/buy-tag';
 import OwnerHorseDetails from './pages/owner-horse-details';
 import CookieConsentBanner from './components/cookie-consent-banner';
+import AddBookmark from './pages/add-bookmark';
 
 import mainLogo from './assets/main-logo.png';
 
@@ -85,6 +86,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/activate-tag" element={<BuyTag />} />
+                <Route path="/add-bookmark" element={<AddBookmark />} />
 
                 {/* Dynamic Parameterized Route for single-horse public/owner views */}
                 <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />
