@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // 👈 Make sure this relative path correctly points to your file location!
+import LocalPrice from '../components/local-price';
 
 export default function BuyTag(): React.JSX.Element {
     const [searchParams] = useSearchParams();
@@ -88,7 +89,7 @@ export default function BuyTag(): React.JSX.Element {
                         Horse ID: {horseId || "No horse selected"}
                     </code>
                 </div>
-                <p className='text-normal marginbsixteen'>Your yearly subscription of £11 will be billed automatically.</p>
+                <p className='text-normal marginbsixteen'>Your yearly subscription of <LocalPrice basePriceGbp={11} /> will be billed automatically.</p>
 
 
                 {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px' }}>❌ {error}</p>}
