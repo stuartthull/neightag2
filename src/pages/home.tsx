@@ -292,9 +292,11 @@ function Home(): React.JSX.Element {
                     <p className="text-normal">
                         Thank you for being part of the NeighTag family. We’ll see you out on the cross-country course!
                     </p>
-                    <p className="text-purple" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
+                    <p className="text-purple marginbsixteen" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
                         — The NeighTag Family (Mandy, Abs and Jane! 🥕)
                     </p>
+
+                    <Link to="/add-bookmark">Add a bookmark to your phones home screen.</Link>
                 </div>
 
             </div>

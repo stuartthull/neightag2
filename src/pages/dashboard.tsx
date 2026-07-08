@@ -304,6 +304,9 @@ export default function Dashboard() {
                                         {!hasAnyActiveSubscription && '🔒 '}View your horsebox details
                                     </Link>
                                 </li>
+                                <li className='marginbsixteen'>
+                                    <Link to="/add-bookmark">Add a bookmark to your phones home screen.</Link>
+                                </li>
                             </ul>
                         </section>
 
