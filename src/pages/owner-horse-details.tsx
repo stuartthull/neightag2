@@ -145,8 +145,8 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
 
                     <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
-                        <a href={`/horse-details/${horse.horse_uuid}`} className="buttonSmall buttonPurple" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                            🔗 Test your NeighTag public view
+                        <a href={`/horse-details/${horse.horse_uuid}`} className="buttonMain buttonPurple" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                            🔗 &nbsp;&nbsp;Test your NeighTag public view
                         </a>
                     </div>
                 </section>
@@ -267,7 +267,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     <div className="text-normal marginbeight datarow"><span>Physio Name:</span> <strong>{horse.physio_name || 'N/A'}</strong></div>
                     <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
                         {horse.physio_phone ? (
-                            <a href={`tel:${horse.physio_phone}`} className="buttonSmall buttonOrange">{horse.physio_phone}</a>
+                            <a href={`tel:${horse.physio_phone}`} className="buttonSmall buttonOrange">📞 {horse.physio_phone}</a>
                         ) : (
                             'N/A'
                         )}

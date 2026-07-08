@@ -399,7 +399,7 @@ function HorseDetails() {
                             {shouldShow('show_physio_name') && <div className="text-normal marginbeight datarow"><span>Physio Name:</span> <strong>{horse.physio_name || 'N/A'}</strong></div>}
                             {shouldShow('show_physio_phone') && <div className="text-normal marginbeight datarow"><span>Contact Phone:</span> <strong>
                                 {horse.physio_phone ? (
-                                    <a href={`tel:${horse.physio_phone}`} className="buttonSmall buttonOrange">{horse.physio_phone}</a>
+                                    <a href={`tel:${horse.physio_phone}`} className="buttonSmall buttonOrange">📞 {horse.physio_phone}</a>
                                 ) : (
                                     'N/A'
                                 )}
