@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // 👈 Make sure this relative path correctly points to your file location!
-import LocalPrice from '../components/local-price';
+import { LocalPrice } from '../components/local-price';
 
 export default function BuyTag(): React.JSX.Element {
     const [searchParams] = useSearchParams();
