@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
-import { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { supabase } from './supabaseClient'; // Ensure this matches your path to the Supabase client
 
 import NavBar from './components/navbar';
@@ -63,6 +63,19 @@ function MainLayoutWrapper({ children }: { children: React.ReactNode }): React.J
 }
 
 const HIDE_CHROME_ROUTES = ['/print-stable-tag', '/print-stable-tag-dummy', '/print-horsebox-poster', '/print-horsebox-poster-dummy'];
+const SITE_URL = 'https://www.neightag.com';
+
+function CanonicalLink(): React.JSX.Element {
+    const location = useLocation();
+    const path = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '');
+    const canonicalUrl = `${SITE_URL}${path}`;
+
+    return (
+        <Helmet>
+            <link rel="canonical" href={canonicalUrl} />
+        </Helmet>
+    );
+}
 
 function AppContent(): React.JSX.Element {
     const location = useLocation();
@@ -73,6 +86,7 @@ function AppContent(): React.JSX.Element {
 
     return (
         <div className="container">
+            <CanonicalLink />
             {showHeader && <Navigation />}
 
             <Routes>
