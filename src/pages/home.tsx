@@ -28,6 +28,7 @@ interface HorseBoxAlert {
 
 function Home(): React.JSX.Element {
     const [session, setSession] = useState<Session | null>(null);
+    const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
     const [upcomingEvents, setUpcomingEvents] = useState<QuickEvent[]>([]);
     const [horseBoxAlerts, setHorseBoxAlerts] = useState<HorseBoxAlert[]>([]);
 
@@ -43,6 +44,7 @@ function Home(): React.JSX.Element {
 
     useEffect(() => {
         if (!session?.user?.id) {
+            setHasActiveSubscription(false);
             setUpcomingEvents([]);
             setHorseBoxAlerts([]);
             return;
@@ -50,6 +52,30 @@ function Home(): React.JSX.Element {
 
         const fetchUpcomingAlerts = async () => {
             const todayStr = new Date().toISOString().split('T')[0];
+
+            const { data: subscriptionData, error: subscriptionError } = await supabase
+                .from('equi_subscriptions')
+                .select('id')
+                .eq('user_uuid', session.user.id)
+                .eq('status', 'active')
+                .limit(1);
+
+            if (subscriptionError) {
+                console.error("Homepage subscription check failed:", subscriptionError.message);
+                setHasActiveSubscription(false);
+                setUpcomingEvents([]);
+                setHorseBoxAlerts([]);
+                return;
+            }
+
+            const hasSubscription = !!subscriptionData?.length;
+            setHasActiveSubscription(hasSubscription);
+
+            if (!hasSubscription) {
+                setUpcomingEvents([]);
+                setHorseBoxAlerts([]);
+                return;
+            }
 
             // --- 1. Fetch 7-Day Calendar Events with Relational Horse Name Join ---
             const upperLimit7 = new Date();
@@ -128,7 +154,7 @@ function Home(): React.JSX.Element {
 
             <div className="page-container home-layout-grid">
 
-                {session && (
+                {session && hasActiveSubscription && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Your upcoming events</h2>
                         {upcomingEvents.length > 0 ? (
@@ -166,7 +192,7 @@ function Home(): React.JSX.Element {
                 )}
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
-                {session && horseBoxAlerts.length > 0 && (
+                {session && hasActiveSubscription && horseBoxAlerts.length > 0 && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Horsebox Reminders</h2>
                         <div>
