@@ -201,6 +201,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                             href={`/horse-details/${horse.horse_uuid}`}
                             className="buttonMain buttonPurple"
                             target="_blank"
+                            rel="noopener noreferrer"
                             style={{ textDecoration: 'none', display: 'inline-block' }}
                         >
                             🔗 &nbsp;&nbsp;Test your NeighTag public view

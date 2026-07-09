@@ -27,6 +27,8 @@ export default function ShowQr(): React.JSX.Element {
                                     bgColor="#ffffff"
                                     fgColor="#000000"
                                     level="H"
+                                    role="img"
+                                    aria-label="Horse profile QR code"
                                 />
                             </div>
                             <p className="text-normal">
