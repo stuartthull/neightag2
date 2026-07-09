@@ -48,6 +48,78 @@ const INITIAL_FORM_DATA = {
     insurance_phone: '',
 };
 
+const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_ORIGINAL_IMAGE_SIZE_BYTES = 15 * 1024 * 1024;
+const MAX_UPLOAD_IMAGE_SIZE_BYTES = 3 * 1024 * 1024;
+const MAX_IMAGE_DIMENSION = 1200;
+const IMAGE_COMPRESSION_QUALITY = 0.82;
+const UPLOAD_IMAGE_TYPE = 'image/jpeg';
+const UPLOAD_IMAGE_EXTENSION = 'jpg';
+
+type OptimisedImage = {
+    blob: Blob;
+    contentType: string;
+    extension: string;
+};
+
+const formatFileSize = (bytes: number): string => {
+    const megabytes = bytes / (1024 * 1024);
+    return `${megabytes.toFixed(megabytes >= 10 ? 0 : 1)}MB`;
+};
+
+const loadImageFromObjectUrl = (objectUrl: string): Promise<HTMLImageElement> =>
+    new Promise((resolve, reject) => {
+        const image = new Image();
+        image.onload = () => resolve(image);
+        image.onerror = () => reject(new Error('The selected image could not be loaded.'));
+        image.src = objectUrl;
+    });
+
+const canvasToBlob = (canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob | null> =>
+    new Promise((resolve) => {
+        canvas.toBlob(resolve, type, quality);
+    });
+
+const resizeImageForUpload = async (file: File): Promise<OptimisedImage> => {
+    const objectUrl = URL.createObjectURL(file);
+
+    try {
+        const image = await loadImageFromObjectUrl(objectUrl);
+        const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(image.naturalWidth, image.naturalHeight));
+        const width = Math.max(1, Math.round(image.naturalWidth * scale));
+        const height = Math.max(1, Math.round(image.naturalHeight * scale));
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        if (!context) {
+            throw new Error('Your browser could not prepare this image for upload.');
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, width, height);
+        context.drawImage(image, 0, 0, width, height);
+
+        const jpegBlob = await canvasToBlob(canvas, UPLOAD_IMAGE_TYPE, IMAGE_COMPRESSION_QUALITY);
+        if (jpegBlob && jpegBlob.size <= MAX_UPLOAD_IMAGE_SIZE_BYTES) {
+            return {
+                blob: jpegBlob,
+                contentType: UPLOAD_IMAGE_TYPE,
+                extension: UPLOAD_IMAGE_EXTENSION,
+            };
+        }
+
+        throw new Error(
+            `This image is still ${formatFileSize(
+                jpegBlob?.size || file.size
+            )} after optimisation. Please choose a smaller image.`
+        );
+    } finally {
+        URL.revokeObjectURL(objectUrl);
+    }
+};
+
 export default function EditItem(): React.JSX.Element {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
@@ -56,6 +128,7 @@ export default function EditItem(): React.JSX.Element {
     const [originalData, setOriginalData] = useState<any>(INITIAL_FORM_DATA);
     const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false);
     const [isUploadingImage, setIsUploadingImage] = useState(false);
+    const [imageUploadStatus, setImageUploadStatus] = useState('');
     const [currentUserId, setCurrentUserId] = useState<string>('');
 
     const normalizeDate = (dateVal: any): string => {
@@ -262,8 +335,18 @@ export default function EditItem(): React.JSX.Element {
         const file = event.target.files?.[0];
         if (!file) return;
 
-        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+        if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
             alert('Please upload a valid image file (.jpg, .png, or .webp)');
+            event.target.value = '';
+            return;
+        }
+
+        if (file.size > MAX_ORIGINAL_IMAGE_SIZE_BYTES) {
+            alert(
+                `That photo is ${formatFileSize(file.size)}. Please choose an image smaller than ${formatFileSize(
+                    MAX_ORIGINAL_IMAGE_SIZE_BYTES
+                )}.`
+            );
             event.target.value = '';
             return;
         }
@@ -277,18 +360,28 @@ export default function EditItem(): React.JSX.Element {
         }
 
         setIsUploadingImage(true);
+        setImageUploadStatus('Optimising photo...');
 
-        const extensionByType: Record<string, string> = {
-            'image/jpeg': 'jpg',
-            'image/png': 'png',
-            'image/webp': 'webp',
-        };
-        const filePath = `${ownerId}/${horse_uuid}-${Date.now()}.${extensionByType[file.type]}`;
+        let optimisedImage: OptimisedImage;
+
+        try {
+            optimisedImage = await resizeImageForUpload(file);
+        } catch (error) {
+            console.error('Image optimisation error:', error);
+            alert(error instanceof Error ? error.message : 'Failed to optimise this photo. Please try another image.');
+            setIsUploadingImage(false);
+            setImageUploadStatus('');
+            event.target.value = '';
+            return;
+        }
+
+        const filePath = `${ownerId}/${horse_uuid}-${Date.now()}.${optimisedImage.extension}`;
+        setImageUploadStatus('Uploading photo...');
 
         const { error: uploadError } = await supabase.storage
             .from('horse-photos')
-            .upload(filePath, file, {
-                contentType: file.type,
+            .upload(filePath, optimisedImage.blob, {
+                contentType: optimisedImage.contentType,
                 upsert: true,
             });
 
@@ -296,6 +389,7 @@ export default function EditItem(): React.JSX.Element {
             console.error('Upload error:', uploadError.message);
             alert(`Failed to upload image to server storage: ${uploadError.message}`);
             setIsUploadingImage(false);
+            setImageUploadStatus('');
             event.target.value = '';
             return;
         }
@@ -313,6 +407,7 @@ export default function EditItem(): React.JSX.Element {
             .single();
 
         setIsUploadingImage(false);
+        setImageUploadStatus('');
         event.target.value = '';
 
         if (!dbError && updatedHorse) {
@@ -479,15 +574,19 @@ export default function EditItem(): React.JSX.Element {
                                     ) : (
                                         <div>
                                             <p style={{ fontSize: '0.85rem', marginBottom: '8px' }}>
-                                                Upload a photo of your horse (.jpg, .png, .webp)
+                                                Upload a photo of your horse (.jpg, .png, .webp). Large photos are
+                                                resized before upload.
                                             </p>
                                             {/* 🏷️ The visible, styled click target */}
                                             <label
                                                 htmlFor="horse_image_input"
                                                 className="buttonMain buttonOrange file-upload-button"
                                             >
-                                                {isUploadingImage ? 'Uploading...' : 'Choose Photo'}
+                                                {imageUploadStatus || 'Choose Photo'}
                                             </label>
+                                            <p className="image-upload-helper-text">
+                                                Max original size: {formatFileSize(MAX_ORIGINAL_IMAGE_SIZE_BYTES)}.
+                                            </p>
                                         </div>
                                     )}
                                     <input
