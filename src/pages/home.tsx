@@ -9,8 +9,8 @@ import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
 import Calendar from '../assets/calendar.jpg';
-import Janeone from "../assets/jane1.jpg";
-import { LocalPrice } from "../components/local-price";
+import Janeone from '../assets/jane1.jpg';
+import { LocalPrice } from '../components/local-price';
 
 interface QuickEvent {
     id: number;
@@ -35,7 +35,9 @@ function Home(): React.JSX.Element {
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => setSession(session));
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
             setSession(session);
         });
 
@@ -61,7 +63,7 @@ function Home(): React.JSX.Element {
                 .limit(1);
 
             if (subscriptionError) {
-                console.error("Homepage subscription check failed:", subscriptionError.message);
+                console.error('Homepage subscription check failed:', subscriptionError.message);
                 setHasActiveSubscription(false);
                 setUpcomingEvents([]);
                 setHorseBoxAlerts([]);
@@ -84,21 +86,23 @@ function Home(): React.JSX.Element {
 
             const { data: calendarData, error: calendarError } = await supabase
                 .from('equi_calendar')
-                .select(`
+                .select(
+                    `
                     id, 
                     calendar_title, 
                     calendar_date,
                     equi_log_main (
                         horse_name
                     )
-                `)
+                `
+                )
                 .eq('user_uuid', session.user.id)
                 .gte('calendar_date', todayStr)
                 .lte('calendar_date', upperLimit7Str)
                 .order('calendar_date', { ascending: true });
 
             if (calendarError) {
-                console.error("Homepage calendar cache bypass log:", calendarError.message);
+                console.error('Homepage calendar cache bypass log:', calendarError.message);
             } else if (calendarData) {
                 setUpcomingEvents(calendarData as any[]);
             }
@@ -145,33 +149,44 @@ function Home(): React.JSX.Element {
                 <img src={homeHorse} alt="Equestrian Home" className="hero-bg-img" />
                 <div className="centered-button">
                     {session ? (
-                        <Link to="/dashboard" className="buttonOrange buttonMain">Go to Your Stable</Link>
+                        <Link to="/dashboard" className="buttonOrange buttonMain">
+                            Go to Your Stable
+                        </Link>
                     ) : (
-                        <Link to="/login?mode=signup" className="buttonOrange buttonMain">Sign up now!</Link>
+                        <Link to="/login?mode=signup" className="buttonOrange buttonMain">
+                            Sign up now!
+                        </Link>
                     )}
                 </div>
             </div>
 
             <div className="page-container home-layout-grid">
-
                 {session && hasActiveSubscription && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Your upcoming events</h2>
                         {upcomingEvents.length > 0 ? (
                             <div>
                                 <p className="marginbsixteen">
-                                    <span>📅</span>{' '}-{' '}
+                                    <span>📅</span> -{' '}
                                     <strong className="text-normal">Next 7 Days:</strong>
                                 </p>
                                 <ul className="events-list">
-                                    {upcomingEvents.map(event => {
+                                    {upcomingEvents.map((event) => {
                                         const horseName = event.equi_log_main?.horse_name;
                                         return (
                                             <li key={event.id} className="marginbsixteen">
                                                 <Link to={`/calendar`} className="text-normal">
-                                                    {horseName ? `${horseName} • ` : ''}{event.calendar_title}{' '}-{' '}
+                                                    {horseName ? `${horseName} • ` : ''}
+                                                    {event.calendar_title} -{' '}
                                                     <span>
-                                                        ({new Date(event.calendar_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                                        (
+                                                        {new Date(
+                                                            event.calendar_date
+                                                        ).toLocaleDateString(undefined, {
+                                                            month: 'short',
+                                                            day: 'numeric',
+                                                        })}
+                                                        )
                                                     </span>
                                                 </Link>
                                             </li>
@@ -182,10 +197,14 @@ function Home(): React.JSX.Element {
                         ) : (
                             <>
                                 <p className="marginbsixteen">
-                                    <span>📅</span>{' '}-{' '}
-                                    <strong className="text-normal">You have no events in the next 7 days.</strong>
+                                    <span>📅</span> -{' '}
+                                    <strong className="text-normal">
+                                        You have no events in the next 7 days.
+                                    </strong>
                                 </p>
-                                <p><Link to="/calendar">View Calendar</Link></p>
+                                <p>
+                                    <Link to="/calendar">View Calendar</Link>
+                                </p>
                             </>
                         )}
                     </div>
@@ -197,16 +216,21 @@ function Home(): React.JSX.Element {
                         <h2 className="textbig">Horsebox Reminders</h2>
                         <div>
                             <p className="marginbsixteen">
-                                <span>🚛</span>{' '}-{' '}
+                                <span>🚛</span> -{' '}
                                 <strong className="text-normal">Due in the Next 30 Days:</strong>
                             </p>
                             <ul className="events-list">
                                 {horseBoxAlerts.map((alert, index) => (
                                     <li key={index} className="marginbsixteen">
                                         <Link to={`/horsebox-view`} className="text-normal">
-                                            ⚠️ Your Horsebox {alert.type} is due{' '}-{' '}
+                                            ⚠️ Your Horsebox {alert.type} is due -{' '}
                                             <span>
-                                                ({new Date(alert.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })})
+                                                (
+                                                {new Date(alert.date).toLocaleDateString(
+                                                    undefined,
+                                                    { month: 'short', day: 'numeric' }
+                                                )}
+                                                )
                                             </span>
                                         </Link>
                                     </li>
@@ -219,41 +243,79 @@ function Home(): React.JSX.Element {
                 {!session && (
                     <div className="section-container white-section-container full-width">
                         <div className="text-center">
-                            <h2 className="textbig marginbsixteen">Opening an account and adding your horse's details is 100% free.</h2>
-                            <p className="text-normal marginbsixteen">This is much more than a horse emergency QR code. It's a complete, real-time stable help ecosystem for your horse.</p>
-                            <p className="text-normal marginbsixteen">Store as much information as you need without spending a penny.</p>
-                            <p className="text-normal marginbsixteen">If you want to activate your QR code so others can scan and view your horse's details, it's less than <LocalPrice basePriceGbp={1} /> per month, billed annually. See? Proof that not everything in the horse world has to be expensive.</p>
-                            <p className="text-normal marginbsixteen">Safe Keeping: Even if you pause your subscription, we’ll safely retain all your horse’s information in your account so you don't lose your data.</p>
-                            <p className="text-normal marginbsixteen"><strong>What's not to like?</strong></p>
-                            <p className="text-normal marginbsixteen"><Link to="/about-us">About us</Link></p>
+                            <h2 className="textbig marginbsixteen">
+                                Opening an account and adding your horse's details is 100% free.
+                            </h2>
+                            <p className="text-normal marginbsixteen">
+                                This is much more than a horse emergency QR code. It's a complete,
+                                real-time stable help ecosystem for your horse.
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                Store as much information as you need without spending a penny.
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                If you want to activate your QR code so others can scan and view
+                                your horse's details, it's less than <LocalPrice basePriceGbp={1} />{' '}
+                                per month, billed annually. See? Proof that not everything in the
+                                horse world has to be expensive.
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                Safe Keeping: Even if you pause your subscription, we’ll safely
+                                retain all your horse’s information in your account so you don't
+                                lose your data.
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                <strong>What's not to like?</strong>
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                <Link to="/about-us">About us</Link>
+                            </p>
                         </div>
                     </div>
                 )}
 
                 <div className="section-container purple-section-container full-width">
-                    <h1 className="textbig">How it works if you subscribe for less than <LocalPrice basePriceGbp={1} /> per month.</h1>
+                    <h1 className="textbig">
+                        How it works if you subscribe for less than <LocalPrice basePriceGbp={1} />{' '}
+                        per month.
+                    </h1>
                     <div className="info-bar-grid">
                         <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={EnterDetails} alt="Enter details" /></div>
+                            <div className="info-bar-fixed">
+                                <img src={EnterDetails} alt="Enter details" />
+                            </div>
                             <div className="info-bar-column">
                                 <h2 className="textmedium">Upload your details</h2>
-                                <p className="text-normal">Fill in the information about your horse. Choose what you wish to show and what to keep hidden in your account area.</p>
+                                <p className="text-normal">
+                                    Fill in the information about your horse. Choose what you wish
+                                    to show and what to keep hidden in your account area.
+                                </p>
                             </div>
                         </div>
 
                         <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={QrCode} alt="Get QR Code" /></div>
+                            <div className="info-bar-fixed">
+                                <img src={QrCode} alt="Get QR Code" />
+                            </div>
                             <div className="info-bar-column">
                                 <h2 className="textmedium">Get your Stable card</h2>
-                                <p className="text-normal">Simply print it out and stick it on your stable. Or even get one of our TagCards for your stable. No need to scan.</p>
+                                <p className="text-normal">
+                                    Simply print it out and stick it on your stable. Or even get one
+                                    of our TagCards for your stable. No need to scan.
+                                </p>
                             </div>
                         </div>
 
                         <div className="info-bar">
-                            <div className="info-bar-fixed"><img src={ScanCode} alt="Access info" /></div>
+                            <div className="info-bar-fixed">
+                                <img src={ScanCode} alt="Access info" />
+                            </div>
                             <div className="info-bar-column">
                                 <h2 className="textmedium">Access vital info instantly</h2>
-                                <p className="text-normal">Emergency contacts, medical details, and stable information are instantly accessible for both rider and horse.</p>
+                                <p className="text-normal">
+                                    Emergency contacts, medical details, and stable information are
+                                    instantly accessible for both rider and horse.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -265,13 +327,16 @@ function Home(): React.JSX.Element {
                         <div className="about-text-col">
                             <h3 className="textmedium marginbeight">Meet Jane, Our Inspiration</h3>
                             <p className="text-normal marginbsixteen">
-                                Our absolute pride and joy is <strong>Jane</strong>, our Irish Sports Horse.
-                                She is the true inspiration behind everything we do here.
+                                Our absolute pride and joy is <strong>Jane</strong>, our Irish
+                                Sports Horse. She is the true inspiration behind everything we do
+                                here.
                             </p>
                             <p className="text-normal marginbsixteen">
-                                Jane loves nothing more than leaving a massive gallop track across an open field,
-                                tackling bold cross-country lines, and jumping her heart out. She keeps us on our toes,
-                                teaches us something new every day, and reminds us why we fell in love with horses in the first place.
+                                Jane loves nothing more than leaving a massive gallop track across
+                                an open field, tackling bold cross-country lines, and jumping her
+                                heart out. She keeps us on our toes, teaches us something new every
+                                day, and reminds us why we fell in love with horses in the first
+                                place.
                             </p>
                             <p className="text-normal marginbsixteen">
                                 <Link to="/about-us">Read more about us</Link>
@@ -288,13 +353,35 @@ function Home(): React.JSX.Element {
                         <div className="section-container white-section-container split-card">
                             <h2 className="textbig">How much does it cost.</h2>
                             <div className="pricing-content-wrapper">
-                                <img className='marginbsixteen pricing-img' src={Money} alt='Pricing' />
+                                <img
+                                    className="marginbsixteen pricing-img"
+                                    src={Money}
+                                    alt="Pricing"
+                                />
                                 <div className="pricing-text">
-                                    <p className='marginbsixteen'>Opening an account and adding details is free. You can store all the information you need for your horse and we wont need a penny.</p>
-                                    <p className='marginbsixteen'>If you wish to share your horse details via the QR code, use the calendar and horsebox feature it will be <strong>less than <LocalPrice basePriceGbp={1} /> a month.</strong></p>
-                                    <p className='marginbsixteen'>See, not all horse related things are expensive.</p>
-                                    <p className='marginbsixteen'>£11 will be charge for a 12 month subscription. Your details will be retained for you even if you dont re-subscribe.</p>
-                                    <p className='marginbsixteen'><strong>Whats not to like?</strong></p>
+                                    <p className="marginbsixteen">
+                                        Opening an account and adding details is free. You can store
+                                        all the information you need for your horse and we wont need
+                                        a penny.
+                                    </p>
+                                    <p className="marginbsixteen">
+                                        If you wish to share your horse details via the QR code, use
+                                        the calendar and horsebox feature it will be{' '}
+                                        <strong>
+                                            less than <LocalPrice basePriceGbp={1} /> a month.
+                                        </strong>
+                                    </p>
+                                    <p className="marginbsixteen">
+                                        See, not all horse related things are expensive.
+                                    </p>
+                                    <p className="marginbsixteen">
+                                        <LocalPrice basePriceGbp={11} /> will be charge for a 12
+                                        month subscription. Your details will be retained for you
+                                        even if you dont re-subscribe.
+                                    </p>
+                                    <p className="marginbsixteen">
+                                        <strong>Whats not to like?</strong>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -302,13 +389,33 @@ function Home(): React.JSX.Element {
                         <div className="section-container white-section-container split-card">
                             <h2 className="textbig">Your extras.</h2>
                             <div className="pricing-content-wrapper">
-                                <img className='marginbsixteen pricing-img' src={Calendar} alt="Calendar setup" />
+                                <img
+                                    className="marginbsixteen pricing-img"
+                                    src={Calendar}
+                                    alt="Calendar setup"
+                                />
                                 <div className="pricing-text">
-                                    <p className="text-normal marginbsixteen">When you sign up for our paid service, you can add your schedule to your NeighTag calendar. Clinics on Thursday, farrier next week, dentist in 4 weeks. Whatever you have, you can add it to our NeighTag calendar.</p>
-                                    <p className="text-normal marginbsixteen">Get a shareable QR code. Also add your horse box details, insurance, breakdown, MOT dates etc.</p>
-                                    <p className="text-normal marginbsixteen">Get a reminder a few days before so you dont forget those important dates.</p>
+                                    <p className="text-normal marginbsixteen">
+                                        When you sign up for our paid service, you can add your
+                                        schedule to your NeighTag calendar. Clinics on Thursday,
+                                        farrier next week, dentist in 4 weeks. Whatever you have,
+                                        you can add it to our NeighTag calendar.
+                                    </p>
+                                    <p className="text-normal marginbsixteen">
+                                        Get a shareable QR code. Also add your horse box details,
+                                        insurance, breakdown, MOT dates etc.
+                                    </p>
+                                    <p className="text-normal marginbsixteen">
+                                        Get a reminder a few days before so you dont forget those
+                                        important dates.
+                                    </p>
                                     {!session && (
-                                        <Link to="/login?mode=signup" className="buttonWhite buttonMain">Sign up now!</Link>
+                                        <Link
+                                            to="/login?mode=signup"
+                                            className="buttonWhite buttonMain"
+                                        >
+                                            Sign up now!
+                                        </Link>
                                     )}
                                 </div>
                             </div>
@@ -317,17 +424,20 @@ function Home(): React.JSX.Element {
                 )}
                 <div className="section-container full-width" style={{ textAlign: 'center' }}>
                     <p className="text-normal">
-                        Thank you for being part of the NeighTag family. We’ll see you out on the cross-country course!
+                        Thank you for being part of the NeighTag family. We’ll see you out on the
+                        cross-country course!
                     </p>
-                    <p className="text-purple marginbsixteen" style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}>
+                    <p
+                        className="text-purple marginbsixteen"
+                        style={{ fontWeight: 'bold', marginTop: '8px', fontSize: '1.2rem' }}
+                    >
                         — The NeighTag Family (Mandy, Abs and Jane! 🥕)
                     </p>
 
                     <Link to="/add-bookmark">Add a bookmark to your phones home screen.</Link>
                 </div>
-
             </div>
-        </main >
+        </main>
     );
 }
 
