@@ -94,7 +94,23 @@ export default function OwnerHorseDetails(): React.JSX.Element {
         </div>
     );
 
-    if (!horse) return null;
+    if (!horse) {
+        return (
+            <main className="page-wrapper">
+                <div className="page-container">
+                    <section className="section-container white-section-container">
+                        <h1 className="textbig">Horse record unavailable</h1>
+                        <p className="text-normal marginbsixteen">
+                            This horse record could not be loaded. It may have been removed, or your session may need refreshing.
+                        </p>
+                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonMain buttonPurple">
+                            Back to Your Stable
+                        </button>
+                    </section>
+                </div>
+            </main>
+        );
+    }
 
     // Process calendar values cleanly
     const saddleFitterDate = calendarMap['Saddle Fitter Visit'] ? formatGBDate(calendarMap['Saddle Fitter Visit']) : 'TBC';
