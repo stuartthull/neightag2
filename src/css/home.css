@@ -386,9 +386,12 @@ pre {
     text-align: center;
     background: none;
     border: none;
-    min-width: 80px;
+    min-width: 100px;
     text-decoration: none;
     margin-bottom: 8px;
+    @media (max-width: 500px) {
+        min-width: 80px;
+    }
 }
 
 .nav-link svg {
@@ -405,7 +408,10 @@ pre {
 
 .nav-link-text {
     color: var(--white);
-    font-size: 12px;
+    font-size: 14px;
+    @media (max-width: 500px) {
+        font-size: 12px;
+    }
 }
 
 .nav-link-text:link,
@@ -447,6 +453,7 @@ pre {
     text-decoration: none;
     text-align: center;
     padding: 0 0 16px;
+
 }
 
 .logo-holder {
