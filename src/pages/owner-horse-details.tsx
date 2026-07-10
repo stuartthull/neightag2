@@ -196,7 +196,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                             rel="noopener noreferrer"
                             style={{ textDecoration: 'none', display: 'inline-block' }}
                         >
-                            🔗 &nbsp;&nbsp;Test your NeighTag public view
+                            🔗 &nbsp;&nbsp;Test your public view
                         </a>
                     </div>
                 </section>
