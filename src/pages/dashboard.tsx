@@ -180,7 +180,6 @@ export default function Dashboard() {
                     <p className="text-normal">Manage your horses and their medical records.</p>
 
                     {myLogs.map((log) => {
-                        const isSubbed = !!activeSubscriptions[log.horse_uuid];
                         return (
                             <span key={`manage-${log.id}`}>
                                 <div
