@@ -35,7 +35,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     return;
                 }
 
-                // 1. Fetch complete horse columns (now includes new insurance parameters automatically via '*')
                 const { data: horseData, error: horseError } = await supabase
                     .from('equi_log_main')
                     .select('*')
@@ -50,7 +49,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     return;
                 }
 
-                // 2. Fetch the billing subscription parameters
                 const { data: subData } = await supabase
                     .from('equi_subscriptions')
                     .select('status, current_period_end')
@@ -58,7 +56,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     .eq('user_uuid', user.id)
                     .maybeSingle();
 
-                // 3. Fetch calendar details map
                 const { data: calendarData } = await supabase
                     .from('equi_calendar')
                     .select('calendar_title, calendar_date')
@@ -106,8 +103,7 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     <section className="section-container white-section-container">
                         <h1 className="textbig">Horse record unavailable</h1>
                         <p className="text-normal marginbsixteen">
-                            This horse record could not be loaded. It may have been removed, or your
-                            session may need refreshing.
+                            This horse record could not be loaded.
                         </p>
                         <button
                             type="button"
@@ -122,7 +118,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
         );
     }
 
-    // Process calendar values cleanly
     const saddleFitterDate = calendarMap['Saddle Fitter Visit']
         ? formatGBDate(calendarMap['Saddle Fitter Visit'])
         : 'TBC';
@@ -135,6 +130,10 @@ export default function OwnerHorseDetails(): React.JSX.Element {
     const dentistDate = calendarMap['Dentist Visit']
         ? formatGBDate(calendarMap['Dentist Visit'])
         : 'TBC';
+    // 💡 Resolve the newly structured worming date parameters
+    const wormingDate = calendarMap['Worming Due']
+        ? formatGBDate(calendarMap['Worming Due'])
+        : 'TBC';
 
     return (
         <main className="page-wrapper">
@@ -142,16 +141,11 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                 <title>{`Administrative Console | ${horse.horse_name}`}</title>
             </Helmet>
             <div className="page-container">
-                {/* OWNER PREVIEW BANNER */}
                 <div className="alert-banner-warning">
                     ⚙️ <strong>Administrative Console View:</strong> <br />
-                    Surfacing all variables, metrics, and billing details completely unfiltered.{' '}
-                    <br />
-                    This is your full view, anything you have hidden in the matrix will not be
-                    publicly visible. Please use responsibly.
+                    Surfacing all variables, metrics, and billing details completely unfiltered.
                 </div>
 
-                {/* HERO SECTION */}
                 <section className="section-container purple-section-container">
                     <h1 className="textbig marginbeight">
                         <strong>{horse.horse_name}'s</strong> Console
@@ -174,11 +168,10 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     )}
                 </section>
 
-                {/* 💳 SUBSCRIPTION SYSTEM CARD */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium marginbeight">🛡️ Live Tag System Protection</h2>
                     <div className="text-normal marginbeight datarow">
-                        <span>Tag Link Status:</span>
+                        <span>Tag Link Status:</span>{' '}
                         <strong
                             style={{
                                 color: subDetails?.status === 'active' ? '#16a34a' : '#dc2626',
@@ -188,14 +181,13 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                         </strong>
                     </div>
                     <div className="text-normal marginbeight datarow">
-                        <span>Renewal Date:</span>
+                        <span>Renewal Date:</span>{' '}
                         <strong>
                             {subDetails?.current_period_end
                                 ? formatGBDate(subDetails.current_period_end)
                                 : 'Not Documented'}
                         </strong>
                     </div>
-
                     <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
                         <a
                             href={`/horse-details/${horse.horse_uuid}`}
@@ -209,7 +201,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* EMERGENCY PROTOCOLS */}
                 <section className="section-container white-section-container">
                     <h2 className="textbig">Emergency Contacts</h2>
                     <div className="horsebox-panel breakdown-panel">
@@ -246,41 +237,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* 📋 NEW HORSE INSURANCE SECTION */}
-                <section className="card marginbsixteen">
-                    <h2 className="textmedium">🛡️ Horse Insurance Details</h2>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Insurer Name:</span>{' '}
-                        <strong>{horse.insurance_provider || 'Not documented'}</strong>
-                    </div>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Policy Number:</span>{' '}
-                        <strong>{horse.insurance_policy_number || 'Not documented'}</strong>
-                    </div>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Renewal Date:</span>{' '}
-                        <strong>
-                            {horse.insurance_date ? formatGBDate(horse.insurance_date) : 'Not Set'}
-                        </strong>
-                    </div>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Claims Phone:</span>{' '}
-                        <strong>
-                            {horse.insurance_phone ? (
-                                <a
-                                    href={`tel:${horse.insurance_phone}`}
-                                    className="buttonSmall buttonOrange"
-                                >
-                                    📞 {horse.insurance_phone}
-                                </a>
-                            ) : (
-                                'Not documented'
-                            )}
-                        </strong>
-                    </div>
-                </section>
-
-                {/* IDENTITY SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium marginbsixteen">Identity & Parameters</h2>
                     <div className="text-normal marginbeight datarow">
@@ -314,7 +270,52 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* VETERINARY SECTION */}
+                <section className="card marginbsixteen">
+                    <h2 className="textmedium">Horse Insurance Details</h2>
+                    <div className="text-normal marginbeight datarow">
+                        <span>Insurer Name:</span>{' '}
+                        <strong>{horse.insurance_provider || 'Not documented'}</strong>
+                    </div>
+                    <div className="text-normal marginbeight datarow">
+                        <span>Policy Number:</span>{' '}
+                        <strong>{horse.insurance_policy_number || 'Not documented'}</strong>
+                    </div>
+                    <div className="text-normal marginbeight datarow">
+                        <span>Renewal Date:</span>{' '}
+                        <strong>
+                            {horse.insurance_date ? formatGBDate(horse.insurance_date) : 'Not Set'}
+                        </strong>
+                    </div>
+                    <div className="text-normal marginbeight datarow">
+                        <span>Claims Phone:</span>{' '}
+                        <strong>
+                            {horse.insurance_phone ? (
+                                <a
+                                    href={`tel:${horse.insurance_phone}`}
+                                    className="buttonSmall buttonOrange"
+                                >
+                                    📞 {horse.insurance_phone}
+                                </a>
+                            ) : (
+                                'Not documented'
+                            )}
+                        </strong>
+                    </div>
+                </section>
+
+                {/* 💡 NEW: OWNER ADMIN VIEW WORMING CARD */}
+                <section className="card marginbsixteen">
+                    <h2 className="textmedium">Worming Schedule & Treatment</h2>
+                    <div className="text-normal marginbeight datarow">
+                        <span>Next Treatment Due:</span> <strong>{wormingDate}</strong>
+                    </div>
+                    <div className="text-normal marginbeight">
+                        <span>Worming Notes & Products Used:</span>
+                        <br />
+                        <strong>{horse.worming_notes || 'None'}</strong>
+                    </div>
+                </section>
+
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Veterinary Care & Medications</h2>
                     <div className="text-normal marginbeight datarow">
@@ -348,7 +349,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </p>
                 </section>
 
-                {/* FARRIER SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Farrier</h2>
                     <div className="text-normal marginbeight datarow">
@@ -379,7 +379,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* DENTIST SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Dentist</h2>
                     <div className="text-normal marginbeight datarow">
@@ -410,7 +409,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* SADDLE FITTER SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Saddle Fitter</h2>
                     <div className="text-normal marginbeight datarow">
@@ -442,7 +440,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* PHYSIO SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Physiotherapist</h2>
                     <div className="text-normal marginbeight datarow">
@@ -473,7 +470,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     </div>
                 </section>
 
-                {/* FEEDING SECTION */}
                 <section className="card marginbsixteen">
                     <h2 className="textmedium">Feeding & Turnout</h2>
                     <div className="text-normal">

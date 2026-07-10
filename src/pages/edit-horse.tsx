@@ -28,6 +28,9 @@ const INITIAL_FORM_DATA = {
     dentist_email: '',
     dentist_next_visit: '', // 🗓️ Populated via equi_calendar
     dentist_notes: '',
+    // 🪱 NEW WORMING STATE DATA KEY SIGNATURES
+    worming_date: '', // 🗓️ Populated via equi_calendar
+    worming_notes: '',
     emergency_name_one: '',
     emergency_phone_one: '',
     emergency_name_two: '',
@@ -75,7 +78,11 @@ const loadImageFromObjectUrl = (objectUrl: string): Promise<HTMLImageElement> =>
         image.src = objectUrl;
     });
 
-const canvasToBlob = (canvas: HTMLCanvasElement, type: string, quality: number): Promise<Blob | null> =>
+const canvasToBlob = (
+    canvas: HTMLCanvasElement,
+    type: string,
+    quality: number
+): Promise<Blob | null> =>
     new Promise((resolve) => {
         canvas.toBlob(resolve, type, quality);
     });
@@ -85,7 +92,10 @@ const resizeImageForUpload = async (file: File): Promise<OptimisedImage> => {
 
     try {
         const image = await loadImageFromObjectUrl(objectUrl);
-        const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(image.naturalWidth, image.naturalHeight));
+        const scale = Math.min(
+            1,
+            MAX_IMAGE_DIMENSION / Math.max(image.naturalWidth, image.naturalHeight)
+        );
         const width = Math.max(1, Math.round(image.naturalWidth * scale));
         const height = Math.max(1, Math.round(image.naturalHeight * scale));
         const canvas = document.createElement('canvas');
@@ -193,7 +203,11 @@ export default function EditItem(): React.JSX.Element {
                     if (key === 'is_public') {
                         safePayload[key] = horseData[key] ?? true;
                     } else {
-                        if (key === 'horse_dob' || key === 'horse_last_weighed') {
+                        if (
+                            key === 'horse_dob' ||
+                            key === 'horse_last_weighed' ||
+                            key === 'insurance_date'
+                        ) {
                             safePayload[key] = horseData[key] ? normalizeDate(horseData[key]) : '';
                         } else {
                             safePayload[key] = horseData[key] === null ? '' : horseData[key];
@@ -207,6 +221,8 @@ export default function EditItem(): React.JSX.Element {
             safePayload['dentist_next_visit'] = calendarMap['Dentist Visit'] || '';
             safePayload['saddle_fitter_next_visit'] = calendarMap['Saddle Fitter Visit'] || '';
             safePayload['physio_next_visit'] = calendarMap['Physio Visit'] || '';
+            // 💡 NEW MAP LINK ENTRY
+            safePayload['worming_date'] = calendarMap['Worming Due'] || '';
 
             const loadedData = { ...INITIAL_FORM_DATA, ...safePayload };
             setFormData(loadedData);
@@ -246,6 +262,7 @@ export default function EditItem(): React.JSX.Element {
     };
 
     // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
+    // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
     const syncAppointmentsToCalendar = async (current: any, original: any, ownerUuid: string) => {
         if (!ownerUuid || !horse_uuid) return;
 
@@ -258,15 +275,17 @@ export default function EditItem(): React.JSX.Element {
                 notes: current.saddle_fitter_notes,
             },
             { key: 'physio_next_visit', title: 'Physio Visit', notes: current.physio_notes },
+            { key: 'worming_date', title: 'Worming Due', notes: current.worming_notes },
         ];
 
         for (const appt of appointmentTypes) {
             const newDate = normalizeDate(current[appt.key]);
             const oldDate = normalizeDate(original[appt.key]);
 
+            // Only execute database transactions if the date has explicitly changed
             if (newDate !== oldDate) {
                 if (newDate) {
-                    // Match correct public schema column structure
+                    // Match correct public schema column structure safely
                     const { error } = await supabase.from('equi_calendar').upsert(
                         {
                             user_uuid: ownerUuid,
@@ -276,13 +295,13 @@ export default function EditItem(): React.JSX.Element {
                             calendar_notes: appt.notes || '',
                         },
                         {
-                            onConflict: 'horse_uuid,calendar_title', // ✅ Matches schema composite constraint key rule
+                            onConflict: 'horse_uuid,calendar_title', // Resolves directly against the composite index
                         }
                     );
 
                     if (error) console.error(`Error saving ${appt.title}:`, error.message);
-                } else {
-                    // Remove record cleanly if date input cleared completely
+                } else if (oldDate) {
+                    // Only drop record if it previously existed and was intentionally cleared out
                     const { error } = await supabase
                         .from('equi_calendar')
                         .delete()
@@ -306,6 +325,7 @@ export default function EditItem(): React.JSX.Element {
             'dentist_next_visit',
             'saddle_fitter_next_visit',
             'physio_next_visit',
+            'worming_date', // 💡 Exclude from straight equi_log_main write execution query bounds
             'user_uuid',
             'horse_uuid',
             'id',
@@ -368,7 +388,11 @@ export default function EditItem(): React.JSX.Element {
             optimisedImage = await resizeImageForUpload(file);
         } catch (error) {
             console.error('Image optimisation error:', error);
-            alert(error instanceof Error ? error.message : 'Failed to optimise this photo. Please try another image.');
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : 'Failed to optimise this photo. Please try another image.'
+            );
             setIsUploadingImage(false);
             setImageUploadStatus('');
             event.target.value = '';
@@ -429,7 +453,6 @@ export default function EditItem(): React.JSX.Element {
         }
     };
 
-    // 🗑️ Clears image relationship fields from storage, state, and db profiles safely
     const handleRemoveImage = async () => {
         if (!window.confirm('Are you sure you want to remove this profile photo?')) return;
 
@@ -437,20 +460,16 @@ export default function EditItem(): React.JSX.Element {
 
         if (currentImageUrl) {
             try {
-                // Extract the path after '/horse-photos/' from the public URL
-                // Example: "owner_id/horse_id-timestamp.jpg"
                 const urlParts = currentImageUrl.split('/horse-photos/');
                 if (urlParts.length === 2) {
                     const storagePath = urlParts[1];
 
-                    // 1. Delete the actual file asset from your Supabase bucket
                     const { error: storageError } = await supabase.storage
                         .from('horse-photos')
                         .remove([storagePath]);
 
                     if (storageError) {
                         console.error('Storage cleanup warning:', storageError.message);
-                        // We continue anyway so the user isn't stuck with an un-removable link if the file was already missing
                     }
                 }
             } catch (err) {
@@ -458,7 +477,6 @@ export default function EditItem(): React.JSX.Element {
             }
         }
 
-        // 2. Remove the link reference inside your database record
         const ownerId = getOwnerId();
 
         if (!ownerId || !horse_uuid) {
@@ -512,7 +530,7 @@ export default function EditItem(): React.JSX.Element {
                                 Edit {formData.horse_name || 'Unnamed'}'s Record
                             </h1>
 
-                            {/* 📸 PROFILE IMAGE MANAGER PANEL */}
+                            {/* PROFILE IMAGE MANAGER PANEL */}
                             <div
                                 style={{
                                     marginBottom: '32px',
@@ -556,7 +574,6 @@ export default function EditItem(): React.JSX.Element {
                                         <strong>Profile Picture</strong>
                                     </p>
 
-                                    {/* 🎛️ Conditional Template Toggle Engine */}
                                     {formData.horse_image_url ? (
                                         <div>
                                             <p className="text-normal marginbsixteen">
@@ -574,10 +591,9 @@ export default function EditItem(): React.JSX.Element {
                                     ) : (
                                         <div>
                                             <p style={{ fontSize: '0.85rem', marginBottom: '8px' }}>
-                                                Upload a photo of your horse (.jpg, .png, .webp). Large photos are
-                                                resized before upload.
+                                                Upload a photo of your horse (.jpg, .png, .webp).
+                                                Large photos are resized before upload.
                                             </p>
-                                            {/* 🏷️ The visible, styled click target */}
                                             <label
                                                 htmlFor="horse_image_input"
                                                 className="buttonMain buttonOrange file-upload-button"
@@ -585,7 +601,8 @@ export default function EditItem(): React.JSX.Element {
                                                 {imageUploadStatus || 'Choose Photo'}
                                             </label>
                                             <p className="image-upload-helper-text">
-                                                Max original size: {formatFileSize(MAX_ORIGINAL_IMAGE_SIZE_BYTES)}.
+                                                Max original size:{' '}
+                                                {formatFileSize(MAX_ORIGINAL_IMAGE_SIZE_BYTES)}.
                                             </p>
                                         </div>
                                     )}
@@ -681,55 +698,6 @@ export default function EditItem(): React.JSX.Element {
                         </div>
                     </section>
 
-                    {/* HORSE INSURANCE */}
-                    <section className="section-container white-section-container">
-                        <h2 className="textmedium marginbsixteen">Horse Insurance Details</h2>
-                        <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="insurance_provider">Horse Insurer:</label>
-                            <input
-                                className="inputText"
-                                id="insurance_provider"
-                                name="insurance_provider"
-                                type="text"
-                                value={formData.insurance_provider}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="insurance_policy_number">Policy Number:</label>
-                            <input
-                                className="inputText"
-                                id="insurance_policy_number"
-                                name="insurance_policy_number"
-                                type="text"
-                                value={formData.insurance_policy_number}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="insurance_date">Renewal Date:</label>
-                            <input
-                                className="inputText"
-                                id="insurance_date"
-                                name="insurance_date"
-                                type="date"
-                                value={formData.insurance_date}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="text-normal marginbeight form-field-row">
-                            <label htmlFor="insurance_phone">Claims Phone:</label>
-                            <input
-                                className="inputText"
-                                id="insurance_phone"
-                                name="insurance_phone"
-                                type="text"
-                                value={formData.insurance_phone}
-                                onChange={handleChange}
-                            />
-                        </div>
-                    </section>
-
                     {/* IDENTITY & PROFILE */}
                     <section className="section-container white-section-container">
                         <h2 className="textmedium marginbsixteen">Horse Identity & Profile</h2>
@@ -818,6 +786,89 @@ export default function EditItem(): React.JSX.Element {
                                 name="horse_last_weighed"
                                 type="date"
                                 value={formData.horse_last_weighed}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </section>
+
+                    {/* HORSE INSURANCE */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">Horse Insurance Details</h2>
+                        <p>
+                            (<b>NOTE:</b> This will never appear on your public view)
+                        </p>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_provider">Horse Insurer:</label>
+                            <input
+                                className="inputText"
+                                id="insurance_provider"
+                                name="insurance_provider"
+                                type="text"
+                                value={formData.insurance_provider}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_policy_number">Policy Number:</label>
+                            <input
+                                className="inputText"
+                                id="insurance_policy_number"
+                                name="insurance_policy_number"
+                                type="text"
+                                value={formData.insurance_policy_number}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_date">Renewal Date:</label>
+                            <input
+                                className="inputText"
+                                id="insurance_date"
+                                name="insurance_date"
+                                type="date"
+                                value={formData.insurance_date}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="insurance_phone">Claims Phone:</label>
+                            <input
+                                className="inputText"
+                                id="insurance_phone"
+                                name="insurance_phone"
+                                type="text"
+                                value={formData.insurance_phone}
+                                onChange={handleChange}
+                            />
+                        </div>
+                    </section>
+
+                    {/* 💡 NEW: WORMING SCHEDULE & HISTORY ENTRY CONTAINER CARD */}
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">Worming Schedule</h2>
+                        <p>
+                            (<b>NOTE:</b> This will never appear on your public view)
+                        </p>
+                        <div className="text-normal marginbeight form-field-row">
+                            <label htmlFor="worming_date">Next Treatment Due:</label>
+                            <input
+                                className="inputText"
+                                id="worming_date"
+                                name="worming_date"
+                                type="date"
+                                value={formData.worming_date}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="form-field-row-mixed">
+                            <label className="text-normal" htmlFor="worming_notes">
+                                Treatment Notes & Products Used
+                            </label>
+                            <textarea
+                                className="inputText"
+                                id="worming_notes"
+                                name="worming_notes"
+                                value={formData.worming_notes}
                                 onChange={handleChange}
                             />
                         </div>
@@ -1071,7 +1122,7 @@ export default function EditItem(): React.JSX.Element {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="form-field-row-mixed">
+                        <div className="form-field-row-mixed marginbsixteen">
                             <label className="text-normal" htmlFor="dentist_notes">
                                 Treatment Notes
                             </label>

@@ -176,14 +176,15 @@ function Home(): React.JSX.Element {
                                         return (
                                             <li key={event.id} className="marginbsixteen">
                                                 <Link to={`/calendar`} className="text-normal">
-                                                    {horseName ? `${horseName} • ` : ''}
-                                                    {event.calendar_title} -{' '}
+                                                    {event.calendar_title} - for{' '}
+                                                    {horseName ? `${horseName} - ` : ''}
                                                     <span>
                                                         (
                                                         {new Date(
                                                             event.calendar_date
                                                         ).toLocaleDateString(undefined, {
-                                                            month: 'short',
+                                                            year: 'numeric',
+                                                            month: 'long',
                                                             day: 'numeric',
                                                         })}
                                                         )
@@ -228,7 +229,11 @@ function Home(): React.JSX.Element {
                                                 (
                                                 {new Date(alert.date).toLocaleDateString(
                                                     undefined,
-                                                    { month: 'short', day: 'numeric' }
+                                                    {
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    }
                                                 )}
                                                 )
                                             </span>
