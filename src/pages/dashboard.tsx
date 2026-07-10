@@ -181,27 +181,6 @@ export default function Dashboard() {
                         Manage your horses and their medical records.
                     </p>
 
-                    {myLogs.map((log) => {
-                        return (
-                            <div key={`manage-${log.id}`}>
-                                <button
-                                    type="button"
-                                    className="buttonSmall marginbsixteen buttonfullwidth"
-                                    style={{
-                                        backgroundColor: '#ff0000',
-                                        color: '#ffffff',
-                                        fontWeight: 'bold',
-                                    }}
-                                    onClick={() =>
-                                        handleDeleteHorseComplete(log.horse_uuid, sessionUserId)
-                                    }
-                                >
-                                    Delete {log.horse_name} and all associated records
-                                </button>
-                            </div>
-                        );
-                    })}
-
                     {/* 💳 Show a reassuring status indicator while polling */}
                     {isVerifyingPayment && (
                         <p
@@ -451,6 +430,40 @@ export default function Dashboard() {
                                         Add new horse to Stable
                                     </button>
                                 </form>
+                            </section>
+                        )}
+                        {myLogs.length === 0 ? null : (
+                            <section className="section-container white-section-container no-print">
+                                <h2 className="textmedium marginbeight">
+                                    Delete your horse and all associated records
+                                </h2>
+                                <p className="text-normal marginbsixteen">
+                                    ! Be careful, once you delete the records they are not
+                                    recoverable.
+                                </p>
+                                {myLogs.map((log) => {
+                                    return (
+                                        <div key={`manage-${log.id}`}>
+                                            <button
+                                                type="button"
+                                                className="buttonSmall marginbsixteen buttonfullwidth"
+                                                style={{
+                                                    backgroundColor: '#ff0000',
+                                                    color: '#ffffff',
+                                                    fontWeight: 'bold',
+                                                }}
+                                                onClick={() =>
+                                                    handleDeleteHorseComplete(
+                                                        log.horse_uuid,
+                                                        sessionUserId
+                                                    )
+                                                }
+                                            >
+                                                Delete {log.horse_name}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
                             </section>
                         )}
                     </>
