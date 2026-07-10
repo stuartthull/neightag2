@@ -179,6 +179,36 @@ export default function Dashboard() {
                     <h1 className="textbig">Your Stable</h1>
                     <p className="text-normal">Manage your horses and their medical records.</p>
 
+                    {myLogs.map((log) => {
+                        const isSubbed = !!activeSubscriptions[log.horse_uuid];
+                        return (
+                            <span key={`manage-${log.id}`}>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'flex-end',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <button
+                                        type="button"
+                                        className="buttonSmall"
+                                        style={{
+                                            backgroundColor: '#ff0000',
+                                            color: '#ffffff',
+                                            fontWeight: 'bold',
+                                        }}
+                                        onClick={() =>
+                                            handleDeleteHorseComplete(log.horse_uuid, sessionUserId)
+                                        }
+                                    >
+                                        Delete horse
+                                    </button>
+                                </div>
+                            </span>
+                        );
+                    })}
+
                     {/* 💳 Show a reassuring status indicator while polling */}
                     {isVerifyingPayment && (
                         <p
@@ -237,131 +267,104 @@ export default function Dashboard() {
                     </section>
                 ) : (
                     <>
-                        {/* 2. HORSE MANAGEMENT ROSTER */}
-                        {myLogs.map((log) => {
-                            const isSubbed = !!activeSubscriptions[log.horse_uuid];
-                            return (
-                                <section
-                                    key={`manage-${log.id}`}
-                                    className="section-container white-section-container no-print marginbsixteen"
-                                >
-                                    <div className="marginbsixteen">
-                                        <h2 className="textmedium" style={{ margin: 0 }}>
-                                            Registered horse: <strong>{log.horse_name}</strong>
-                                        </h2>
-                                    </div>
-                                    <ul className="olnone">
-                                        <li className="marginbtwenfour">
-                                            <Link
-                                                to={`/owner-horse-details/${log.horse_uuid}`}
-                                                className="text-purple marginbsixteen"
-                                            >
-                                                👁️ View {log.horse_name}'s full details
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                    <hr className="marginbtwenfour" />
-                                    <ul className="olnone">
-                                        <li className="marginbtwenfour">
-                                            <Link
-                                                to={`/edit-horse/${log.horse_uuid}`}
-                                                className="text-purple marginbsixteen"
-                                            >
-                                                ✏️ Edit {log.horse_name}'s details
-                                            </Link>
-                                        </li>
-                                        <li className="marginbtwenfour">
-                                            <Link
-                                                to={
-                                                    isSubbed
-                                                        ? `/privacy/${log.horse_uuid}`
-                                                        : `/activate-tag?id=${log.horse_uuid}`
-                                                }
-                                                className="text-purple marginbsixteen"
-                                            >
-                                                {!isSubbed ? '🔒 ' : '🛡️ '} Edit {log.horse_name}'s
-                                                privacy matrix
-                                            </Link>
-                                        </li>
-                                    </ul>
-
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'flex-end',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <button
-                                            type="button"
-                                            className="buttonSmall"
-                                            style={{
-                                                backgroundColor: '#ff0000',
-                                                color: '#ffffff',
-                                                fontWeight: 'bold',
-                                            }}
-                                            onClick={() =>
-                                                handleDeleteHorseComplete(
-                                                    log.horse_uuid,
-                                                    sessionUserId
-                                                )
-                                            }
-                                        >
-                                            Delete horse
-                                        </button>
-                                    </div>
-                                </section>
-                            );
-                        })}
-
-                        {/* 1. PRINTING UTILITIES BLOCK */}
-                        <section className="section-container white-section-container no-print">
-                            <div className="marginbsixteen">
-                                <h2 className="textmedium" style={{ margin: 0 }}>
-                                    Print your tags
-                                </h2>
-                            </div>
+                        <section className="section-container white-section-container no-print marginbsixteen">
+                            {/* 2. HORSE MANAGEMENT ROSTER */}
                             {myLogs.map((log) => {
                                 const isSubbed = !!activeSubscriptions[log.horse_uuid];
                                 return (
-                                    <ul key={`print-${log.id}`} className="olnone">
-                                        <li className="marginbsixteen">
-                                            <div className="marginbsixteen">
-                                                <a
-                                                    href={
-                                                        isSubbed
-                                                            ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
-                                                            : '/print-stable-tag-dummy'
-                                                    }
-                                                    rel="noopener noreferrer"
-                                                    target="_blank"
-                                                    className="text-normal"
+                                    <span key={`manage-${log.id}`}>
+                                        <div className="marginbsixteen">
+                                            <h2 className="textmedium" style={{ margin: 0 }}>
+                                                Registered horse: <strong>{log.horse_name}</strong>
+                                            </h2>
+                                        </div>
+                                        <ul className="olnone">
+                                            <li className="marginbtwenfour">
+                                                <Link
+                                                    to={`/owner-horse-details/${log.horse_uuid}`}
+                                                    className="buttonSmall buttonPurple marginbsixteen"
                                                 >
-                                                    🖨️ Print {log.horse_name}'s Stable Tag
-                                                    {!isSubbed && ' preview'}
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div className="marginbsixteen">
-                                                <a
-                                                    href={
-                                                        isSubbed
-                                                            ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
-                                                            : '/print-horsebox-poster-dummy'
-                                                    }
-                                                    rel="noopener noreferrer"
-                                                    target="_blank"
-                                                    className="text-normal"
+                                                    👁️ &nbsp;View full details
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                        <hr className="marginbtwenfour" />
+                                        <ul className="olnone">
+                                            <li className="marginbtwenfour">
+                                                <Link
+                                                    to={`/edit-horse/${log.horse_uuid}`}
+                                                    className="buttonSmall buttonOrange  marginbsixteen"
                                                 >
-                                                    🖨️ Print {log.horse_name}'s Horsebox Poster
-                                                    {!isSubbed && ' preview'}
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                                    ✏️&nbsp;&nbsp;Edit details
+                                                </Link>
+                                            </li>
+                                            <li className="marginbtwenfour">
+                                                <Link
+                                                    to={
+                                                        isSubbed
+                                                            ? `/privacy/${log.horse_uuid}`
+                                                            : `/activate-tag?id=${log.horse_uuid}`
+                                                    }
+                                                    className="buttonSmall buttonOrange purple marginbsixteen"
+                                                >
+                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit privacy
+                                                    matrix
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </span>
                                 );
                             })}
+
+                            {/* 1. PRINTING UTILITIES BLOCK */}
+                            <>
+                                <div className="marginbsixteen">
+                                    <h2 className="textmedium" style={{ margin: 0 }}>
+                                        Print your tags
+                                    </h2>
+                                </div>
+                                {myLogs.map((log) => {
+                                    const isSubbed = !!activeSubscriptions[log.horse_uuid];
+                                    return (
+                                        <ul key={`print-${log.id}`} className="olnone">
+                                            <li className="marginbsixteen">
+                                                <div className="marginbtwenfour">
+                                                    <a
+                                                        href={
+                                                            isSubbed
+                                                                ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
+                                                                : '/print-stable-tag-dummy'
+                                                        }
+                                                        rel="noopener noreferrer"
+                                                        target="_blank"
+                                                        className="buttonSmall buttonPurple"
+                                                    >
+                                                        🖨️ &nbsp;Print Stable Tag
+                                                        {!isSubbed && ' preview'}
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div className="marginbsixteen">
+                                                    <a
+                                                        href={
+                                                            isSubbed
+                                                                ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
+                                                                : '/print-horsebox-poster-dummy'
+                                                        }
+                                                        rel="noopener noreferrer"
+                                                        target="_blank"
+                                                        className="buttonSmall buttonPurple"
+                                                    >
+                                                        🖨️ &nbsp;Print Horsebox Poster
+                                                        {!isSubbed && ' preview'}
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    );
+                                })}
+                            </>
                         </section>
 
                         {/* 3. USER ASSETS PANEL */}

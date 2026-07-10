@@ -279,53 +279,54 @@ function Home(): React.JSX.Element {
                     </div>
                 )}
 
-                <div className="section-container purple-section-container full-width">
-                    <h1 className="textbig">
-                        How it works if you subscribe for less than <LocalPrice basePriceGbp={1} />{' '}
-                        per month.
-                    </h1>
-                    <div className="info-bar-grid">
-                        <div className="info-bar">
-                            <div className="info-bar-fixed">
-                                <img src={EnterDetails} alt="Enter details" />
+                {!session && !hasActiveSubscription && (
+                    <div className="section-container purple-section-container full-width">
+                        <h1 className="textbig">
+                            How it works if you subscribe for less than{' '}
+                            <LocalPrice basePriceGbp={1} /> per month.
+                        </h1>
+                        <div className="info-bar-grid">
+                            <div className="info-bar">
+                                <div className="info-bar-fixed">
+                                    <img src={EnterDetails} alt="Enter details" />
+                                </div>
+                                <div className="info-bar-column">
+                                    <h2 className="textmedium">Upload your details</h2>
+                                    <p className="text-normal">
+                                        Fill in the information about your horse. Choose what you
+                                        wish to show and what to keep hidden in your account area.
+                                    </p>
+                                </div>
                             </div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Upload your details</h2>
-                                <p className="text-normal">
-                                    Fill in the information about your horse. Choose what you wish
-                                    to show and what to keep hidden in your account area.
-                                </p>
-                            </div>
-                        </div>
 
-                        <div className="info-bar">
-                            <div className="info-bar-fixed">
-                                <img src={QrCode} alt="Get QR Code" />
+                            <div className="info-bar">
+                                <div className="info-bar-fixed">
+                                    <img src={QrCode} alt="Get QR Code" />
+                                </div>
+                                <div className="info-bar-column">
+                                    <h2 className="textmedium">Get your Stable card</h2>
+                                    <p className="text-normal">
+                                        Simply print it out and stick it on your stable. Or even get
+                                        one of our TagCards for your stable. No need to scan.
+                                    </p>
+                                </div>
                             </div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Get your Stable card</h2>
-                                <p className="text-normal">
-                                    Simply print it out and stick it on your stable. Or even get one
-                                    of our TagCards for your stable. No need to scan.
-                                </p>
-                            </div>
-                        </div>
 
-                        <div className="info-bar">
-                            <div className="info-bar-fixed">
-                                <img src={ScanCode} alt="Access info" />
-                            </div>
-                            <div className="info-bar-column">
-                                <h2 className="textmedium">Access vital info instantly</h2>
-                                <p className="text-normal">
-                                    Emergency contacts, medical details, and stable information are
-                                    instantly accessible for both rider and horse.
-                                </p>
+                            <div className="info-bar">
+                                <div className="info-bar-fixed">
+                                    <img src={ScanCode} alt="Access info" />
+                                </div>
+                                <div className="info-bar-column">
+                                    <h2 className="textmedium">Access vital info instantly</h2>
+                                    <p className="text-normal">
+                                        Emergency contacts, medical details, and stable information
+                                        are instantly accessible for both rider and horse.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
+                )}
                 <div className="section-container white-section-container full-width">
                     <div className="about-split-row">
                         {/* Left Side: Text Column */}
