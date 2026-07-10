@@ -122,7 +122,7 @@ export default function Dashboard() {
 
     // 🐴 Check if the user is locked out from adding more horses
     const isHorseLimitReached = myLogs.length >= 1 && !hasAnyActiveSubscription;
-
+    const isMaxHorsesReached = myLogs.length >= 2;
     // 🏷️ Get the ID of the first horse to link it directly to the purchase system
     const baseHorseId = myLogs[0]?.horse_uuid ?? '';
 
@@ -177,34 +177,28 @@ export default function Dashboard() {
             <div className="page-container">
                 <section className="section-container purple-section-container no-print">
                     <h1 className="textbig">Your Stable</h1>
-                    <p className="text-normal">Manage your horses and their medical records.</p>
+                    <p className="text-normal marginbsixteen">
+                        Manage your horses and their medical records.
+                    </p>
 
                     {myLogs.map((log) => {
                         return (
-                            <span key={`manage-${log.id}`}>
-                                <div
+                            <div key={`manage-${log.id}`}>
+                                <button
+                                    type="button"
+                                    className="buttonSmall marginbsixteen buttonfullwidth"
                                     style={{
-                                        display: 'flex',
-                                        justifyContent: 'flex-end',
-                                        alignItems: 'center',
+                                        backgroundColor: '#ff0000',
+                                        color: '#ffffff',
+                                        fontWeight: 'bold',
                                     }}
+                                    onClick={() =>
+                                        handleDeleteHorseComplete(log.horse_uuid, sessionUserId)
+                                    }
                                 >
-                                    <button
-                                        type="button"
-                                        className="buttonSmall"
-                                        style={{
-                                            backgroundColor: '#ff0000',
-                                            color: '#ffffff',
-                                            fontWeight: 'bold',
-                                        }}
-                                        onClick={() =>
-                                            handleDeleteHorseComplete(log.horse_uuid, sessionUserId)
-                                        }
-                                    >
-                                        Delete horse
-                                    </button>
-                                </div>
-                            </span>
+                                    Delete {log.horse_name} and all associated records
+                                </button>
+                            </div>
                         );
                     })}
 
@@ -266,12 +260,15 @@ export default function Dashboard() {
                     </section>
                 ) : (
                     <>
-                        <section className="section-container white-section-container no-print marginbsixteen">
+                        <>
                             {/* 2. HORSE MANAGEMENT ROSTER */}
                             {myLogs.map((log) => {
                                 const isSubbed = !!activeSubscriptions[log.horse_uuid];
                                 return (
-                                    <span key={`manage-${log.id}`}>
+                                    <section
+                                        className="section-container white-section-container no-print marginbsixteen"
+                                        key={`manage-${log.id}`}
+                                    >
                                         <div className="marginbsixteen">
                                             <h2 className="textmedium" style={{ margin: 0 }}>
                                                 Registered horse: <strong>{log.horse_name}</strong>
@@ -281,7 +278,7 @@ export default function Dashboard() {
                                             <li className="marginbtwenfour">
                                                 <Link
                                                     to={`/owner-horse-details/${log.horse_uuid}`}
-                                                    className="buttonSmall buttonPurple marginbsixteen"
+                                                    className="buttonMain buttonPurple marginbsixteen"
                                                 >
                                                     👁️ &nbsp;View full details
                                                 </Link>
@@ -311,12 +308,12 @@ export default function Dashboard() {
                                                 </Link>
                                             </li>
                                         </ul>
-                                    </span>
+                                    </section>
                                 );
                             })}
 
                             {/* 1. PRINTING UTILITIES BLOCK */}
-                            <>
+                            <section className="section-container white-section-container no-print marginbsixteen">
                                 <div className="marginbsixteen">
                                     <h2 className="textmedium" style={{ margin: 0 }}>
                                         Print your tags
@@ -344,7 +341,7 @@ export default function Dashboard() {
                                                 </div>
                                             </li>
                                             <li>
-                                                <div className="marginbsixteen">
+                                                <div className="marginbtwenfour">
                                                     <a
                                                         href={
                                                             isSubbed
@@ -363,8 +360,8 @@ export default function Dashboard() {
                                         </ul>
                                     );
                                 })}
-                            </>
-                        </section>
+                            </section>
+                        </>
 
                         {/* 3. USER ASSETS PANEL */}
                         <section className="section-container white-section-container no-print marginbsixteen">
@@ -405,7 +402,17 @@ export default function Dashboard() {
                         </section>
 
                         {/* ➕ CONDITIONAL ADD NEW HORSE UTILITY */}
-                        {isHorseLimitReached ? (
+                        {isMaxHorsesReached ? (
+                            // 1. Hide the input completely when 2 or more horses exist
+                            <section className="section-container white-section-container no-print">
+                                <h2 className="textmedium marginbeight">🐴 Stable Limit Reached</h2>
+                                <p className="text-normal" style={{ color: '#64748b', margin: 0 }}>
+                                    You have reached the maximum allowance of 2 horse profiles.
+                                    Delete an existing horse if you wish to add a new one.
+                                </p>
+                            </section>
+                        ) : isHorseLimitReached ? (
+                            // 2. Fall back to your subscription gate if they have 1 horse and no subscription
                             <section className="section-container white-section-container no-print">
                                 <h2 className="textmedium marginbeight">🔒 Add a New Horse</h2>
                                 <p
@@ -428,6 +435,7 @@ export default function Dashboard() {
                                 </a>
                             </section>
                         ) : (
+                            // 3. Show the interactive input field if they have 0 or 1 active horse matching requirements
                             <section className="section-container white-section-container no-print">
                                 <h2 className="textmedium marginbeight">Add a New Horse</h2>
                                 <form onSubmit={addHorse}>

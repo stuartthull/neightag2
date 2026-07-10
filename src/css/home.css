@@ -333,6 +333,12 @@ pre {
     cursor: pointer;
 }
 
+.buttonfullwidth {
+    @media (max-width: 500px) {
+        width: 100%;
+    }
+}
+
 .buttonPurple {
     background-color: var(--hunter-green);
     color: var(--white);
