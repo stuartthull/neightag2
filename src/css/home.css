@@ -191,7 +191,6 @@ pre {
 .textmedium {
     font-size: 18px;
     font-weight: 600;
-    margin: 0 0 8px;
 }
 
 .text-normal {
@@ -347,7 +346,7 @@ pre {
 .buttonWhite {
     background-color: var(--white);
     color: var(--primarycolor);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--primarycolor);
 }
 
 .buttonWhite:hover {

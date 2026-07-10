@@ -292,7 +292,7 @@ export default function Dashboard() {
                                             <li className="marginbtwenfour">
                                                 <Link
                                                     to={`/edit-horse/${log.horse_uuid}`}
-                                                    className="buttonSmall buttonOrange  marginbsixteen"
+                                                    className="buttonSmall buttonWhite  marginbsixteen"
                                                 >
                                                     ✏️&nbsp;&nbsp;Edit details
                                                 </Link>
@@ -304,7 +304,7 @@ export default function Dashboard() {
                                                             ? `/privacy/${log.horse_uuid}`
                                                             : `/activate-tag?id=${log.horse_uuid}`
                                                     }
-                                                    className="buttonSmall buttonOrange purple marginbsixteen"
+                                                    className="buttonSmall buttonWhite purple marginbsixteen"
                                                 >
                                                     {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit privacy
                                                     matrix
@@ -336,7 +336,7 @@ export default function Dashboard() {
                                                         }
                                                         rel="noopener noreferrer"
                                                         target="_blank"
-                                                        className="buttonSmall buttonPurple"
+                                                        className="buttonSmall buttonOrange"
                                                     >
                                                         🖨️ &nbsp;Print Stable Tag
                                                         {!isSubbed && ' preview'}
@@ -353,7 +353,7 @@ export default function Dashboard() {
                                                         }
                                                         rel="noopener noreferrer"
                                                         target="_blank"
-                                                        className="buttonSmall buttonPurple"
+                                                        className="buttonSmall buttonOrange"
                                                     >
                                                         🖨️ &nbsp;Print Horsebox Poster
                                                         {!isSubbed && ' preview'}
@@ -368,7 +368,7 @@ export default function Dashboard() {
 
                         {/* 3. USER ASSETS PANEL */}
                         <section className="section-container white-section-container no-print marginbsixteen">
-                            <h2 className="textmedium marginbsixteen">Global Tools & Assets</h2>
+                            <h2 className="textmedium marginbtwenfour">Global Tools & Assets</h2>
                             <ul className="olnone">
                                 <li className="marginbtwenfour">
                                     <Link
@@ -377,7 +377,7 @@ export default function Dashboard() {
                                                 ? `/calendar`
                                                 : `/activate-tag?id=${baseHorseId}`
                                         }
-                                        className="text-purple"
+                                        className="buttonSmall buttonWhite"
                                     >
                                         {!hasAnyActiveSubscription ? '🔒 ' : '📅 '} View your stable
                                         calendar
@@ -390,15 +390,15 @@ export default function Dashboard() {
                                                 ? `/horsebox-view`
                                                 : `/activate-tag?id=${baseHorseId}`
                                         }
-                                        className="text-purple"
+                                        className="buttonSmall buttonWhite"
                                     >
                                         {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}View your
                                         horsebox details
                                     </Link>
                                 </li>
                                 <li className="marginbtwenfour">
-                                    <Link to="/add-bookmark">
-                                        📌 Add a bookmark to your phones home screen.
+                                    <Link to="/add-bookmark" className="btext-purple text-small">
+                                        Add a bookmark to your phones home screen.
                                     </Link>
                                 </li>
                             </ul>
