@@ -1240,6 +1240,13 @@ pre {
     }
 }
 
+.tab-container-bookmark {
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 16px;
+    border-radius: 16px;
+}
+
 .sticky-actions-bar {
     position: sticky;
     bottom: 0;
