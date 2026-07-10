@@ -41,12 +41,26 @@ pre {
     margin-bottom: 16px;
 }
 
+.marginbtwenfour {
+    margin-bottom: 24px;
+}
+
+.marginbthirtysix {
+    margin-bottom: 36px;
+}
+
 .marginteight {
     margin-top: 8px;
 }
 
 .margintsixteen {
     margin-top: 16px;
+}
+
+.olnone {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 /* ==========================================================================

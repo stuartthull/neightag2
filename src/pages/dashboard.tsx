@@ -40,7 +40,7 @@ export default function Dashboard() {
             .eq('user_uuid', userId);
 
         if (logError) {
-            console.error("Error fetching segmented records:", logError.message);
+            console.error('Error fetching segmented records:', logError.message);
             return false;
         }
 
@@ -56,10 +56,10 @@ export default function Dashboard() {
                 .eq('status', 'active');
 
             if (subError) {
-                console.error("Error fetching subscriptions:", subError.message);
+                console.error('Error fetching subscriptions:', subError.message);
             } else if (subData && subData.length > 0) {
                 const subMap: SubscriptionMap = {};
-                subData.forEach(sub => {
+                subData.forEach((sub) => {
                     if (sub.horse_uuid) {
                         subMap[sub.horse_uuid] = true;
                     }
@@ -116,7 +116,9 @@ export default function Dashboard() {
     }, [sessionUserId, location.search]);
 
     // 🗓️ Compute globally if the user has any active subscriptions
-    const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(isActive => isActive === true);
+    const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(
+        (isActive) => isActive === true
+    );
 
     // 🐴 Check if the user is locked out from adding more horses
     const isHorseLimitReached = myLogs.length >= 1 && !hasAnyActiveSubscription;
@@ -129,14 +131,16 @@ export default function Dashboard() {
         if (!horseName || !sessionUserId) return;
 
         if (isHorseLimitReached) {
-            alert("Stable limit reached. Please upgrade your subscription to add more horses.");
+            alert('Stable limit reached. Please upgrade your subscription to add more horses.');
             return;
         }
 
-        const { error = null } = await supabase.from('equi_log_main').insert([{
-            horse_name: horseName,
-            user_uuid: sessionUserId
-        }]);
+        const { error = null } = await supabase.from('equi_log_main').insert([
+            {
+                horse_name: horseName,
+                user_uuid: sessionUserId,
+            },
+        ]);
 
         if (error) {
             alert(error.message);
@@ -149,7 +153,9 @@ export default function Dashboard() {
     };
 
     const handleDeleteHorseComplete = async (horseUuid: string, userId: string) => {
-        const confirmDelete = window.confirm("Are you sure? This will permanently wipe this horse, its entire calendar, and all its associated records. These can not be recovered.");
+        const confirmDelete = window.confirm(
+            'Are you sure? This will permanently wipe this horse, its entire calendar, and all its associated records. These can not be recovered.'
+        );
         if (!confirmDelete) return;
 
         const { error } = await supabase
@@ -161,7 +167,7 @@ export default function Dashboard() {
         if (error) {
             alert(`Deletion failed: ${error.message}`);
         } else {
-            alert("Horse and all associated records have been completely purged.");
+            alert('Horse and all associated records have been completely purged.');
             window.location.reload();
         }
     };
@@ -175,13 +181,27 @@ export default function Dashboard() {
 
                     {/* 💳 Show a reassuring status indicator while polling */}
                     {isVerifyingPayment && (
-                        <p className="text-normal" style={{ background: '#fef08a', color: '#854d0e', padding: '8px 12px', borderRadius: '6px', fontWeight: 'bold', marginTop: '10px' }}>
-                            🔄 Confirming your payment details with Stripe... The page will unlock automatically in a moment.
+                        <p
+                            className="text-normal"
+                            style={{
+                                background: '#fef08a',
+                                color: '#854d0e',
+                                padding: '8px 12px',
+                                borderRadius: '6px',
+                                fontWeight: 'bold',
+                                marginTop: '10px',
+                            }}
+                        >
+                            🔄 Confirming your payment details with Stripe... The page will unlock
+                            automatically in a moment.
                         </p>
                     )}
 
                     {!hasAnyActiveSubscription && !isVerifyingPayment && (
-                        <p className="text-normal">🔒 Some features are locked until you activate a subscription for at least one horse.</p>
+                        <p className="text-normal">
+                            🔒 Some features are locked until you activate a subscription for at
+                            least one horse.
+                        </p>
                     )}
                 </section>
 
@@ -191,7 +211,10 @@ export default function Dashboard() {
                     </section>
                 ) : myLogs.length === 0 ? (
                     <section className="section-container white-section-container no-print marginbsixteen">
-                        <p className="text-normal" style={{ color: '#64748b', marginBottom: '20px' }}>
+                        <p
+                            className="text-normal"
+                            style={{ color: '#64748b', marginBottom: '20px' }}
+                        >
                             No horses registered under this account yet.
                         </p>
 
@@ -201,7 +224,7 @@ export default function Dashboard() {
                                 <input
                                     className="inputText marginbsixteen"
                                     value={horseName}
-                                    onChange={e => setHorseName(e.target.value)}
+                                    onChange={(e) => setHorseName(e.target.value)}
                                     placeholder="Enter horse name"
                                     required
                                 />
@@ -215,36 +238,75 @@ export default function Dashboard() {
                 ) : (
                     <>
                         {/* 2. HORSE MANAGEMENT ROSTER */}
-                        {myLogs.map(log => {
+                        {myLogs.map((log) => {
                             const isSubbed = !!activeSubscriptions[log.horse_uuid];
                             return (
-                                <section key={`manage-${log.id}`} className="section-container white-section-container no-print marginbsixteen">
+                                <section
+                                    key={`manage-${log.id}`}
+                                    className="section-container white-section-container no-print marginbsixteen"
+                                >
                                     <div className="marginbsixteen">
-                                        <h2 className="textmedium" style={{ margin: 0 }}>Registered horse: <strong>{log.horse_name}</strong></h2>
+                                        <h2 className="textmedium" style={{ margin: 0 }}>
+                                            Registered horse: <strong>{log.horse_name}</strong>
+                                        </h2>
                                     </div>
-                                    <ul>
-                                        <li className='marginbsixteen'>
-                                            <Link to={`/owner-horse-details/${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                                View {log.horse_name}'s full details
+                                    <ul className="olnone">
+                                        <li className="marginbtwenfour">
+                                            <Link
+                                                to={`/owner-horse-details/${log.horse_uuid}`}
+                                                className="text-purple marginbsixteen"
+                                            >
+                                                👁️ View {log.horse_name}'s full details
                                             </Link>
                                         </li>
                                     </ul>
-                                    <hr className='marginbsixteen' />
-                                    <ul>
-                                        <li className='marginbsixteen'>
-                                            <Link to={`/edit-horse/${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                                Edit {log.horse_name}'s details
+                                    <hr className="marginbtwenfour" />
+                                    <ul className="olnone">
+                                        <li className="marginbtwenfour">
+                                            <Link
+                                                to={`/edit-horse/${log.horse_uuid}`}
+                                                className="text-purple marginbsixteen"
+                                            >
+                                                ✏️ Edit {log.horse_name}'s details
                                             </Link>
                                         </li>
-                                        <li className='marginbsixteen'>
-                                            <Link to={isSubbed ? `/privacy/${log.horse_uuid}` : `/activate-tag?id=${log.horse_uuid}`} className="text-purple marginbsixteen">
-                                                {!isSubbed && '🔒 '}Edit {log.horse_name}'s privacy matrix
+                                        <li className="marginbtwenfour">
+                                            <Link
+                                                to={
+                                                    isSubbed
+                                                        ? `/privacy/${log.horse_uuid}`
+                                                        : `/activate-tag?id=${log.horse_uuid}`
+                                                }
+                                                className="text-purple marginbsixteen"
+                                            >
+                                                {!isSubbed ? '🔒 ' : '🛡️ '} Edit {log.horse_name}'s
+                                                privacy matrix
                                             </Link>
                                         </li>
                                     </ul>
 
-                                    <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                                        <button type="button" className="buttonSmall" style={{ backgroundColor: '#ff0000', color: '#ffffff', fontWeight: 'bold' }} onClick={() => handleDeleteHorseComplete(log.horse_uuid, sessionUserId)}>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <button
+                                            type="button"
+                                            className="buttonSmall"
+                                            style={{
+                                                backgroundColor: '#ff0000',
+                                                color: '#ffffff',
+                                                fontWeight: 'bold',
+                                            }}
+                                            onClick={() =>
+                                                handleDeleteHorseComplete(
+                                                    log.horse_uuid,
+                                                    sessionUserId
+                                                )
+                                            }
+                                        >
                                             Delete horse
                                         </button>
                                     </div>
@@ -255,33 +317,45 @@ export default function Dashboard() {
                         {/* 1. PRINTING UTILITIES BLOCK */}
                         <section className="section-container white-section-container no-print">
                             <div className="marginbsixteen">
-                                <h2 className="textmedium" style={{ margin: 0 }}>Print your tags</h2>
+                                <h2 className="textmedium" style={{ margin: 0 }}>
+                                    Print your tags
+                                </h2>
                             </div>
-                            {myLogs.map(log => {
+                            {myLogs.map((log) => {
                                 const isSubbed = !!activeSubscriptions[log.horse_uuid];
                                 return (
-                                    <ul key={`print-${log.id}`}>
-                                        <li className='marginbsixteen'>
+                                    <ul key={`print-${log.id}`} className="olnone">
+                                        <li className="marginbsixteen">
                                             <div className="marginbsixteen">
                                                 <a
-                                                    href={isSubbed ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : '/print-stable-tag-dummy'}
+                                                    href={
+                                                        isSubbed
+                                                            ? `/print-stable-tag?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
+                                                            : '/print-stable-tag-dummy'
+                                                    }
                                                     rel="noopener noreferrer"
                                                     target="_blank"
                                                     className="text-normal"
                                                 >
-                                                    🖨️ Print {log.horse_name}'s Stable Tag{!isSubbed && ' preview'}
+                                                    🖨️ Print {log.horse_name}'s Stable Tag
+                                                    {!isSubbed && ' preview'}
                                                 </a>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="marginbsixteen">
                                                 <a
-                                                    href={isSubbed ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}` : '/print-horsebox-poster-dummy'}
+                                                    href={
+                                                        isSubbed
+                                                            ? `/print-horsebox-poster?id=${log.horse_uuid}&name=${encodeURIComponent(log.horse_name)}`
+                                                            : '/print-horsebox-poster-dummy'
+                                                    }
                                                     rel="noopener noreferrer"
                                                     target="_blank"
                                                     className="text-normal"
                                                 >
-                                                    🖨️ Print {log.horse_name}'s Horsebox Poster{!isSubbed && ' preview'}
+                                                    🖨️ Print {log.horse_name}'s Horsebox Poster
+                                                    {!isSubbed && ' preview'}
                                                 </a>
                                             </div>
                                         </li>
@@ -293,19 +367,37 @@ export default function Dashboard() {
                         {/* 3. USER ASSETS PANEL */}
                         <section className="section-container white-section-container no-print marginbsixteen">
                             <h2 className="textmedium marginbsixteen">Global Tools & Assets</h2>
-                            <ul>
-                                <li className='marginbsixteen'>
-                                    <Link to={hasAnyActiveSubscription ? `/calendar` : `/activate-tag?id=${baseHorseId}`} className="text-purple">
-                                        {!hasAnyActiveSubscription && '🔒 '}View your stable calendar
+                            <ul className="olnone">
+                                <li className="marginbtwenfour">
+                                    <Link
+                                        to={
+                                            hasAnyActiveSubscription
+                                                ? `/calendar`
+                                                : `/activate-tag?id=${baseHorseId}`
+                                        }
+                                        className="text-purple"
+                                    >
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '} View your stable
+                                        calendar
                                     </Link>
                                 </li>
-                                <li className='marginbsixteen'>
-                                    <Link to={hasAnyActiveSubscription ? `/horsebox-view` : `/activate-tag?id=${baseHorseId}`} className="text-purple">
-                                        {!hasAnyActiveSubscription && '🔒 '}View your horsebox details
+                                <li className="marginbtwenfour">
+                                    <Link
+                                        to={
+                                            hasAnyActiveSubscription
+                                                ? `/horsebox-view`
+                                                : `/activate-tag?id=${baseHorseId}`
+                                        }
+                                        className="text-purple"
+                                    >
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}View your
+                                        horsebox details
                                     </Link>
                                 </li>
-                                <li className='marginbsixteen'>
-                                    <Link to="/add-bookmark">Add a bookmark to your phones home screen.</Link>
+                                <li className="marginbtwenfour">
+                                    <Link to="/add-bookmark">
+                                        📌 Add a bookmark to your phones home screen.
+                                    </Link>
                                 </li>
                             </ul>
                         </section>
@@ -314,10 +406,22 @@ export default function Dashboard() {
                         {isHorseLimitReached ? (
                             <section className="section-container white-section-container no-print">
                                 <h2 className="textmedium marginbeight">🔒 Add a New Horse</h2>
-                                <p className="text-normal" style={{ color: '#64748b', marginBottom: '12px' }}>
-                                    Free accounts are limited to one horse profile. Purchase a plan for your current horse to unlock additional slots.
+                                <p
+                                    className="text-normal"
+                                    style={{ color: '#64748b', marginBottom: '12px' }}
+                                >
+                                    Free accounts are limited to one horse profile. Purchase a plan
+                                    for your current horse to unlock additional slots.
                                 </p>
-                                <a href={`/activate-tag?id=${baseHorseId}`} className="buttonOrange buttonMain" style={{ textDecoration: 'none', display: 'inline-block', textAlign: 'center' }}>
+                                <a
+                                    href={`/activate-tag?id=${baseHorseId}`}
+                                    className="buttonOrange buttonMain"
+                                    style={{
+                                        textDecoration: 'none',
+                                        display: 'inline-block',
+                                        textAlign: 'center',
+                                    }}
+                                >
                                     Add a subscription
                                 </a>
                             </section>
@@ -328,7 +432,7 @@ export default function Dashboard() {
                                     <input
                                         className="inputText marginbsixteen"
                                         value={horseName}
-                                        onChange={e => setHorseName(e.target.value)}
+                                        onChange={(e) => setHorseName(e.target.value)}
                                         placeholder="Enter horse name"
                                         required
                                     />
