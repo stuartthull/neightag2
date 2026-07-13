@@ -2,12 +2,6 @@ console.log("!!! STRIPE FUNCTION IS WORKING !!!");
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import Stripe from "https://esm.sh/stripe@13.10.0?target=deno"
 
-// 1. Initialize Stripe with your secret key from environment variables
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2023-10-16',
-  httpClient: Stripe.createFetchHttpClient(), // Required for Deno environment
-});
-
 // CORS headers configuration to let your localhost frontend call this function safely
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,6 +16,18 @@ serve(async (req) => {
   }
 
   try {
+    const stripeSecretKey =
+      Deno.env.get('STRIPE_SECRET_KEY') || Deno.env.get('STRIPE_LIVE_SECRET_KEY') || '';
+
+    if (!stripeSecretKey) {
+      throw new Error('Server configuration error: missing STRIPE_SECRET_KEY');
+    }
+
+    const stripe = new Stripe(stripeSecretKey, {
+      apiVersion: '2023-10-16',
+      httpClient: Stripe.createFetchHttpClient(), // Required for Deno environment
+    });
+
     // 2. Parse incoming body from frontend (contains user_uuid and horse_uuid)
     const { horse_uuid, user_uuid } = await req.json();
 

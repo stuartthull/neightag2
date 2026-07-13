@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // 💳 Added useLocation
-import { supabase } from '../supabaseClient';
+import { supabase, supabaseAnonKey } from '../supabaseClient';
 
 type LogRecord = {
     id: number;
@@ -19,6 +19,9 @@ export default function Dashboard() {
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [activeSubscriptions, setActiveSubscriptions] = useState<SubscriptionMap>({});
+
+    // 💳 Dynamic Customer ID state for Stripe Portal integration
+    const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
 
     // 💳 Track if we are actively waiting for Stripe's webhook to finish updating
     const [isVerifyingPayment, setIsVerifyingPayment] = useState<boolean>(false);
@@ -47,17 +50,22 @@ export default function Dashboard() {
         const logs = (logData as LogRecord[]) || [];
         setMyLogs(logs);
 
-        // 2. Fetch subscription status
+        // 2. Fetch subscription status along with Stripe Customer ID
         if (logs.length > 0) {
             const { data: subData, error: subError } = await supabase
                 .from('equi_subscriptions')
-                .select('horse_uuid, status')
+                .select('horse_uuid, status, stripe_customer_id') // 👈 Explicit mapping against your schema column rule
                 .eq('user_uuid', userId)
                 .eq('status', 'active');
 
             if (subError) {
                 console.error('Error fetching subscriptions:', subError.message);
             } else if (subData && subData.length > 0) {
+                // Save the dynamic Customer identity row cleanly to state context
+                if (subData[0].stripe_customer_id) {
+                    setStripeCustomerId(subData[0].stripe_customer_id);
+                }
+
                 const subMap: SubscriptionMap = {};
                 subData.forEach((sub) => {
                     if (sub.horse_uuid) {
@@ -125,6 +133,53 @@ export default function Dashboard() {
     const isMaxHorsesReached = myLogs.length >= 2;
     // 🏷️ Get the ID of the first horse to link it directly to the purchase system
     const baseHorseId = myLogs[0]?.horse_uuid ?? '';
+
+    const handleManageBilling = async () => {
+        if (!stripeCustomerId) {
+            alert("We couldn't find an active subscription profile link for your account yet.");
+            return;
+        }
+
+        try {
+            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
+
+            const functionUrl = isLocalhost
+                ? 'http://127.0.0.1:54321/functions/v1/create-portal-session'
+                : 'https://vjyvikuyuzkmyrtcuznc.supabase.co/functions/v1/create-portal-session';
+
+            const response = await fetch(functionUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    apikey: supabaseAnonKey,
+                    ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+                },
+                body: JSON.stringify({ customerId: stripeCustomerId }),
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (!response.ok || data.error) {
+                throw new Error(data.error || `Portal request failed (${response.status})`);
+            }
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                alert("Could not load billing gateway settings. Please try again later.");
+            }
+        } catch (err) {
+            console.error("Portal error connection failure:", err);
+            alert(
+                err instanceof Error
+                    ? err.message
+                    : "Error trying to connect securely to billing portal parameters."
+            );
+        }
+    };
 
     const addHorse = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -372,6 +427,17 @@ export default function Dashboard() {
                                         horsebox details
                                     </Link>
                                 </li>
+                                {stripeCustomerId && (
+                                    <li className="marginbtwenfour">
+                                        <button
+                                            type="button"
+                                            onClick={handleManageBilling}
+                                            className="buttonSmall buttonWhite"
+                                        >
+                                            ⚙️ &nbsp;Manage Billing & Cancellations
+                                        </button>
+                                    </li>
+                                )}
                                 <li className="marginbtwenfour">
                                     <Link to="/add-bookmark" className="btext-purple text-small">
                                         Add a bookmark to your phones home screen.
