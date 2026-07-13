@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // 💳 Added useLocation
 import { supabase, supabaseAnonKey } from '../supabaseClient';
+import { LocalPrice } from '../components/local-price';
 
 type LogRecord = {
     id: number;
@@ -255,10 +256,22 @@ export default function Dashboard() {
                     )}
 
                     {!hasAnyActiveSubscription && !isVerifyingPayment && (
-                        <p className="text-normal">
-                            🔒 Some features are locked until you activate a subscription for at
-                            least one horse.
-                        </p>
+                        <div>
+                            <p className="text-normal marginbsixteen">
+                                🔒 Some features are locked until you activate a subscription for at
+                                least one horse.
+                            </p>
+                            <div>
+                                {baseHorseId ? (
+                                    <Link to={`/activate-tag?id=${baseHorseId}`} className="buttonOrange buttonMain">
+                                        Subscribe for <LocalPrice basePriceGbp={11} /> a year
+                                    </Link>
+                                ) : (
+                                    <p className="text-normal">Please add your first horse below to continue.</p>
+                                )}
+                            </div>
+
+                        </div>
                     )}
                 </section>
 
@@ -464,8 +477,7 @@ export default function Dashboard() {
                                     className="text-normal"
                                     style={{ color: '#64748b', marginBottom: '12px' }}
                                 >
-                                    Free accounts are limited to one horse profile. Purchase a plan
-                                    for your current horse to unlock additional slots.
+                                    Free accounts are limited to one horse profile. Subscribe to unlock additional slots.
                                 </p>
                                 <a
                                     href={`/activate-tag?id=${baseHorseId}`}
@@ -476,7 +488,7 @@ export default function Dashboard() {
                                         textAlign: 'center',
                                     }}
                                 >
-                                    Add a subscription
+                                    Subscribe for <LocalPrice basePriceGbp={11} /> a year
                                 </a>
                             </section>
                         ) : (

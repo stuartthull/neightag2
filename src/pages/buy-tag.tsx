@@ -80,8 +80,7 @@ export default function BuyTag(): React.JSX.Element {
     return (
         <div className="page-container">
             <div className="section-container white-section-container activate-tag-section">
-                <h2 className="textmedium">Activate Live Tag Protection</h2>
-                <p className='text-normal marginbsixteen'>Secure instant emergency medical tracking access profile for your horse.</p>
+                <h2 className="textmedium">Activate your Subscription</h2>
                 <p className='text-normal marginbsixteen'>We use Stripe to securely process your payment.</p>
 
                 <div>
@@ -89,7 +88,7 @@ export default function BuyTag(): React.JSX.Element {
                         Horse ID: {horseId || "No horse selected"}
                     </code>
                 </div>
-                <p className='text-normal marginbsixteen'>Your yearly subscription of <LocalPrice basePriceGbp={11} /> will be billed automatically.</p>
+                <p className='text-normal marginbsixteen'>Your yearly subscription of <LocalPrice basePriceGbp={11} /> will be billed automatically. You can cancel anytime. Your subscription will renew automatically unless cancelled. If you cancel your subscription, you will retain access until the end of the current billing period.</p>
 
 
                 {error && <p style={{ color: '#ef4444', fontSize: '14px', marginBottom: '16px' }}>❌ {error}</p>}
@@ -99,7 +98,7 @@ export default function BuyTag(): React.JSX.Element {
                     disabled={loading || !horseId}
                     style={{ width: '100%', padding: '14px', background: '#000000', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1, transition: 'background 0.2s', marginTop: '24px' }}
                 >
-                    {loading ? 'Opening Secure Portal...' : 'Activate Subscription'}
+                    {loading ? 'Opening Secure Portal...' : <>Subscribe for <LocalPrice basePriceGbp={11} /> a year</>}
                 </button>
             </div>
         </div>
