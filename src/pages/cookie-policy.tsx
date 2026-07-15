@@ -2,8 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CookiePolicy(): React.JSX.Element {
-    const navigate = useNavigate();
-
     return (
         <div className="page-wrapper">
             <div className="page-container">
