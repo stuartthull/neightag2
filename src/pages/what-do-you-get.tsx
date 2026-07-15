@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import BoxPoster from '../assets/horsebox-poster.jpg';
 import StableSpoter from '../assets/stable-poster.jpg';
 import PhoneApp from '../assets/phone-app.jpg';
@@ -121,6 +122,9 @@ export default function WhatDoYouGet(): React.JSX.Element {
                                     emergency and contact details.
                                 </li>
                             </ul>
+                            <Link to="/shop" className="buttonMain buttonOrange">
+                                Buy a TapTag
+                            </Link>
                         </div>
                     </div>
 

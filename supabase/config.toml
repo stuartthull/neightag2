@@ -451,3 +451,9 @@ enabled = true
 verify_jwt = false
 import_map = "./functions/check-email-availability/deno.json"
 entrypoint = "./functions/check-email-availability/index.ts"
+
+[functions.create-product-checkout]
+enabled = true
+verify_jwt = false
+import_map = "./functions/create-product-checkout/deno.json"
+entrypoint = "./functions/create-product-checkout/index.ts"

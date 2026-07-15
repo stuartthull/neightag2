@@ -25,6 +25,9 @@ export default function Footer(): React.JSX.Element {
                         <Link to="/what-you-get" className="text-normal footer-link">What do you get?</Link>
                     </li>
                     <li>
+                        <Link to="/shop" className="text-normal footer-link">Shop</Link>
+                    </li>
+                    <li>
                         <Link to="/about-us" className="text-normal footer-link">About Us</Link>
                     </li>
                     <li>
