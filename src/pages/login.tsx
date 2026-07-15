@@ -30,23 +30,44 @@ export default function Login(): React.JSX.Element {
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setLoading(true);
-        setMessage(''); // Reset any existing messages upon form submission
+        setMessage('');
         setIsError(false);
 
         try {
             if (isSignUp) {
-                const { error } = await supabase.auth.signUp({ email, password });
+                const normalizedEmail = email.trim().toLowerCase();
+                const { data: availability, error: availabilityError } = await supabase.functions.invoke<{
+                    registered: boolean;
+                }>('check-email-availability', {
+                    body: { email: normalizedEmail },
+                });
+
+                if (availabilityError) {
+                    throw new Error('We could not check that email address. Please try again.');
+                }
+
+                if (availability?.registered) {
+                    setIsError(true);
+                    setMessage('An account with this email address already exists. Please log in or reset your password.');
+                    return;
+                }
+
+                const { data, error } = await supabase.auth.signUp({ email: normalizedEmail, password });
 
                 if (error) {
                     setIsError(true);
                     setMessage(`Oh no, we are sorry but ${error.message}`);
-                    setLoading(false);
+                    return;
+                }
+
+                if (data.user && data.user.identities?.length === 0) {
+                    setIsError(true);
+                    setMessage('An account with this email address already exists. Please log in or reset your password.');
                     return;
                 }
 
                 setIsError(false);
                 setMessage('Great, you are almost in! Please check your inbox and click the confirmation link to activate your account.');
-                setLoading(false);
                 return;
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -61,22 +82,14 @@ export default function Login(): React.JSX.Element {
                         setMessage(error.message);
                     }
 
-                    setLoading(false);
-                    return;
-                }
-
-                if (error) {
-                    setIsError(true);
-                    setMessage(`Oh no, we are sorry but "${error.message}"`);
-                    setLoading(false);
                     return;
                 }
 
                 navigate('/dashboard');
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             setIsError(true);
-            setMessage(error?.message || "An unexpected error occurred.");
+            setMessage(error instanceof Error ? error.message : 'An unexpected error occurred.');
         } finally {
             setLoading(false);
         }
