@@ -33,6 +33,10 @@ pre {
 /* ==========================================================================
    UTILITY SPACING CLASSES
    ========================================================================== */
+.nomargin {
+    margin: 0 !important;
+}
+
 .marginbeight {
     margin-bottom: 8px;
 }
@@ -311,7 +315,6 @@ pre {
 }
 
 .buttonMain:hover {
-    transform: translateY(-2px);
     text-decoration: none;
     opacity: 0.9;
     cursor: pointer;
@@ -327,8 +330,13 @@ pre {
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+button.buttonSmall {
+    box-shadow:0px 0px 0px 1px black inset;
+    border: none;
+    margin-top:-6px;
+}
+
 .buttonSmall:hover {
-    transform: translateY(-2px);
     text-decoration: none;
     opacity: 0.9;
     cursor: pointer;
@@ -772,6 +780,29 @@ pre {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.dashboard-horse-split {
+    display: flex;
+    align-items: stretch;
+    gap: 24px;
+}
+
+.dashboard-horse-split-column {
+    flex: 1 1 50%;
+    min-width: 0;
+}
+
+@media (max-width: 500px) {
+    .dashboard-horse-split {
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .dashboard-horse-split-column {
+        flex-basis: auto;
+        width: 100%;
+    }
 }
 
 .horse-hero-section {

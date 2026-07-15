@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'; // 💳 Added useLocation
 import { supabase, supabaseAnonKey } from '../supabaseClient';
 import { LocalPrice } from '../components/local-price';
+import { formatGBDate } from '../utils/date-format';
 
 type LogRecord = {
     id: number;
@@ -14,12 +15,22 @@ type SubscriptionMap = {
     [horseUuid: string]: boolean;
 };
 
+type SubscriptionDetails = {
+    status: string;
+    current_period_end: string | null;
+};
+
+type SubscriptionDetailsMap = {
+    [horseUuid: string]: SubscriptionDetails;
+};
+
 export default function Dashboard() {
     const [myLogs, setMyLogs] = useState<LogRecord[]>([]);
     const [horseName, setHorseName] = useState('');
     const [sessionUserId, setSessionUserId] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [activeSubscriptions, setActiveSubscriptions] = useState<SubscriptionMap>({});
+    const [subscriptionDetails, setSubscriptionDetails] = useState<SubscriptionDetailsMap>({});
 
     // 💳 Dynamic Customer ID state for Stripe Portal integration
     const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
@@ -55,9 +66,8 @@ export default function Dashboard() {
         if (logs.length > 0) {
             const { data: subData, error: subError } = await supabase
                 .from('equi_subscriptions')
-                .select('horse_uuid, status, stripe_customer_id') // 👈 Explicit mapping against your schema column rule
-                .eq('user_uuid', userId)
-                .eq('status', 'active');
+                .select('horse_uuid, status, current_period_end, stripe_customer_id')
+                .eq('user_uuid', userId);
 
             if (subError) {
                 console.error('Error fetching subscriptions:', subError.message);
@@ -68,18 +78,28 @@ export default function Dashboard() {
                 }
 
                 const subMap: SubscriptionMap = {};
+                const detailsMap: SubscriptionDetailsMap = {};
                 subData.forEach((sub) => {
                     if (sub.horse_uuid) {
-                        subMap[sub.horse_uuid] = true;
+                        detailsMap[sub.horse_uuid] = {
+                            status: sub.status,
+                            current_period_end: sub.current_period_end,
+                        };
+
+                        if (sub.status === 'active') {
+                            subMap[sub.horse_uuid] = true;
+                        }
                     }
                 });
                 setActiveSubscriptions(subMap);
-                return true; // Found active subscription(s)
+                setSubscriptionDetails(detailsMap);
+                return Object.keys(subMap).length > 0;
             }
         }
 
         // If we got here, no active subscriptions were found
         setActiveSubscriptions({});
+        setSubscriptionDetails({});
         return false;
     };
 
@@ -142,7 +162,9 @@ export default function Dashboard() {
         }
 
         try {
-            const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const isLocalhost =
+                window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1';
             const {
                 data: { session },
             } = await supabase.auth.getSession();
@@ -156,7 +178,9 @@ export default function Dashboard() {
                 headers: {
                     'Content-Type': 'application/json',
                     apikey: supabaseAnonKey,
-                    ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+                    ...(session?.access_token
+                        ? { Authorization: `Bearer ${session.access_token}` }
+                        : {}),
                 },
                 body: JSON.stringify({ customerId: stripeCustomerId }),
             });
@@ -170,14 +194,14 @@ export default function Dashboard() {
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                alert("Could not load billing gateway settings. Please try again later.");
+                alert('Could not load billing gateway settings. Please try again later.');
             }
         } catch (err) {
-            console.error("Portal error connection failure:", err);
+            console.error('Portal error connection failure:', err);
             alert(
                 err instanceof Error
                     ? err.message
-                    : "Error trying to connect securely to billing portal parameters."
+                    : 'Error trying to connect securely to billing portal parameters.'
             );
         }
     };
@@ -232,10 +256,7 @@ export default function Dashboard() {
         <div className="page-wrapper">
             <div className="page-container">
                 <section className="section-container purple-section-container no-print">
-                    <h1 className="textbig">Your Stable</h1>
-                    <p className="text-normal marginbsixteen">
-                        Manage your horses and their medical records.
-                    </p>
+                    <h1 className="textbig nomargin">Your Stable</h1>
 
                     {/* 💳 Show a reassuring status indicator while polling */}
                     {isVerifyingPayment && (
@@ -263,14 +284,18 @@ export default function Dashboard() {
                             </p>
                             <div>
                                 {baseHorseId ? (
-                                    <Link to={`/activate-tag?id=${baseHorseId}`} className="buttonOrange buttonMain">
+                                    <Link
+                                        to={`/activate-tag?id=${baseHorseId}`}
+                                        className="buttonOrange buttonMain"
+                                    >
                                         Subscribe for <LocalPrice basePriceGbp={11} /> a year
                                     </Link>
                                 ) : (
-                                    <p className="text-normal">Please add your first horse below to continue.</p>
+                                    <p className="text-normal">
+                                        Please add your first horse below to continue.
+                                    </p>
                                 )}
                             </div>
-
                         </div>
                     )}
                 </section>
@@ -311,34 +336,77 @@ export default function Dashboard() {
                             {/* 2. HORSE MANAGEMENT ROSTER */}
                             {myLogs.map((log) => {
                                 const isSubbed = !!activeSubscriptions[log.horse_uuid];
+                                const protection = subscriptionDetails[log.horse_uuid];
                                 return (
                                     <section
                                         className="section-container white-section-container no-print marginbsixteen"
                                         key={`manage-${log.id}`}
                                     >
-                                        <div className="marginbsixteen">
-                                            <h2 className="textmedium" style={{ margin: 0 }}>
-                                                Registered horse: <strong>{log.horse_name}</strong>
-                                            </h2>
+                                        <div className="dashboard-horse-split">
+                                            <div className="dashboard-horse-split-column">
+                                                <div className="marginbsixteen">
+                                                    <h2 className="textbig" style={{ margin: 0 }}>
+                                                        Registered horse:
+                                                        <br />
+                                                        <strong>{log.horse_name}</strong>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                            <div className="dashboard-horse-split-column marginbsixteen">
+                                                <div className="section-container lightorange-section-container">
+                                                    <h2 className="textmedium marginbeight">
+                                                        🛡️ Live Tag Subscription
+                                                    </h2>
+                                                    <div
+                                                        className="text-normal marginbeight datarow"
+                                                        style={{ maxWidth: '400px' }}
+                                                    >
+                                                        <span>Tag Link Status:</span>{' '}
+                                                        <strong
+                                                            style={{
+                                                                color:
+                                                                    protection?.status === 'active'
+                                                                        ? '#16a34a'
+                                                                        : '#dc2626',
+                                                            }}
+                                                        >
+                                                            {protection?.status?.toUpperCase() ||
+                                                                'INACTIVE'}
+                                                        </strong>
+                                                    </div>
+                                                    <div
+                                                        className="text-normal datarow"
+                                                        style={{ maxWidth: '400px' }}
+                                                    >
+                                                        <span>Renewal Date:</span>{' '}
+                                                        <strong>
+                                                            {protection?.current_period_end
+                                                                ? formatGBDate(
+                                                                      protection.current_period_end
+                                                                  )
+                                                                : 'Not Documented'}
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <ul className="olnone">
-                                            <li className="marginbtwenfour">
+                                            <li className="marginbsixteen">
                                                 <Link
                                                     to={`/owner-horse-details/${log.horse_uuid}`}
                                                     className="buttonMain buttonPurple marginbsixteen"
                                                 >
-                                                    👁️ &nbsp;View full details
+                                                    👁️ &nbsp;View full horse details
                                                 </Link>
                                             </li>
                                         </ul>
-                                        <hr className="marginbtwenfour" />
                                         <ul className="olnone">
                                             <li className="marginbtwenfour">
                                                 <Link
                                                     to={`/edit-horse/${log.horse_uuid}`}
                                                     className="buttonSmall buttonWhite  marginbsixteen"
                                                 >
-                                                    ✏️&nbsp;&nbsp;Edit details
+                                                    ✏️&nbsp;&nbsp;Edit horse details
                                                 </Link>
                                             </li>
                                             <li className="marginbtwenfour">
@@ -350,8 +418,8 @@ export default function Dashboard() {
                                                     }
                                                     className="buttonSmall buttonWhite purple marginbsixteen"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit privacy
-                                                    matrix
+                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit what you
+                                                    want to show publicly
                                                 </Link>
                                             </li>
                                         </ul>
@@ -477,7 +545,8 @@ export default function Dashboard() {
                                     className="text-normal"
                                     style={{ color: '#64748b', marginBottom: '12px' }}
                                 >
-                                    Free accounts are limited to one horse profile. Subscribe to unlock additional slots.
+                                    Free accounts are limited to one horse profile. Subscribe to
+                                    unlock additional slots.
                                 </p>
                                 <a
                                     href={`/activate-tag?id=${baseHorseId}`}

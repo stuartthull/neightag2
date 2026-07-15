@@ -4,17 +4,10 @@ import { supabase } from '../supabaseClient';
 import { formatGBDate } from '../utils/date-format';
 import { Helmet } from 'react-helmet-async';
 
-interface SubscriptionDetails {
-    status: string;
-    stripe_subscription_id: string;
-    current_period_end: string;
-}
-
 export default function OwnerHorseDetails(): React.JSX.Element {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const navigate = useNavigate();
     const [horse, setHorse] = useState<any>(null);
-    const [subDetails, setSubDetails] = useState<SubscriptionDetails | null>(null);
     const [calendarMap, setCalendarMap] = useState<Record<string, string>>({});
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -49,13 +42,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                     return;
                 }
 
-                const { data: subData } = await supabase
-                    .from('equi_subscriptions')
-                    .select('status, current_period_end')
-                    .eq('horse_uuid', horse_uuid)
-                    .eq('user_uuid', user.id)
-                    .maybeSingle();
-
                 const { data: calendarData } = await supabase
                     .from('equi_calendar')
                     .select('calendar_title, calendar_date')
@@ -74,7 +60,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                 }
 
                 setHorse(horseData);
-                setSubDetails(subData as SubscriptionDetails);
                 setCalendarMap(scheduleLookups);
             } catch (err) {
                 console.error('Error processing administrative records:', err);
@@ -166,39 +151,6 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                             />
                         </div>
                     )}
-                </section>
-
-                <section className="card marginbsixteen">
-                    <h2 className="textmedium marginbeight">🛡️ Live Tag System Protection</h2>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Tag Link Status:</span>{' '}
-                        <strong
-                            style={{
-                                color: subDetails?.status === 'active' ? '#16a34a' : '#dc2626',
-                            }}
-                        >
-                            {subDetails?.status?.toUpperCase() || 'INACTIVE'}
-                        </strong>
-                    </div>
-                    <div className="text-normal marginbeight datarow">
-                        <span>Renewal Date:</span>{' '}
-                        <strong>
-                            {subDetails?.current_period_end
-                                ? formatGBDate(subDetails.current_period_end)
-                                : 'Not Documented'}
-                        </strong>
-                    </div>
-                    <div style={{ marginTop: '12px', display: 'flex', gap: '12px' }}>
-                        <a
-                            href={`/horse-details/${horse.horse_uuid}`}
-                            className="buttonMain buttonPurple"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ textDecoration: 'none', display: 'inline-block' }}
-                        >
-                            🔗 &nbsp;&nbsp;Test your public view
-                        </a>
-                    </div>
                 </section>
 
                 <section className="section-container white-section-container">
