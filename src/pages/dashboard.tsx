@@ -31,6 +31,8 @@ export default function Dashboard() {
     const [loading, setLoading] = useState<boolean>(true);
     const [activeSubscriptions, setActiveSubscriptions] = useState<SubscriptionMap>({});
     const [subscriptionDetails, setSubscriptionDetails] = useState<SubscriptionDetailsMap>({});
+    const [pendingDeleteHorseUuid, setPendingDeleteHorseUuid] = useState<string | null>(null);
+    const [deletingHorseUuid, setDeletingHorseUuid] = useState<string | null>(null);
 
     // 💳 Dynamic Customer ID state for Stripe Portal integration
     const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
@@ -233,10 +235,7 @@ export default function Dashboard() {
     };
 
     const handleDeleteHorseComplete = async (horseUuid: string, userId: string) => {
-        const confirmDelete = window.confirm(
-            'Are you sure? This will permanently wipe this horse, its entire calendar, and all its associated records. These can not be recovered.'
-        );
-        if (!confirmDelete) return;
+        setDeletingHorseUuid(horseUuid);
 
         const { error } = await supabase
             .from('equi_log_main')
@@ -244,10 +243,11 @@ export default function Dashboard() {
             .eq('horse_uuid', horseUuid)
             .eq('user_uuid', userId);
 
+        setDeletingHorseUuid(null);
+
         if (error) {
             alert(`Deletion failed: ${error.message}`);
         } else {
-            alert('Horse and all associated records have been completely purged.');
             window.location.reload();
         }
     };
@@ -417,9 +417,9 @@ export default function Dashboard() {
                                             <li className="marginbtwenfour">
                                                 <Link
                                                     to={`/edit-horse/${log.horse_uuid}`}
-                                                    className="buttonSmall buttonOrange  marginbsixteen"
+                                                    className="buttonLink marginbsixteen"
                                                 >
-                                                    ✏️&nbsp;&nbsp;Edit horse details
+                                                    Edit horse details&nbsp;&nbsp;✏️
                                                 </Link>
                                             </li>
                                             <li className="marginbtwenfour">
@@ -429,10 +429,10 @@ export default function Dashboard() {
                                                             ? `/privacy/${log.horse_uuid}`
                                                             : `/activate-tag?id=${log.horse_uuid}`
                                                     }
-                                                    className="buttonSmall buttonOrange purple marginbsixteen"
+                                                    className="buttonLink marginbsixteen"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '✏️️ '} &nbsp;Edit what the
-                                                    public see
+                                                    Edit what the public see!&nbsp;&nbsp;
+                                                    {!isSubbed ? '🔒 ' : '✏️️ '}
                                                 </Link>
                                             </li>
                                         </ul>
@@ -444,7 +444,7 @@ export default function Dashboard() {
                             <section className="section-container white-section-container no-print marginbsixteen">
                                 <div className="marginbsixteen">
                                     <h2 className="textmedium" style={{ margin: 0 }}>
-                                        Print your tags
+                                        🖨️ Print your tags
                                     </h2>
                                 </div>
                                 {myLogs.map((log) => {
@@ -461,10 +461,11 @@ export default function Dashboard() {
                                                         }
                                                         rel="noopener noreferrer"
                                                         target="_blank"
-                                                        className="buttonSmall buttonOrange"
+                                                        className="buttonLink"
                                                     >
-                                                        🖨️ &nbsp;Print Stable Tag
-                                                        {!isSubbed && ' preview'}
+                                                        Print {log.horse_name} Stable Tag
+                                                        {!isSubbed && ' preview'}&nbsp;&nbsp;
+                                                        {!isSubbed && '🔒'}
                                                     </a>
                                                 </div>
                                             </li>
@@ -478,10 +479,11 @@ export default function Dashboard() {
                                                         }
                                                         rel="noopener noreferrer"
                                                         target="_blank"
-                                                        className="buttonSmall buttonOrange"
+                                                        className="buttonLink"
                                                     >
-                                                        🖨️ &nbsp;Print Horsebox Poster
-                                                        {!isSubbed && ' preview'}
+                                                        Print {log.horse_name} Poster
+                                                        {!isSubbed && ' preview'}&nbsp;&nbsp;
+                                                        {!isSubbed && '🔒'}
                                                     </a>
                                                 </div>
                                             </li>
@@ -502,10 +504,10 @@ export default function Dashboard() {
                                                 ? `/calendar`
                                                 : `/activate-tag?id=${baseHorseId}`
                                         }
-                                        className="buttonSmall buttonWhite"
+                                        className="buttonLink"
                                     >
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '} &nbsp;&nbsp;View
-                                        your stable calendar
+                                        View your stable calendar&nbsp;&nbsp;
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '}
                                     </Link>
                                 </li>
                                 <li className="marginbtwenfour">
@@ -515,10 +517,10 @@ export default function Dashboard() {
                                                 ? `/horsebox-view`
                                                 : `/activate-tag?id=${baseHorseId}`
                                         }
-                                        className="buttonSmall buttonWhite"
+                                        className="buttonLink"
                                     >
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}&nbsp;&nbsp;View
-                                        your horsebox details
+                                        View your horsebox details&nbsp;&nbsp;
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}
                                     </Link>
                                 </li>
                                 {stripeCustomerId && (
@@ -526,14 +528,14 @@ export default function Dashboard() {
                                         <button
                                             type="button"
                                             onClick={handleManageBilling}
-                                            className="buttonSmall buttonWhite"
+                                            className="buttonLink buttonWhite"
                                         >
-                                            ⚙️ &nbsp;Manage Billing & Cancellations
+                                            Manage Billing & Cancellations&nbsp;&nbsp;⚙️
                                         </button>
                                     </li>
                                 )}
                                 <li className="marginbtwenfour">
-                                    <Link to="/add-bookmark" className="btext-purple text-small">
+                                    <Link to="/add-bookmark" className="buttonLink">
                                         Add a bookmark to your phones home screen.
                                     </Link>
                                 </li>
@@ -602,25 +604,70 @@ export default function Dashboard() {
                                     recoverable.
                                 </p>
                                 {myLogs.map((log) => {
+                                    const isConfirmingDelete =
+                                        pendingDeleteHorseUuid === log.horse_uuid;
+                                    const isDeleting = deletingHorseUuid === log.horse_uuid;
+
                                     return (
-                                        <div key={`manage-${log.id}`}>
-                                            <button
-                                                type="button"
-                                                className="buttonSmall marginbsixteen buttonfullwidth"
-                                                style={{
-                                                    backgroundColor: '#ff0000',
-                                                    color: '#ffffff',
-                                                    fontWeight: 'bold',
-                                                }}
-                                                onClick={() =>
-                                                    handleDeleteHorseComplete(
-                                                        log.horse_uuid,
-                                                        sessionUserId
-                                                    )
-                                                }
-                                            >
-                                                Delete {log.horse_name}
-                                            </button>
+                                        <div
+                                            key={`manage-${log.id}`}
+                                            className="dashboard-delete-horse"
+                                        >
+                                            {isConfirmingDelete ? (
+                                                <div
+                                                    className="dashboard-delete-confirmation"
+                                                    role="alert"
+                                                >
+                                                    <p className="text-normal">
+                                                        <strong>Are you sure?</strong> This will
+                                                        permanently wipe {log.horse_name}, its
+                                                        entire calendar, and all its associated
+                                                        records. These cannot be recovered.
+                                                    </p>
+                                                    <div className="dashboard-delete-actions">
+                                                        <button
+                                                            type="button"
+                                                            className="buttonSmall"
+                                                            onClick={() =>
+                                                                setPendingDeleteHorseUuid(null)
+                                                            }
+                                                            disabled={isDeleting}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="buttonSmall dashboard-delete-confirm-button"
+                                                            onClick={() =>
+                                                                handleDeleteHorseComplete(
+                                                                    log.horse_uuid,
+                                                                    sessionUserId
+                                                                )
+                                                            }
+                                                            disabled={isDeleting}
+                                                        >
+                                                            {isDeleting
+                                                                ? 'Deleting...'
+                                                                : `Permanently delete ${log.horse_name}`}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <button
+                                                    type="button"
+                                                    className="buttonSmall marginbsixteen buttonfullwidth"
+                                                    style={{
+                                                        backgroundColor: '#ff0000',
+                                                        color: '#ffffff',
+                                                        fontWeight: 'bold',
+                                                    }}
+                                                    onClick={() =>
+                                                        setPendingDeleteHorseUuid(log.horse_uuid)
+                                                    }
+                                                >
+                                                    Delete {log.horse_name}
+                                                </button>
+                                            )}
                                         </div>
                                     );
                                 })}
