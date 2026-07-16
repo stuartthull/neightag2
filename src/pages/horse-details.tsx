@@ -267,9 +267,18 @@ function HorseDetails() {
 
                 {isUserOwner && (
                     <div className="alert-banner-warning">
-                        👀 <strong>Owner Preview:</strong> <br />
-                        You are seeing this page exactly as it appears to the public based on your
-                        privacy settings.
+                        <p className="text-normal marginbsixteen">
+                            👀 <strong>Owner Preview:</strong> <br />
+                            You are seeing this page exactly as it appears to the public based on
+                            your privacy settings.
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => navigate('/dashboard')}
+                            className="buttonWhite buttonSmall marginbsixteen"
+                        >
+                            ← Back to Your Stable
+                        </button>
                     </div>
                 )}
 
