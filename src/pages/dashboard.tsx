@@ -465,7 +465,7 @@ export default function Dashboard() {
                                                     >
                                                         Print <b>{log.horse_name}</b> Stable Tag
                                                         {!isSubbed && ' preview'}
-                                                        {!isSubbed && '&nbsp;&nbsp;🔒'}
+                                                        {!isSubbed && `🔒`}
                                                     </a>
                                                 </div>
                                             </li>
@@ -483,7 +483,7 @@ export default function Dashboard() {
                                                     >
                                                         Print <b>{log.horse_name}</b> Poster
                                                         {!isSubbed && ' preview'}
-                                                        {!isSubbed && '&nbsp;&nbsp;🔒'}
+                                                        {!isSubbed && '🔒'}
                                                     </a>
                                                 </div>
                                             </li>
