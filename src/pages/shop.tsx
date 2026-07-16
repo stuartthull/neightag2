@@ -79,6 +79,7 @@ export default function Shop(): React.JSX.Element {
                                 <li className="text-normal">Quick tap-to-view access</li>
                                 <li className="text-normal">No camera or QR scanning required</li>
                                 <li className="text-normal">Secure payment through Stripe</li>
+                                <li className="text-normal">NeighTag subscription required</li>
                             </ul>
 
                             {error && (
