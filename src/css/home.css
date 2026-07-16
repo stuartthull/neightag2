@@ -1311,7 +1311,7 @@ button.buttonLink {
     margin-bottom: 16px;
     border-radius: 16px;
 
-    @media (max-width: 700px) {
+    @media (max-width: 500px) {
         border-radius: 0;
         background-color: var(--white);
         margin-top: -60px;
