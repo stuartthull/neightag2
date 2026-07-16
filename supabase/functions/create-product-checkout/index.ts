@@ -41,6 +41,16 @@ serve(async (req) => {
       payment_method_types: ['card'],
       allow_promotion_codes: true,
       phone_number_collection: { enabled: true },
+      metadata: {
+        order_type: 'taptag',
+        price_id: priceId,
+      },
+      payment_intent_data: {
+        metadata: {
+          order_type: 'taptag',
+          price_id: priceId,
+        },
+      },
       shipping_address_collection: {
         allowed_countries: ['GB', 'IE'],
       },

@@ -16,6 +16,108 @@ const supabaseServiceKey = Deno.env.get('LIVE_DB_SERVICE_KEY') || Deno.env.get('
 // Change the variable name here to match what your function code expects below:
 const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
 
+const escapeHtml = (value: string | null | undefined): string =>
+  (value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+
+const formatAddress = (address: Stripe.Address | null | undefined): string => {
+  if (!address) return 'Not provided';
+
+  return [
+    address.line1,
+    address.line2,
+    address.city,
+    address.state,
+    address.postal_code,
+    address.country,
+  ].filter(Boolean).join(', ');
+};
+
+const formatAmount = (amount: number | null, currency: string | null): string => {
+  if (amount === null || !currency) return 'Not available';
+
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: currency.toUpperCase(),
+  }).format(amount / 100);
+};
+
+const sendOrderNotification = async (
+  session: Stripe.Checkout.Session,
+  eventId: string,
+): Promise<void> => {
+  const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
+  const notificationEmail = Deno.env.get('ORDER_NOTIFICATION_EMAIL') || 'info@neightag.com';
+  const fromEmail = Deno.env.get('ORDER_NOTIFICATION_FROM_EMAIL') || '';
+
+  if (!resendApiKey || !fromEmail) {
+    throw new Error(
+      'Order notification is not configured: missing RESEND_API_KEY or ORDER_NOTIFICATION_FROM_EMAIL',
+    );
+  }
+
+  const customer = session.customer_details;
+  const shipping = session.shipping_details;
+  const customerName = shipping?.name || customer?.name || 'Not provided';
+  const shippingAddress = formatAddress(shipping?.address || customer?.address);
+  const amount = formatAmount(session.amount_total, session.currency);
+  const paymentIntentId =
+    typeof session.payment_intent === 'string'
+      ? session.payment_intent
+      : session.payment_intent?.id || 'Not available';
+
+  const text = [
+    'A new TapTag order has been paid.',
+    '',
+    `Amount: ${amount}`,
+    `Customer: ${customerName}`,
+    `Email: ${customer?.email || 'Not provided'}`,
+    `Phone: ${customer?.phone || 'Not provided'}`,
+    `Delivery address: ${shippingAddress}`,
+    `Stripe Checkout Session: ${session.id}`,
+    `Stripe Payment Intent: ${paymentIntentId}`,
+  ].join('\n');
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${resendApiKey}`,
+      'Content-Type': 'application/json',
+      'Idempotency-Key': eventId,
+    },
+    body: JSON.stringify({
+      from: fromEmail,
+      to: [notificationEmail],
+      subject: `New TapTag order - ${amount}`,
+      text,
+      html: `
+        <h1>New TapTag order</h1>
+        <p>A TapTag order has been paid and is ready to fulfil.</p>
+        <table>
+          <tbody>
+            <tr><th align="left">Amount</th><td>${escapeHtml(amount)}</td></tr>
+            <tr><th align="left">Customer</th><td>${escapeHtml(customerName)}</td></tr>
+            <tr><th align="left">Email</th><td>${escapeHtml(customer?.email || 'Not provided')}</td></tr>
+            <tr><th align="left">Phone</th><td>${escapeHtml(customer?.phone || 'Not provided')}</td></tr>
+            <tr><th align="left">Delivery address</th><td>${escapeHtml(shippingAddress)}</td></tr>
+            <tr><th align="left">Checkout Session</th><td>${escapeHtml(session.id)}</td></tr>
+            <tr><th align="left">Payment Intent</th><td>${escapeHtml(paymentIntentId)}</td></tr>
+          </tbody>
+        </table>
+      `,
+    }),
+  });
+
+  if (!response.ok) {
+    const responseBody = await response.text();
+    throw new Error(`Resend order notification failed (${response.status}): ${responseBody}`);
+  }
+};
+
 serve(async (req) => {
   const signature = req.headers.get('stripe-signature');
 
@@ -66,6 +168,15 @@ serve(async (req) => {
 
         if (error) throw error;
         console.log(`Successfully updated subscription status for horse: ${horse_uuid}`);
+      }
+    }
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      if (session.metadata?.order_type === 'taptag' && session.payment_status === 'paid') {
+        await sendOrderNotification(session, event.id);
+        console.log(`Sent TapTag order notification for Checkout Session: ${session.id}`);
       }
     }
 
