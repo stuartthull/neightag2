@@ -121,6 +121,7 @@ export default function WhatDoYouGet(): React.JSX.Element {
                                     <strong>Get instant access:</strong> Get instant access to your
                                     emergency and contact details.
                                 </li>
+                                <li className="text-normal marginbeight">Subscription required</li>
                             </ul>
                             <Link to="/shop" className="buttonMain buttonOrange">
                                 Buy a TapTag
