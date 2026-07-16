@@ -418,8 +418,8 @@ export default function Dashboard() {
                                                     }
                                                     className="buttonSmall buttonWhite purple marginbsixteen"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit what you
-                                                    want to show publicly
+                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit what the
+                                                    public see
                                                 </Link>
                                             </li>
                                         </ul>
