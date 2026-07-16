@@ -1,14 +1,6 @@
-import React, { useEffect } from 'react';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-    useNavigate,
-    useLocation,
-} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { supabase } from './supabaseClient'; // Ensure this matches your path to the Supabase client
 
 import NavBar from './components/navbar';
 import Home from './pages/home';
@@ -51,30 +43,6 @@ const HamburgerSvg = () => {
         </svg>
     );
 };
-
-// 📡 This layout wrapper catches global user auth lifecycle updates securely
-function MainLayoutWrapper({ children }: { children: React.ReactNode }): React.JSX.Element {
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange((event) => {
-            if (event === 'SIGNED_IN') {
-                const currentPath = window.location.pathname;
-
-                // Only force redirect to dashboard if they are coming from the landing or login page
-                if (currentPath === '/' || currentPath === '/login') {
-                    navigate('/dashboard');
-                }
-            }
-        });
-
-        return () => subscription.unsubscribe();
-    }, [navigate]);
-
-    return <>{children}</>;
-}
 
 const HIDE_CHROME_ROUTES = [
     '/print-stable-tag',
@@ -240,10 +208,8 @@ export default function App() {
     return (
         <HelmetProvider>
             <Router>
-                <MainLayoutWrapper>
-                    <ScrollToTop />
-                    <AppContent />
-                </MainLayoutWrapper>
+                <ScrollToTop />
+                <AppContent />
             </Router>
         </HelmetProvider>
     );
