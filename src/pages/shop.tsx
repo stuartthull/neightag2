@@ -70,6 +70,11 @@ export default function Shop(): React.JSX.Element {
                                 TapTag <b>£2.95</b>
                             </h2>
                             <p className="text-normal marginbsixteen">
+                                <b>Please note:</b>
+                                <br />
+                                NeighTag subscription required.
+                            </p>
+                            <p className="text-normal marginbsixteen">
                                 Keep your horse&apos;s important emergency and contact details close
                                 at hand. Attach your TapTag to your saddle, reins or other
                                 equipment, then tap it with a compatible phone for instant access.
