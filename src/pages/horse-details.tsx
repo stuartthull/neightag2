@@ -295,7 +295,7 @@ function HorseDetails() {
                         shouldShow('show_emergency_name_two') ||
                         shouldShow('show_emergency_phone_two')) && (
                         <section className="section-container white-section-container">
-                            <h2 className="textmedium">Emergency Protocols</h2>
+                            <h2 className="textmedium marginbsixteen">Emergency Protocols</h2>
                             {(shouldShow('show_emergency_name_one') ||
                                 shouldShow('show_emergency_phone_one')) && (
                                 <div className="horsebox-panel breakdown-panel">
