@@ -399,12 +399,25 @@ export default function Dashboard() {
                                                     👁️ &nbsp;View full horse details
                                                 </Link>
                                             </li>
+                                            <li className="marginbtwenfour">
+                                                <Link
+                                                    to={
+                                                        isSubbed
+                                                            ? `/horse-details/${log.horse_uuid}`
+                                                            : `/activate-tag?id=${log.horse_uuid}`
+                                                    }
+                                                    className="buttonMain buttonPurple marginbsixteen"
+                                                >
+                                                    {!isSubbed ? '🔒 ' : '🐴 '} &nbsp;See your
+                                                    public profile
+                                                </Link>
+                                            </li>
                                         </ul>
                                         <ul className="olnone">
                                             <li className="marginbtwenfour">
                                                 <Link
                                                     to={`/edit-horse/${log.horse_uuid}`}
-                                                    className="buttonSmall buttonWhite  marginbsixteen"
+                                                    className="buttonSmall buttonOrange  marginbsixteen"
                                                 >
                                                     ✏️&nbsp;&nbsp;Edit horse details
                                                 </Link>
@@ -416,9 +429,9 @@ export default function Dashboard() {
                                                             ? `/privacy/${log.horse_uuid}`
                                                             : `/activate-tag?id=${log.horse_uuid}`
                                                     }
-                                                    className="buttonSmall buttonWhite purple marginbsixteen"
+                                                    className="buttonSmall buttonOrange purple marginbsixteen"
                                                 >
-                                                    {!isSubbed ? '🔒 ' : '🛡️ '} &nbsp;Edit what the
+                                                    {!isSubbed ? '🔒 ' : '✏️️ '} &nbsp;Edit what the
                                                     public see
                                                 </Link>
                                             </li>
@@ -491,8 +504,8 @@ export default function Dashboard() {
                                         }
                                         className="buttonSmall buttonWhite"
                                     >
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '} View your stable
-                                        calendar
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '} &nbsp;&nbsp;View
+                                        your stable calendar
                                     </Link>
                                 </li>
                                 <li className="marginbtwenfour">
@@ -504,8 +517,8 @@ export default function Dashboard() {
                                         }
                                         className="buttonSmall buttonWhite"
                                     >
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}View your
-                                        horsebox details
+                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}&nbsp;&nbsp;View
+                                        your horsebox details
                                     </Link>
                                 </li>
                                 {stripeCustomerId && (

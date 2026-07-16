@@ -200,7 +200,6 @@ pre {
 .text-normal {
     font-size: 15px;
     line-height: 1.6;
-    max-width: 760px;
 }
 
 .text-small {
@@ -1288,7 +1287,7 @@ button.buttonSmall {
     display: flex;
     justify-content: flex-end;
     padding: 16px 20px;
-    background-color: var(--white);
+    background-color: rgba(255, 255, 255, 0.85);
 
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
         padding-bottom: calc(16px + env(safe-area-inset-bottom));

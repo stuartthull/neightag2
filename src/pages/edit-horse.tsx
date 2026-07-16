@@ -59,6 +59,14 @@ const IMAGE_COMPRESSION_QUALITY = 0.82;
 const UPLOAD_IMAGE_TYPE = 'image/jpeg';
 const UPLOAD_IMAGE_EXTENSION = 'jpg';
 
+const CALENDAR_FIELDS = [
+    'farrier_next_visit',
+    'dentist_next_visit',
+    'saddle_fitter_next_visit',
+    'physio_next_visit',
+    'worming_date',
+];
+
 type OptimisedImage = {
     blob: Blob;
     contentType: string;
@@ -140,8 +148,9 @@ export default function EditItem(): React.JSX.Element {
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imageUploadStatus, setImageUploadStatus] = useState('');
     const [currentUserId, setCurrentUserId] = useState<string>('');
+    const [saveConfirmationId, setSaveConfirmationId] = useState<number | null>(null);
 
-    const normalizeDate = (dateVal: any): string => {
+    const normalizeDate = (dateVal: unknown): string => {
         if (!dateVal) return '';
         const dateStr = String(dateVal).trim();
         return dateStr.includes('T') ? dateStr.split('T')[0] : dateStr.substring(0, 10);
@@ -190,8 +199,15 @@ export default function EditItem(): React.JSX.Element {
                 .eq('horse_uuid', horse_uuid)
                 .eq('user_uuid', user.id);
 
+            if (calError) {
+                console.error('Error fetching calendar dates:', calError.message);
+                alert('Appointment dates could not be loaded. Please refresh before saving.');
+                setLoading(false);
+                return;
+            }
+
             const calendarMap: any = {};
-            if (!calError && calData) {
+            if (calData) {
                 calData.forEach((event: any) => {
                     calendarMap[event.calendar_title] = normalizeDate(event.calendar_date);
                 });
@@ -221,8 +237,8 @@ export default function EditItem(): React.JSX.Element {
             safePayload['dentist_next_visit'] = calendarMap['Dentist Visit'] || '';
             safePayload['saddle_fitter_next_visit'] = calendarMap['Saddle Fitter Visit'] || '';
             safePayload['physio_next_visit'] = calendarMap['Physio Visit'] || '';
-            // 💡 NEW MAP LINK ENTRY
-            safePayload['worming_date'] = calendarMap['Worming Due'] || '';
+            safePayload['worming_date'] =
+                calendarMap['Worming Due'] || normalizeDate(horseData.worming_date);
 
             const loadedData = { ...INITIAL_FORM_DATA, ...safePayload };
             setFormData(loadedData);
@@ -232,6 +248,16 @@ export default function EditItem(): React.JSX.Element {
 
         fetchCoreVitals();
     }, [horse_uuid, navigate]);
+
+    useEffect(() => {
+        if (saveConfirmationId === null) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setSaveConfirmationId(null);
+        }, 5000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [saveConfirmationId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -261,10 +287,10 @@ export default function EditItem(): React.JSX.Element {
         }
     };
 
-    // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
-    // 🗓️ Core Sync Logic adapted cleanly to map against your schema rules
     const syncAppointmentsToCalendar = async (current: any, original: any, ownerUuid: string) => {
-        if (!ownerUuid || !horse_uuid) return;
+        if (!ownerUuid || !horse_uuid) {
+            throw new Error('Could not verify the owner of this horse record.');
+        }
 
         const appointmentTypes = [
             { key: 'farrier_next_visit', title: 'Farrier Visit', notes: current.farrier_notes },
@@ -299,9 +325,10 @@ export default function EditItem(): React.JSX.Element {
                         }
                     );
 
-                    if (error) console.error(`Error saving ${appt.title}:`, error.message);
+                    if (error) {
+                        throw new Error(`Could not save ${appt.title}: ${error.message}`);
+                    }
                 } else if (oldDate) {
-                    // Only drop record if it previously existed and was intentionally cleared out
                     const { error } = await supabase
                         .from('equi_calendar')
                         .delete()
@@ -309,7 +336,9 @@ export default function EditItem(): React.JSX.Element {
                         .eq('user_uuid', ownerUuid)
                         .eq('calendar_title', appt.title);
 
-                    if (error) console.error(`Error dropping ${appt.title}:`, error.message);
+                    if (error) {
+                        throw new Error(`Could not clear ${appt.title}: ${error.message}`);
+                    }
                 }
             }
         }
@@ -317,37 +346,35 @@ export default function EditItem(): React.JSX.Element {
 
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const vitalsPayload: any = { ...formData };
+        const excludedFields = new Set([...CALENDAR_FIELDS, 'user_uuid', 'horse_uuid', 'id']);
+        const vitalsPayload: Record<string, unknown> = {};
 
-        // Drop out fields not supported inside your equi_log_main schema columns
-        const calendarFields = [
-            'farrier_next_visit',
-            'dentist_next_visit',
-            'saddle_fitter_next_visit',
-            'physio_next_visit',
-            'worming_date', // 💡 Exclude from straight equi_log_main write execution query bounds
-            'user_uuid',
-            'horse_uuid',
-            'id',
-        ];
-        calendarFields.forEach((field) => delete vitalsPayload[field]);
-
-        Object.keys(vitalsPayload).forEach((key) => {
-            if (vitalsPayload[key] === '') vitalsPayload[key] = null;
+        Object.keys(formData).forEach((key) => {
+            if (!excludedFields.has(key) && formData[key] !== originalData[key]) {
+                vitalsPayload[key] = formData[key] === '' ? null : formData[key];
+            }
         });
 
-        const { error } = await supabase
-            .from('equi_log_main')
-            .update(vitalsPayload)
-            .eq('horse_uuid', horse_uuid)
-            .eq('user_uuid', currentUserId);
+        try {
+            if (Object.keys(vitalsPayload).length > 0) {
+                const { error } = await supabase
+                    .from('equi_log_main')
+                    .update(vitalsPayload)
+                    .eq('horse_uuid', horse_uuid)
+                    .eq('user_uuid', currentUserId);
 
-        if (error) {
-            alert('Database Error: ' + error.message);
-        } else {
+                if (error) {
+                    throw new Error(`Could not save horse details: ${error.message}`);
+                }
+            }
+
             await syncAppointmentsToCalendar(formData, originalData, currentUserId);
-            alert('Changes saved cleanly!');
-            navigate('/dashboard');
+            setOriginalData(formData);
+            setSaveConfirmationId(Date.now());
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown database error';
+            console.error('Error saving horse details:', error);
+            alert(`Database Error: ${message}`);
         }
     };
 
@@ -514,6 +541,11 @@ export default function EditItem(): React.JSX.Element {
 
     return (
         <div className="page-wrapper">
+            {saveConfirmationId !== null && (
+                <div className="edit-horse-save-message" role="status" aria-live="polite">
+                    Changes saved successfully.
+                </div>
+            )}
             <div className="page-container">
                 <form onSubmit={handleUpdate}>
                     {/* HERO SECTION */}

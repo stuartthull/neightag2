@@ -7,6 +7,7 @@ export default function HorseboxEdit(): React.JSX.Element {
     const [loading, setLoading] = useState<boolean>(true);
     const [saving, setSaving] = useState<boolean>(false);
     const [userId, setUserId] = useState<string | null>(null);
+    const [saveConfirmationId, setSaveConfirmationId] = useState<number | null>(null);
 
     const [registration, setRegistration] = useState<string>('');
     const [makeModel, setMakeModel] = useState<string>('');
@@ -23,7 +24,9 @@ export default function HorseboxEdit(): React.JSX.Element {
 
     useEffect(() => {
         const loadExistingProfile = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
             if (!session) {
                 navigate('/login');
                 return;
@@ -56,6 +59,16 @@ export default function HorseboxEdit(): React.JSX.Element {
         loadExistingProfile();
     }, [navigate]);
 
+    useEffect(() => {
+        if (saveConfirmationId === null) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setSaveConfirmationId(null);
+        }, 5000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [saveConfirmationId]);
+
     const handleSave = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         if (!userId) return;
@@ -75,7 +88,7 @@ export default function HorseboxEdit(): React.JSX.Element {
             breakdown_phone: bdPhone.trim(),
             insurance_phone: insPhone.trim(),
             general_notes: notes.trim(),
-            updated_at: new Date().toISOString()
+            updated_at: new Date().toISOString(),
         };
 
         const { error } = await supabase
@@ -87,24 +100,44 @@ export default function HorseboxEdit(): React.JSX.Element {
         if (error) {
             alert(`Failed to save vehicle details: ${error.message}`);
         } else {
-            navigate('/dashboard');
+            setSaveConfirmationId(Date.now());
         }
     };
 
-    if (loading) return <div className="page-container" style={{ textAlign: 'center', padding: '40px' }}>Syncing Horsebox Forms...</div>;
+    if (loading)
+        return (
+            <div className="page-container" style={{ textAlign: 'center', padding: '40px' }}>
+                Syncing Horsebox Forms...
+            </div>
+        );
 
     return (
-        <div className="page-wrapper" >
+        <div className="page-wrapper">
+            {saveConfirmationId !== null && (
+                <div className="horsebox-save-message" role="status" aria-live="polite">
+                    Horsebox details saved successfully.
+                </div>
+            )}
             <div className="page-container">
-
                 <form onSubmit={handleSave} className="horsebox-form">
-
                     <section className="section-container purple-section-container">
-                        <button type="button" onClick={() => navigate('/dashboard')} className="buttonWhite buttonMain marginbsixteen">
+                        <button
+                            type="button"
+                            onClick={() => navigate('/dashboard')}
+                            className="buttonWhite buttonMain marginbsixteen"
+                        >
                             ← Back to Dashboard
                         </button>
 
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-start',
+                                flexWrap: 'wrap',
+                                gap: '20px',
+                            }}
+                        >
                             <div>
                                 <h1 className="textbig">Edit Transport Logistics Profiles</h1>
                             </div>
@@ -113,30 +146,51 @@ export default function HorseboxEdit(): React.JSX.Element {
                         <div className="horsebox-form-grid-2">
                             <div className="horsebox-field-group">
                                 <label>Registration Mark</label>
-                                <input type="text" value={registration} onChange={e => setRegistration(e.target.value)} placeholder="E.g. AB12 CDE" />
+                                <input
+                                    type="text"
+                                    value={registration}
+                                    onChange={(e) => setRegistration(e.target.value)}
+                                    placeholder="E.g. AB12 CDE"
+                                />
                             </div>
                             <div className="horsebox-field-group">
                                 <label>Make & Model</label>
-                                <input type="text" value={makeModel} onChange={e => setMakeModel(e.target.value)} placeholder="E.g. Ifor Williams HB511" />
+                                <input
+                                    type="text"
+                                    value={makeModel}
+                                    onChange={(e) => setMakeModel(e.target.value)}
+                                    placeholder="E.g. Ifor Williams HB511"
+                                />
                             </div>
                         </div>
                     </section>
-
 
                     <section className="section-container white-section-container">
                         <h3 className="textmedium">Compliance Deadlines</h3>
                         <div className="horsebox-form-grid-1">
                             <div className="horsebox-field-group marginbsixteen">
                                 <label>Insurance Expiry</label>
-                                <input type="date" value={insuranceDate} onChange={e => setInsuranceDate(e.target.value)} />
+                                <input
+                                    type="date"
+                                    value={insuranceDate}
+                                    onChange={(e) => setInsuranceDate(e.target.value)}
+                                />
                             </div>
                             <div className="horsebox-field-group marginbsixteen">
                                 <label>MOT Expiry</label>
-                                <input type="date" value={motDate} onChange={e => setMotDate(e.target.value)} />
+                                <input
+                                    type="date"
+                                    value={motDate}
+                                    onChange={(e) => setMotDate(e.target.value)}
+                                />
                             </div>
                             <div className="horsebox-field-group marginbsixteen">
                                 <label>Vehicle Service</label>
-                                <input type="date" value={serviceDate} onChange={e => setServiceDate(e.target.value)} />
+                                <input
+                                    type="date"
+                                    value={serviceDate}
+                                    onChange={(e) => setServiceDate(e.target.value)}
+                                />
                             </div>
                         </div>
                     </section>
@@ -151,7 +205,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="text"
                                 id="insProvider"
                                 value={insProvider}
-                                onChange={e => setInsProvider(e.target.value)}
+                                onChange={(e) => setInsProvider(e.target.value)}
                                 className="form-input-control"
                                 placeholder="e.g., NFU Mutual"
                             />
@@ -165,7 +219,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="text"
                                 id="insPolicy"
                                 value={insPolicy}
-                                onChange={e => setInsPolicy(e.target.value)}
+                                onChange={(e) => setInsPolicy(e.target.value)}
                                 className="form-input-control"
                             />
                         </div>
@@ -178,7 +232,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="tel"
                                 id="insPhone"
                                 value={insPhone}
-                                onChange={e => setInsPhone(e.target.value)}
+                                onChange={(e) => setInsPhone(e.target.value)}
                                 className="form-input-control"
                                 autoComplete="tel"
                                 placeholder="e.g., 0800 777777"
@@ -196,7 +250,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="text"
                                 id="bdProvider"
                                 value={bdProvider}
-                                onChange={e => setBdProvider(e.target.value)}
+                                onChange={(e) => setBdProvider(e.target.value)}
                                 className="form-input-control"
                                 placeholder="e.g., Equine Rescue Services"
                             />
@@ -210,7 +264,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="text"
                                 id="bdPolicy"
                                 value={bdPolicy}
-                                onChange={e => setBdPolicy(e.target.value)}
+                                onChange={(e) => setBdPolicy(e.target.value)}
                                 className="form-input-control"
                             />
                         </div>
@@ -223,7 +277,7 @@ export default function HorseboxEdit(): React.JSX.Element {
                                 type="tel"
                                 id="bdPhone"
                                 value={bdPhone}
-                                onChange={e => setBdPhone(e.target.value)}
+                                onChange={(e) => setBdPhone(e.target.value)}
                                 className="form-input-control"
                                 autoComplete="tel"
                                 placeholder="e.g., 07700 900077"
@@ -231,20 +285,29 @@ export default function HorseboxEdit(): React.JSX.Element {
                         </div>
                     </section>
                     <section className="section-container white-section-container">
-                        <h3 className="horsebox-form-section-title marginbsixteen">Horsebox Extras</h3>
+                        <h3 className="horsebox-form-section-title marginbsixteen">
+                            Horsebox Extras
+                        </h3>
 
                         <div className="horsebox-field-group margintsixteen">
                             <label>Notes</label>
-                            <textarea value={notes} onChange={e => setNotes(e.target.value)} placeholder="Tyre pressure specs, lockbox codes..." style={{ minHeight: '100px' }} />
+                            <textarea
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
+                                placeholder="Tyre pressure specs, lockbox codes..."
+                                style={{ minHeight: '100px' }}
+                            />
                         </div>
                     </section>
                     <div className="sticky-actions-bar">
                         <button type="submit" disabled={saving} className="buttonMain buttonOrange">
-                            {saving ? 'Saving updates to profile context...' : 'Save Horsebox Logistics Information'}
+                            {saving
+                                ? 'Saving updates to profile context...'
+                                : 'Save Horsebox Details'}
                         </button>
                     </div>
                 </form>
             </div>
-        </div >
+        </div>
     );
 }

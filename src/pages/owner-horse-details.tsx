@@ -127,11 +127,21 @@ export default function OwnerHorseDetails(): React.JSX.Element {
             </Helmet>
             <div className="page-container">
                 <div className="alert-banner-warning">
-                    ⚙️ <strong>Administrative Console View:</strong> <br />
-                    Surfacing all variables, metrics, and billing details completely unfiltered.
+                    ⚙️ <strong>Your Full Record View</strong>
+                    <br />
+                    This is your full administrative view of this horse's record. You can view all
+                    details, but you cannot edit them here. To make changes, please use the "Edit
+                    Horse Record" option in your dashboard.
                 </div>
 
                 <section className="section-container purple-section-container">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/dashboard')}
+                        className="buttonWhite buttonMain marginbsixteen"
+                    >
+                        ← Back to Your Stable
+                    </button>
                     <h1 className="textbig marginbeight">
                         <strong>{horse.horse_name}'s</strong> Console
                     </h1>

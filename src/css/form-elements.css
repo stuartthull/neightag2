@@ -12,6 +12,10 @@
     height: 0;
 }
 
+.switchwidth {
+    min-width:60px;
+}
+
 .slider {
     position: absolute;
     cursor: pointer;
@@ -52,6 +56,23 @@ input:checked+.slider:before {
 }
 
 /* Form Styles */
+.horsebox-save-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    z-index: 1000;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 32px);
+    padding: 12px 20px;
+    border-radius: 8px;
+    background: #19703d;
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+    text-align: center;
+}
+
 .horsebox-form {
     display: flex;
     flex-direction: column;

@@ -43,8 +43,10 @@ export default function EditCalendarEntry(): React.JSX.Element {
                 .single();
 
             if (error) {
-                console.error("Error retrieving calendar data:", error.message);
-                alert("Could not load this calendar entry or you do not have permission to edit it.");
+                console.error('Error retrieving calendar data:', error.message);
+                alert(
+                    'Could not load this calendar entry or you do not have permission to edit it.'
+                );
                 navigate('/calendar');
                 return;
             }
@@ -61,6 +63,16 @@ export default function EditCalendarEntry(): React.JSX.Element {
         fetchEventDetails();
     }, [id, userId, navigate]);
 
+    useEffect(() => {
+        if (!confirmationMessage) return;
+
+        const timeoutId = window.setTimeout(() => {
+            setConfirmationMessage(null);
+        }, 5000);
+
+        return () => window.clearTimeout(timeoutId);
+    }, [confirmationMessage]);
+
     // Inside handleUpdate in EditCalendarEntry.tsx
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -74,7 +86,7 @@ export default function EditCalendarEntry(): React.JSX.Element {
                 calendar_title: title,
                 calendar_date: date,
                 calendar_time: time || null,
-                calendar_notes: notes
+                calendar_notes: notes,
             })
             .eq('id', parseInt(id, 10)) // 🛠️ FIX: Force string parameter to Number matching BIGINT
             .eq('user_uuid', userId);
@@ -85,14 +97,15 @@ export default function EditCalendarEntry(): React.JSX.Element {
             alert(`Update failed: ${error.message}`);
         } else {
             setConfirmationMessage('Calendar event updated successfully.');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
 
     const handleDelete = async (): Promise<void> => {
         if (!id || !userId) return;
 
-        const confirmDelete = window.confirm("Are you sure you want to remove this event from your schedule?");
+        const confirmDelete = window.confirm(
+            'Are you sure you want to remove this event from your schedule?'
+        );
         if (!confirmDelete) return;
 
         setSaving(true);
@@ -115,20 +128,30 @@ export default function EditCalendarEntry(): React.JSX.Element {
 
     return (
         <div className="page-wrapper">
-            <div className="page-container">
-            {/* ALERT NOTIFICATION BANNER */}
             {confirmationMessage && (
                 <div className="calendar-confirmation-message" role="status" aria-live="polite">
                     {confirmationMessage}
                 </div>
             )}
-
+            <div className="page-container">
                 <section className="section-container purple-section-container">
-                    <button type="button" onClick={() => navigate('/calendar')} className="buttonWhite buttonMain marginbsixteen">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/calendar')}
+                        className="buttonWhite buttonMain marginbsixteen"
+                    >
                         ← Return
                     </button>
 
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            flexWrap: 'wrap',
+                            gap: '20px',
+                        }}
+                    >
                         <div>
                             <h1 className="textbig">Modify Event Details</h1>
                         </div>
@@ -143,65 +166,65 @@ export default function EditCalendarEntry(): React.JSX.Element {
                     </div>
                 </section>
 
-
-            {/* MANAGE ENTRY DATA COMPONENT FORM */}
-            <form onSubmit={handleUpdate} className="equi-edit-form">
-
-                {/* EVENT TITLE INPUT */}
-                <div className="horsebox-field-group">
-                    <label className="form-field-label">Event Title *</label>
-                    <input
-                        type="text"
-                        className="form-input-control"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>
-
-                {/* TIMELINE PARAMETERS GRID ROW */}
-                <div className="form-field-grid">
+                {/* MANAGE ENTRY DATA COMPONENT FORM */}
+                <form onSubmit={handleUpdate} className="equi-edit-form">
+                    {/* EVENT TITLE INPUT */}
                     <div className="horsebox-field-group">
-                        <label className="form-field-label">Date *</label>
+                        <label className="form-field-label">Event Title *</label>
                         <input
-                            type="date"
+                            type="text"
                             className="form-input-control"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                             required
                         />
                     </div>
+
+                    {/* TIMELINE PARAMETERS GRID ROW */}
+                    <div className="form-field-grid">
+                        <div className="horsebox-field-group">
+                            <label className="form-field-label">Date *</label>
+                            <input
+                                type="date"
+                                className="form-input-control"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="horsebox-field-group">
+                            <label className="form-field-label">Time</label>
+                            <input
+                                type="time"
+                                className="form-input-control"
+                                value={time}
+                                onChange={(e) => setTime(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    {/* ADDITIONAL ENTRY DESCRIPTION RECORD NOTES */}
                     <div className="horsebox-field-group">
-                        <label className="form-field-label">Time</label>
-                        <input
-                            type="time"
-                            className="form-input-control"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
+                        <label className="form-field-label">Notes / Description</label>
+                        <textarea
+                            className="form-textarea-control"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
                         />
                     </div>
-                </div>
 
-                {/* ADDITIONAL ENTRY DESCRIPTION RECORD NOTES */}
-                <div className="horsebox-field-group">
-                    <label className="form-field-label">Notes / Description</label>
-                    <textarea
-                        className="form-textarea-control"
-                        value={notes}
-                        onChange={(e) => setNotes(e.target.value)}
-                    />
-                </div>
-
-                {/* FORM UPDATE SUBMISSION UTILITY BUTTON */}
-                <button
-                    type="submit"
-                    disabled={saving}
-                    className="buttonMain buttonPurple form-submit-btn"
-                >
-                    {saving ? 'Updating entry context...' : 'Save Changes'}
-                </button>
-            </form>
-        </div>
+                    {/* FORM UPDATE SUBMISSION UTILITY BUTTON */}
+                    <div className="sticky-actions-bar">
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className="buttonMain buttonOrange form-submit-btn"
+                        >
+                            {saving ? 'Updating entry context...' : 'Save Changes'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
