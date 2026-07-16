@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabaseClient';
 
-import homeHorse from '../assets/home-horse2.jpg';
+import homeHorse from '../assets/homescreen.png';
 import EnterDetails from '../assets/enter-details.png';
 import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';

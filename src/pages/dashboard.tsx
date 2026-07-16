@@ -463,7 +463,7 @@ export default function Dashboard() {
                                                         target="_blank"
                                                         className="buttonLink"
                                                     >
-                                                        Print {log.horse_name} Stable Tag
+                                                        Print <b>{log.horse_name}</b> Stable Tag
                                                         {!isSubbed && ' preview'}
                                                         {!isSubbed && '&nbsp;&nbsp;🔒'}
                                                     </a>
@@ -481,7 +481,7 @@ export default function Dashboard() {
                                                         target="_blank"
                                                         className="buttonLink"
                                                     >
-                                                        Print {log.horse_name} Poster
+                                                        Print <b>{log.horse_name}</b> Poster
                                                         {!isSubbed && ' preview'}
                                                         {!isSubbed && '&nbsp;&nbsp;🔒'}
                                                     </a>
