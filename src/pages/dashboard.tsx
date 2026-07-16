@@ -431,7 +431,7 @@ export default function Dashboard() {
                                                     }
                                                     className="buttonLink marginbsixteen"
                                                 >
-                                                    Edit what the public see!&nbsp;&nbsp;
+                                                    Edit what the public see&nbsp;&nbsp;
                                                     {!isSubbed ? '🔒 ' : '✏️️ '}
                                                 </Link>
                                             </li>
@@ -464,8 +464,8 @@ export default function Dashboard() {
                                                         className="buttonLink"
                                                     >
                                                         Print {log.horse_name} Stable Tag
-                                                        {!isSubbed && ' preview'}&nbsp;&nbsp;
-                                                        {!isSubbed && '🔒'}
+                                                        {!isSubbed && ' preview'}
+                                                        {!isSubbed && '&nbsp;&nbsp;🔒'}
                                                     </a>
                                                 </div>
                                             </li>
@@ -482,8 +482,8 @@ export default function Dashboard() {
                                                         className="buttonLink"
                                                     >
                                                         Print {log.horse_name} Poster
-                                                        {!isSubbed && ' preview'}&nbsp;&nbsp;
-                                                        {!isSubbed && '🔒'}
+                                                        {!isSubbed && ' preview'}
+                                                        {!isSubbed && '&nbsp;&nbsp;🔒'}
                                                     </a>
                                                 </div>
                                             </li>
@@ -495,7 +495,9 @@ export default function Dashboard() {
 
                         {/* 3. USER ASSETS PANEL */}
                         <section className="section-container white-section-container no-print marginbsixteen">
-                            <h2 className="textmedium marginbtwenfour">Global Tools & Assets</h2>
+                            <h2 className="textmedium marginbtwenfour">
+                                ⚙️ &nbsp;&nbsp;Global Tools & Assets
+                            </h2>
                             <ul className="olnone">
                                 <li className="marginbtwenfour">
                                     <Link
@@ -507,7 +509,7 @@ export default function Dashboard() {
                                         className="buttonLink"
                                     >
                                         View your stable calendar&nbsp;&nbsp;
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '📅 '}
+                                        {!hasAnyActiveSubscription && '🔒'}
                                     </Link>
                                 </li>
                                 <li className="marginbtwenfour">
@@ -520,7 +522,7 @@ export default function Dashboard() {
                                         className="buttonLink"
                                     >
                                         View your horsebox details&nbsp;&nbsp;
-                                        {!hasAnyActiveSubscription ? '🔒 ' : '🚛 '}
+                                        {!hasAnyActiveSubscription && '🔒'}
                                     </Link>
                                 </li>
                                 {stripeCustomerId && (
@@ -530,7 +532,7 @@ export default function Dashboard() {
                                             onClick={handleManageBilling}
                                             className="buttonLink buttonWhite"
                                         >
-                                            Manage Billing & Cancellations&nbsp;&nbsp;⚙️
+                                            Manage Billing & Cancellations
                                         </button>
                                     </li>
                                 )}
