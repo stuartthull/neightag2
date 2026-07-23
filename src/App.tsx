@@ -33,6 +33,7 @@ import CookieConsentBanner from './components/cookie-consent-banner';
 import AddBookmark from './pages/add-bookmark';
 import ShowQr from './pages/show-qr';
 import Shop from './pages/shop';
+import Faqs from './pages/faqs';
 
 import mainLogo from './assets/main-logo.png';
 
@@ -91,6 +92,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/show-qr" element={<ShowQr />} />
                 <Route path="/show-qr/:horse_uuid" element={<ShowQr />} />
                 <Route path="/shop" element={<Shop />} />
+                <Route path="/faqs" element={<Faqs />} />
 
                 {/* Dynamic Parameterized Route for single-horse public/owner views */}
                 <Route path="/horse-details/:horse_uuid" element={<HorseDetails />} />
