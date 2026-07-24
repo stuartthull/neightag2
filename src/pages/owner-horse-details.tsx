@@ -216,6 +216,15 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                 </section>
 
                 <section className="card marginbsixteen">
+                    <h2 className="textmedium">Horse Behaviours</h2>
+                    <div className="text-normal">
+                        <pre style={{ fontFamily: 'inherit', whiteSpace: 'pre-wrap', margin: 0 }}>
+                            {horse.horse_behaviours || 'N/A'}
+                        </pre>
+                    </div>
+                </section>
+
+                <section className="card marginbsixteen">
                     <h2 className="textmedium marginbsixteen">Identity & Parameters</h2>
                     <div className="text-normal marginbeight datarow">
                         <span>Breed:</span> <strong>{horse.horse_breed || 'N/A'}</strong>

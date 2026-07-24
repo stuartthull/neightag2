@@ -167,7 +167,10 @@ function FieldPrivacy() {
         },
         {
             sectionTitle: 'Care, Stable, & Management',
-            items: [{ label: 'Diet & Feeding Instructions', key: 'show_feeding' }],
+            items: [
+                { label: 'Diet & Feeding Instructions', key: 'show_feeding' },
+                { label: 'Horse Behaviours', key: 'show_horse_behaviours' },
+            ],
         },
         {
             sectionTitle: 'Farrier History',

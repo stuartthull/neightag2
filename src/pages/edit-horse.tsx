@@ -38,6 +38,7 @@ const INITIAL_FORM_DATA = {
     emergency_name_three: '',
     emergency_phone_three: '',
     feed_instructions: '',
+    horse_behaviours: '',
     saddle_fitter_name: '',
     saddle_fitter_phone: '',
     saddle_fitter_next_visit: '', // 🗓️ Populated via equi_calendar
@@ -751,6 +752,19 @@ export default function EditItem(): React.JSX.Element {
                                 />
                             </div>
                         </div>
+                    </section>
+
+                    <section className="section-container white-section-container">
+                        <h2 className="textmedium marginbsixteen">
+                            <label htmlFor="horse_behaviours">Horse Behaviours</label>
+                        </h2>
+                        <textarea
+                            className="textarea-standalone"
+                            id="horse_behaviours"
+                            name="horse_behaviours"
+                            value={formData.horse_behaviours}
+                            onChange={handleChange}
+                        />
                     </section>
 
                     {/* IDENTITY & PROFILE */}

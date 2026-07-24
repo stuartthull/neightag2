@@ -43,7 +43,7 @@ function HorseDetails() {
                 const { data: horseData, error: horseError } = await supabase
                     .from('equi_log_main')
                     .select(
-                        'id, user_uuid, horse_uuid, horse_name, horse_breed, horse_colour, emergency_name_one, emergency_phone_one, emergency_name_two, emergency_phone_two, emergency_name_three, emergency_phone_three, horse_dob, horse_passport_number, horse_height, horse_weight_kg, horse_last_weighed, horse_vet_name, horse_vet_practice, horse_vet_phone_one, horse_medication, horse_allergies, saddle_fitter_name, saddle_fitter_phone, saddle_fitter_notes, physio_name, physio_phone, physio_notes, farrier_name, farrier_phone_one, farrier_notes, dentist_name, dentist_phone_one, dentist_notes, feed_instructions, horse_image_url, is_public, worming_date, worming_notes'
+                        'id, user_uuid, horse_uuid, horse_name, horse_breed, horse_colour, emergency_name_one, emergency_phone_one, emergency_name_two, emergency_phone_two, emergency_name_three, emergency_phone_three, horse_dob, horse_passport_number, horse_height, horse_weight_kg, horse_last_weighed, horse_vet_name, horse_vet_practice, horse_vet_phone_one, horse_medication, horse_allergies, saddle_fitter_name, saddle_fitter_phone, saddle_fitter_notes, physio_name, physio_phone, physio_notes, farrier_name, farrier_phone_one, farrier_notes, dentist_name, dentist_phone_one, dentist_notes, feed_instructions, horse_behaviours, horse_image_url, is_public, worming_date, worming_notes'
                     )
                     .eq('horse_uuid', horse_uuid)
                     .single();
@@ -367,6 +367,23 @@ function HorseDetails() {
                                     )}
                                 </div>
                             )}
+                        </section>
+                    )}
+
+                    {shouldShow('show_horse_behaviours') && (
+                        <section className="section-container white-section-container">
+                            <h2 className="textmedium">Horse Behaviours</h2>
+                            <div className="text-normal">
+                                <pre
+                                    style={{
+                                        fontFamily: 'inherit',
+                                        whiteSpace: 'pre-wrap',
+                                        margin: 0,
+                                    }}
+                                >
+                                    {horse.horse_behaviours || 'N/A'}
+                                </pre>
+                            </div>
                         </section>
                     )}
 

@@ -69,6 +69,7 @@ const horseData = {
     dentist_phone_one: '0800998877',
     dentist_notes: 'Dentist notes here',
     feed_instructions: 'Morning hay',
+    horse_behaviours: 'Can be nervous around tractors',
     horse_image_url: '',
     is_public: true,
 };
@@ -117,6 +118,7 @@ const privacyData = {
     show_physio_next: true,
     show_physio_notes: true,
     show_feeding: true,
+    show_horse_behaviours: true,
 };
 
 function mockSupabaseQueries() {
@@ -228,6 +230,8 @@ describe('HorseDetails', () => {
 
         expect(screen.getByText('Feeding & Turnout')).toBeInTheDocument();
         expect(screen.getByText('Morning hay')).toBeInTheDocument();
+        expect(screen.getByText('Horse Behaviours')).toBeInTheDocument();
+        expect(screen.getByText('Can be nervous around tractors')).toBeInTheDocument();
         expect(mockNavigate).not.toHaveBeenCalled();
     });
 });
