@@ -39,11 +39,27 @@ describe('Shop', () => {
             </HelmetProvider>
         );
 
-        fireEvent.click(screen.getByRole('button', { name: 'Buy TapTag' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Buy TapTag - £2.95' }));
 
-        expect(
-            await screen.findByText('Checkout is temporarily unavailable.')
-        ).toBeInTheDocument();
-        expect(mockInvoke).toHaveBeenCalledWith('create-product-checkout');
+        expect(await screen.findByText('Checkout is temporarily unavailable.')).toBeInTheDocument();
+        expect(mockInvoke).toHaveBeenCalledWith('create-product-checkout', {
+            body: { productId: 'taptag' },
+        });
+    });
+
+    it('starts checkout for a laminated stable tag', () => {
+        mockInvoke.mockReturnValue(new Promise(() => {}));
+
+        render(
+            <HelmetProvider>
+                <Shop />
+            </HelmetProvider>
+        );
+
+        fireEvent.click(screen.getByRole('button', { name: 'Buy Laminated Stable Tag - £4.95' }));
+
+        expect(mockInvoke).toHaveBeenCalledWith('create-product-checkout', {
+            body: { productId: 'laminated-stable-tag' },
+        });
     });
 });

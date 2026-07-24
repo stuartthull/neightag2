@@ -3,6 +3,7 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 40px;
     align-items: center;
+    margin-bottom: 24px;
 }
 
 .shop-product-image {
@@ -46,6 +47,10 @@
 .shop-checkout-note {
     margin: 12px 0 0;
     color: #64748b;
+}
+
+.shop-credit-cards {
+    width: 140px;
 }
 
 .shop-error,
