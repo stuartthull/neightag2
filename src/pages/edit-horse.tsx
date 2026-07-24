@@ -35,6 +35,8 @@ const INITIAL_FORM_DATA = {
     emergency_phone_one: '',
     emergency_name_two: '',
     emergency_phone_two: '',
+    emergency_name_three: '',
+    emergency_phone_three: '',
     feed_instructions: '',
     saddle_fitter_name: '',
     saddle_fitter_phone: '',
@@ -724,6 +726,27 @@ export default function EditItem(): React.JSX.Element {
                                     name="emergency_phone_two"
                                     type="text"
                                     value={formData.emergency_phone_two}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-grid-card">
+                                <p className="text-normal marginbeight">
+                                    <strong>Third Contact</strong>
+                                </p>
+                                <input
+                                    className="inputText marginbeight"
+                                    placeholder="Name"
+                                    name="emergency_name_three"
+                                    type="text"
+                                    value={formData.emergency_name_three}
+                                    onChange={handleChange}
+                                />
+                                <input
+                                    className="inputText"
+                                    placeholder="Phone"
+                                    name="emergency_phone_three"
+                                    type="text"
+                                    value={formData.emergency_phone_three}
                                     onChange={handleChange}
                                 />
                             </div>

@@ -197,6 +197,22 @@ export default function OwnerHorseDetails(): React.JSX.Element {
                             </a>
                         </p>
                     </div>
+                    <div className="horsebox-panel breakdown-panel">
+                        <p className="text-normal">
+                            <strong>Third Contact:</strong>
+                        </p>
+                        <p className="text-normal marginbsixteen">
+                            {horse.emergency_name_three || 'Not Set'}
+                        </p>
+                        <p className="text-normal">
+                            <a
+                                href={`tel:${horse.emergency_phone_three}`}
+                                className="buttonMain buttonOrange"
+                            >
+                                📞 {horse.emergency_phone_three || 'Not Set'}
+                            </a>
+                        </p>
+                    </div>
                 </section>
 
                 <section className="card marginbsixteen">

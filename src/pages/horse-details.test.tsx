@@ -44,6 +44,8 @@ const horseData = {
     emergency_phone_one: '07123456789',
     emergency_name_two: 'Abs',
     emergency_phone_two: '07987654321',
+    emergency_name_three: 'Jo',
+    emergency_phone_three: '07876543210',
     horse_dob: '2015-04-12',
     horse_passport_number: 'SECRET-PASSPORT',
     horse_height: '16.2',
@@ -84,6 +86,8 @@ const privacyData = {
     show_emergency_phone_one: true,
     show_emergency_name_two: true,
     show_emergency_phone_two: true,
+    show_emergency_name_three: true,
+    show_emergency_phone_three: true,
     show_dob: true,
     show_passport: false,
     show_last_weighed: true,
@@ -174,6 +178,12 @@ describe('HorseDetails', () => {
         expect(screen.getByRole('link', { name: /07987654321/ })).toHaveAttribute(
             'href',
             'tel:07987654321'
+        );
+        expect(screen.getByText('Third Contact:')).toBeInTheDocument();
+        expect(screen.getByText('Jo')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /07876543210/ })).toHaveAttribute(
+            'href',
+            'tel:07876543210'
         );
 
         expect(screen.getByText('Identity & Identification')).toBeInTheDocument();

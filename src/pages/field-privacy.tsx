@@ -151,6 +151,8 @@ function FieldPrivacy() {
                 { label: 'Primary Emergency Phone', key: 'show_emergency_phone_one' },
                 { label: 'Secondary Emergency Contact Name', key: 'show_emergency_name_two' },
                 { label: 'Secondary Emergency Contact Phone', key: 'show_emergency_phone_two' },
+                { label: 'Third Emergency Contact Name', key: 'show_emergency_name_three' },
+                { label: 'Third Emergency Contact Phone', key: 'show_emergency_phone_three' },
             ],
         },
         {
