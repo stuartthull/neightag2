@@ -209,6 +209,11 @@ function HorseDetails() {
                 <section className="section-container purple-section-container horse-hero-section">
                     {horse.horse_image_url ? (
                         <div className="horse-profile-image-wrapper">
+                            {shouldShow('show_name') && (
+                                <h1 className="horse-details-title-main textbig marginbeight">
+                                    <strong>{horse.horse_name}'s</strong> Record
+                                </h1>
+                            )}
                             <img
                                 src={horse.horse_image_url}
                                 alt={horse.horse_name}
@@ -223,12 +228,6 @@ function HorseDetails() {
                 </section>
 
                 <section className="tab-container horse-details-header">
-                    {shouldShow('show_name') && (
-                        <h1 className="textmedium marginbeight">
-                            <strong>{horse.horse_name}'s</strong> Record
-                        </h1>
-                    )}
-
                     <div
                         className="tabs-navigation"
                         role="tablist"
@@ -308,14 +307,15 @@ function HorseDetails() {
                             <h2 className="textmedium marginbsixteen">Emergency Protocols</h2>
                             {showPrimaryEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
-                                    <p className="text-normal">
-                                        <strong>Primary Contact:</strong>
+                                    <p className="textmedium marginbsixteen">
+                                        Primary Contact:&nbsp;
+                                        {shouldShow('show_emergency_name_one') && (
+                                            <span className="textbold">
+                                                {horse.emergency_name_one || 'N/A'}
+                                            </span>
+                                        )}
                                     </p>
-                                    {shouldShow('show_emergency_name_one') && (
-                                        <p className="text-normal marginbsixteen">
-                                            {horse.emergency_name_one || 'N/A'}
-                                        </p>
-                                    )}
+
                                     {shouldShow('show_emergency_phone_one') && (
                                         <p className="text-normal">
                                             <a
@@ -330,14 +330,14 @@ function HorseDetails() {
                             )}
                             {showSecondaryEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
-                                    <p className="text-normal">
-                                        <strong>Secondary Contact:</strong>
+                                    <p className="textmedium marginbsixteen">
+                                        Secondary Contact:&nbsp;
+                                        {shouldShow('show_emergency_name_two') && (
+                                            <span className="textbold">
+                                                {horse.emergency_name_two || 'N/A'}
+                                            </span>
+                                        )}
                                     </p>
-                                    {shouldShow('show_emergency_name_two') && (
-                                        <p className="text-normal marginbsixteen">
-                                            {horse.emergency_name_two || 'N/A'}
-                                        </p>
-                                    )}
                                     {shouldShow('show_emergency_phone_two') && (
                                         <p className="text-normal">
                                             <a
@@ -352,14 +352,15 @@ function HorseDetails() {
                             )}
                             {showThirdEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
-                                    <p className="text-normal">
-                                        <strong>Third Contact:</strong>
+                                    <p className="textmedium marginbsixteen">
+                                        Third Contact:&nbsp;
+                                        {shouldShow('show_emergency_name_three') && (
+                                            <span className="textbold">
+                                                {horse.emergency_name_three || 'N/A'}
+                                            </span>
+                                        )}
                                     </p>
-                                    {shouldShow('show_emergency_name_three') && (
-                                        <p className="text-normal marginbsixteen">
-                                            {horse.emergency_name_three || 'N/A'}
-                                        </p>
-                                    )}
+
                                     {shouldShow('show_emergency_phone_three') && (
                                         <p className="text-normal">
                                             <a

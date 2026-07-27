@@ -82,13 +82,6 @@ pre {
     box-sizing: border-box;
 }
 
-.horse-page-container {
-    @media (max-width: 600px) {
-        margin-top: 0;
-        padding-top: 0;
-    }
-}
-
 .home-layout-grid {
     display: flex;
     flex-direction: column;
@@ -264,6 +257,16 @@ pre {
     box-sizing: border-box;
 }
 
+.horse-details-title-main {
+    position: absolute;
+    top:20px;
+    left: 20px;
+    background-color: var(--primarycolor);
+    border-radius: 12px;
+    padding: 12px 18px;
+    z-index: 100;
+}
+
 /* ==========================================================================
    TYPOGRAPHY BLOCKS
    ========================================================================== */
@@ -276,6 +279,10 @@ pre {
 .textmedium {
     font-size: 18px;
     font-weight: 600;
+}
+
+.textbold {
+    font-weight: 700;
 }
 
 .text-normal {
@@ -1005,16 +1012,15 @@ button.buttonLink {
 }
 
 .horse-profile-image {
-    width: 400px;
+    width: 600px;
     height: 300px;
     border-radius: 16px;
     object-fit: cover;
-    margin: 0 auto 16px;
+    margin: 0 auto;
     z-index: 0;
 
-    @media (max-width: 600px) {
+    @media (max-width: 900px) {
         width: 100%;
-        height: 100%;
         border-radius: 0;
     }
 }
@@ -1395,22 +1401,32 @@ button.buttonLink {
    ========================================================================== */
 .tabs-navigation {
     display: flex;
-    gap: 8px;
     margin-top: 16px;
-    margin-bottom: 24px;
-    border-bottom: 2px solid var(--secondarycolor);
 }
 
 .tab-trigger {
     background: none;
     border: none;
     font-weight: 600;
-    padding: 10px 16px;
+    font-size: 1rem;
+    padding: 24px 16px;
     color: #64748b;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
     margin-bottom: -2px;
     transition: all 0.2s ease;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    width: 230px;
+}
+@media (max-width: 600px) {
+    .tab-trigger {
+        width: calc(100% / 3);
+    }
+}
+@media (max-width: 400px) {
+    .tab-trigger {
+        font-size: 0.85rem;
+    }
 }
 
 .tab-trigger:hover {
@@ -1426,10 +1442,15 @@ button.buttonLink {
 .tab-trigger[aria-selected="true"] {
     color: var(--white);
     background-color: var(--primarycolor);
+    font-weight: 800;
+    border-top: 4px solid var(--orange);
 }
 
 .tab-panel {
     display: block;
+    border: 2px solid var(--primarycolor);
+    padding: 12px;
+    background-color: var(--primarycolor);
 }
 
 .tab-panel[hidden] {
@@ -1437,19 +1458,12 @@ button.buttonLink {
 }
 
 .tab-container {
-    padding: 24px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    margin-bottom: 16px;
     border-radius: 16px;
-
-
 }
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .tab-container {
         border-radius: 0;
         background-color: var(--white);
-        margin-top: -60px;
-        z-index: 10;
         position: relative;
     }
 }
