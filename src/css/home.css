@@ -82,6 +82,10 @@ pre {
     box-sizing: border-box;
 }
 
+.horse-page-container {
+    padding-top: 0;
+}
+
 .home-layout-grid {
     display: flex;
     flex-direction: column;
