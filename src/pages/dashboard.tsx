@@ -487,6 +487,7 @@ export default function Dashboard() {
                                                             : `/activate-tag?id=${log.horse_uuid}`
                                                     }
                                                     className="buttonMain buttonPurple marginbsixteen"
+                                                    target={isSubbed ? '_self' : '_blank'}
                                                 >
                                                     {!isSubbed ? '🔒 ' : '🐴 '} &nbsp;See your
                                                     public profile

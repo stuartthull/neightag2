@@ -5,7 +5,6 @@ import '../css/edit-horse.css';
 
 const INITIAL_FORM_DATA = {
     horse_name: '',
-    is_public: true,
     horse_dob: '',
     horse_weight_kg: '',
     horse_vet_name: '',
@@ -147,7 +146,6 @@ export default function EditItem(): React.JSX.Element {
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState<any>(INITIAL_FORM_DATA);
     const [originalData, setOriginalData] = useState<any>(INITIAL_FORM_DATA);
-    const [isUpdatingPrivacy, setIsUpdatingPrivacy] = useState(false);
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imageUploadStatus, setImageUploadStatus] = useState('');
     const [currentUserId, setCurrentUserId] = useState<string>('');
@@ -219,18 +217,14 @@ export default function EditItem(): React.JSX.Element {
             const safePayload: any = {};
             Object.keys(horseData || {}).forEach((key) => {
                 if (key in INITIAL_FORM_DATA || key === 'user_uuid' || key === 'horse_uuid') {
-                    if (key === 'is_public') {
-                        safePayload[key] = horseData[key] ?? true;
+                    if (
+                        key === 'horse_dob' ||
+                        key === 'horse_last_weighed' ||
+                        key === 'insurance_date'
+                    ) {
+                        safePayload[key] = horseData[key] ? normalizeDate(horseData[key]) : '';
                     } else {
-                        if (
-                            key === 'horse_dob' ||
-                            key === 'horse_last_weighed' ||
-                            key === 'insurance_date'
-                        ) {
-                            safePayload[key] = horseData[key] ? normalizeDate(horseData[key]) : '';
-                        } else {
-                            safePayload[key] = horseData[key] === null ? '' : horseData[key];
-                        }
+                        safePayload[key] = horseData[key] === null ? '' : horseData[key];
                     }
                 }
             });
@@ -268,26 +262,6 @@ export default function EditItem(): React.JSX.Element {
             ...prev,
             [name]: value,
         }));
-    };
-
-    const handlePrivacyToggle = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!currentUserId) return;
-
-        const newPublicStatus = e.target.checked;
-        setFormData((prev) => ({ ...prev, is_public: newPublicStatus }));
-        setIsUpdatingPrivacy(true);
-
-        const { error } = await supabase
-            .from('equi_log_main')
-            .update({ is_public: newPublicStatus })
-            .eq('horse_uuid', horse_uuid)
-            .eq('user_uuid', currentUserId);
-
-        setIsUpdatingPrivacy(false);
-        if (error) {
-            setFormData((prev) => ({ ...prev, is_public: !newPublicStatus }));
-            alert('Failed to update privacy setting: ' + error.message);
-        }
     };
 
     const syncAppointmentsToCalendar = async (current: any, original: any, ownerUuid: string) => {
@@ -650,35 +624,6 @@ export default function EditItem(): React.JSX.Element {
                                         disabled={isUploadingImage}
                                     />
                                 </div>
-                            </div>
-
-                            <div
-                                className="white-section-container privacy-toggle-container"
-                                style={{ opacity: isUpdatingPrivacy ? 0.6 : 1 }}
-                            >
-                                <div>
-                                    <div className="text-normal">
-                                        <strong>🌐 Switch for Public Profile</strong>
-                                    </div>
-                                    <div className={`privacy-toggle-meta ${formData.is_public ? '' : 'redclass'}`}>
-                                        {isUpdatingPrivacy
-                                            ? 'Saving changes...'
-                                            : formData.is_public
-                                              ? 'Profile is Live and can be seen publicly'
-                                              : 'Profile is Hidden from public view'}
-                                    </div>
-                                </div>
-                                <label className="switch switch-wrapper" htmlFor="is_public">
-                                    <input
-                                        type="checkbox"
-                                        id="is_public"
-                                        name="is_public"
-                                        checked={formData.is_public}
-                                        onChange={handlePrivacyToggle}
-                                        disabled={isUpdatingPrivacy}
-                                    />
-                                    <span className="slider round"></span>
-                                </label>
                             </div>
                         </div>
                     </section>

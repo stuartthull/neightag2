@@ -10,6 +10,8 @@ function FieldPrivacy() {
     const [privacy, setPrivacy] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [currentUserId, setCurrentUserId] = useState<string>('');
+    const [isPublic, setIsPublic] = useState(true);
+    const [isUpdatingPublicProfile, setIsUpdatingPublicProfile] = useState(false);
 
     useEffect(() => {
         const fetchPrivacySettings = async () => {
@@ -32,7 +34,7 @@ function FieldPrivacy() {
             // 1. Fetch horse details to get horse_name AND user_uuid
             const { data: horse, error: horseError } = await supabase
                 .from('equi_log_main')
-                .select('horse_name, user_uuid')
+                .select('horse_name, user_uuid, is_public')
                 .eq('horse_uuid', horse_uuid)
                 .eq('user_uuid', user.id)
                 .single();
@@ -44,6 +46,7 @@ function FieldPrivacy() {
             }
 
             setHorseName(horse.horse_name);
+            setIsPublic(horse.is_public ?? true);
             const ownerId = horse.user_uuid;
 
             // 2. Fetch privacy settings row using horse_uuid
@@ -115,6 +118,27 @@ function FieldPrivacy() {
             setPrivacy((prev: any) => ({ ...prev, [columnName]: !nextValue }));
         } else {
             console.log(`Successfully persisted ${columnName} state change to cloud store!`);
+        }
+    };
+
+    const togglePublicProfile = async () => {
+        if (!horse_uuid || !currentUserId) return;
+
+        const nextValue = !isPublic;
+        setIsPublic(nextValue);
+        setIsUpdatingPublicProfile(true);
+
+        const { error } = await supabase
+            .from('equi_log_main')
+            .update({ is_public: nextValue })
+            .eq('horse_uuid', horse_uuid)
+            .eq('user_uuid', currentUserId);
+
+        setIsUpdatingPublicProfile(false);
+
+        if (error) {
+            setIsPublic(!nextValue);
+            alert('Failed to update privacy setting: ' + error.message);
         }
     };
 
@@ -222,10 +246,44 @@ function FieldPrivacy() {
                         ← Back to Your Stable
                     </button>
                     <h1 className="textbig">Public Display Matrix</h1>
-                    <p className="text-normal">
+                    <p className="text-normal marginbsixteen">
                         Control exactly what details the public can see for{' '}
                         <strong>{horseName}</strong>.
                     </p>
+
+                    <div
+                        className="visibility-settings lightorange-section-container section-container"
+                        style={{ opacity: isUpdatingPublicProfile ? 0.6 : 1 }}
+                    >
+                        <div>
+                            <div className="textmedium">Switch for Public Profile</div>
+                            <div>
+                                {isUpdatingPublicProfile ? (
+                                    <span className="visible-note">Saving changes...</span>
+                                ) : isPublic ? (
+                                    <span className="visible-note">
+                                            🌐 Profile is Live and can be seen publicly
+                                        </span>
+                                ) : (
+                                    <span className="visible-note-not">
+                                            🔒 Profile is Hidden from public view
+                                        </span>
+                                )}
+                            </div>
+                        </div>
+                        <div className="switchwidth">
+                            <label className="switch" htmlFor="global-public-profile">
+                                <input
+                                    type="checkbox"
+                                    id="global-public-profile"
+                                    checked={isPublic}
+                                    onChange={togglePublicProfile}
+                                    disabled={isUpdatingPublicProfile}
+                                />
+                                <span className="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
                 </section>
 
                 <section className="section-container white-section-container">
@@ -237,7 +295,7 @@ function FieldPrivacy() {
                             paddingBottom: '12px',
                         }}
                     >
-                        Visibility Settings
+                        Visibility Settings. Switch off or on what you want to show.
                     </h2>
 
                     {/* 🔄 Double Map Loop processing structured Section containers */}
