@@ -234,7 +234,7 @@ const Navigation = () => {
                     </Link>
                 </div>
             </div>
-            <p className="logo-text">Digital stable management, simplified</p>
+            <p className="logo-text">For all your livery needs</p>
         </nav>
     );
 };
