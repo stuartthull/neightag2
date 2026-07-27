@@ -486,19 +486,19 @@ export default function Dashboard() {
                                             <li className="marginbsixteen">
                                                 <Link
                                                     to={`/owner-horse-details/${log.horse_uuid}`}
-                                                    className="buttonMain buttonPurple marginbsixteen"
+                                                    className="buttonMain buttonPurple"
                                                 >
                                                     👁️ &nbsp;View full horse details
                                                 </Link>
                                             </li>
-                                            <li className="marginbtwenfour">
+                                            <li className="marginbsixteen">
                                                 <Link
                                                     to={
                                                         isSubbed
                                                             ? `/horse-details/${log.horse_uuid}`
                                                             : `/activate-tag?id=${log.horse_uuid}`
                                                     }
-                                                    className="buttonMain buttonPurple marginbsixteen"
+                                                    className="buttonMain buttonPurple"
                                                     target={isSubbed ? '_self' : '_blank'}
                                                 >
                                                     {!isSubbed ? '🔒 ' : '🐴 '} &nbsp;See your

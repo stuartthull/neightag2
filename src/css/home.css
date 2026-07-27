@@ -961,7 +961,7 @@ button.buttonLink {
     font-weight: 700;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .dashboard-horse-split {
         flex-direction: column;
         gap: 0px;
