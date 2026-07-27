@@ -10,6 +10,7 @@ type LogRecord = {
     horse_uuid: string;
     horse_name: string;
     is_public: boolean;
+    horse_image_url: string | null;
 };
 
 type SubscriptionMap = {
@@ -55,7 +56,7 @@ export default function Dashboard() {
         // 1. Fetch horse logs
         const { data: logData, error: logError } = await supabase
             .from('equi_log_main')
-            .select('id, user_uuid, horse_uuid, horse_name, is_public')
+            .select('id, user_uuid, horse_uuid, horse_name, is_public, horse_image_url')
             .eq('user_uuid', userId);
 
         if (logError) {
@@ -378,11 +379,23 @@ export default function Dashboard() {
                                         <div className="dashboard-horse-split">
                                             <div className="dashboard-horse-split-column">
                                                 <div className="marginbsixteen">
-                                                    <h2 className="textbig" style={{ margin: 0 }}>
-                                                        Registered horse:
-                                                        <br />
-                                                        <strong>{log.horse_name}</strong>
-                                                    </h2>
+                                                    <div className="dashboard-horse-heading">
+                                                        {log.horse_image_url && (
+                                                            <img
+                                                                src={log.horse_image_url}
+                                                                alt=""
+                                                                className="dashboard-horse-avatar"
+                                                            />
+                                                        )}
+                                                        <h2
+                                                            className="textbig"
+                                                            style={{ margin: 0 }}
+                                                        >
+                                                            Registered horse:
+                                                            <br />
+                                                            <strong>{log.horse_name}</strong>
+                                                        </h2>
+                                                    </div>
                                                 </div>
                                                 {isSubbed && (
                                                     <div
