@@ -384,53 +384,59 @@ export default function Dashboard() {
                                                         <strong>{log.horse_name}</strong>
                                                     </h2>
                                                 </div>
-                                                <div
-                                                    className="dashboard-public-profile marginbtwenfour"
-                                                    style={{
-                                                        opacity: updatingPublicProfiles[
-                                                            log.horse_uuid
-                                                        ]
-                                                            ? 0.6
-                                                            : 1,
-                                                    }}
-                                                >
-                                                    <div>
-                                                        <div className="text-normal">
-                                                            <strong>
-                                                                🌐 Switch for Public Profile
-                                                            </strong>
-                                                        </div>
-                                                        <div className={`privacy-toggle-meta ${log.is_public ? '' : 'redclass'}`}>
-                                                            {updatingPublicProfiles[log.horse_uuid]
-                                                                ? 'Saving changes...'
-                                                                : log.is_public
-                                                                  ? 'Profile is Live and can be seen publicly'
-                                                                  : 'Profile is Hidden from public view'}
-                                                        </div>
-                                                    </div>
-                                                    <label
-                                                        className="switch"
-                                                        htmlFor={`is_public_${log.horse_uuid}`}
+                                                {isSubbed && (
+                                                    <div
+                                                        className="dashboard-public-profile marginbtwenfour"
+                                                        style={{
+                                                            opacity: updatingPublicProfiles[
+                                                                log.horse_uuid
+                                                            ]
+                                                                ? 0.6
+                                                                : 1,
+                                                        }}
                                                     >
-                                                        <input
-                                                            type="checkbox"
-                                                            id={`is_public_${log.horse_uuid}`}
-                                                            checked={log.is_public}
-                                                            onChange={(event) =>
-                                                                handlePrivacyToggle(
-                                                                    log.horse_uuid,
-                                                                    event.target.checked
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                updatingPublicProfiles[
+                                                        <div>
+                                                            <div className="text-normal">
+                                                                <strong>
+                                                                    🌐 Switch for Public Profile
+                                                                </strong>
+                                                            </div>
+                                                            <div
+                                                                className={`privacy-toggle-meta ${log.is_public ? '' : 'redclass'}`}
+                                                            >
+                                                                {updatingPublicProfiles[
                                                                     log.horse_uuid
                                                                 ]
-                                                            }
-                                                        />
-                                                        <span className="slider round"></span>
-                                                    </label>
-                                                </div>
+                                                                    ? 'Saving changes...'
+                                                                    : log.is_public
+                                                                      ? 'Profile is Live and can be seen publicly'
+                                                                      : 'Profile is Hidden from public view'}
+                                                            </div>
+                                                        </div>
+                                                        <label
+                                                            className="switch"
+                                                            htmlFor={`is_public_${log.horse_uuid}`}
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                id={`is_public_${log.horse_uuid}`}
+                                                                checked={log.is_public}
+                                                                onChange={(event) =>
+                                                                    handlePrivacyToggle(
+                                                                        log.horse_uuid,
+                                                                        event.target.checked
+                                                                    )
+                                                                }
+                                                                disabled={
+                                                                    updatingPublicProfiles[
+                                                                        log.horse_uuid
+                                                                    ]
+                                                                }
+                                                            />
+                                                            <span className="slider round"></span>
+                                                        </label>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="dashboard-horse-split-column marginbsixteen">
                                                 <div className="section-container lightorange-section-container">

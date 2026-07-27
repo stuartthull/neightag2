@@ -288,14 +288,14 @@ function FieldPrivacy() {
 
                 <section className="section-container white-section-container">
                     <h2
-                        className="textmedium"
+                        className="textbig"
                         style={{
                             marginBottom: '24px',
                             borderBottom: '2px solid #f1f5f9',
                             paddingBottom: '12px',
                         }}
                     >
-                        Visibility Settings. Switch off or on what you want to show.
+                        Customise your view. Turn features on or off to match your preference.
                     </h2>
 
                     {/* 🔄 Double Map Loop processing structured Section containers */}
