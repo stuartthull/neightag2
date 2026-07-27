@@ -121,13 +121,13 @@ const privacyData = {
     show_horse_behaviours: true,
 };
 
-function mockSupabaseQueries() {
+function mockSupabaseQueries(horse = horseData) {
     mockFrom.mockImplementation((table: string) => {
         if (table === 'equi_log_main') {
             return {
                 select: jest.fn().mockReturnThis(),
                 eq: jest.fn().mockReturnThis(),
-                single: jest.fn().mockResolvedValue({ data: horseData, error: null }),
+                single: jest.fn().mockResolvedValue({ data: horse, error: null }),
             };
         }
 
@@ -233,5 +233,27 @@ describe('HorseDetails', () => {
         expect(screen.getByText('Horse Behaviours')).toBeInTheDocument();
         expect(screen.getByText('Can be nervous around tractors')).toBeInTheDocument();
         expect(mockNavigate).not.toHaveBeenCalled();
+    });
+
+    it('hides emergency contacts whose name and phone are blank', async () => {
+        mockSupabaseQueries({
+            ...horseData,
+            emergency_name_two: ' ',
+            emergency_phone_two: '',
+        });
+
+        render(
+            <HelmetProvider>
+                <HorseDetails />
+            </HelmetProvider>
+        );
+
+        await waitFor(() => {
+            expect(screen.getByRole('heading', { name: /Jane's Record/i })).toBeInTheDocument();
+        });
+
+        expect(screen.getByText('Primary Contact:')).toBeInTheDocument();
+        expect(screen.queryByText('Secondary Contact:')).not.toBeInTheDocument();
+        expect(screen.getByText('Third Contact:')).toBeInTheDocument();
     });
 });

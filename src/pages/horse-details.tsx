@@ -132,6 +132,17 @@ function HorseDetails() {
         return value === true || String(value).toLowerCase() === 'true';
     };
 
+    const hasValue = (value: unknown) => String(value ?? '').trim().length > 0;
+    const showPrimaryEmergencyContact =
+        (shouldShow('show_emergency_name_one') && hasValue(horse.emergency_name_one)) ||
+        (shouldShow('show_emergency_phone_one') && hasValue(horse.emergency_phone_one));
+    const showSecondaryEmergencyContact =
+        (shouldShow('show_emergency_name_two') && hasValue(horse.emergency_name_two)) ||
+        (shouldShow('show_emergency_phone_two') && hasValue(horse.emergency_phone_two));
+    const showThirdEmergencyContact =
+        (shouldShow('show_emergency_name_three') && hasValue(horse.emergency_name_three)) ||
+        (shouldShow('show_emergency_phone_three') && hasValue(horse.emergency_phone_three));
+
     const saddleFitterDate = calendarMap['Saddle Fitter Visit']
         ? formatGBDate(calendarMap['Saddle Fitter Visit'])
         : 'TBC';
@@ -290,16 +301,12 @@ function HorseDetails() {
                     className="tab-panel"
                     hidden={activeTab !== 'emergency'}
                 >
-                    {(shouldShow('show_emergency_name_one') ||
-                        shouldShow('show_emergency_phone_one') ||
-                        shouldShow('show_emergency_name_two') ||
-                        shouldShow('show_emergency_phone_two') ||
-                        shouldShow('show_emergency_name_three') ||
-                        shouldShow('show_emergency_phone_three')) && (
+                    {(showPrimaryEmergencyContact ||
+                        showSecondaryEmergencyContact ||
+                        showThirdEmergencyContact) && (
                         <section className="section-container white-section-container">
                             <h2 className="textmedium marginbsixteen">Emergency Protocols</h2>
-                            {(shouldShow('show_emergency_name_one') ||
-                                shouldShow('show_emergency_phone_one')) && (
+                            {showPrimaryEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal">
                                         <strong>Primary Contact:</strong>
@@ -321,8 +328,7 @@ function HorseDetails() {
                                     )}
                                 </div>
                             )}
-                            {(shouldShow('show_emergency_name_two') ||
-                                shouldShow('show_emergency_phone_two')) && (
+                            {showSecondaryEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal">
                                         <strong>Secondary Contact:</strong>
@@ -344,8 +350,7 @@ function HorseDetails() {
                                     )}
                                 </div>
                             )}
-                            {(shouldShow('show_emergency_name_three') ||
-                                shouldShow('show_emergency_phone_three')) && (
+                            {showThirdEmergencyContact && (
                                 <div className="horsebox-panel breakdown-panel">
                                     <p className="text-normal">
                                         <strong>Third Contact:</strong>
