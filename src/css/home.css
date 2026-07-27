@@ -1139,6 +1139,13 @@ button.buttonLink {
     padding-bottom: 16px;
 }
 
+.big-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--primarycolor);
+}
+
 .qr-container {
     background-color: var(--lightprimary);
     border: 1px solid #e2e8f0;

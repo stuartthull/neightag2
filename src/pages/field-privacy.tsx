@@ -252,11 +252,10 @@ function FieldPrivacy() {
                     </p>
 
                     <div
-                        className="visibility-settings lightorange-section-container section-container"
-                        style={{ opacity: isUpdatingPublicProfile ? 0.6 : 1 }}
+                        className="big-switch white-section-container section-container"
                     >
                         <div>
-                            <div className="textmedium">Switch for Public Profile</div>
+                            <p className="textmedium">Switch for Public Profile</p>
                             <div>
                                 {isUpdatingPublicProfile ? (
                                     <span className="visible-note">Saving changes...</span>

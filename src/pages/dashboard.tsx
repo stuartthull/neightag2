@@ -399,14 +399,7 @@ export default function Dashboard() {
                                                 </div>
                                                 {isSubbed && (
                                                     <div
-                                                        className="dashboard-public-profile marginbtwenfour"
-                                                        style={{
-                                                            opacity: updatingPublicProfiles[
-                                                                log.horse_uuid
-                                                            ]
-                                                                ? 0.6
-                                                                : 1,
-                                                        }}
+                                                        className="big-switch white-section-container section-container marginbtwenfour"
                                                     >
                                                         <div>
                                                             <div className="text-normal">
