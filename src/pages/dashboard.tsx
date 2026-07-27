@@ -638,7 +638,7 @@ export default function Dashboard() {
                                 <h2 className="textmedium marginbeight">🐴 Stable Limit Reached</h2>
                                 <p className="text-normal" style={{ color: '#64748b', margin: 0 }}>
                                     You have reached the maximum allowance of 2 horse profiles.
-                                    Delete an existing horse if you wish to add a new one.
+                                    Delete an existing horse if you wish to add a new one. Or add a subscription to your new horse.
                                 </p>
                             </section>
                         ) : isHorseLimitReached ? (
@@ -689,8 +689,8 @@ export default function Dashboard() {
                                     Delete your horse and all associated records
                                 </h2>
                                 <p className="text-normal marginbsixteen">
-                                    ! Be careful, once you delete the records they are not
-                                    recoverable.
+                                    Be careful, once you delete the records they are not
+                                    recoverable!
                                 </p>
                                 {myLogs.map((log) => {
                                     const isConfirmingDelete =
