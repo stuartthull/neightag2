@@ -658,15 +658,14 @@ export default function EditItem(): React.JSX.Element {
                             >
                                 <div>
                                     <div className="text-normal">
-                                        <strong>🌐 Global Public Profile</strong>
+                                        <strong>🌐 Switch for Public Profile</strong>
                                     </div>
-                                    <p>Turn off to hide your horse's public details</p>
-                                    <div className="privacy-toggle-meta">
+                                    <div className={`privacy-toggle-meta ${formData.is_public ? '' : 'redclass'}`}>
                                         {isUpdatingPrivacy
                                             ? 'Saving changes...'
                                             : formData.is_public
-                                              ? 'Profile is Live'
-                                              : 'Profile is Hidden'}
+                                              ? 'Profile is Live and can be seen publicly'
+                                              : 'Profile is Hidden from public view'}
                                     </div>
                                 </div>
                                 <label className="switch switch-wrapper" htmlFor="is_public">

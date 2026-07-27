@@ -886,6 +886,35 @@ button.buttonLink {
     min-width: 0;
 }
 
+.dashboard-public-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    color: var(--darkgrey);
+    transition: opacity 0.2s;
+}
+
+.redclass {
+    color: red;
+}
+
+.dashboard-public-profile p {
+    margin: 4px 0;
+}
+
+.dashboard-public-profile-meta {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.dashboard-public-profile .switch {
+    flex-shrink: 0;
+}
+
 .dashboard-delete-horse + .dashboard-delete-horse {
     margin-top: 12px;
 }

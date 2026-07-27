@@ -9,6 +9,7 @@ type LogRecord = {
     user_uuid: string;
     horse_uuid: string;
     horse_name: string;
+    is_public: boolean;
 };
 
 type SubscriptionMap = {
@@ -33,6 +34,7 @@ export default function Dashboard() {
     const [subscriptionDetails, setSubscriptionDetails] = useState<SubscriptionDetailsMap>({});
     const [pendingDeleteHorseUuid, setPendingDeleteHorseUuid] = useState<string | null>(null);
     const [deletingHorseUuid, setDeletingHorseUuid] = useState<string | null>(null);
+    const [updatingPublicProfiles, setUpdatingPublicProfiles] = useState<SubscriptionMap>({});
 
     // 💳 Dynamic Customer ID state for Stripe Portal integration
     const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
@@ -53,7 +55,7 @@ export default function Dashboard() {
         // 1. Fetch horse logs
         const { data: logData, error: logError } = await supabase
             .from('equi_log_main')
-            .select('id, user_uuid, horse_uuid, horse_name')
+            .select('id, user_uuid, horse_uuid, horse_name, is_public')
             .eq('user_uuid', userId);
 
         if (logError) {
@@ -61,7 +63,10 @@ export default function Dashboard() {
             return false;
         }
 
-        const logs = (logData as LogRecord[]) || [];
+        const logs = ((logData as LogRecord[]) || []).map((log) => ({
+            ...log,
+            is_public: log.is_public ?? true,
+        }));
         setMyLogs(logs);
 
         // 2. Fetch subscription status along with Stripe Customer ID
@@ -252,6 +257,34 @@ export default function Dashboard() {
         }
     };
 
+    const handlePrivacyToggle = async (horseUuid: string, isPublic: boolean) => {
+        if (!sessionUserId) return;
+
+        setMyLogs((logs) =>
+            logs.map((log) =>
+                log.horse_uuid === horseUuid ? { ...log, is_public: isPublic } : log
+            )
+        );
+        setUpdatingPublicProfiles((profiles) => ({ ...profiles, [horseUuid]: true }));
+
+        const { error } = await supabase
+            .from('equi_log_main')
+            .update({ is_public: isPublic })
+            .eq('horse_uuid', horseUuid)
+            .eq('user_uuid', sessionUserId);
+
+        setUpdatingPublicProfiles((profiles) => ({ ...profiles, [horseUuid]: false }));
+
+        if (error) {
+            setMyLogs((logs) =>
+                logs.map((log) =>
+                    log.horse_uuid === horseUuid ? { ...log, is_public: !isPublic } : log
+                )
+            );
+            alert('Failed to update privacy setting: ' + error.message);
+        }
+    };
+
     return (
         <div className="page-wrapper">
             <div className="page-container">
@@ -350,6 +383,53 @@ export default function Dashboard() {
                                                         <br />
                                                         <strong>{log.horse_name}</strong>
                                                     </h2>
+                                                </div>
+                                                <div
+                                                    className="dashboard-public-profile marginbtwenfour"
+                                                    style={{
+                                                        opacity: updatingPublicProfiles[
+                                                            log.horse_uuid
+                                                        ]
+                                                            ? 0.6
+                                                            : 1,
+                                                    }}
+                                                >
+                                                    <div>
+                                                        <div className="text-normal">
+                                                            <strong>
+                                                                🌐 Switch for Public Profile
+                                                            </strong>
+                                                        </div>
+                                                        <div className={`privacy-toggle-meta ${log.is_public ? '' : 'redclass'}`}>
+                                                            {updatingPublicProfiles[log.horse_uuid]
+                                                                ? 'Saving changes...'
+                                                                : log.is_public
+                                                                  ? 'Profile is Live and can be seen publicly'
+                                                                  : 'Profile is Hidden from public view'}
+                                                        </div>
+                                                    </div>
+                                                    <label
+                                                        className="switch"
+                                                        htmlFor={`is_public_${log.horse_uuid}`}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`is_public_${log.horse_uuid}`}
+                                                            checked={log.is_public}
+                                                            onChange={(event) =>
+                                                                handlePrivacyToggle(
+                                                                    log.horse_uuid,
+                                                                    event.target.checked
+                                                                )
+                                                            }
+                                                            disabled={
+                                                                updatingPublicProfiles[
+                                                                    log.horse_uuid
+                                                                ]
+                                                            }
+                                                        />
+                                                        <span className="slider round"></span>
+                                                    </label>
                                                 </div>
                                             </div>
                                             <div className="dashboard-horse-split-column marginbsixteen">
