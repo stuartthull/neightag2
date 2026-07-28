@@ -17,3 +17,9 @@ export const shouldSyncAppointment = (
     newNotes: unknown,
     oldNotes: unknown
 ): boolean => newDate !== oldDate || Boolean(newDate && newNotes !== oldNotes);
+
+export const hasAppointmentFieldChanged = (
+    changedFields: Set<string>,
+    dateKey: string,
+    notesKey: string
+): boolean => changedFields.has(dateKey) || changedFields.has(notesKey);

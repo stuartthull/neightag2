@@ -1,4 +1,8 @@
-import { buildChangedHorsePayload, shouldSyncAppointment } from './horse-profile';
+import {
+    buildChangedHorsePayload,
+    hasAppointmentFieldChanged,
+    shouldSyncAppointment,
+} from './horse-profile';
 
 describe('horse profile changes', () => {
     it('includes notes when a new horse profile is saved for the first time', () => {
@@ -38,5 +42,26 @@ describe('horse profile changes', () => {
                 'Original farrier notes'
             )
         ).toBe(true);
+    });
+
+    it('does not sync an unchanged appointment when another date is edited', () => {
+        expect(
+            shouldSyncAppointment(
+                '2026-09-15',
+                '2026-09-15',
+                'Existing dentist notes',
+                'Existing dentist notes'
+            )
+        ).toBe(false);
+    });
+
+    it('does not treat an insurance date edit as an appointment change', () => {
+        expect(
+            hasAppointmentFieldChanged(
+                new Set(['insurance_date']),
+                'farrier_next_visit',
+                'farrier_notes'
+            )
+        ).toBe(false);
     });
 });

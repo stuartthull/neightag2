@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { buildChangedHorsePayload, shouldSyncAppointment } from '../utils/horse-profile';
+import {
+    buildChangedHorsePayload,
+    hasAppointmentFieldChanged,
+    shouldSyncAppointment,
+} from '../utils/horse-profile';
 import '../css/edit-horse.css';
 
 const INITIAL_FORM_DATA = {
@@ -151,6 +155,7 @@ export default function EditItem(): React.JSX.Element {
     const [imageUploadStatus, setImageUploadStatus] = useState('');
     const [currentUserId, setCurrentUserId] = useState<string>('');
     const [saveConfirmationId, setSaveConfirmationId] = useState<number | null>(null);
+    const [dirtyFields, setDirtyFields] = useState<Set<string>>(() => new Set());
 
     const normalizeDate = (dateVal: unknown): string => {
         if (!dateVal) return '';
@@ -263,9 +268,15 @@ export default function EditItem(): React.JSX.Element {
             ...prev,
             [name]: value,
         }));
+        setDirtyFields((fields) => new Set(fields).add(name));
     };
 
-    const syncAppointmentsToCalendar = async (current: any, original: any, ownerUuid: string) => {
+    const syncAppointmentsToCalendar = async (
+        current: any,
+        original: any,
+        changedFields: Set<string>,
+        ownerUuid: string
+    ) => {
         if (!ownerUuid || !horse_uuid) {
             throw new Error('Could not verify the owner of this horse record.');
         }
@@ -295,6 +306,10 @@ export default function EditItem(): React.JSX.Element {
         ];
 
         for (const appt of appointmentTypes) {
+            if (!hasAppointmentFieldChanged(changedFields, appt.key, appt.notesKey)) {
+                continue;
+            }
+
             const newDate = normalizeDate(current[appt.key]);
             const oldDate = normalizeDate(original[appt.key]);
             const newNotes = current[appt.notesKey] || '';
@@ -302,19 +317,33 @@ export default function EditItem(): React.JSX.Element {
 
             if (shouldSyncAppointment(newDate, oldDate, newNotes, oldNotes)) {
                 if (newDate) {
-                    // Match correct public schema column structure safely
-                    const { error } = await supabase.from('equi_calendar').upsert(
-                        {
-                            user_uuid: ownerUuid,
-                            horse_uuid: horse_uuid,
-                            calendar_date: newDate,
-                            calendar_title: appt.title,
-                            calendar_notes: newNotes,
-                        },
-                        {
-                            onConflict: 'horse_uuid,calendar_title', // Resolves directly against the composite index
-                        }
-                    );
+                    const { data: existingAppointment, error: lookupError } = await supabase
+                        .from('equi_calendar')
+                        .select('id')
+                        .eq('horse_uuid', horse_uuid)
+                        .eq('user_uuid', ownerUuid)
+                        .eq('calendar_title', appt.title)
+                        .maybeSingle();
+
+                    if (lookupError) {
+                        throw new Error(`Could not check ${appt.title}: ${lookupError.message}`);
+                    }
+
+                    const appointmentPayload = {
+                        user_uuid: ownerUuid,
+                        horse_uuid: horse_uuid,
+                        calendar_date: newDate,
+                        calendar_title: appt.title,
+                        calendar_notes: newNotes,
+                    };
+
+                    const { error } = existingAppointment
+                        ? await supabase
+                              .from('equi_calendar')
+                              .update(appointmentPayload)
+                              .eq('id', existingAppointment.id)
+                              .eq('user_uuid', ownerUuid)
+                        : await supabase.from('equi_calendar').insert([appointmentPayload]);
 
                     if (error) {
                         throw new Error(`Could not save ${appt.title}: ${error.message}`);
@@ -353,8 +382,9 @@ export default function EditItem(): React.JSX.Element {
                 }
             }
 
-            await syncAppointmentsToCalendar(formData, originalData, currentUserId);
-            setOriginalData(formData);
+            await syncAppointmentsToCalendar(formData, originalData, dirtyFields, currentUserId);
+            setOriginalData({ ...formData });
+            setDirtyFields(new Set());
             setSaveConfirmationId(Date.now());
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Unknown database error';
