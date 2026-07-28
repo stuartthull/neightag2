@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
+import { buildChangedHorsePayload, shouldSyncAppointment } from '../utils/horse-profile';
 import '../css/edit-horse.css';
 
 const INITIAL_FORM_DATA = {
@@ -270,23 +271,36 @@ export default function EditItem(): React.JSX.Element {
         }
 
         const appointmentTypes = [
-            { key: 'farrier_next_visit', title: 'Farrier Visit', notes: current.farrier_notes },
-            { key: 'dentist_next_visit', title: 'Dentist Visit', notes: current.dentist_notes },
+            {
+                key: 'farrier_next_visit',
+                notesKey: 'farrier_notes',
+                title: 'Farrier Visit',
+            },
+            {
+                key: 'dentist_next_visit',
+                notesKey: 'dentist_notes',
+                title: 'Dentist Visit',
+            },
             {
                 key: 'saddle_fitter_next_visit',
+                notesKey: 'saddle_fitter_notes',
                 title: 'Saddle Fitter Visit',
-                notes: current.saddle_fitter_notes,
             },
-            { key: 'physio_next_visit', title: 'Physio Visit', notes: current.physio_notes },
-            { key: 'worming_date', title: 'Worming Due', notes: current.worming_notes },
+            {
+                key: 'physio_next_visit',
+                notesKey: 'physio_notes',
+                title: 'Physio Visit',
+            },
+            { key: 'worming_date', notesKey: 'worming_notes', title: 'Worming Due' },
         ];
 
         for (const appt of appointmentTypes) {
             const newDate = normalizeDate(current[appt.key]);
             const oldDate = normalizeDate(original[appt.key]);
+            const newNotes = current[appt.notesKey] || '';
+            const oldNotes = original[appt.notesKey] || '';
 
-            // Only execute database transactions if the date has explicitly changed
-            if (newDate !== oldDate) {
+            if (shouldSyncAppointment(newDate, oldDate, newNotes, oldNotes)) {
                 if (newDate) {
                     // Match correct public schema column structure safely
                     const { error } = await supabase.from('equi_calendar').upsert(
@@ -295,7 +309,7 @@ export default function EditItem(): React.JSX.Element {
                             horse_uuid: horse_uuid,
                             calendar_date: newDate,
                             calendar_title: appt.title,
-                            calendar_notes: appt.notes || '',
+                            calendar_notes: newNotes,
                         },
                         {
                             onConflict: 'horse_uuid,calendar_title', // Resolves directly against the composite index
@@ -324,13 +338,7 @@ export default function EditItem(): React.JSX.Element {
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const excludedFields = new Set([...CALENDAR_FIELDS, 'user_uuid', 'horse_uuid', 'id']);
-        const vitalsPayload: Record<string, unknown> = {};
-
-        Object.keys(formData).forEach((key) => {
-            if (!excludedFields.has(key) && formData[key] !== originalData[key]) {
-                vitalsPayload[key] = formData[key] === '' ? null : formData[key];
-            }
-        });
+        const vitalsPayload = buildChangedHorsePayload(formData, originalData, excludedFields);
 
         try {
             if (Object.keys(vitalsPayload).length > 0) {

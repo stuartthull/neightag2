@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'; // 💳 Added useLocation
 import { supabase, supabaseAnonKey } from '../supabaseClient';
 import { LocalPrice } from '../components/local-price';
 import { formatGBDate } from '../utils/date-format';
+import { hasHorseCapacity } from '../utils/stable-capacity';
 
 type LogRecord = {
     id: number;
@@ -152,16 +153,13 @@ export default function Dashboard() {
         initializeDashboard();
     }, [sessionUserId, location.search]);
 
-    // 🗓️ Compute globally if the user has any active subscriptions
-    const hasAnyActiveSubscription = Object.values(activeSubscriptions).some(
-        (isActive) => isActive === true
-    );
-
-    // 🐴 Check if the user is locked out from adding more horses
-    const isHorseLimitReached = myLogs.length >= 1 && !hasAnyActiveSubscription;
-    const isMaxHorsesReached = myLogs.length >= 2;
+    const activeSubscriptionCount = Object.values(activeSubscriptions).filter(Boolean).length;
+    const hasAnyActiveSubscription = activeSubscriptionCount > 0;
+    const isHorseLimitReached = !hasHorseCapacity(myLogs.length, activeSubscriptionCount);
     // 🏷️ Get the ID of the first horse to link it directly to the purchase system
     const baseHorseId = myLogs[0]?.horse_uuid ?? '';
+    const unsubscribedHorseId =
+        myLogs.find((log) => !activeSubscriptions[log.horse_uuid])?.horse_uuid ?? baseHorseId;
 
     const handleManageBilling = async () => {
         if (!stripeCustomerId) {
@@ -638,28 +636,18 @@ export default function Dashboard() {
                         </section>
 
                         {/* ➕ CONDITIONAL ADD NEW HORSE UTILITY */}
-                        {isMaxHorsesReached ? (
-                            // 1. Hide the input completely when 2 or more horses exist
+                        {isHorseLimitReached ? (
                             <section className="section-container white-section-container no-print">
                                 <h2 className="textmedium marginbeight">🐴 Stable Limit Reached</h2>
-                                <p className="text-normal" style={{ color: '#64748b', margin: 0 }}>
-                                    You have reached the maximum allowance of 2 horse profiles.
-                                    Delete an existing horse if you wish to add a new one. Or add a subscription to your new horse.
-                                </p>
-                            </section>
-                        ) : isHorseLimitReached ? (
-                            // 2. Fall back to your subscription gate if they have 1 horse and no subscription
-                            <section className="section-container white-section-container no-print">
-                                <h2 className="textmedium marginbeight">🔒 Add a New Horse</h2>
                                 <p
                                     className="text-normal"
                                     style={{ color: '#64748b', marginBottom: '12px' }}
                                 >
-                                    Free accounts are limited to one horse profile. Subscribe to
-                                    unlock additional slots.
+                                    Your stable includes one horse without a subscription. Subscribe
+                                    to that horse to unlock another horse profile.
                                 </p>
                                 <a
-                                    href={`/activate-tag?id=${baseHorseId}`}
+                                    href={`/activate-tag?id=${unsubscribedHorseId}`}
                                     className="buttonOrange buttonMain"
                                     style={{
                                         textDecoration: 'none',
@@ -671,7 +659,6 @@ export default function Dashboard() {
                                 </a>
                             </section>
                         ) : (
-                            // 3. Show the interactive input field if they have 0 or 1 active horse matching requirements
                             <section className="section-container white-section-container no-print">
                                 <h2 className="textmedium marginbeight">Add a New Horse</h2>
                                 <form onSubmit={addHorse}>
