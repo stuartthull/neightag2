@@ -112,10 +112,12 @@ input:checked+.slider:before {
 
 .horsebox-field-group input,
 .horsebox-field-group textarea {
-    padding: 10px;
+    padding: 16px;
     border-radius: 6px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--primarycolor);
     font-family: inherit;
+    background: #fff;
+    color: var(--black);
 }
 
 .horsebox-form-section-title {
