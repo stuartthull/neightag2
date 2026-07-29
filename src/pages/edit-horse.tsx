@@ -154,6 +154,7 @@ export default function EditItem(): React.JSX.Element {
     const [isUploadingImage, setIsUploadingImage] = useState(false);
     const [imageUploadStatus, setImageUploadStatus] = useState('');
     const [currentUserId, setCurrentUserId] = useState<string>('');
+    const [loadedHorseUuid, setLoadedHorseUuid] = useState<string | null>(null);
     const [saveConfirmationId, setSaveConfirmationId] = useState<number | null>(null);
     const [dirtyFields, setDirtyFields] = useState<Set<string>>(() => new Set());
 
@@ -168,7 +169,17 @@ export default function EditItem(): React.JSX.Element {
     };
 
     useEffect(() => {
+        let isActive = true;
+
         const fetchCoreVitals = async () => {
+            setLoading(true);
+            setFormData({ ...INITIAL_FORM_DATA });
+            setOriginalData({ ...INITIAL_FORM_DATA });
+            setDirtyFields(new Set());
+            setSaveConfirmationId(null);
+            setCurrentUserId('');
+            setLoadedHorseUuid(null);
+
             if (!horse_uuid) {
                 console.error('No horse_uuid parameter identified in the current layout context.');
                 navigate('/dashboard');
@@ -178,6 +189,8 @@ export default function EditItem(): React.JSX.Element {
             const {
                 data: { user },
             } = await supabase.auth.getUser();
+            if (!isActive) return;
+
             if (!user) {
                 navigate('/login');
                 return;
@@ -193,6 +206,8 @@ export default function EditItem(): React.JSX.Element {
                 .eq('user_uuid', user.id)
                 .single();
 
+            if (!isActive) return;
+
             if (horseError) {
                 console.error('Error fetching core log payload:', horseError);
                 navigate('/dashboard');
@@ -205,6 +220,8 @@ export default function EditItem(): React.JSX.Element {
                 .select('calendar_title, calendar_date')
                 .eq('horse_uuid', horse_uuid)
                 .eq('user_uuid', user.id);
+
+            if (!isActive) return;
 
             if (calError) {
                 console.error('Error fetching calendar dates:', calError.message);
@@ -246,10 +263,15 @@ export default function EditItem(): React.JSX.Element {
             const loadedData = { ...INITIAL_FORM_DATA, ...safePayload };
             setFormData(loadedData);
             setOriginalData(loadedData);
+            setLoadedHorseUuid(horse_uuid);
             setLoading(false);
         };
 
         fetchCoreVitals();
+
+        return () => {
+            isActive = false;
+        };
     }, [horse_uuid, navigate]);
 
     useEffect(() => {
@@ -366,6 +388,12 @@ export default function EditItem(): React.JSX.Element {
 
     const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!horse_uuid || loadedHorseUuid !== horse_uuid) {
+            alert('This horse profile is still loading. Please wait and try again.');
+            return;
+        }
+
         const excludedFields = new Set([...CALENDAR_FIELDS, 'user_uuid', 'horse_uuid', 'id']);
         const vitalsPayload = buildChangedHorsePayload(formData, originalData, excludedFields);
 
