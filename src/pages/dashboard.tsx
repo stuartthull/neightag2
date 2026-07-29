@@ -27,6 +27,11 @@ type SubscriptionDetailsMap = {
     [horseUuid: string]: SubscriptionDetails;
 };
 
+type StripeCustomer = {
+    id: string;
+    horseNames: string[];
+};
+
 export default function Dashboard() {
     const [myLogs, setMyLogs] = useState<LogRecord[]>([]);
     const [horseName, setHorseName] = useState('');
@@ -38,8 +43,8 @@ export default function Dashboard() {
     const [deletingHorseUuid, setDeletingHorseUuid] = useState<string | null>(null);
     const [updatingPublicProfiles, setUpdatingPublicProfiles] = useState<SubscriptionMap>({});
 
-    // 💳 Dynamic Customer ID state for Stripe Portal integration
-    const [stripeCustomerId, setStripeCustomerId] = useState<string | null>(null);
+    // Older subscriptions may be split across more than one Stripe customer.
+    const [stripeCustomers, setStripeCustomers] = useState<StripeCustomer[]>([]);
 
     // 💳 Track if we are actively waiting for Stripe's webhook to finish updating
     const [isVerifyingPayment, setIsVerifyingPayment] = useState<boolean>(false);
@@ -81,10 +86,29 @@ export default function Dashboard() {
             if (subError) {
                 console.error('Error fetching subscriptions:', subError.message);
             } else if (subData && subData.length > 0) {
-                // Save the dynamic Customer identity row cleanly to state context
-                if (subData[0].stripe_customer_id) {
-                    setStripeCustomerId(subData[0].stripe_customer_id);
-                }
+                const horseNamesByUuid = new Map(
+                    logs.map((log) => [log.horse_uuid, log.horse_name])
+                );
+                const customersById = new Map<string, Set<string>>();
+
+                subData.forEach((sub) => {
+                    if (!sub.stripe_customer_id) return;
+
+                    const horseNames =
+                        customersById.get(sub.stripe_customer_id) ?? new Set<string>();
+                    const matchingHorseName = horseNamesByUuid.get(sub.horse_uuid);
+                    if (matchingHorseName) {
+                        horseNames.add(matchingHorseName);
+                    }
+                    customersById.set(sub.stripe_customer_id, horseNames);
+                });
+
+                setStripeCustomers(
+                    Array.from(customersById, ([id, horseNames]) => ({
+                        id,
+                        horseNames: Array.from(horseNames),
+                    }))
+                );
 
                 const subMap: SubscriptionMap = {};
                 const detailsMap: SubscriptionDetailsMap = {};
@@ -109,6 +133,7 @@ export default function Dashboard() {
         // If we got here, no active subscriptions were found
         setActiveSubscriptions({});
         setSubscriptionDetails({});
+        setStripeCustomers([]);
         return false;
     };
 
@@ -161,7 +186,7 @@ export default function Dashboard() {
     const unsubscribedHorseId =
         myLogs.find((log) => !activeSubscriptions[log.horse_uuid])?.horse_uuid ?? baseHorseId;
 
-    const handleManageBilling = async () => {
+    const handleManageBilling = async (stripeCustomerId: string) => {
         if (!stripeCustomerId) {
             alert("We couldn't find an active subscription profile link for your account yet.");
             return;
@@ -175,6 +200,10 @@ export default function Dashboard() {
                 data: { session },
             } = await supabase.auth.getSession();
 
+            if (!session?.access_token) {
+                throw new Error('Your session has expired. Please sign in again.');
+            }
+
             const functionUrl = isLocalhost
                 ? 'http://127.0.0.1:54321/functions/v1/create-portal-session'
                 : 'https://vjyvikuyuzkmyrtcuznc.supabase.co/functions/v1/create-portal-session';
@@ -184,9 +213,7 @@ export default function Dashboard() {
                 headers: {
                     'Content-Type': 'application/json',
                     apikey: supabaseAnonKey,
-                    ...(session?.access_token
-                        ? { Authorization: `Bearer ${session.access_token}` }
-                        : {}),
+                    Authorization: `Bearer ${session.access_token}`,
                 },
                 body: JSON.stringify({ customerId: stripeCustomerId }),
             });
@@ -396,9 +423,7 @@ export default function Dashboard() {
                                                     </div>
                                                 </div>
                                                 {isSubbed && (
-                                                    <div
-                                                        className="big-switch white-section-container section-container marginbtwenfour"
-                                                    >
+                                                    <div className="big-switch white-section-container section-container marginbtwenfour">
                                                         <div>
                                                             <div className="text-normal">
                                                                 <strong>
@@ -616,17 +641,20 @@ export default function Dashboard() {
                                         {!hasAnyActiveSubscription && '🔒'}
                                     </Link>
                                 </li>
-                                {stripeCustomerId && (
-                                    <li className="marginbtwenfour">
+                                {stripeCustomers.map((stripeCustomer) => (
+                                    <li className="marginbtwenfour" key={stripeCustomer.id}>
                                         <button
                                             type="button"
-                                            onClick={handleManageBilling}
+                                            onClick={() => handleManageBilling(stripeCustomer.id)}
                                             className="buttonLink buttonWhite"
                                         >
                                             Manage Billing & Cancellations
+                                            {stripeCustomer.horseNames.length > 0
+                                                ? ` (${stripeCustomer.horseNames.join(', ')})`
+                                                : ''}
                                         </button>
                                     </li>
-                                )}
+                                ))}
                                 <li className="marginbtwenfour">
                                     <Link to="/add-bookmark" className="buttonLink">
                                         Add a bookmark to your phones home screen.
