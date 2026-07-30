@@ -2,26 +2,81 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { LocalPrice } from '../components/local-price';
 import { supabase, supabaseAnonKey } from '../supabaseClient';
+import CreditCards from '../assets/credit-cards.jpg';
 
 export default function BuyTag(): React.JSX.Element {
     const [searchParams] = useSearchParams();
     const horseId = searchParams.get('id') || '';
     const [loading, setLoading] = useState<boolean>(false);
+    const [checkingOwnership, setCheckingOwnership] = useState<boolean>(true);
+    const [ownsHorse, setOwnsHorse] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [userId, setUserId] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchSessionUser = async () => {
+        let isActive = true;
+
+        const verifyHorseOwnership = async () => {
+            setCheckingOwnership(true);
+            setOwnsHorse(false);
+            setUserId(null);
+            setError(null);
+
+            if (!horseId) {
+                setError('Missing horse configuration parameter.');
+                setCheckingOwnership(false);
+                return;
+            }
+
             const {
                 data: { user },
+                error: userError,
             } = await supabase.auth.getUser();
-            if (user) {
-                setUserId(user.id);
+
+            if (!isActive) return;
+
+            if (userError) {
+                console.error('Unable to verify the signed-in user:', userError.message);
+                setError('We could not verify your account. Please refresh and try again.');
+                setCheckingOwnership(false);
+                return;
             }
+
+            if (!user) {
+                setError('You must be logged in to activate a live tag subscription.');
+                setCheckingOwnership(false);
+                return;
+            }
+
+            setUserId(user.id);
+
+            const { data: horse, error: horseError } = await supabase
+                .from('equi_log_main')
+                .select('horse_uuid')
+                .eq('horse_uuid', horseId)
+                .eq('user_uuid', user.id)
+                .maybeSingle();
+
+            if (!isActive) return;
+
+            if (horseError) {
+                console.error('Unable to verify horse ownership:', horseError.message);
+                setError('We could not verify this horse. Please refresh and try again.');
+            } else if (!horse) {
+                setError('This horse does not belong to your account.');
+            } else {
+                setOwnsHorse(true);
+            }
+
+            setCheckingOwnership(false);
         };
 
-        fetchSessionUser();
-    }, []);
+        verifyHorseOwnership();
+
+        return () => {
+            isActive = false;
+        };
+    }, [horseId]);
 
     const handleCheckout = async () => {
         if (!horseId) {
@@ -31,6 +86,11 @@ export default function BuyTag(): React.JSX.Element {
 
         if (!userId) {
             setError('You must be logged in to activate a live tag subscription.');
+            return;
+        }
+
+        if (!ownsHorse) {
+            setError('This horse does not belong to your account.');
             return;
         }
 
@@ -114,33 +174,32 @@ export default function BuyTag(): React.JSX.Element {
                         ❌ {error}
                     </p>
                 )}
+                {!error && (
+                    <button
+                        onClick={handleCheckout}
+                        disabled={loading || checkingOwnership || !ownsHorse}
+                        className="buttonMain buttonOrange marginbsixteen"
+                    >
+                        {checkingOwnership ? (
+                            'Checking horse...'
+                        ) : loading ? (
+                            'Opening Secure Portal...'
+                        ) : (
+                            <>
+                                Subscribe for <LocalPrice basePriceGbp={11} /> a year
+                            </>
+                        )}
+                    </button>
+                )}
 
-                <button
-                    onClick={handleCheckout}
-                    disabled={loading || !horseId}
-                    style={{
-                        width: '100%',
-                        padding: '14px',
-                        background: '#000000',
-                        color: '#ffffff',
-                        border: 'none',
-                        borderRadius: '8px',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        cursor: loading ? 'not-allowed' : 'pointer',
-                        opacity: loading ? 0.6 : 1,
-                        transition: 'background 0.2s',
-                        marginTop: '24px',
-                    }}
-                >
-                    {loading ? (
-                        'Opening Secure Portal...'
-                    ) : (
-                        <>
-                            Subscribe for <LocalPrice basePriceGbp={11} /> a year
-                        </>
-                    )}
-                </button>
+                <p className="text-small shop-checkout-note">Secure Stripe Checkout.</p>
+                <div>
+                    <img
+                        src={CreditCards}
+                        alt="Accepted credit cards"
+                        className="shop-credit-cards"
+                    />
+                </div>
             </div>
         </div>
     );

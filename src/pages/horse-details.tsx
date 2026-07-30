@@ -206,11 +206,11 @@ function HorseDetails() {
             `}</style>
 
             <div className="page-container horse-page-container">
-                <section className="section-container purple-section-container horse-hero-section">
+                <section className="purple-section-container horse-hero-section">
                     {horse.horse_image_url ? (
                         <div className="horse-profile-image-wrapper">
                             {shouldShow('show_name') && (
-                                <h1 className="horse-details-title-main textbig marginbeight">
+                                <h1 className="horse-details-title-main marginbeight">
                                     <strong>{horse.horse_name}'s</strong> Record
                                 </h1>
                             )}
@@ -226,6 +226,14 @@ function HorseDetails() {
                         </div>
                     )}
                 </section>
+                {isUserOwner && (
+                    <div className="alert-banner-warning">
+                        <p className="text-normal marginbsixteen">
+                            You are seeing this page exactly as it appears to the public based on
+                            your privacy settings.
+                        </p>
+                    </div>
+                )}
 
                 <section className="tab-container horse-details-header">
                     <div
@@ -274,23 +282,6 @@ function HorseDetails() {
                         </button>
                     </div>
                 </section>
-
-                {isUserOwner && (
-                    <div className="alert-banner-warning">
-                        <p className="text-normal marginbsixteen">
-                            👀 <strong>Owner Preview:</strong> <br />
-                            You are seeing this page exactly as it appears to the public based on
-                            your privacy settings.
-                        </p>
-                        <button
-                            type="button"
-                            onClick={() => navigate('/dashboard')}
-                            className="buttonWhite buttonSmall marginbsixteen"
-                        >
-                            ← Back to Your Stable
-                        </button>
-                    </div>
-                )}
 
                 {/* TAB 1: EMERGENCY AND VET DETAILS */}
                 <div

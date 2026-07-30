@@ -624,8 +624,8 @@ export default function Dashboard() {
                                         }
                                         className="buttonLink"
                                     >
-                                        View your stable calendar&nbsp;&nbsp;
-                                        {!hasAnyActiveSubscription && '🔒'}
+                                        View your stable calendar
+                                        {!hasAnyActiveSubscription && '\u00A0\u00A0🔒'}
                                     </Link>
                                 </li>
                                 <li className="marginbtwenfour">
@@ -637,8 +637,8 @@ export default function Dashboard() {
                                         }
                                         className="buttonLink"
                                     >
-                                        View your horsebox details&nbsp;&nbsp;
-                                        {!hasAnyActiveSubscription && '🔒'}
+                                        View your horsebox details
+                                        {!hasAnyActiveSubscription && '\u00A0\u00A0🔒'}
                                     </Link>
                                 </li>
                                 {stripeCustomers.map((stripeCustomer) => (
