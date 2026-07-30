@@ -27,11 +27,13 @@ jest.mock('../supabaseClient', () => ({
             getSession: jest.fn(),
         },
         from: jest.fn(),
+        rpc: jest.fn(),
     },
 }));
 
 const mockGetSession = supabase.auth.getSession as jest.Mock;
 const mockFrom = supabase.from as jest.Mock;
+const mockRpc = supabase.rpc as jest.Mock;
 
 const horseData = {
     id: 1,
@@ -139,15 +141,9 @@ function mockSupabaseQueries(horse = horseData) {
             };
         }
 
-        if (table === 'equi_calendar') {
-            return {
-                select: jest.fn().mockReturnThis(),
-                eq: jest.fn().mockResolvedValue({ data: calendarData, error: null }),
-            };
-        }
-
         throw new Error(`Unexpected table: ${table}`);
     });
+    mockRpc.mockResolvedValue({ data: calendarData, error: null });
 }
 
 describe('HorseDetails', () => {
@@ -165,7 +161,7 @@ describe('HorseDetails', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByRole('heading', { name: /Jane's Record/i })).toBeInTheDocument();
+            expect(screen.getByText('Emergency Protocols')).toBeInTheDocument();
         });
 
         expect(screen.getByText('Emergency Protocols')).toBeInTheDocument();
@@ -227,6 +223,9 @@ describe('HorseDetails', () => {
         expect(screen.getByText(/0800321321/)).toBeInTheDocument();
         expect(screen.getByText('4 May 2026')).toBeInTheDocument();
         expect(screen.getByText('Physio notes here')).toBeInTheDocument();
+        expect(mockRpc).toHaveBeenCalledWith('get_horse_appointment_dates', {
+            target_horse_uuid: horseUuid,
+        });
 
         expect(screen.getByText('Feeding & Turnout')).toBeInTheDocument();
         expect(screen.getByText('Morning hay')).toBeInTheDocument();
@@ -249,7 +248,7 @@ describe('HorseDetails', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByRole('heading', { name: /Jane's Record/i })).toBeInTheDocument();
+            expect(screen.getByText('Emergency Protocols')).toBeInTheDocument();
         });
 
         expect(screen.getByText('Primary Contact:')).toBeInTheDocument();

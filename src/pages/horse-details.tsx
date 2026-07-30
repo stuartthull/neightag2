@@ -81,10 +81,10 @@ function HorseDetails() {
                     console.error('Error reading privacy configurations:', privacyError.message);
                 }
 
-                const { data: calendarData, error: calendarError } = await supabase
-                    .from('equi_calendar')
-                    .select('calendar_title, calendar_date, calendar_notes')
-                    .eq('horse_uuid', horse_uuid);
+                const { data: calendarData, error: calendarError } = await supabase.rpc(
+                    'get_horse_appointment_dates',
+                    { target_horse_uuid: horse_uuid }
+                );
 
                 const scheduleLookups: Record<string, string> = {};
 
