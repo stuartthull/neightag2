@@ -4,12 +4,13 @@ import Login from './login';
 import { supabase } from '../supabaseClient';
 
 const mockNavigate = jest.fn();
+let mockSearchParams = new URLSearchParams('mode=signup');
 
 jest.mock(
     'react-router-dom',
     () => ({
         useNavigate: () => mockNavigate,
-        useSearchParams: () => [new URLSearchParams('mode=signup')],
+        useSearchParams: () => [mockSearchParams],
     }),
     { virtual: true }
 );
@@ -33,6 +34,7 @@ const mockSignUp = supabase.auth.signUp as jest.Mock;
 describe('Login signup', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        mockSearchParams = new URLSearchParams('mode=signup');
     });
 
     it('shows an error and does not sign up when the email is already registered', async () => {
@@ -81,5 +83,36 @@ describe('Login signup', () => {
         await waitFor(() => {
             expect(screen.getByText(/please check your inbox/i)).toBeInTheDocument();
         });
+    });
+});
+
+describe('Forgotten password', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+        mockSearchParams = new URLSearchParams();
+    });
+
+    it('shows an email-only form and sends a reset link', async () => {
+        const mockResetPassword = supabase.auth.resetPasswordForEmail as jest.Mock;
+        mockResetPassword.mockResolvedValue({ error: null });
+
+        render(<Login />);
+
+        fireEvent.click(screen.getByRole('button', { name: 'Forgot your password?' }));
+
+        expect(screen.queryByLabelText('Password')).not.toBeInTheDocument();
+        expect(screen.getByLabelText('Email address')).toBeInTheDocument();
+
+        fireEvent.change(screen.getByLabelText('Email address'), {
+            target: { value: 'User@Example.com ' },
+        });
+        fireEvent.click(screen.getByRole('button', { name: 'Send Reset Link' }));
+
+        await waitFor(() => {
+            expect(mockResetPassword).toHaveBeenCalledWith('user@example.com', {
+                redirectTo: 'https://www.neightag.com/update-password',
+            });
+        });
+        expect(await screen.findByText(/secure password reset link/i)).toBeInTheDocument();
     });
 });

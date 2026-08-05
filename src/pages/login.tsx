@@ -10,6 +10,7 @@ export default function Login(): React.JSX.Element {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [isSignUp, setIsSignUp] = useState<boolean>(false);
+    const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
 
     // New states to handle inline messages and styling variables
     const [message, setMessage] = useState<string>('');
@@ -34,6 +35,22 @@ export default function Login(): React.JSX.Element {
         setIsError(false);
 
         try {
+            if (isForgotPassword) {
+                const normalizedEmail = email.trim().toLowerCase();
+                const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
+                    redirectTo: 'https://www.neightag.com/update-password',
+                });
+
+                if (error) {
+                    setIsError(true);
+                    setMessage(`Error: ${error.message}`);
+                    return;
+                }
+
+                setMessage('Check your inbox! A secure password reset link has been dispatched.');
+                return;
+            }
+
             if (isSignUp) {
                 const normalizedEmail = email.trim().toLowerCase();
                 const { data: availability, error: availabilityError } = await supabase.functions.invoke<{
@@ -95,27 +112,10 @@ export default function Login(): React.JSX.Element {
         }
     };
 
-    const handleForgotPassword = async (email: string) => {
+    const showLoginMode = () => {
+        setIsForgotPassword(false);
         setMessage('');
         setIsError(false);
-
-        if (!email) {
-            setIsError(true);
-            setMessage("Please enter your email address first so we can send a reset link.");
-            return;
-        }
-
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'https://www.neightag.com/update-password',
-        });
-
-        if (error) {
-            setIsError(true);
-            setMessage(`Error: ${error.message}`);
-        } else {
-            setIsError(false);
-            setMessage("Check your inbox! A secure password reset link has been dispatched.");
-        }
     };
 
     return (
@@ -123,9 +123,9 @@ export default function Login(): React.JSX.Element {
             <main className="container">
                 <div className="page-container">
                     <section className="section-container white-section-container">
-                        <h2 className="textbig text-purple">{isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
+                        <h2 className="textbig text-purple">{isForgotPassword ? 'Reset Password' : isSignUp ? 'Create Account' : 'Welcome Back'}</h2>
                         <p className="text-normal marginbsixteen">
-                            {isSignUp ? 'Sign up to start managing your data' : 'Login to see your stable dashboard'}
+                            {isForgotPassword ? 'Enter your email address to receive a password reset link' : isSignUp ? 'Sign up to start managing your data' : 'Login to see your stable dashboard'}
                         </p>
 
                         {/* ✅ INLINE MESSAGE DISPLAY BLOCK */}
@@ -158,47 +158,62 @@ export default function Login(): React.JSX.Element {
                                 />
                             </div>
 
-                            <div className="marginbsixteen">
-                                <label className="labelForm labelFormIntense" htmlFor="password">Password</label>
-                                <input
-                                    id="password"
-                                    className="inputText"
-                                    type="password"
-                                    placeholder="Password"
-                                    value={password}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
+                            {!isForgotPassword && (
+                                <div className="marginbsixteen">
+                                    <label className="labelForm labelFormIntense" htmlFor="password">Password</label>
+                                    <input
+                                        id="password"
+                                        className="inputText"
+                                        type="password"
+                                        placeholder="Password"
+                                        value={password}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                                        required
+                                    />
+                                </div>
+                            )}
 
                             <button type="submit" disabled={loading} className="buttonMain buttonPurple">
-                                {loading ? 'Processing...' : isSignUp ? 'Sign Up' : 'Login'}
+                                {loading ? 'Processing...' : isForgotPassword ? 'Send Reset Link' : isSignUp ? 'Sign Up' : 'Login'}
                             </button>
                         </form>
 
-                        <button
-                            className="buttonaslinker"
-                            onClick={() => {
-                                const nextMode = !isSignUp;
-                                setIsSignUp(nextMode);
-                                if (nextMode) {
-                                    navigate('/login?mode=signup', { replace: true });
-                                } else {
-                                    navigate('/login', { replace: true });
-                                }
-                            }}
-                        >
-                            {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
-                        </button>
-                        <br /><br />
-                        <button
-                            type="button"
-                            className="buttonaslinker"
-                            onClick={() => handleForgotPassword(email)}
-                        >
-                            Forgot your password?
-                        </button>
-
+                        {isForgotPassword ? (
+                            <button type="button" className="buttonaslinker" onClick={showLoginMode}>
+                                Back to login
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    className="buttonaslinker"
+                                    onClick={() => {
+                                        const nextMode = !isSignUp;
+                                        setIsSignUp(nextMode);
+                                        if (nextMode) {
+                                            navigate('/login?mode=signup', { replace: true });
+                                        } else {
+                                            navigate('/login', { replace: true });
+                                        }
+                                    }}
+                                >
+                                    {isSignUp ? 'Already have an account? Login' : 'Need an account? Sign Up'}
+                                </button>
+                                <br /><br />
+                                {!isSignUp && (
+                                    <button
+                                        type="button"
+                                        className="buttonaslinker"
+                                        onClick={() => {
+                                            setIsForgotPassword(true);
+                                            setMessage('');
+                                            setIsError(false);
+                                        }}
+                                    >
+                                        Forgot your password?
+                                    </button>
+                                )}
+                            </>
+                        )}
                     </section>
                 </div>
             </main>

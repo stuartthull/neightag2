@@ -12,6 +12,7 @@ import Calendar from '../assets/calendar.jpg';
 import Janeone from '../assets/jane1.jpg';
 import Homescreen from '../assets/home-screen.jpg';
 import { LocalPrice } from '../components/local-price';
+// import { StaticGoogleReviews } from '../components/google-reviews';
 
 interface QuickEvent {
     id: number;
@@ -449,6 +450,11 @@ function Home(): React.JSX.Element {
 
                     <Link to="/add-bookmark">Add a bookmark to your phones home screen.</Link>
                 </div>
+
+                {/*<div className="section-container white-section-container full-width">*/}
+                {/*    <h4 className="textmedium">Customer Feedback</h4>*/}
+                {/*    <StaticGoogleReviews />*/}
+                {/*</div>*/}
             </div>
         </main>
     );
