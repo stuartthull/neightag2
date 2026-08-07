@@ -231,6 +231,60 @@ const sendSubscriptionConfirmation = async (
     });
 };
 
+const getSubscriptionData = (subscription: Stripe.Subscription) => ({
+    stripe_customer_id: subscription.customer,
+    stripe_subscription_id: subscription.id,
+    stripe_price_id: subscription.items.data[0]?.price?.id,
+    status: subscription.status,
+    current_period_end:
+        subscription.current_period_end && !isNaN(Number(subscription.current_period_end))
+            ? new Date(Number(subscription.current_period_end) * 1000).toISOString()
+            : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
+    updated_at: new Date().toISOString(),
+});
+
+const syncSubscription = async (subscription: Stripe.Subscription): Promise<void> => {
+    const { user_uuid, horse_uuid } = subscription.metadata || {};
+    const subscriptionData = getSubscriptionData(subscription);
+
+    if (user_uuid && horse_uuid) {
+        const { error } = await supabaseAdmin.from('equi_subscriptions').upsert(
+            {
+                user_uuid,
+                horse_uuid,
+                ...subscriptionData,
+            },
+            { onConflict: 'horse_uuid' }
+        );
+
+        if (error) throw error;
+        console.log(`Successfully updated subscription status for horse: ${horse_uuid}`);
+        return;
+    }
+
+    const { data, error } = await supabaseAdmin
+        .from('equi_subscriptions')
+        .update(subscriptionData)
+        .eq('stripe_subscription_id', subscription.id)
+        .select('id');
+
+    if (error) throw error;
+
+    if (data?.length) {
+        console.log(`Successfully updated subscription: ${subscription.id}`);
+    } else {
+        console.warn(`No database record found for subscription: ${subscription.id}`);
+    }
+};
+
+const getInvoiceSubscriptionId = (invoice: Stripe.Invoice): string | null => {
+    if (typeof invoice.subscription === 'string') {
+        return invoice.subscription;
+    }
+
+    return invoice.subscription?.id || null;
+};
+
 serve(async (req) => {
     const signature = req.headers.get('stripe-signature');
 
@@ -256,36 +310,21 @@ serve(async (req) => {
             event.type === 'customer.subscription.updated'
         ) {
             const subscription = event.data.object;
+            await syncSubscription(subscription);
+        }
 
-            // Pull the metadata we attached back in Step A
-            const { user_uuid, horse_uuid } = subscription.metadata;
+        if (event.type === 'invoice.paid' || event.type === 'invoice.payment_failed') {
+            const invoice = event.data.object;
+            const subscriptionId = getInvoiceSubscriptionId(invoice);
 
-            if (user_uuid && horse_uuid) {
-                const subscriptionData = {
-                    user_uuid: user_uuid,
-                    horse_uuid: horse_uuid,
-                    stripe_customer_id: subscription.customer,
-                    stripe_subscription_id: subscription.id,
-                    stripe_price_id: subscription.items.data[0]?.price?.id,
-                    status: subscription.status,
-
-                    // 🔑 REPLACE CURRENT_PERIOD_END WITH THIS ROBUST PARSER:
-                    current_period_end:
-                        subscription.current_period_end &&
-                        !isNaN(Number(subscription.current_period_end))
-                            ? new Date(Number(subscription.current_period_end) * 1000).toISOString()
-                            : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(), // fallback to 1 year from now if empty/malformed
-
-                    updated_at: new Date().toISOString(),
-                };
-
-                // Upsert into your equi_subscriptions table
-                const { error } = await supabaseAdmin
-                    .from('equi_subscriptions')
-                    .upsert(subscriptionData, { onConflict: 'horse_uuid' });
-
-                if (error) throw error;
-                console.log(`Successfully updated subscription status for horse: ${horse_uuid}`);
+            if (subscriptionId) {
+                const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+                await syncSubscription(subscription);
+                console.log(
+                    `Processed ${event.type} for subscription ${subscriptionId} with status ${subscription.status}`
+                );
+            } else {
+                console.warn(`Ignoring ${event.type} without a subscription ID: ${invoice.id}`);
             }
         }
 
