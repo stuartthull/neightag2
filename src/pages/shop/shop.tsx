@@ -1,6 +1,5 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from 'react-router-dom';
 import '../../css/shop.css';
 import { SHOP_PRODUCTS } from './shop-products';
 
