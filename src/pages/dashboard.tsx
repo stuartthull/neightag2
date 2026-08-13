@@ -268,6 +268,26 @@ export default function Dashboard() {
     const handleDeleteHorseComplete = async (horseUuid: string, userId: string) => {
         setDeletingHorseUuid(horseUuid);
 
+        const { data: activeSubscription, error: subscriptionError } = await supabase
+            .from('equi_subscriptions')
+            .select('id')
+            .eq('horse_uuid', horseUuid)
+            .eq('user_uuid', userId)
+            .eq('status', 'active')
+            .maybeSingle();
+
+        if (subscriptionError) {
+            setDeletingHorseUuid(null);
+            alert(`Could not verify the subscription: ${subscriptionError.message}`);
+            return;
+        }
+
+        if (activeSubscription) {
+            setDeletingHorseUuid(null);
+            alert('Cancel the active subscription before deleting this horse.');
+            return;
+        }
+
         const { error } = await supabase
             .from('equi_log_main')
             .delete()
@@ -717,12 +737,36 @@ export default function Dashboard() {
                                     const isConfirmingDelete =
                                         pendingDeleteHorseUuid === log.horse_uuid;
                                     const isDeleting = deletingHorseUuid === log.horse_uuid;
+                                    const hasActiveSubscription =
+                                        activeSubscriptions[log.horse_uuid] === true;
 
                                     return (
                                         <div
                                             key={`manage-${log.id}`}
                                             className="dashboard-delete-horse"
                                         >
+                                            <div className="dashboard-horse-heading">
+                                                {log.horse_image_url && (
+                                                    <img
+                                                        src={log.horse_image_url}
+                                                        alt=""
+                                                        className="dashboard-horse-avatar"
+                                                    />
+                                                )}
+                                                <h4 className="dashboard-horse-name">
+                                                    {log.horse_name}
+                                                </h4>
+                                            </div>
+                                            {hasActiveSubscription && (
+                                                <p
+                                                    className="text-normal marginbsixteen"
+                                                    role="status"
+                                                >
+                                                    You can delete your horse once your subscription
+                                                    has completed.
+                                                </p>
+                                            )}
+
                                             {isConfirmingDelete ? (
                                                 <div
                                                     className="dashboard-delete-confirmation"
@@ -761,6 +805,8 @@ export default function Dashboard() {
                                                                 : `Permanently delete ${log.horse_name}`}
                                                         </button>
                                                     </div>
+
+                                                    <hr />
                                                 </div>
                                             ) : (
                                                 <button
@@ -774,10 +820,14 @@ export default function Dashboard() {
                                                     onClick={() =>
                                                         setPendingDeleteHorseUuid(log.horse_uuid)
                                                     }
+                                                    disabled={hasActiveSubscription}
                                                 >
-                                                    Delete {log.horse_name}
+                                                    {hasActiveSubscription
+                                                        ? `Cannot delete while subscription is active, check your end date.`
+                                                        : `Delete ${log.horse_name}`}
                                                 </button>
                                             )}
+                                            <hr />
                                         </div>
                                     );
                                 })}
