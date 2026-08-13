@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '../../supabaseClient';
 import '../../css/shop.css';
-import CreditCards from '../../assets/credit-cards.jpg';
 import { ProductId, SHOP_PRODUCTS } from './shop-products';
 
 interface CheckoutResponse {
@@ -12,34 +11,6 @@ interface CheckoutResponse {
 
 export default function Shop(): React.JSX.Element {
     const [searchParams] = useSearchParams();
-    const [loadingProduct, setLoadingProduct] = useState<ProductId | null>(null);
-    const [error, setError] = useState<string | null>(null);
-    const paymentStatus = searchParams.get('payment');
-
-    const handleCheckout = async (productId: ProductId): Promise<void> => {
-        setLoadingProduct(productId);
-        setError(null);
-
-        const { data, error: checkoutError } = await supabase.functions.invoke<CheckoutResponse>(
-            'create-product-checkout',
-            { body: { productId } }
-        );
-
-        if (checkoutError) {
-            setError(checkoutError.message || 'Unable to open Stripe Checkout.');
-            setLoadingProduct(null);
-            return;
-        }
-
-        if (!data?.url) {
-            setError('Stripe did not return a checkout link. Please try again.');
-            setLoadingProduct(null);
-            return;
-        }
-
-        window.location.assign(data.url);
-    };
-
     return (
         <main className="page-wrapper">
             <Helmet>
