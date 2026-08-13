@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import Shop from './shop';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 jest.mock(
     'react-router-dom',
@@ -12,7 +12,7 @@ jest.mock(
     { virtual: true }
 );
 
-jest.mock('../supabaseClient', () => ({
+jest.mock('../../supabaseClient', () => ({
     supabase: {
         functions: {
             invoke: jest.fn(),

@@ -17,6 +17,28 @@
     min-width: 0;
 }
 
+.shop-product-link {
+    display: block;
+}
+
+.shop-product-link:hover {
+    text-decoration: none;
+}
+
+.shop-details-link {
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.shop-back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+.shop-product-page {
+    margin-bottom: 0;
+}
+
 .shop-eyebrow {
     margin: 0 0 8px;
     color: #64748b;
