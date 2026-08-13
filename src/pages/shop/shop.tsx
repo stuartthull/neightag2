@@ -18,22 +18,6 @@ export default function Shop(): React.JSX.Element {
             <div className="page-container">
                 <section className="section-container white-section-container no-print">
                     <h1 className="textbig marginbsixteen">Shop NeighTag</h1>
-                    {paymentStatus === 'success' && (
-                        <p className="shop-status shop-status-success" role="status">
-                            Thank you for your order. Your payment was successful.
-                        </p>
-                    )}
-                    {paymentStatus === 'cancelled' && (
-                        <p className="shop-status shop-status-cancelled" role="status">
-                            Your checkout was cancelled and you have not been charged.
-                        </p>
-                    )}
-                    {error && (
-                        <p className="shop-error" role="alert">
-                            {error}
-                        </p>
-                    )}
-
                     {Object.values(SHOP_PRODUCTS).map((product) => (
                         <div
                             className="shop-product section-container white-section-container"
