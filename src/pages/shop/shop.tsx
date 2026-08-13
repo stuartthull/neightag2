@@ -1,16 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import { supabase } from '../../supabaseClient';
 import '../../css/shop.css';
-import { ProductId, SHOP_PRODUCTS } from './shop-products';
-
-interface CheckoutResponse {
-    url?: string;
-}
+import { SHOP_PRODUCTS } from './shop-products';
 
 export default function Shop(): React.JSX.Element {
-    const [searchParams] = useSearchParams();
     return (
         <main className="page-wrapper">
             <Helmet>
