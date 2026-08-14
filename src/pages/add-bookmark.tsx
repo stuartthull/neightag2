@@ -89,115 +89,120 @@ export default function AddBookmark(): React.JSX.Element {
                         className="tab-panel"
                         hidden={activeTab !== 'iphone'}
                     >
-                        <h2 className="textbig marginbsixteen">iPhone Home Screen</h2>
-                        <p className="text-medium marginbsixteen">
-                            You can add a website icon to your iPhone Home Screen for quick access.
-                        </p>
-                        <ol>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    Go to the Safari app{' '}
-                                    <img
-                                        src="/images/safari.png"
-                                        alt=""
-                                        height="30"
-                                        width="30"
-                                        className="bookmark-icon"
-                                    />{' '}
-                                    on your iPhone.
-                                </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    Go to the homepage of Neightag to add to your Home Screen.
-                                </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    Tap{' '}
-                                    <span className="NoBreak">
+                        <section className="tab-container-bookmark section-container white-section-container">
+                            <h2 className="textbig marginbsixteen">iPhone Home Screen</h2>
+                            <p className="text-medium marginbsixteen">
+                                You can add a website icon to your iPhone Home Screen for quick
+                                access.
+                            </p>
+                            <ol>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        Go to the Safari app{' '}
                                         <img
-                                            src="/images/threedots.png"
-                                            alt="the More button"
+                                            src="/images/safari.png"
+                                            alt=""
                                             height="30"
                                             width="30"
                                             className="bookmark-icon"
-                                        />
-                                        ,{' '}
-                                    </span>
-                                    then tap Share.
-                                </p>
-                                <p className="text-medium marginbsixteen">
-                                    If your Tabs layout is Bottom or Top, tap{' '}
-                                    <span className="NoBreak">
+                                        />{' '}
+                                        on your iPhone.
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        Go to the homepage of Neightag to add to your Home Screen.
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        Tap{' '}
+                                        <span className="NoBreak">
+                                            <img
+                                                src="/images/threedots.png"
+                                                alt="the More button"
+                                                height="30"
+                                                width="30"
+                                                className="bookmark-icon"
+                                            />
+                                            ,{' '}
+                                        </span>
+                                        then tap Share.
+                                    </p>
+                                    <p className="text-medium marginbsixteen">
+                                        If your Tabs layout is Bottom or Top, tap{' '}
+                                        <span className="NoBreak">
+                                            <img
+                                                src="/images/share.png"
+                                                alt="the Share button"
+                                                height="30"
+                                                width="25"
+                                                className="bookmark-icon"
+                                            />
+                                            .
+                                        </span>
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        Scroll down the list of options, then tap Add to Home
+                                        Screen.
+                                    </p>
+                                    <p className="text-medium marginbsixteen">
+                                        If you don’t see Add to Home Screen, you can add it. Scroll
+                                        down to the bottom of the list, tap Edit&nbsp;Actions, then
+                                        tap{' '}
                                         <img
-                                            src="/images/share.png"
-                                            alt="the Share button"
+                                            src="/images/plus.png"
+                                            alt=""
                                             height="30"
-                                            width="25"
+                                            width="30"
                                             className="bookmark-icon"
-                                        />
+                                        />{' '}
+                                        Add to Home Screen.
+                                    </p>
+                                    <p className="text-medium marginbsixteen">
+                                        You can choose Open as Web App to use the website as if it’s
+                                        an app. See{' '}
+                                        <a
+                                            href="https://support.apple.com/en-gb/guide/iphone/open-as-web-app-iphea86e5236/26/ios/26"
+                                            className="xRef AppleTopic"
+                                        >
+                                            Turn a website into an app
+                                        </a>
                                         .
-                                    </span>
-                                </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    Scroll down the list of options, then tap Add to Home Screen.
-                                </p>
-                                <p className="text-medium marginbsixteen">
-                                    If you don’t see Add to Home Screen, you can add it. Scroll down
-                                    to the bottom of the list, tap Edit&nbsp;Actions, then tap{' '}
-                                    <img
-                                        src="/images/plus.png"
-                                        alt=""
-                                        height="30"
-                                        width="30"
-                                        className="bookmark-icon"
-                                    />{' '}
-                                    Add to Home Screen.
-                                </p>
-                                <p className="text-medium marginbsixteen">
-                                    You can choose Open as Web App to use the website as if it’s an
-                                    app. See{' '}
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p>Tap Add.</p>
+                                </li>
+                            </ol>
+                            <p className="text-medium marginbsixteen">
+                                The icon appears only on the device where you add it.
+                            </p>
+                            <figure className="marginbsixteen">
+                                <img
+                                    src="/images/iphone.png"
+                                    alt="In Safari, the Share button on a website has been tapped, displaying a list of options, including Add to Home Screen."
+                                    height="504"
+                                    width="281"
+                                />
+                            </figure>
+                            <div className="Alert">
+                                <p className="Note">
+                                    <em>Note: </em>Some websites may ask for permission to send you
+                                    notifications. You can change your notification settings at any
+                                    time. See{' '}
                                     <a
-                                        href="https://support.apple.com/en-gb/guide/iphone/open-as-web-app-iphea86e5236/26/ios/26"
+                                        href="https://support.apple.com/en-gb/guide/iphone/change-notification-settings-iph7c3d96bab/26/ios/26"
                                         className="xRef AppleTopic"
                                     >
-                                        Turn a website into an app
+                                        Change notification settings
                                     </a>
                                     .
                                 </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p>Tap Add.</p>
-                            </li>
-                        </ol>
-                        <p className="text-medium marginbsixteen">
-                            The icon appears only on the device where you add it.
-                        </p>
-                        <figure className="marginbsixteen">
-                            <img
-                                src="/images/iphone.png"
-                                alt="In Safari, the Share button on a website has been tapped, displaying a list of options, including Add to Home Screen."
-                                height="504"
-                                width="281"
-                            />
-                        </figure>
-                        <div className="Alert">
-                            <p className="Note">
-                                <em>Note: </em>Some websites may ask for permission to send you
-                                notifications. You can change your notification settings at any
-                                time. See{' '}
-                                <a
-                                    href="https://support.apple.com/en-gb/guide/iphone/change-notification-settings-iph7c3d96bab/26/ios/26"
-                                    className="xRef AppleTopic"
-                                >
-                                    Change notification settings
-                                </a>
-                                .
-                            </p>
-                        </div>
+                            </div>
+                        </section>
                     </div>
 
                     <div
@@ -207,64 +212,66 @@ export default function AddBookmark(): React.JSX.Element {
                         className="tab-panel"
                         hidden={activeTab !== 'android'}
                     >
-                        <h2 className="textbig marginbsixteen">Android Home Screen</h2>
-                        <p className="text-medium marginbsixteen">
-                            You can create shortcuts to websites on your device’s homepage.
-                        </p>
-                        <p className="text-medium marginbsixteen">
-                            On your Android device, open Chrome Chrome.
-                            <img
-                                src="/images/chrome.png"
-                                alt="the More button"
-                                height="30"
-                                width="30"
-                                className="bookmark-icon"
-                            />
-                        </p>
-                        <ol>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    Go to the homepage of Neightag to create a shortcut.
-                                </p>
-                            </li>
+                        <section className="tab-container-bookmark section-container white-section-container">
+                            <h2 className="textbig marginbsixteen">Android Home Screen</h2>
+                            <p className="text-medium marginbsixteen">
+                                You can create shortcuts to websites on your device’s homepage.
+                            </p>
+                            <p className="text-medium marginbsixteen">
+                                On your Android device, open Chrome Chrome.
+                                <img
+                                    src="/images/chrome.png"
+                                    alt="the More button"
+                                    height="30"
+                                    width="30"
+                                    className="bookmark-icon"
+                                />
+                            </p>
+                            <ol>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        Go to the homepage of Neightag to create a shortcut.
+                                    </p>
+                                </li>
 
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    To the right of the address bar, tap More{' '}
-                                    <img
-                                        src="/images/threedots2.png"
-                                        alt="the More button"
-                                        height="30"
-                                        width="30"
-                                        className="bookmark-icon"
-                                    />{' '}
-                                    <b>Add to home screen</b> then <b>Create shortcut</b>.
-                                </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">
-                                    From the dialog that appears:
-                                    <br />
-                                    <b>Rename</b>: Select the default name for the shortcut or
-                                    rename the shortcut.
-                                </p>
-                            </li>
-                            <li className="bookmark-list">
-                                <p className="text-medium marginbsixteen">Tap Add.</p>
-                            </li>
-                        </ol>
-                        <p className="text-medium marginbsixteen">
-                            Tip: Shortcuts with Chrome logo will open in Chrome.
-                        </p>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        To the right of the address bar, tap More{' '}
+                                        <img
+                                            src="/images/threedots2.png"
+                                            alt="the More button"
+                                            height="30"
+                                            width="30"
+                                            className="bookmark-icon"
+                                        />{' '}
+                                        <b>Add to home screen</b> then <b>Create shortcut</b>.
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">
+                                        From the dialog that appears:
+                                        <br />
+                                        <b>Rename</b>: Select the default name for the shortcut or
+                                        rename the shortcut.
+                                    </p>
+                                </li>
+                                <li className="bookmark-list">
+                                    <p className="text-medium marginbsixteen">Tap Add.</p>
+                                </li>
+                            </ol>
+                            <p className="text-medium marginbsixteen">
+                                Tip: Shortcuts with Chrome logo will open in Chrome.
+                            </p>
 
-                        <figure className="marginbsixteen">
-                            <img
-                                src="/images/android.jpg"
-                                alt="Android screen"
-                                height="504"
-                                width="281"
-                            />
-                        </figure>
+                            <figure className="marginbsixteen">
+                                <img
+                                    src="/images/android.jpg"
+                                    alt="Android screen"
+                                    height="504"
+                                    width="281"
+                                />
+                            </figure>
+                        </section>
                     </div>
                 </section>
             </div>
