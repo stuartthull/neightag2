@@ -1,5 +1,4 @@
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import Stripe from 'https://esm.sh/stripe@13.10.0?target=deno';
+import Stripe from 'npm:stripe@13.10.0';
 
 const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -21,7 +20,7 @@ type Product = {
 const isProductId = (value: unknown): value is ProductId =>
     value === 'taptag' || value === 'laminated-stable-tag' || value === 'high-gloss-stable-tag';
 
-serve(async (req) => {
+Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') {
         return new Response('ok', { headers: corsHeaders });
     }
@@ -45,10 +44,12 @@ serve(async (req) => {
             apiVersion: '2023-10-16',
             httpClient: Stripe.createFetchHttpClient(),
         });
+
         const siteUrl = (Deno.env.get('SITE_URL') || 'https://www.neightag.com').replace(
             /\/+$/,
             ''
         );
+
         const products: Record<ProductId, Product> = {
             taptag: {
                 name: 'TapTag',
@@ -71,6 +72,7 @@ serve(async (req) => {
                     defaultHighGlossStableTagPriceId,
             },
         };
+
         const body = await req.json().catch(() => ({}));
         const productId = body.productId || 'taptag';
 
