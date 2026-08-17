@@ -1,7 +1,8 @@
 import TapTagImage from '../../assets/taptag.jpg';
 import StableTagImage from '../../assets/stable-tap-card.jpg';
+import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 
-export type ProductId = 'taptag' | 'laminated-stable-tag';
+export type ProductId = 'taptag' | 'laminated-stable-tag' | 'high-gloss-stable-tag';
 
 export interface ShopProduct {
     id: ProductId;
@@ -49,5 +50,23 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'NeighTag subscription required',
         ],
         checkoutLabel: 'Buy Laminated Stable Tag - £4.95',
+    },
+    'high-gloss-stable-tag': {
+        id: 'high-gloss-stable-tag',
+        slug: 'high-gloss-stable-tag',
+        name: 'Personalised High Gloss Stable Tag + free TapTag',
+        price: '£6.95',
+        image: HighGlossStableTagImage,
+        imageAlt: 'High Gloss NeighTag stable tag attached to a stable door',
+        description:
+            "A high gloss, water proof, UV protected stable tag with a Tapable area and QR code linking to your horse's up-to-date NeighTag details.",
+        benefits: [
+            'Free square Saddle TapTag',
+            'Durable Resin finish',
+            'Quick TapTag and QR code access',
+            'Secure payment through Stripe',
+            'NeighTag subscription required',
+        ],
+        checkoutLabel: 'Buy High Gloss Stable Tag - £6.95',
     },
 };

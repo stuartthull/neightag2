@@ -38,6 +38,7 @@ import LaminatedStableTag from './pages/shop/laminated-stable-tag';
 import Faqs from './pages/faqs';
 
 import mainLogo from './assets/main-logo.png';
+import HighGlossStableTag from './pages/shop/high-gloss-stable-tag';
 
 const HamburgerSvg = () => {
     return (
@@ -96,6 +97,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/taptag" element={<TapTag />} />
                 <Route path="/shop/laminated-stable-tag" element={<LaminatedStableTag />} />
+                <Route path="/shop/high-gloss-stable-tag" element={<HighGlossStableTag />} />
                 <Route path="/faqs" element={<Faqs />} />
 
                 {/* Dynamic Parameterized Route for single-horse public/owner views */}
