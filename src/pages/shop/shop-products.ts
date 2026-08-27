@@ -1,8 +1,13 @@
 import TapTagImage from '../../assets/taptag.jpg';
+import TravelTapTagImage from '../../assets/travel-taptag.jpg';
 import StableTagImage from '../../assets/stable-tap-card.jpg';
 import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 
-export type ProductId = 'taptag' | 'laminated-stable-tag' | 'high-gloss-stable-tag';
+export type ProductId =
+    | 'taptag'
+    | 'travel-taptag'
+    | 'laminated-stable-tag'
+    | 'high-gloss-stable-tag';
 
 export interface ShopProduct {
     id: ProductId;
@@ -33,6 +38,24 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'NeighTag subscription required',
         ],
         checkoutLabel: 'Buy TapTag - £2.95',
+    },
+    'travel-taptag': {
+        id: 'travel-taptag',
+        slug: 'travel-taptag',
+        name: 'Personalised Travel TapTag + free TapTag',
+        price: '£8.95',
+        image: TravelTapTagImage,
+        imageAlt: 'Personalised NeighTag Travel TapTag',
+        description:
+            "Keep your horse's important emergency and contact details close at hand while travelling. Attach your personalised Travel TapTag to your horse's travel equipment, then tap it with a compatible phone for instant access.",
+        benefits: [
+            'Personalised travel-ready design',
+            'Quick tap-to-view access',
+            'No camera or QR scanning required',
+            'Secure payment through Stripe',
+            'NeighTag subscription required',
+        ],
+        checkoutLabel: 'Buy Personalised Travel TapTag - £8.95',
     },
     'laminated-stable-tag': {
         id: 'laminated-stable-tag',

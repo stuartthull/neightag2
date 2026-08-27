@@ -8,8 +8,13 @@ const corsHeaders = {
 
 const defaultPriceId = 'price_1TtTXbIfQpTOfYRJfPWeluKL';
 const defaultHighGlossStableTagPriceId = 'price_1U5NUDIfQpTOfYRJSHg2xpFE';
+const defaultTravelTapTagPriceId = 'price_1U90y6IfQpTOfYRJn5yLqmbK';
 
-type ProductId = 'taptag' | 'laminated-stable-tag' | 'high-gloss-stable-tag';
+type ProductId =
+    | 'taptag'
+    | 'travel-taptag'
+    | 'laminated-stable-tag'
+    | 'high-gloss-stable-tag';
 
 type Product = {
     name: string;
@@ -18,7 +23,10 @@ type Product = {
 };
 
 const isProductId = (value: unknown): value is ProductId =>
-    value === 'taptag' || value === 'laminated-stable-tag' || value === 'high-gloss-stable-tag';
+    value === 'taptag' ||
+    value === 'travel-taptag' ||
+    value === 'laminated-stable-tag' ||
+    value === 'high-gloss-stable-tag';
 
 Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') {
@@ -58,6 +66,12 @@ Deno.serve(async (req) => {
                     Deno.env.get('STRIPE_TAPTAG_PRICE_ID') ||
                     Deno.env.get('STRIPE_PRODUCT_PRICE_ID') ||
                     defaultPriceId,
+            },
+            'travel-taptag': {
+                name: 'Personalised Travel TapTag',
+                orderType: 'travel_taptag',
+                priceId:
+                    Deno.env.get('STRIPE_TRAVEL_TAPTAG_PRICE_ID') || defaultTravelTapTagPriceId,
             },
             'laminated-stable-tag': {
                 name: 'Laminated Stable Tag',

@@ -34,6 +34,7 @@ import AddBookmark from './pages/add-bookmark';
 import ShowQr from './pages/show-qr';
 import Shop from './pages/shop/shop';
 import TapTag from './pages/shop/tap-tag';
+import TravelTapTag from './pages/shop/travel-taptag';
 import LaminatedStableTag from './pages/shop/laminated-stable-tag';
 import Faqs from './pages/faqs';
 
@@ -96,6 +97,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/show-qr/:horse_uuid" element={<ShowQr />} />
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/taptag" element={<TapTag />} />
+                <Route path="/shop/travel-taptag" element={<TravelTapTag />} />
                 <Route path="/shop/laminated-stable-tag" element={<LaminatedStableTag />} />
                 <Route path="/shop/high-gloss-stable-tag" element={<HighGlossStableTag />} />
                 <Route path="/faqs" element={<Faqs />} />
