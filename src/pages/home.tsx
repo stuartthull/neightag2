@@ -12,6 +12,7 @@ import Calendar from '../assets/calendar.jpg';
 import Janeone from '../assets/jane1.jpg';
 import Homescreen from '../assets/home-screen.jpg';
 import { LocalPrice } from '../components/local-price';
+import { SHOP_PRODUCTS } from './shop/shop-products';
 // import { StaticGoogleReviews } from '../components/google-reviews';
 
 interface QuickEvent {
@@ -163,6 +164,7 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container home-layout-grid">
+
                 {session && hasActiveSubscription && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Your upcoming events</h2>
@@ -212,6 +214,7 @@ function Home(): React.JSX.Element {
                         )}
                     </div>
                 )}
+
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
                 {session && hasActiveSubscription && horseBoxAlerts.length > 0 && (
@@ -335,6 +338,39 @@ function Home(): React.JSX.Element {
                         </div>
                     </div>
                 )}
+
+                <section className="latest-products-strip full-width">
+                    <h2 className="textbig">Our latest products</h2>
+                    <div className="latest-products-grid">
+                        {[
+                            { product: SHOP_PRODUCTS['travel-taptag'], title: 'Travel TapTag' },
+                            {
+                                product: SHOP_PRODUCTS['high-gloss-stable-tag'],
+                                title: 'High Gloss Stable Tag',
+                            },
+                            { product: SHOP_PRODUCTS['laminated-stable-tag'], title: 'Stable Tag' },
+                        ].map(({ product, title }) => (
+                            <Link
+                                to={`/shop/${product.slug}`}
+                                className="latest-product-card"
+                                key={product.id}
+                            >
+                                <img
+                                    src={product.image}
+                                    alt={product.imageAlt}
+                                    className="latest-product-image"
+                                />
+                                <span className="latest-product-info">
+                                    <span className="latest-product-name">
+                                        {title} - {product.price}
+                                    </span>
+                                    <span className="latest-product-linker">See full details</span>
+                                </span>
+
+                            </Link>
+                        ))}
+                    </div>
+                </section>
                 <div className="section-container white-section-container full-width">
                     <div className="about-split-row">
                         {/* Left Side: Text Column */}
