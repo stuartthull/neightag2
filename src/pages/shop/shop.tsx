@@ -4,6 +4,12 @@ import '../../css/shop.css';
 import { SHOP_PRODUCTS } from './shop-products';
 
 export default function Shop(): React.JSX.Element {
+    const productsByPrice = Object.values(SHOP_PRODUCTS).sort(
+        (firstProduct, secondProduct) =>
+            Number(firstProduct.price.replace('£', '')) -
+            Number(secondProduct.price.replace('£', ''))
+    );
+
     return (
         <main className="page-wrapper">
             <Helmet>
@@ -18,40 +24,43 @@ export default function Shop(): React.JSX.Element {
             <div className="page-container">
                 <section className="section-container white-section-container no-print">
                     <h1 className="textbig marginbsixteen">Shop NeighTag</h1>
-                    {Object.values(SHOP_PRODUCTS).map((product) => (
-                        <div
-                            className="shop-product section-container white-section-container"
-                            key={product.id}
-                        >
-                            <a
-                                href={`/shop/${product.slug}`}
-                                className="shop-product-link"
-                                aria-label={`View details for ${product.name}`}
+                    <div className="shop-products-grid">
+                        {productsByPrice.map((product) => (
+                            <div
+                                className="shop-product section-container white-section-container"
+                                key={product.id}
                             >
-                                <img
-                                    src={product.image}
-                                    alt={product.imageAlt}
-                                    className="shop-product-image"
-                                />
-                            </a>
-
-                            <div className="shop-product-details">
-                                <h2 className="textbig">
-                                    {product.name} - <b>{product.price}</b>
-                                </h2>
-                                <p className="text-normal marginbsixteen">
-                                    <b>Please note:</b>
-                                    <br />
-                                    NeighTag subscription required.
-                                </p>
-                                <p className="text-normal marginbsixteen">{product.description}</p>
-
-                                <a href={`/shop/${product.slug}`} className="shop-details-link">
-                                    View full product details
+                                <a
+                                    href={`/shop/${product.slug}`}
+                                    className="shop-product-link"
+                                    aria-label={`View details for ${product.name}`}
+                                >
+                                    <img
+                                        src={product.image}
+                                        alt={product.imageAlt}
+                                        className="shop-product-image"
+                                    />
                                 </a>
+
+                                <div className="shop-product-details">
+                                    <h2 className="textmedium shop-product-heading">{product.name}</h2>
+                                    <p className="text-normal marginbsixteen">
+                                        Please note:
+
+                                        NeighTag subscription required.
+                                    </p>
+                                    <p className="shop-product-price">{product.price}</p>
+                                    <a
+                                        href={`/shop/${product.slug}`}
+                                        className="shop-details-link"
+                                    >
+                                        View full product details
+                                    </a>
+
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </section>
             </div>
         </main>

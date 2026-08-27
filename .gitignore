@@ -15,3 +15,5 @@ supabase/functions/*/.env
 .DS_Store
 data.sql
 schema.sql
+build/asset-manifest.json
+build/index.html

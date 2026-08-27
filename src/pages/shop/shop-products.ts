@@ -25,7 +25,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
     taptag: {
         id: 'taptag',
         slug: 'taptag',
-        name: 'TapTag',
+        name: 'Saddle or Bridle/Collar TapTag',
         price: '£2.95',
         image: TapTagImage,
         imageAlt: 'NeighTag TapTag',
@@ -42,7 +42,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
     'travel-taptag': {
         id: 'travel-taptag',
         slug: 'travel-taptag',
-        name: 'Personalised Travel TapTag + free TapTag',
+        name: 'Personalised Travel TapTag',
         price: '£8.95',
         image: TravelTapTagImage,
         imageAlt: 'Personalised NeighTag Travel TapTag',
@@ -54,6 +54,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'No camera or QR scanning required',
             'Secure payment through Stripe',
             'NeighTag subscription required',
+            'FREE Saddle TapTag included with this product',
         ],
         checkoutLabel: 'Buy Personalised Travel TapTag - £8.95',
     },
@@ -77,7 +78,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
     'high-gloss-stable-tag': {
         id: 'high-gloss-stable-tag',
         slug: 'high-gloss-stable-tag',
-        name: 'Personalised High Gloss Stable Tag + free TapTag',
+        name: 'Personalised High Gloss Stable Tag',
         price: '£6.95',
         image: HighGlossStableTagImage,
         imageAlt: 'High Gloss NeighTag stable tag attached to a stable door',
@@ -89,6 +90,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'Quick TapTag and QR code access',
             'Secure payment through Stripe',
             'NeighTag subscription required',
+            'FREE Saddle TapTag included with this product',
         ],
         checkoutLabel: 'Buy High Gloss Stable Tag - £6.95',
     },

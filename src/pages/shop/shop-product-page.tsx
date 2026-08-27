@@ -69,9 +69,7 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
 
                     <div className="shop-product-details">
                         <p className="shop-eyebrow">NeighTag shop</p>
-                        <h1 className="textbig">
-                            {product.name} <b>{product.price}</b>
-                        </h1>
+                        <h1 className="textbig">{product.name}</h1>
 
                         {paymentStatus === 'success' && (
                             <p className="shop-status shop-status-success" role="status">
@@ -104,6 +102,7 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             ))}
                         </ul>
 
+                        <p className="shop-product-page-price">{product.price}</p>
                         <button
                             type="button"
                             className="buttonMain buttonOrange shop-buy-button"
