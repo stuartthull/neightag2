@@ -15,6 +15,7 @@ type BlogArticle = {
     slug: string;
     category: string;
     title: string;
+    publishedAt: string;
     image: string;
     imageAlt: string;
     summary: string;
@@ -30,6 +31,19 @@ const articles: BlogArticle[] = [
     horseboxChecklist,
     lifetimeOfProtection,
 ];
+
+const sortedArticles = [...articles].sort((firstArticle, secondArticle) =>
+    secondArticle.publishedAt.localeCompare(firstArticle.publishedAt)
+);
+
+function formatPublishedDate(date: string): string {
+    return new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC',
+    }).format(new Date(`${date}T00:00:00Z`));
+}
 
 function getBlogImage(image: string): string {
     if (image === '/images/blog/horsesafety.jpg') {
@@ -63,6 +77,9 @@ function BlogArticlePage({ article }: { article: BlogArticle }): React.JSX.Eleme
                     <img src={getBlogImage(article.image)} alt={article.imageAlt} className="blog-article-image" />
                     <p className="blog-eyebrow">{article.category}</p>
                     <h1 className="textbig">{article.title}</h1>
+                    <time className="blog-date" dateTime={article.publishedAt}>
+                        Published {formatPublishedDate(article.publishedAt)}
+                    </time>
                     <p className="text-normal marginbsixteen">{article.summary}</p>
                     {article.intro && <p className="text-normal">{article.intro}</p>}
                     {article.sections.map((section) => (
@@ -124,11 +141,14 @@ export default function Blog(): React.JSX.Element {
                     </p>
                 </section>
                 <section className="blog-grid" aria-label="Blog posts">
-                    {articles.map((article) => (
+                    {sortedArticles.map((article) => (
                         <article className="blog-card" key={article.slug}>
                             <img src={getBlogImage(article.image)} alt={article.imageAlt} className="blog-card-image" />
                             <p className="blog-card-category">{article.category}</p>
                             <h2>{article.title}</h2>
+                            <time className="blog-date" dateTime={article.publishedAt}>
+                                {formatPublishedDate(article.publishedAt)}
+                            </time>
                             <p className="text-normal">{article.summary}</p>
                             <Link to={`/blog/${article.slug}`} className="blog-card-link">Read article</Link>
                         </article>

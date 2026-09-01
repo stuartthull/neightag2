@@ -63,6 +63,13 @@
     margin: 0 0 20px;
 }
 
+.blog-date {
+    display: block;
+    margin: -4px 0 12px;
+    color: var(--darkgrey);
+    font-size: 13px;
+}
+
 .blog-card-link,
 .blog-back-link {
     color: var(--terracota);
