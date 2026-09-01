@@ -56,6 +56,11 @@ export default function Footer(): React.JSX.Element {
                             FAQs
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/blog" className="text-normal footer-link">
+                            Blog
+                        </Link>
+                    </li>
                 </ul>
             </div>
             <div className="social-container">

@@ -1,0 +1,16 @@
+{
+    "slug": "emergency-horse-information",
+    "category": "Stable safety",
+    "title": "Is Your Yard Ready for an Emergency? 5 Critical Stable Safety Rules",
+    "summary": "Whether you keep your horse on full livery or manage your own yard, emergency preparedness is one of the most vital - and often overlooked - aspects of equine ownership. From sudden colic episodes to yard fires, seconds count when a horse is in distress.",
+    "targetKeywords": ["stable safety guidelines", "horse emergency plan", "yard safety tips", "equestrian yard management"],
+    "metaDescription": "Is your horse's stable prepared for an unexpected emergency? Discover essential yard safety rules and quick tips to keep riders and horses protected.",
+    "intro": "Implementing clear safety standards protects not only your horse, but also yard managers, barn mates, and first responders.",
+    "sections": [
+        {"heading": "1. Keep Clear & Unobstructed Pathways", "paragraphs": ["Stable aisles should never become storage zones. Avoid leaving wheelbarrows, tack boxes, or rug racks sticking out into main walkways. In a panic or during an evacuation, a spooked horse can easily get tangled or cause serious injury to themselves and handlers."]},
+        {"heading": "2. Implement Visible Emergency Contacts", "paragraphs": ["If a horse shows signs of distress while you aren't at the yard, who does the yard manager call? What if your horse breaks out of their stable or field?"], "list": ["Ensure your vet's name, clinic number, and your direct contact details are clearly displayed outside the stable door.", "Include medical nuances (for example, Tetanus vaccine up to date, allergic to Bute, requires specialised feed)."], "tip": "Paper notices on stable doors often get damaged by damp weather or nibbled on by curious horses. Using a durable, weather-proof digital tag - such as a NeighTag QR stable card - ensures anyone at the yard can instantly scan and access vital emergency contacts and medical profiles directly from their phone."},
+        {"heading": "3. Standardise Fire Safety Protocols", "paragraphs": ["Fire is one of the biggest hazards in any barn due to stored hay, straw, and electrical equipment."], "list": ["Store hay and bedding in a separate building away from living stables whenever possible.", "Keep heavy-duty fire extinguishers mounted near entryways and inspect them annually.", "Ensure clear, posted evacuation routes so anyone on-site knows which exit paths to take."]},
+        {"heading": "4. Post Feed and Routine Instructions Clearly", "paragraphs": ["Accidental double-feeding, incorrect dosages of medication, or giving the wrong turnout gear can lead to serious health complications like choke or colic. Every stable door should have up-to-date daily instructions covering feeding routines, turnout rules, and supplement schedules."]},
+        {"heading": "5. Maintain an Up-to-Date Medical History", "paragraphs": ["Keep hard copies or digital backups of your horse's passport details, microchip number, vaccination records, and insurance policy numbers. Having these details stored centrally online means you can access them instantly from your phone during an emergency vet visit or transport trip."]}
+    ]
+}
