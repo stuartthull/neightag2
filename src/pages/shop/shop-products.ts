@@ -2,12 +2,14 @@ import TapTagImage from '../../assets/taptag.jpg';
 import TravelTapTagImage from '../../assets/travel-taptag.jpg';
 import StableTagImage from '../../assets/stable-tap-card.jpg';
 import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
+import SmallStableTagImage from '../../assets/small-taptag.jpg';
 
 export type ProductId =
     | 'taptag'
     | 'travel-taptag'
     | 'laminated-stable-tag'
-    | 'high-gloss-stable-tag';
+    | 'high-gloss-stable-tag'
+    | 'small-stable-tag';
 
 export interface ShopProduct {
     id: ProductId;
@@ -97,5 +99,24 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'Do let us know if your stable door is metalllic, then we can provide this product to ensure it works correctly',
         ],
         checkoutLabel: 'Buy High Gloss Stable Tag - £6.95',
+    },
+    'small-stable-tag': {
+        id: 'small-stable-tag',
+        slug: 'small-stable-tag',
+        name: 'Personalised Small Stable Tag',
+        price: '£3.95',
+        image: SmallStableTagImage,
+        imageAlt: 'Small NeighTag stable tag attached to a stable door',
+        description:
+            "A small stable tag with a Tapable area and phone number linking to your horse's up-to-date NeighTag details.",
+        benefits: [
+            'Durable Resin finish',
+            'Quick TapTag and phone number access',
+            'Secure payment through Stripe',
+            'NeighTag subscription required',
+            'FREE Saddle TapTag included with this product',
+            'Do let us know if your stable door is metalllic, then we can provide this product to ensure it works correctly',
+        ],
+        checkoutLabel: 'Buy Small Stable Tag - £3.95',
     },
 };

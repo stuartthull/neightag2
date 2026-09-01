@@ -41,6 +41,7 @@ import Blog from './pages/blog';
 
 import mainLogo from './assets/main-logo.png';
 import HighGlossStableTag from './pages/shop/high-gloss-stable-tag';
+import SmallStableTag from './pages/shop/small-stable-tag';
 
 const HamburgerSvg = () => {
     return (
@@ -101,6 +102,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/shop/travel-taptag" element={<TravelTapTag />} />
                 <Route path="/shop/laminated-stable-tag" element={<LaminatedStableTag />} />
                 <Route path="/shop/high-gloss-stable-tag" element={<HighGlossStableTag />} />
+                <Route path="/shop/small-stable-tag" element={<SmallStableTag />} />
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<Blog />} />
