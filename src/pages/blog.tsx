@@ -5,11 +5,18 @@ import '../css/blog.css';
 import emergencyHorseInformation from '../data/blog/emergency-horse-information.json';
 import stableRoutine from '../data/blog/stable-routine.json';
 import horseboxChecklist from '../data/blog/horsebox-checklist.json';
+import lifetimeOfProtection from '../data/blog/lifetime-of-protection-needs-ongoing-care.json';
+import horseSafetyImage from '../assets/blog/horsesafety.jpg';
+import healthImage from '../assets/blog/health.jpg';
+import horseboxChecklistImage from '../assets/blog/transport.jpg';
+import whynotfreeImage from '../assets/blog/whynotfree.jpg';
 
 type BlogArticle = {
     slug: string;
     category: string;
     title: string;
+    image: string;
+    imageAlt: string;
     summary: string;
     metaDescription: string;
     targetKeywords: string[];
@@ -21,7 +28,28 @@ const articles: BlogArticle[] = [
     emergencyHorseInformation,
     stableRoutine,
     horseboxChecklist,
+    lifetimeOfProtection,
 ];
+
+function getBlogImage(image: string): string {
+    if (image === '/images/blog/horsesafety.jpg') {
+        return horseSafetyImage;
+    }
+
+    if (image === '/images/health.jpg') {
+        return healthImage;
+    }
+
+    if (image === '/images/transport.jpg') {
+        return horseboxChecklistImage;
+    }
+
+    if (image === '/images/whynotfree.jpg') {
+        return whynotfreeImage;
+    }
+
+    return image;
+}
 
 function BlogArticlePage({ article }: { article: BlogArticle }): React.JSX.Element {
     return (
@@ -32,9 +60,10 @@ function BlogArticlePage({ article }: { article: BlogArticle }): React.JSX.Eleme
             </Helmet>
             <div className="page-container">
                 <article className="blog-article">
+                    <img src={getBlogImage(article.image)} alt={article.imageAlt} className="blog-article-image" />
                     <p className="blog-eyebrow">{article.category}</p>
                     <h1 className="textbig">{article.title}</h1>
-                    <p className="text-normal">{article.summary}</p>
+                    <p className="text-normal marginbsixteen">{article.summary}</p>
                     {article.intro && <p className="text-normal">{article.intro}</p>}
                     {article.sections.map((section) => (
                         <section key={section.heading}>
@@ -97,6 +126,7 @@ export default function Blog(): React.JSX.Element {
                 <section className="blog-grid" aria-label="Blog posts">
                     {articles.map((article) => (
                         <article className="blog-card" key={article.slug}>
+                            <img src={getBlogImage(article.image)} alt={article.imageAlt} className="blog-card-image" />
                             <p className="blog-card-category">{article.category}</p>
                             <h2>{article.title}</h2>
                             <p className="text-normal">{article.summary}</p>
