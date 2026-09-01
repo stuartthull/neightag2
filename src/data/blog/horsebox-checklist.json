@@ -3,13 +3,56 @@
     "category": "Horse transport",
     "title": "The Ultimate Horse Transport Checklist: Travel Safe & Prepared",
     "summary": "Loading up for a competition, training clinic, or trip to the coast is one of the most exciting parts of horse ownership. However, travelling with horses comes with inherent risks. Proper transport preparation ensures a smooth journey for both rider and horse.",
-    "targetKeywords": ["horse transport safety", "horsebox maintenance checklist", "travelling with horses tips", "equine travel emergency details"],
+    "targetKeywords": [
+        "horse transport safety",
+        "horsebox maintenance checklist",
+        "travelling with horses tips",
+        "equine travel emergency details"
+    ],
     "metaDescription": "Heading out to a show or hack? Review our essential horse transport checklist to keep your horse safe on the road.",
     "intro": "",
     "sections": [
-        {"heading": "1. Perform Pre-Trip Horsebox & Trailer Safety Checks", "paragraphs": ["Before loading your horse, run through a quick 5-minute safety check:"], "list": ["Flooring: Lift rubber mats regularly to check timber or aluminium floors for rot, weakness, or corrosion.", "Tyres: Check tyre pressure and tread depth (including the spare tyre!). Tyres deteriorate over time, even with low mileage.", "Hitch & Lights: Ensure the breakaway cable, trailer hitch, and all exterior brake/indicator lights are fully functioning.", "Dates & Paperwork: Keep track of your vehicle's breakdown cover, MOT, and servicing schedules so you aren't stranded far from home."]},
-        {"heading": "2. Pack an Equine Travel First Aid Kit", "paragraphs": ["Your transport kit should always include essential emergency supplies kept in an easily accessible compartment:"], "list": ["Cohesive bandages (Vetrap) and sterile non-stick dressings", "Antiseptic wash or spray", "Round-ended scissors and twitch", "Instant cold packs for sudden swelling", "Spare headcollar and lead rope"]},
-        {"heading": "3. Secure Vital Details on the Road", "paragraphs": ["If an accident or breakdown occurs while you are towing, emergency services or rescue crews need immediate access to your horse's information and your breakdown membership details.", "Having a physical record inside the vehicle - or a digital travel tag attached to your horsebox or equipment - allows first responders to contact your emergency keyholders, identify breakdown insurance details, and access your horse's medical background instantly."], "tip": "Travel with Confidence: Products like NeighTag allow horse owners to link breakdown policies, insurance info, and emergency contacts to a scan-ready QR code attached directly to your horsebox or trailer gear."},
-        {"heading": "4. Monitor Horse Comfort & Hydration", "paragraphs": [], "list": ["Offer fresh water every 2 to 3 hours during long trips to prevent dehydration and impaction colic.", "Ensure adequate ventilation without creating high-speed draughts inside the horse compartment.", "Use suitable leg protection (travel boots or bandages) only if your horse is accustomed to them to prevent shipping injuries."]}
+        {
+            "heading": "1. Perform Pre-Trip Horsebox & Trailer Safety Checks",
+            "paragraphs": [
+                "Before loading your horse, run through a quick 5-minute safety check:"
+            ],
+            "list": [
+                "Flooring: Lift rubber mats regularly to check timber or aluminium floors for rot, weakness, or corrosion.",
+                "Tyres: Check tyre pressure and tread depth (including the spare tyre!). Tyres deteriorate over time, even with low mileage.",
+                "Hitch & Lights: Ensure the breakaway cable, trailer hitch, and all exterior brake/indicator lights are fully functioning.",
+                "Dates & Paperwork: Keep track of your vehicle's breakdown cover, MOT, and servicing schedules so you aren't stranded far from home."
+            ]
+        },
+        {
+            "heading": "2. Pack an Equine Travel First Aid Kit",
+            "paragraphs": [
+                "Your transport kit should always include essential emergency supplies kept in an easily accessible compartment:"
+            ],
+            "list": [
+                "Cohesive bandages (Vetrap) and sterile non-stick dressings",
+                "Antiseptic wash or spray",
+                "Round-ended scissors and twitch",
+                "Instant cold packs for sudden swelling",
+                "Spare headcollar and lead rope"
+            ]
+        },
+        {
+            "heading": "3. Secure Vital Details on the Road",
+            "paragraphs": [
+                "If an accident or breakdown occurs while you are towing, emergency services or rescue crews need immediate access to your horse's information and your breakdown membership details.",
+                "Having a physical record inside the vehicle - or a digital travel tag attached to your horsebox or equipment - allows first responders to contact your emergency keyholders, identify breakdown insurance details, and access your horse's medical background instantly."
+            ],
+            "tip": "Travel with Confidence: Products like NeighTag allow horse owners to link breakdown policies, insurance info, and emergency contacts to a scan-ready QR code attached directly to your horsebox or trailer gear."
+        },
+        {
+            "heading": "4. Monitor Horse Comfort & Hydration",
+            "paragraphs": [],
+            "list": [
+                "Offer fresh water every 2 to 3 hours during long trips to prevent dehydration and impaction colic.",
+                "Ensure adequate ventilation without creating high-speed draughts inside the horse compartment.",
+                "Use suitable leg protection (travel boots or bandages) only if your horse is accustomed to them to prevent shipping injuries."
+            ]
+        }
     ]
 }

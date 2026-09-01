@@ -3,13 +3,47 @@
     "category": "Horse healthcare",
     "title": "How to Stay Organised with Your Horse's Health Routine",
     "summary": "Managing a horse involves keeping track of endless dates, appointments, and routine health checks. Missing a vaccination deadline can jeopardise competition eligibility, while pushing farrier visits back too long can cause foot balance issues and lameness.",
-    "targetKeywords": ["horse management tips", "tracking equine vaccinations", "farrier schedule tips", "horse health record app"],
+    "targetKeywords": [
+        "horse management tips",
+        "tracking equine vaccinations",
+        "farrier schedule tips",
+        "horse health record app"
+    ],
     "metaDescription": "Struggling to track farrier dates, horse vaccinations, and dental visits? Learn how to streamline your horse management routine effortlessly.",
     "intro": "To keep your horse healthy and performing at their best, here is a simple routine for staying on top of essential care tasks.",
     "sections": [
-        {"heading": "1. Establish a 6-to-8-Week Farrier Rotation", "paragraphs": ["Regular shoeing or trimming is crucial for maintaining proper hoof balance and joint health."], "list": ["Set automated reminders: Book your next farrier appointment the day your horse is shod rather than waiting until the shoes look worn.", "Track hoof changes: Keep a quick note of any shoe changes, pads, or cracks so you can track progress over time."]},
-        {"heading": "2. Stay Ahead of Vaccination & Dental Deadlines", "paragraphs": ["Equine Influenza and Tetanus boosters must be kept strictly up to date - especially if you compete under venue or governing body regulations."], "list": ["Schedule routine equine dental exams every 6 to 12 months to detect sharp enamel points or wolf tooth issues early.", "Set calendar alerts 4 weeks before any major vaccination or MOT deadline so you aren't caught off guard by last-minute bookings."]},
-        {"heading": "3. Streamline Worming with Egg Counts", "paragraphs": ["Rather than following blanket worming schedules, adopt a targeted wormer routine based on Faecal Egg Counts (FECs). Testing every 8–12 weeks during the grazing season helps prevent chemical resistance and keeps your horse's digestive system healthy. Log test dates and results in a dedicated journal or horse management tool to track parasite trends year-round."]},
-        {"heading": "4. Ditch the Paperwork for Digital Profiles", "paragraphs": ["Flinging receipts into the glove box of your horsebox or losing handwritten farrier notes is a common headache for horse owners. Moving your horse's profile online helps consolidate everything into one place."], "tip": "Simplify Your Routine: Digital tools like NeighTag allow you to log farrier dates, dental visits, vet history, and horsebox MOT deadlines into a unified equine calendar. You get automatic reminders sent straight to your device so you never miss a critical health date."}
+        {
+            "heading": "1. Establish a 6-to-8-Week Farrier Rotation",
+            "paragraphs": [
+                "Regular shoeing or trimming is crucial for maintaining proper hoof balance and joint health."
+            ],
+            "list": [
+                "Set automated reminders: Book your next farrier appointment the day your horse is shod rather than waiting until the shoes look worn.",
+                "Track hoof changes: Keep a quick note of any shoe changes, pads, or cracks so you can track progress over time."
+            ]
+        },
+        {
+            "heading": "2. Stay Ahead of Vaccination & Dental Deadlines",
+            "paragraphs": [
+                "Equine Influenza and Tetanus boosters must be kept strictly up to date - especially if you compete under venue or governing body regulations."
+            ],
+            "list": [
+                "Schedule routine equine dental exams every 6 to 12 months to detect sharp enamel points or wolf tooth issues early.",
+                "Set calendar alerts 4 weeks before any major vaccination or MOT deadline so you aren't caught off guard by last-minute bookings."
+            ]
+        },
+        {
+            "heading": "3. Streamline Worming with Egg Counts",
+            "paragraphs": [
+                "Rather than following blanket worming schedules, adopt a targeted wormer routine based on Faecal Egg Counts (FECs). Testing every 8–12 weeks during the grazing season helps prevent chemical resistance and keeps your horse's digestive system healthy. Log test dates and results in a dedicated journal or horse management tool to track parasite trends year-round."
+            ]
+        },
+        {
+            "heading": "4. Ditch the Paperwork for Digital Profiles",
+            "paragraphs": [
+                "Flinging receipts into the glove box of your horsebox or losing handwritten farrier notes is a common headache for horse owners. Moving your horse's profile online helps consolidate everything into one place."
+            ],
+            "tip": "Simplify Your Routine: Digital tools like NeighTag allow you to log farrier dates, dental visits, vet history, and horsebox MOT deadlines into a unified equine calendar. You get automatic reminders sent straight to your device so you never miss a critical health date."
+        }
     ]
 }
