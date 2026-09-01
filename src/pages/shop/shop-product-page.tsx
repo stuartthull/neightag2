@@ -59,6 +59,10 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                 <a href="/shop" className="shop-back-link">
                     Back to shop
                 </a>
+                <p className="text-normal marginbsixteen">
+                    PLEASE NOTE: We will be away until 9th September, your orders maybe delayed. We
+                    apologise for any inconvenience this may cause.
+                </p>
 
                 <section className="shop-product shop-product-page section-container white-section-container">
                     <img

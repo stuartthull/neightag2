@@ -164,7 +164,6 @@ function Home(): React.JSX.Element {
             </div>
 
             <div className="page-container home-layout-grid">
-
                 {session && hasActiveSubscription && (
                     <div className="section-container lightorange-section-container full-width">
                         <h2 className="textbig">Your upcoming events</h2>
@@ -214,7 +213,6 @@ function Home(): React.JSX.Element {
                         )}
                     </div>
                 )}
-
 
                 {/* 🚛 UPCOMING HORSEBOX MAINTENANCE ALERTS (30 DAYS) */}
                 {session && hasActiveSubscription && horseBoxAlerts.length > 0 && (
@@ -341,6 +339,10 @@ function Home(): React.JSX.Element {
 
                 <section className="latest-products-strip full-width">
                     <h2 className="textbig">Our latest products</h2>
+                    <p className="text-normal marginbsixteen">
+                        PLEASE NOTE: We will be away until 9th September, your orders maybe delayed.
+                        We apologise for any inconvenience this may cause.
+                    </p>
                     <div className="latest-products-grid">
                         {[
                             { product: SHOP_PRODUCTS['travel-taptag'], title: 'Travel TapTag' },
@@ -366,7 +368,6 @@ function Home(): React.JSX.Element {
                                     </span>
                                     <span className="latest-product-linker">See full details</span>
                                 </span>
-
                             </Link>
                         ))}
                     </div>

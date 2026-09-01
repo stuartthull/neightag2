@@ -24,6 +24,10 @@ export default function Shop(): React.JSX.Element {
             <div className="page-container">
                 <section className="section-container white-section-container no-print">
                     <h1 className="textbig marginbsixteen">Shop NeighTag</h1>
+                    <p className="text-normal marginbsixteen">
+                        PLEASE NOTE: We will be away until 9th September, your orders maybe delayed.
+                        We apologise for any inconvenience this may cause.
+                    </p>
                     <div className="shop-products-grid">
                         {productsByPrice.map((product) => (
                             <div
@@ -43,20 +47,16 @@ export default function Shop(): React.JSX.Element {
                                 </a>
 
                                 <div className="shop-product-details">
-                                    <h2 className="textmedium shop-product-heading">{product.name}</h2>
+                                    <h2 className="textmedium shop-product-heading">
+                                        {product.name}
+                                    </h2>
                                     <p className="text-normal marginbsixteen">
-                                        Please note:
-
-                                        NeighTag subscription required.
+                                        Please note: NeighTag subscription required.
                                     </p>
                                     <p className="shop-product-price">{product.price}</p>
-                                    <a
-                                        href={`/shop/${product.slug}`}
-                                        className="shop-details-link"
-                                    >
+                                    <a href={`/shop/${product.slug}`} className="shop-details-link">
                                         View full product details
                                     </a>
-
                                 </div>
                             </div>
                         ))}
