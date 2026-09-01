@@ -25,8 +25,13 @@ export default function Shop(): React.JSX.Element {
                 <section className="section-container white-section-container no-print">
                     <h1 className="textbig marginbsixteen">Shop NeighTag</h1>
                     <p className="text-normal marginbsixteen">
-                        PLEASE NOTE: We will be away until 9th September, your orders maybe delayed.
-                        We apologise for any inconvenience this may cause.
+                        <b>Quick update: </b> We’re taking a brief break until September 9th! ☀️ Orders placed while we’re away will take just a little longer to reach you. Thank you so much for your patience and support!
+                    </p>
+                    <p className="text-normal marginbsixteen">
+                        <b>100% FREE REPLACEMENTS: </b>Lost, broken, damaged or simply misplaced one of your NeighTag products? No problem! We will replace them for free. Please contact us for more information.
+                    </p>
+                    <p className="text-normal marginbsixteen">
+                        NeighTag products are designed to be used in conjunction with a NeighTag subscription. Please ensure you have an active subscription before purchasing.
                     </p>
                     <div className="shop-products-grid">
                         {productsByPrice.map((product) => (
