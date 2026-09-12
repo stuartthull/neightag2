@@ -24,9 +24,7 @@ export default function Shop(): React.JSX.Element {
             <div className="page-container">
                 <section className="section-container white-section-container no-print">
                     <h1 className="textbig marginbsixteen">Shop NeighTag</h1>
-                    <p className="text-normal marginbsixteen">
-                        <b>Quick update: </b> We’re taking a brief break until September 9th! ☀️ Orders placed while we’re away will take just a little longer to reach you. Thank you so much for your patience and support!
-                    </p>
+
                     <p className="text-normal marginbsixteen">
                         <b>100% FREE REPLACEMENTS: </b>Lost, broken, damaged or simply misplaced one of your NeighTag products? No problem! We will replace them for free. Please contact us for more information.
                     </p>

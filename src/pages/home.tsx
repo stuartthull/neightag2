@@ -339,10 +339,6 @@ function Home(): React.JSX.Element {
 
                 <section className="latest-products-strip full-width">
                     <h2 className="textbig">Our latest products</h2>
-                    <p className="text-normal marginbsixteen">
-                        PLEASE NOTE: We will be away until 9th September, your orders maybe delayed.
-                        We apologise for any inconvenience this may cause.
-                    </p>
                     <div className="latest-products-grid">
                         {[
                             { product: SHOP_PRODUCTS['travel-taptag'], title: 'Travel TapTag' },
