@@ -9,12 +9,14 @@ const corsHeaders = {
 const defaultPriceId = 'price_1TtTXbIfQpTOfYRJfPWeluKL';
 const defaultHighGlossStableTagPriceId = 'price_1U5NUDIfQpTOfYRJSHg2xpFE';
 const defaultTravelTapTagPriceId = 'price_1U90y6IfQpTOfYRJn5yLqmbK';
+const defaultSmallStableTagPriceId = 'price_1UEqhGIfQpTOfYRJTzdbE7EF';
 
 type ProductId =
     | 'taptag'
     | 'travel-taptag'
     | 'laminated-stable-tag'
-    | 'high-gloss-stable-tag';
+    | 'high-gloss-stable-tag'
+    | 'small-stable-tag';
 
 type Product = {
     name: string;
@@ -26,7 +28,8 @@ const isProductId = (value: unknown): value is ProductId =>
     value === 'taptag' ||
     value === 'travel-taptag' ||
     value === 'laminated-stable-tag' ||
-    value === 'high-gloss-stable-tag';
+    value === 'high-gloss-stable-tag' ||
+    value === 'small-stable-tag';
 
 Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') {
@@ -84,6 +87,13 @@ Deno.serve(async (req) => {
                 priceId:
                     Deno.env.get('STRIPE_HIGH_GLOSS_STABLE_TAG_PRICE_ID') ||
                     defaultHighGlossStableTagPriceId,
+            },
+            'small-stable-tag': {
+                name: 'Personalised Small Stable Tag + free TapTag',
+                orderType: 'small_stable_tag',
+                priceId:
+                    Deno.env.get('STRIPE_SMALL_STABLE_TAG_PRICE_ID') ||
+                    defaultSmallStableTagPriceId,
             },
         };
 
