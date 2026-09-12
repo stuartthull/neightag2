@@ -109,7 +109,7 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             onClick={handleCheckout}
                             disabled={loading}
                         >
-                            {loading ? 'Opening secure checkout...' : product.checkoutLabel}
+                            {product.checkoutLabel}
                         </button>
 
                         <p className="text-small shop-checkout-note">Secure Stripe Checkout.</p>
