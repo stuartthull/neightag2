@@ -309,7 +309,8 @@ serve(async (req) => {
             event.type === 'customer.subscription.created' ||
             event.type === 'customer.subscription.updated'
         ) {
-            const subscription = event.data.object;
+            const eventSubscription = event.data.object;
+            const subscription = await stripe.subscriptions.retrieve(eventSubscription.id);
             await syncSubscription(subscription);
         }
 
