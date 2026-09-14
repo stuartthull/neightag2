@@ -68,3 +68,13 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Admin customer overview
+
+The protected admin dashboard is available at `/admin`. To enable it:
+
+1. Run `supabase/admin-customer-overview.sql` in the Supabase SQL editor.
+2. In Supabase Authentication, set the staff user's `app_metadata` to `{ "role": "admin" }`.
+3. Sign in with that staff account and open `/admin`.
+
+The role is checked in the database function as well as in the React route. Do not use `user_metadata` for this role because users can edit it themselves.

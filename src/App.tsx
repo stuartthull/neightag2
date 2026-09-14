@@ -43,6 +43,7 @@ import mainLogo from './assets/main-logo.png';
 import HighGlossStableTag from './pages/shop/high-gloss-stable-tag';
 import SmallStableTag from './pages/shop/small-stable-tag';
 import PersonalisedHorseboxPoster from './pages/shop/personalised-horsebox-poster';
+import AdminDashboard from './pages/admin-dashboard';
 
 const HamburgerSvg = () => {
     return (
@@ -129,6 +130,14 @@ function AppContent(): React.JSX.Element {
                     element={
                         <ProtectedRoute>
                             <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute>
+                            <AdminDashboard />
                         </ProtectedRoute>
                     }
                 />

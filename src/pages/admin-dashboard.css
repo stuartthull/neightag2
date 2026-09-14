@@ -1,0 +1,220 @@
+.admin-page {
+    min-height: 70vh;
+    padding: 48px clamp(16px, 4vw, 64px) 80px;
+    background: var(--alabaster-bg);
+}
+
+.admin-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    max-width: 1440px;
+    margin: 0 auto 32px;
+}
+
+.admin-eyebrow {
+    margin: 0 0 8px;
+    color: var(--terracota);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.admin-header h1 {
+    margin: 0;
+    color: var(--hunter-green);
+    font-family: Montserrat, sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.admin-intro {
+    margin: 8px 0 0;
+    color: var(--darkgrey);
+}
+
+.admin-refresh {
+    border: 1px solid var(--primarycolor);
+    border-radius: 4px;
+    padding: 10px 16px;
+    background: var(--primarycolor);
+    color: var(--white);
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.admin-stats,
+.admin-table-panel {
+    max-width: 1440px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.admin-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-top: 3px solid var(--orange);
+    padding: 16px 18px;
+    background: var(--white);
+}
+
+.admin-stats strong {
+    color: var(--hunter-green);
+    font-family: Montserrat, sans-serif;
+    font-size: 1.75rem;
+}
+
+.admin-stats span,
+.admin-table-toolbar span {
+    color: var(--darkgrey);
+    font-size: 0.85rem;
+}
+
+.admin-table-panel {
+    overflow: hidden;
+    border: 1px solid var(--light-border);
+    background: var(--white);
+}
+
+.admin-table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--light-border);
+}
+
+.admin-table-toolbar label {
+    color: var(--hunter-green);
+    font-weight: 700;
+}
+
+.admin-table-toolbar input {
+    min-width: min(360px, 50vw);
+    border: 1px solid var(--lightprimary);
+    border-radius: 3px;
+    padding: 9px 12px;
+    font: inherit;
+}
+
+.admin-table-toolbar span {
+    margin-left: auto;
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+}
+
+.admin-table-wrap table {
+    width: 100%;
+    min-width: 960px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-table-wrap th,
+.admin-table-wrap td {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--light-border);
+    vertical-align: top;
+}
+
+.admin-table-wrap th {
+    background: var(--tertiary-tint);
+    color: var(--hunter-green);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.admin-table-wrap td {
+    color: var(--black);
+    font-size: 0.9rem;
+    overflow-wrap: anywhere;
+}
+
+.admin-mono {
+    max-width: 125px;
+    overflow-wrap: anywhere;
+    font-family: monospace;
+    font-size: 0.78rem !important;
+}
+
+.admin-horse-link {
+    color: var(--terracota);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.admin-status {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 4px 8px;
+    background: var(--tertiary-tint);
+    color: var(--darkgrey);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.status-active {
+    background: #e3f2e8;
+    color: #22613a;
+}
+
+.admin-state,
+.admin-error {
+    padding: 40px;
+    text-align: center;
+}
+
+.admin-error {
+    color: var(--secondarycolor);
+}
+
+@media (max-width: 700px) {
+    .admin-page {
+        padding-top: 28px;
+    }
+
+    .admin-header,
+    .admin-table-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-refresh {
+        align-self: flex-start;
+    }
+
+    .admin-stats {
+        gap: 8px;
+    }
+
+    .admin-stats div {
+        padding: 12px;
+    }
+
+    .admin-stats strong {
+        font-size: 1.35rem;
+    }
+
+    .admin-table-toolbar input {
+        min-width: 0;
+    }
+
+    .admin-table-toolbar span {
+        margin-left: 0;
+    }
+}
