@@ -3,13 +3,15 @@ import TravelTapTagImage from '../../assets/travel-taptag.jpg';
 import StableTagImage from '../../assets/stable-tap-card.jpg';
 import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 import SmallStableTagImage from '../../assets/small-taptag.jpg';
+import PersonalisedHorseboxPosterImage from '../../assets/personalised-horsebox-poster.jpg';
 
 export type ProductId =
     | 'taptag'
     | 'travel-taptag'
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
-    | 'small-stable-tag';
+    | 'small-stable-tag'
+    | 'personalised-horsebox-poster';
 
 export interface ShopProduct {
     id: ProductId;
@@ -118,5 +120,22 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'Do let us know if your stable door is metalllic, then we can provide this product to ensure it works correctly',
         ],
         checkoutLabel: 'Buy Small Stable Tag - £3.95',
+    },
+    'personalised-horsebox-poster': {
+        id: 'personalised-horsebox-poster',
+        slug: 'personalised-horsebox-poster',
+        name: 'Personalised Horse Box Poster A4',
+        price: '£5.95',
+        image: PersonalisedHorseboxPosterImage,
+        imageAlt: 'Personalised A4 NeighTag horse box poster',
+        description:
+            "A personalised A4 horse box poster displaying your horse's important NeighTag details.",
+        benefits: [
+            'Personalised A4 poster',
+            'Clear horse information for display in your horse box',
+            'Secure payment through Stripe',
+            'NeighTag subscription required',
+        ],
+        checkoutLabel: 'Buy Personalised Horse Box Poster A4 - £5.95',
     },
 };
