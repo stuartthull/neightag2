@@ -136,6 +136,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             "A personalised A4 horse box poster displaying your horse's important NeighTag details.",
         benefits: [
             'Personalised A4 poster',
+            'Durable laminated finish',
             'Clear horse information for display in your horse box',
             'Secure payment through Stripe',
             'Size: 210mm x 297mm',
