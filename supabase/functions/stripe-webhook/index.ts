@@ -333,9 +333,12 @@ serve(async (req) => {
             const session = event.data.object;
 
             if (
-                ['taptag', 'laminated_stable_tag', 'high_gloss_stable_tag'].includes(
-                    session.metadata?.order_type || ''
-                ) &&
+                [
+                    'taptag',
+                    'laminated_stable_tag',
+                    'high_gloss_stable_tag',
+                    'horsebox_poster',
+                ].includes(session.metadata?.order_type || '') &&
                 session.payment_status === 'paid'
             ) {
                 await sendOrderNotification(session, event.id);

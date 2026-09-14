@@ -16,7 +16,8 @@ type ProductId =
     | 'travel-taptag'
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
-    | 'small-stable-tag';
+    | 'small-stable-tag'
+    | 'personalised-horsebox-poster';
 
 type Product = {
     name: string;
@@ -29,7 +30,8 @@ const isProductId = (value: unknown): value is ProductId =>
     value === 'travel-taptag' ||
     value === 'laminated-stable-tag' ||
     value === 'high-gloss-stable-tag' ||
-    value === 'small-stable-tag';
+    value === 'small-stable-tag' ||
+    value === 'personalised-horsebox-poster';
 
 Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') {
@@ -94,6 +96,11 @@ Deno.serve(async (req) => {
                 priceId:
                     Deno.env.get('STRIPE_SMALL_STABLE_TAG_PRICE_ID') ||
                     defaultSmallStableTagPriceId,
+            },
+            'personalised-horsebox-poster': {
+                name: 'Personalised Horse Box Poster A4',
+                orderType: 'horsebox_poster',
+                priceId: Deno.env.get('STRIPE_PERSONALISED_HORSEBOX_POSTER_PRICE_ID') || '',
             },
         };
 
