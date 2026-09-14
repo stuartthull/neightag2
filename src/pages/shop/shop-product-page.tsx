@@ -107,7 +107,6 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             type="button"
                             className="buttonMain buttonOrange shop-buy-button"
                             onClick={handleCheckout}
-                            disabled={loading}
                         >
                             {product.checkoutLabel}
                         </button>
