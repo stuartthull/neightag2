@@ -16,12 +16,10 @@ interface ShopProductPageProps {
 
 export default function ShopProductPage({ product }: ShopProductPageProps): React.JSX.Element {
     const [searchParams] = useSearchParams();
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const paymentStatus = searchParams.get('payment');
 
     const handleCheckout = async (): Promise<void> => {
-        setLoading(true);
         setError(null);
 
         const { data, error: checkoutError } = await supabase.functions.invoke<CheckoutResponse>(
@@ -31,13 +29,11 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
 
         if (checkoutError) {
             setError(checkoutError.message || 'Unable to open Stripe Checkout.');
-            setLoading(false);
             return;
         }
 
         if (!data?.url) {
             setError('Stripe did not return a checkout link. Please try again.');
-            setLoading(false);
             return;
         }
 
