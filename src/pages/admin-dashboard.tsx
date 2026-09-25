@@ -77,7 +77,9 @@ export default function AdminDashboard(): React.JSX.Element {
         );
     }, [rows, search]);
 
-    const activeSubscriptions = rows.filter((row) => row.subscription_status === 'active').length;
+    const activeSubscriptions = rows.filter(
+        (row) => row.subscription_status === 'active' && Boolean(row.stripe_customer_id)
+    ).length;
     const customerCount = new Set(rows.map((row) => row.user_id)).size;
 
     if (loading) {
