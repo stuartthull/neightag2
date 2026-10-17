@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import HorseDetails from './horse-details';
 import { supabase } from '../supabaseClient';
@@ -149,8 +149,28 @@ function mockSupabaseQueries(horse = horseData) {
 describe('HorseDetails', () => {
     beforeEach(() => {
         jest.clearAllMocks();
+        window.history.replaceState(null, '', '/');
         mockGetSession.mockResolvedValue({ data: { session: null } });
         mockSupabaseQueries();
+    });
+
+    it('opens the feeds tab from the #feeds URL hash and updates the hash when selected', async () => {
+        window.history.replaceState(null, '', `/horse-details/${horseUuid}#feeds`);
+
+        render(
+            <HelmetProvider>
+                <HorseDetails />
+            </HelmetProvider>
+        );
+
+        const feedsTab = await screen.findByRole('tab', { name: 'Feeds & Turnout' });
+        await waitFor(() => expect(feedsTab).toHaveAttribute('aria-selected', 'true'));
+        expect(
+            screen.getByRole('tabpanel', { name: 'Feeds & Turnout', hidden: true })
+        ).not.toHaveAttribute('hidden');
+
+        fireEvent.click(screen.getByRole('tab', { name: 'Emergency & Vet' }));
+        expect(window.location.hash).toBe('');
     });
 
     it('renders every allowed public detail and hides private details', async () => {

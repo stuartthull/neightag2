@@ -15,13 +15,38 @@ function HorseDetails() {
     const [isUserOwner, setIsUserOwner] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const [activeTab, setActiveTab] = useState<'emergency' | 'identity' | 'feeds'>('emergency');
+    const [activeTab, setActiveTab] = useState<'emergency' | 'identity' | 'feeds'>(() =>
+        window.location.hash === '#feeds' ? 'feeds' : 'emergency'
+    );
 
     const tabRefs = {
         emergency: useRef<HTMLButtonElement>(null),
         identity: useRef<HTMLButtonElement>(null),
         feeds: useRef<HTMLButtonElement>(null),
     };
+
+    const changeTab = (tab: 'emergency' | 'identity' | 'feeds') => {
+        setActiveTab(tab);
+        const hash = tab === 'feeds' ? '#feeds' : '';
+        window.history.replaceState(
+            null,
+            '',
+            `${window.location.pathname}${window.location.search}${hash}`
+        );
+    };
+
+    useEffect(() => {
+        const syncTabWithHash = () => {
+            setActiveTab(window.location.hash === '#feeds' ? 'feeds' : 'emergency');
+        };
+
+        window.addEventListener('hashchange', syncTabWithHash);
+        window.addEventListener('popstate', syncTabWithHash);
+        return () => {
+            window.removeEventListener('hashchange', syncTabWithHash);
+            window.removeEventListener('popstate', syncTabWithHash);
+        };
+    }, []);
 
     useEffect(() => {
         const dataEngine = async () => {
@@ -170,11 +195,11 @@ function HorseDetails() {
 
         if (e.key === 'ArrowRight') {
             nextIndex = (currentIndex + 1) % tabs.length;
-            setActiveTab(tabs[nextIndex]);
+            changeTab(tabs[nextIndex]);
             tabRefs[tabs[nextIndex]].current?.focus();
         } else if (e.key === 'ArrowLeft') {
             nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-            setActiveTab(tabs[nextIndex]);
+            changeTab(tabs[nextIndex]);
             tabRefs[tabs[nextIndex]].current?.focus();
         }
     };
@@ -248,7 +273,7 @@ function HorseDetails() {
                             aria-selected={activeTab === 'emergency'}
                             aria-controls="panel-emergency"
                             tabIndex={activeTab === 'emergency' ? 0 : -1}
-                            onClick={() => setActiveTab('emergency')}
+                            onClick={() => changeTab('emergency')}
                             onKeyDown={(e) => handleKeyDown(e, 'emergency')}
                             className="tab-trigger text-small"
                         >
@@ -261,7 +286,7 @@ function HorseDetails() {
                             aria-selected={activeTab === 'identity'}
                             aria-controls="panel-identity"
                             tabIndex={activeTab === 'identity' ? 0 : -1}
-                            onClick={() => setActiveTab('identity')}
+                            onClick={() => changeTab('identity')}
                             onKeyDown={(e) => handleKeyDown(e, 'identity')}
                             className="tab-trigger text-small"
                         >
@@ -274,7 +299,7 @@ function HorseDetails() {
                             aria-selected={activeTab === 'feeds'}
                             aria-controls="panel-feeds"
                             tabIndex={activeTab === 'feeds' ? 0 : -1}
-                            onClick={() => setActiveTab('feeds')}
+                            onClick={() => changeTab('feeds')}
                             onKeyDown={(e) => handleKeyDown(e, 'feeds')}
                             className="tab-trigger text-small"
                         >
@@ -294,78 +319,78 @@ function HorseDetails() {
                     {(showPrimaryEmergencyContact ||
                         showSecondaryEmergencyContact ||
                         showThirdEmergencyContact) && (
-                        <section className="section-container white-section-container">
-                            <h2 className="textmedium marginbsixteen">Emergency Protocols</h2>
-                            {showPrimaryEmergencyContact && (
-                                <div className="horsebox-panel breakdown-panel">
-                                    <p className="textmedium marginbsixteen">
-                                        Primary Contact:&nbsp;
-                                        {shouldShow('show_emergency_name_one') && (
-                                            <span className="textbold">
-                                                {horse.emergency_name_one || 'N/A'}
-                                            </span>
-                                        )}
-                                    </p>
+                            <section className="section-container white-section-container">
+                                <h2 className="textmedium marginbsixteen">Emergency Protocols</h2>
+                                {showPrimaryEmergencyContact && (
+                                    <div className="horsebox-panel breakdown-panel">
+                                        <p className="textmedium marginbsixteen">
+                                            Primary Contact:&nbsp;
+                                            {shouldShow('show_emergency_name_one') && (
+                                                <span className="textbold">
+                                                    {horse.emergency_name_one || 'N/A'}
+                                                </span>
+                                            )}
+                                        </p>
 
-                                    {shouldShow('show_emergency_phone_one') && (
-                                        <p className="text-normal">
-                                            <a
-                                                href={`tel:${horse.emergency_phone_one}`}
-                                                className="buttonMain buttonOrange"
-                                            >
-                                                📞 {horse.emergency_phone_one || 'N/A'}
-                                            </a>
-                                        </p>
-                                    )}
-                                </div>
-                            )}
-                            {showSecondaryEmergencyContact && (
-                                <div className="horsebox-panel breakdown-panel">
-                                    <p className="textmedium marginbsixteen">
-                                        Secondary Contact:&nbsp;
-                                        {shouldShow('show_emergency_name_two') && (
-                                            <span className="textbold">
-                                                {horse.emergency_name_two || 'N/A'}
-                                            </span>
+                                        {shouldShow('show_emergency_phone_one') && (
+                                            <p className="text-normal">
+                                                <a
+                                                    href={`tel:${horse.emergency_phone_one}`}
+                                                    className="buttonMain buttonOrange"
+                                                >
+                                                    📞 {horse.emergency_phone_one || 'N/A'}
+                                                </a>
+                                            </p>
                                         )}
-                                    </p>
-                                    {shouldShow('show_emergency_phone_two') && (
-                                        <p className="text-normal">
-                                            <a
-                                                href={`tel:${horse.emergency_phone_two}`}
-                                                className="buttonMain buttonOrange"
-                                            >
-                                                📞 {horse.emergency_phone_two || 'N/A'}
-                                            </a>
+                                    </div>
+                                )}
+                                {showSecondaryEmergencyContact && (
+                                    <div className="horsebox-panel breakdown-panel">
+                                        <p className="textmedium marginbsixteen">
+                                            Secondary Contact:&nbsp;
+                                            {shouldShow('show_emergency_name_two') && (
+                                                <span className="textbold">
+                                                    {horse.emergency_name_two || 'N/A'}
+                                                </span>
+                                            )}
                                         </p>
-                                    )}
-                                </div>
-                            )}
-                            {showThirdEmergencyContact && (
-                                <div className="horsebox-panel breakdown-panel">
-                                    <p className="textmedium marginbsixteen">
-                                        Third Contact:&nbsp;
-                                        {shouldShow('show_emergency_name_three') && (
-                                            <span className="textbold">
-                                                {horse.emergency_name_three || 'N/A'}
-                                            </span>
+                                        {shouldShow('show_emergency_phone_two') && (
+                                            <p className="text-normal">
+                                                <a
+                                                    href={`tel:${horse.emergency_phone_two}`}
+                                                    className="buttonMain buttonOrange"
+                                                >
+                                                    📞 {horse.emergency_phone_two || 'N/A'}
+                                                </a>
+                                            </p>
                                         )}
-                                    </p>
+                                    </div>
+                                )}
+                                {showThirdEmergencyContact && (
+                                    <div className="horsebox-panel breakdown-panel">
+                                        <p className="textmedium marginbsixteen">
+                                            Third Contact:&nbsp;
+                                            {shouldShow('show_emergency_name_three') && (
+                                                <span className="textbold">
+                                                    {horse.emergency_name_three || 'N/A'}
+                                                </span>
+                                            )}
+                                        </p>
 
-                                    {shouldShow('show_emergency_phone_three') && (
-                                        <p className="text-normal">
-                                            <a
-                                                href={`tel:${horse.emergency_phone_three}`}
-                                                className="buttonMain buttonOrange"
-                                            >
-                                                📞 {horse.emergency_phone_three || 'N/A'}
-                                            </a>
-                                        </p>
-                                    )}
-                                </div>
-                            )}
-                        </section>
-                    )}
+                                        {shouldShow('show_emergency_phone_three') && (
+                                            <p className="text-normal">
+                                                <a
+                                                    href={`tel:${horse.emergency_phone_three}`}
+                                                    className="buttonMain buttonOrange"
+                                                >
+                                                    📞 {horse.emergency_phone_three || 'N/A'}
+                                                </a>
+                                            </p>
+                                        )}
+                                    </div>
+                                )}
+                            </section>
+                        )}
 
                     {shouldShow('show_horse_behaviours') && (
                         <section className="section-container white-section-container">
@@ -389,105 +414,105 @@ function HorseDetails() {
                         shouldShow('show_last_weighed') ||
                         shouldShow('show_height') ||
                         shouldShow('show_weight')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium marginbsixteen">Identity & Identification</h2>
-                            {shouldShow('show_breed') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Breed:</span>{' '}
-                                    <strong>{horse.horse_breed || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_colour') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Color:</span>{' '}
-                                    <strong>{horse.horse_colour || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_dob') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Date of Birth:</span>{' '}
-                                    <strong>{formatGBDate(horse.horse_dob) || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_passport') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Passport Number:</span>{' '}
-                                    <strong>{horse.horse_passport_number || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_height') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Height:</span>{' '}
-                                    <strong>{horse.horse_height || 'N/A'} hh</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_weight') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Current Weight:</span>{' '}
-                                    <strong>{horse.horse_weight_kg || '--'} kg</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_last_weighed') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Last Weighed:</span>{' '}
-                                    <strong>
-                                        {formatGBDate(horse.horse_last_weighed) || 'N/A'}
-                                    </strong>
-                                </div>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium marginbsixteen">Identity & Identification</h2>
+                                {shouldShow('show_breed') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Breed:</span>{' '}
+                                        <strong>{horse.horse_breed || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_colour') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Color:</span>{' '}
+                                        <strong>{horse.horse_colour || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_dob') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Date of Birth:</span>{' '}
+                                        <strong>{formatGBDate(horse.horse_dob) || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_passport') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Passport Number:</span>{' '}
+                                        <strong>{horse.horse_passport_number || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_height') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Height:</span>{' '}
+                                        <strong>{horse.horse_height || 'N/A'} hh</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_weight') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Current Weight:</span>{' '}
+                                        <strong>{horse.horse_weight_kg || '--'} kg</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_last_weighed') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Last Weighed:</span>{' '}
+                                        <strong>
+                                            {formatGBDate(horse.horse_last_weighed) || 'N/A'}
+                                        </strong>
+                                    </div>
+                                )}
+                            </section>
+                        )}
 
                     {(shouldShow('show_vet_name') ||
                         shouldShow('show_vet_practice') ||
                         shouldShow('show_vet_phone') ||
                         shouldShow('show_medication') ||
                         shouldShow('show_allergies')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium">Veterinary Care</h2>
-                            {shouldShow('show_vet_name') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Vet Name:</span>{' '}
-                                    <strong>{horse.horse_vet_name || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_vet_practice') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Practice:</span>{' '}
-                                    <strong>{horse.horse_vet_practice || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_vet_phone') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Contact Phone:</span>{' '}
-                                    <strong>
-                                        {horse.horse_vet_phone_one ? (
-                                            <a
-                                                href={`tel:${horse.horse_vet_phone_one}`}
-                                                className="buttonSmall buttonOrange"
-                                            >
-                                                📞 {horse.horse_vet_phone_one}
-                                            </a>
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                    </strong>
-                                </div>
-                            )}
-                            {shouldShow('show_medication') && (
-                                <p className="text-normal marginbsixteen">
-                                    Medication Log: <br />
-                                    <strong>{horse.horse_medication || 'None'}</strong>
-                                </p>
-                            )}
-                            {shouldShow('show_allergies') && (
-                                <p className="text-normal">
-                                    Allergies: <br />
-                                    <strong>{horse.horse_allergies || 'None'}</strong>
-                                </p>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium">Veterinary Care</h2>
+                                {shouldShow('show_vet_name') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Vet Name:</span>{' '}
+                                        <strong>{horse.horse_vet_name || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_vet_practice') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Practice:</span>{' '}
+                                        <strong>{horse.horse_vet_practice || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_vet_phone') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Contact Phone:</span>{' '}
+                                        <strong>
+                                            {horse.horse_vet_phone_one ? (
+                                                <a
+                                                    href={`tel:${horse.horse_vet_phone_one}`}
+                                                    className="buttonSmall buttonOrange"
+                                                >
+                                                    📞 {horse.horse_vet_phone_one}
+                                                </a>
+                                            ) : (
+                                                'N/A'
+                                            )}
+                                        </strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_medication') && (
+                                    <p className="text-normal marginbsixteen">
+                                        Medication Log: <br />
+                                        <strong>{horse.horse_medication || 'None'}</strong>
+                                    </p>
+                                )}
+                                {shouldShow('show_allergies') && (
+                                    <p className="text-normal">
+                                        Allergies: <br />
+                                        <strong>{horse.horse_allergies || 'None'}</strong>
+                                    </p>
+                                )}
+                            </section>
+                        )}
                 </div>
 
                 {/* TAB 2: STABLE DETAILS */}
@@ -517,178 +542,178 @@ function HorseDetails() {
                         shouldShow('show_farrier_phone_one') ||
                         shouldShow('show_farrier_next') ||
                         shouldShow('show_farrier_notes')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium">Farrier</h2>
-                            {shouldShow('show_farrier_name') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Farrier Name:</span>{' '}
-                                    <strong>{horse.farrier_name || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_farrier_phone_one') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Phone:</span>{' '}
-                                    <strong>
-                                        {horse.farrier_phone_one ? (
-                                            <a
-                                                href={`tel:${horse.farrier_phone_one}`}
-                                                className="buttonSmall buttonOrange"
-                                            >
-                                                📞 {horse.farrier_phone_one}
-                                            </a>
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                    </strong>
-                                </div>
-                            )}
-                            {shouldShow('show_farrier_next') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Next Appointment:</span> <strong>{farrierDate}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_farrier_notes') && (
-                                <div className="text-normal marginbeight">
-                                    <span>Notes:</span>
-                                    <br />
-                                    <strong>{horse.farrier_notes || 'None'}</strong>
-                                </div>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium">Farrier</h2>
+                                {shouldShow('show_farrier_name') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Farrier Name:</span>{' '}
+                                        <strong>{horse.farrier_name || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_farrier_phone_one') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Phone:</span>{' '}
+                                        <strong>
+                                            {horse.farrier_phone_one ? (
+                                                <a
+                                                    href={`tel:${horse.farrier_phone_one}`}
+                                                    className="buttonSmall buttonOrange"
+                                                >
+                                                    📞 {horse.farrier_phone_one}
+                                                </a>
+                                            ) : (
+                                                'N/A'
+                                            )}
+                                        </strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_farrier_next') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Next Appointment:</span> <strong>{farrierDate}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_farrier_notes') && (
+                                    <div className="text-normal marginbeight">
+                                        <span>Notes:</span>
+                                        <br />
+                                        <strong>{horse.farrier_notes || 'None'}</strong>
+                                    </div>
+                                )}
+                            </section>
+                        )}
 
                     {(shouldShow('show_dentist_name') ||
                         shouldShow('show_dentist_phone') ||
                         shouldShow('show_dentist_next') ||
                         shouldShow('show_dentist_notes')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium">Dentist</h2>
-                            {shouldShow('show_dentist_name') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Dentist Name:</span>{' '}
-                                    <strong>{horse.dentist_name || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_dentist_phone') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Phone:</span>{' '}
-                                    <strong>
-                                        {horse.dentist_phone_one ? (
-                                            <a
-                                                href={`tel:${horse.dentist_phone_one}`}
-                                                className="buttonSmall buttonOrange"
-                                            >
-                                                📞 {horse.dentist_phone_one}
-                                            </a>
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                    </strong>
-                                </div>
-                            )}
-                            {shouldShow('show_dentist_next') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Next Exam:</span> <strong>{dentistDate}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_dentist_notes') && (
-                                <div className="text-normal marginbeight">
-                                    <span>Notes:</span>
-                                    <br />
-                                    <strong>{horse.dentist_notes || 'None'}</strong>
-                                </div>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium">Dentist</h2>
+                                {shouldShow('show_dentist_name') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Dentist Name:</span>{' '}
+                                        <strong>{horse.dentist_name || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_dentist_phone') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Phone:</span>{' '}
+                                        <strong>
+                                            {horse.dentist_phone_one ? (
+                                                <a
+                                                    href={`tel:${horse.dentist_phone_one}`}
+                                                    className="buttonSmall buttonOrange"
+                                                >
+                                                    📞 {horse.dentist_phone_one}
+                                                </a>
+                                            ) : (
+                                                'N/A'
+                                            )}
+                                        </strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_dentist_next') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Next Exam:</span> <strong>{dentistDate}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_dentist_notes') && (
+                                    <div className="text-normal marginbeight">
+                                        <span>Notes:</span>
+                                        <br />
+                                        <strong>{horse.dentist_notes || 'None'}</strong>
+                                    </div>
+                                )}
+                            </section>
+                        )}
 
                     {(shouldShow('show_saddle_fitter_name') ||
                         shouldShow('show_saddle_fitter_phone') ||
                         shouldShow('show_saddle_fitter_next') ||
                         shouldShow('show_saddle_fitter_notes')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium">Saddle Fitter</h2>
-                            {shouldShow('show_saddle_fitter_name') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Fitter Name:</span>{' '}
-                                    <strong>{horse.saddle_fitter_name || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_saddle_fitter_phone') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Contact Phone:</span>{' '}
-                                    <strong>
-                                        {horse.saddle_fitter_phone ? (
-                                            <a
-                                                href={`tel:${horse.saddle_fitter_phone}`}
-                                                className="buttonSmall buttonOrange"
-                                            >
-                                                📞 {horse.saddle_fitter_phone}
-                                            </a>
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                    </strong>
-                                </div>
-                            )}
-                            {shouldShow('show_saddle_fitter_next') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Next Appointment:</span>{' '}
-                                    <strong>{saddleFitterDate}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_saddle_fitter_notes') && (
-                                <div className="text-normal marginbeight">
-                                    <span>Notes:</span>
-                                    <br />
-                                    <strong>{horse.saddle_fitter_notes || 'None'}</strong>
-                                </div>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium">Saddle Fitter</h2>
+                                {shouldShow('show_saddle_fitter_name') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Fitter Name:</span>{' '}
+                                        <strong>{horse.saddle_fitter_name || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_saddle_fitter_phone') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Contact Phone:</span>{' '}
+                                        <strong>
+                                            {horse.saddle_fitter_phone ? (
+                                                <a
+                                                    href={`tel:${horse.saddle_fitter_phone}`}
+                                                    className="buttonSmall buttonOrange"
+                                                >
+                                                    📞 {horse.saddle_fitter_phone}
+                                                </a>
+                                            ) : (
+                                                'N/A'
+                                            )}
+                                        </strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_saddle_fitter_next') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Next Appointment:</span>{' '}
+                                        <strong>{saddleFitterDate}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_saddle_fitter_notes') && (
+                                    <div className="text-normal marginbeight">
+                                        <span>Notes:</span>
+                                        <br />
+                                        <strong>{horse.saddle_fitter_notes || 'None'}</strong>
+                                    </div>
+                                )}
+                            </section>
+                        )}
 
                     {(shouldShow('show_physio_name') ||
                         shouldShow('show_physio_phone') ||
                         shouldShow('show_physio_next') ||
                         shouldShow('show_physio_notes')) && (
-                        <section className="card marginbsixteen">
-                            <h2 className="textmedium">Physiotherapist</h2>
-                            {shouldShow('show_physio_name') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Physio Name:</span>{' '}
-                                    <strong>{horse.physio_name || 'N/A'}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_physio_phone') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Contact Phone:</span>{' '}
-                                    <strong>
-                                        {horse.physio_phone ? (
-                                            <a
-                                                href={`tel:${horse.physio_phone}`}
-                                                className="buttonSmall buttonOrange"
-                                            >
-                                                📞 {horse.physio_phone}
-                                            </a>
-                                        ) : (
-                                            'N/A'
-                                        )}
-                                    </strong>
-                                </div>
-                            )}
-                            {shouldShow('show_physio_next') && (
-                                <div className="text-normal marginbeight datarow">
-                                    <span>Next Appointment:</span> <strong>{physioDate}</strong>
-                                </div>
-                            )}
-                            {shouldShow('show_physio_notes') && (
-                                <div className="text-normal marginbeight">
-                                    <span>Notes:</span>
-                                    <br />
-                                    <strong>{horse.physio_notes || 'None'}</strong>
-                                </div>
-                            )}
-                        </section>
-                    )}
+                            <section className="card marginbsixteen">
+                                <h2 className="textmedium">Physiotherapist</h2>
+                                {shouldShow('show_physio_name') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Physio Name:</span>{' '}
+                                        <strong>{horse.physio_name || 'N/A'}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_physio_phone') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Contact Phone:</span>{' '}
+                                        <strong>
+                                            {horse.physio_phone ? (
+                                                <a
+                                                    href={`tel:${horse.physio_phone}`}
+                                                    className="buttonSmall buttonOrange"
+                                                >
+                                                    📞 {horse.physio_phone}
+                                                </a>
+                                            ) : (
+                                                'N/A'
+                                            )}
+                                        </strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_physio_next') && (
+                                    <div className="text-normal marginbeight datarow">
+                                        <span>Next Appointment:</span> <strong>{physioDate}</strong>
+                                    </div>
+                                )}
+                                {shouldShow('show_physio_notes') && (
+                                    <div className="text-normal marginbeight">
+                                        <span>Notes:</span>
+                                        <br />
+                                        <strong>{horse.physio_notes || 'None'}</strong>
+                                    </div>
+                                )}
+                            </section>
+                        )}
                 </div>
 
                 {/* TAB 3: FEEDS AND TURNOUT */}

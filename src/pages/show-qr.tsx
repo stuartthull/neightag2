@@ -11,6 +11,7 @@ export default function ShowQr(): React.JSX.Element {
     const [horseName, setHorseName] = useState<string | null>(null);
     const [horseImageUrl, setHorseImageUrl] = useState<string | null>(null);
     const qrValue = `${SITE_URL}/horse-details/${horse_uuid || ''}`;
+    const feedsQrValue = `${qrValue}#feeds`;
 
     useEffect(() => {
         if (!horse_uuid) return;
@@ -50,7 +51,8 @@ export default function ShowQr(): React.JSX.Element {
                                         style={{ width: '280px', height: '280px', objectFit: 'cover', borderRadius: '4px', flex: '0 0 280px' }}
                                     />
                                 )}
-                                <div style={{ width: '280px', height: '280px', flex: '0 0 280px' }}>
+                                <div style={{ flex: '0 0 280px', textAlign: 'center' }}>
+                                    <p className="text-normal">Horse profile</p>
                                     <QRCodeSVG
                                         value={qrValue}
                                         size={280}
@@ -61,9 +63,24 @@ export default function ShowQr(): React.JSX.Element {
                                         aria-label="Horse profile QR code"
                                     />
                                 </div>
+                                <div style={{ flex: '0 0 280px', textAlign: 'center' }}>
+                                    <p className="text-normal">Feeds &amp; Turnout</p>
+                                    <QRCodeSVG
+                                        value={feedsQrValue}
+                                        size={280}
+                                        bgColor="#ffffff"
+                                        fgColor="#000000"
+                                        level="H"
+                                        role="img"
+                                        aria-label="Feeds and turnout QR code"
+                                    />
+                                </div>
                             </div>
                             <p className="text-normal">
-                                <a href={qrValue}>{qrValue}</a>
+                                <a href={qrValue}>Horse profile: {qrValue}</a>
+                            </p>
+                            <p className="text-normal">
+                                <a href={feedsQrValue}>Feeds &amp; Turnout: {feedsQrValue}</a>
                             </p>
                         </>
                     ) : (
