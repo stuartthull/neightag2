@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 
 interface HorseSummary {
@@ -8,7 +8,6 @@ interface HorseSummary {
 
 export default function AddFarrierCalendarEntry(): React.JSX.Element {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
-    const navigate = useNavigate();
     const [horse, setHorse] = useState<HorseSummary | null>(null);
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
