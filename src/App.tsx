@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { supabase } from './supabaseClient';
 
 import NavBar from './components/navbar';
 import Home from './pages/home';
@@ -15,6 +16,8 @@ import FieldPrivacy from './pages/field-privacy';
 import ProtectedRoute from './components/protected-route';
 import CalendarView from './pages/view-calendar';
 import AddCalendarEntry from './pages/add-calendar';
+import AddFarrierCalendarEntry from './pages/add-farrier-calendar-entry';
+import FarrierAppointmentRequests from './pages/farrier-appointment-requests';
 import EditCalendarEntry from './pages/edit-calendar';
 import HorseboxView from './pages/horsebox-view';
 import HorseboxEdit from './pages/horsebox-edit';
@@ -216,6 +219,20 @@ function AppContent(): React.JSX.Element {
                 />
 
                 <Route
+                    path="/calendar/farrier/:horse_uuid/add"
+                    element={<AddFarrierCalendarEntry />}
+                />
+
+                <Route
+                    path="/farrier-appointment-requests/:horse_uuid"
+                    element={
+                        <ProtectedRoute>
+                            <FarrierAppointmentRequests />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
                     path="/calendar/edit/:id"
                     element={
                         <ProtectedRoute>
@@ -245,6 +262,61 @@ export default function App() {
 }
 
 const Navigation = () => {
+    const location = useLocation();
+    const [userId, setUserId] = React.useState<string | null>(null);
+    const [pendingFarrierRequestCount, setPendingFarrierRequestCount] = React.useState(0);
+
+    React.useEffect(() => {
+        let active = true;
+        supabase.auth.getSession().then(({ data, error }) => {
+            if (error) {
+                console.error('Could not read the current session:', error.message);
+            }
+            if (active) {
+                setUserId(data.session?.user.id ?? null);
+            }
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUserId(session?.user.id ?? null);
+        });
+
+        return () => {
+            active = false;
+            subscription.unsubscribe();
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (!userId) {
+            setPendingFarrierRequestCount(0);
+            return;
+        }
+
+        let active = true;
+        const loadPendingCount = async () => {
+            const { count, error } = await supabase
+                .from('equi_farrier_appointment_requests')
+                .select('id', { count: 'exact', head: true })
+                .eq('status', 'pending');
+
+            if (error) {
+                console.error('Could not load pending farrier appointment requests:', error.message);
+                return;
+            }
+            if (active) {
+                setPendingFarrierRequestCount(count ?? 0);
+            }
+        };
+
+        void loadPendingCount();
+        const intervalId = window.setInterval(() => void loadPendingCount(), 60_000);
+        return () => {
+            active = false;
+            window.clearInterval(intervalId);
+        };
+    }, [location.pathname, userId]);
+
     return (
         <nav className="navigation no-print">
             <div className="navholder">
@@ -255,8 +327,21 @@ const Navigation = () => {
                 </a>
                 <div className="nav-buttons">
                     <NavBar />
-                    <Link to="/dashboard" className="nav-link">
-                        <HamburgerSvg />
+                    <Link
+                        to="/dashboard"
+                        className="nav-link"
+                        aria-label={
+                            pendingFarrierRequestCount > 0
+                                ? `Your Stable, ${pendingFarrierRequestCount} pending farrier appointment request${pendingFarrierRequestCount === 1 ? '' : 's'}`
+                                : 'Your Stable'
+                        }
+                    >
+                        <span className="nav-icon-wrapper">
+                            <HamburgerSvg />
+                            {pendingFarrierRequestCount > 0 && (
+                                <span className="nav-notification-dot" aria-hidden="true" />
+                            )}
+                        </span>
                         <span className="nav-link-text">Your Stable</span>
                     </Link>
                 </div>

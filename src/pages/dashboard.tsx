@@ -14,6 +14,14 @@ type LogRecord = {
     horse_image_url: string | null;
 };
 
+type PendingFarrierRequest = {
+    id: number;
+    horse_uuid: string;
+    appointment_date: string;
+    appointment_time: string | null;
+    appointment_notes: string;
+};
+
 type SubscriptionMap = {
     [horseUuid: string]: boolean;
 };
@@ -42,6 +50,8 @@ export default function Dashboard() {
     const [pendingDeleteHorseUuid, setPendingDeleteHorseUuid] = useState<string | null>(null);
     const [deletingHorseUuid, setDeletingHorseUuid] = useState<string | null>(null);
     const [updatingPublicProfiles, setUpdatingPublicProfiles] = useState<SubscriptionMap>({});
+    const [pendingFarrierRequests, setPendingFarrierRequests] = useState<PendingFarrierRequest[]>([]);
+    const [farrierRequestsError, setFarrierRequestsError] = useState('');
 
     // Older subscriptions may be split across more than one Stripe customer.
     const [stripeCustomers, setStripeCustomers] = useState<StripeCustomer[]>([]);
@@ -75,6 +85,27 @@ export default function Dashboard() {
             is_public: log.is_public ?? true,
         }));
         setMyLogs(logs);
+
+        if (logs.length === 0) {
+            setPendingFarrierRequests([]);
+            setFarrierRequestsError('');
+        } else {
+            const { data: requestData, error: requestError } = await supabase
+                .from('equi_farrier_appointment_requests')
+                .select('id, horse_uuid, appointment_date, appointment_time, appointment_notes')
+                .in('horse_uuid', logs.map((log) => log.horse_uuid))
+                .eq('status', 'pending')
+                .order('created_at', { ascending: true });
+
+            if (requestError) {
+                console.error('Error fetching farrier appointment requests:', requestError.message);
+                setFarrierRequestsError('Could not load pending farrier appointment requests.');
+                setPendingFarrierRequests([]);
+            } else {
+                setFarrierRequestsError('');
+                setPendingFarrierRequests((requestData as PendingFarrierRequest[]) || []);
+            }
+        }
 
         // 2. Fetch subscription status along with Stripe Customer ID
         if (logs.length > 0) {
@@ -378,6 +409,49 @@ export default function Dashboard() {
                         </div>
                     )}
                 </section>
+
+                {farrierRequestsError && (
+                    <section className="section-container white-section-container no-print marginbsixteen">
+                        <p role="alert" className="text-normal">{farrierRequestsError}</p>
+                    </section>
+                )}
+
+                {pendingFarrierRequests.length > 0 && (
+                    <section className="section-container white-section-container no-print marginbsixteen">
+                        <h2 className="textmedium marginbeight">
+                            Pending Farrier Appointment Requests ({pendingFarrierRequests.length})
+                        </h2>
+                        <p className="text-normal marginbsixteen">
+                            Review these requests before they are added to your calendar.
+                        </p>
+                        {pendingFarrierRequests.map((request) => {
+                            const horse = myLogs.find((log) => log.horse_uuid === request.horse_uuid);
+                            return (
+                                <article
+                                    key={request.id}
+                                    className="marginbsixteen"
+                                    style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '16px' }}
+                                >
+                                    <p className="text-normal marginbeight">
+                                        <strong>{horse?.horse_name ?? 'Your horse'}</strong>
+                                        {' — Farrier visit '}
+                                        {formatGBDate(request.appointment_date)}
+                                        {request.appointment_time && ` at ${request.appointment_time.slice(0, 5)}`}
+                                    </p>
+                                    {request.appointment_notes && (
+                                        <p className="text-normal marginbeight">{request.appointment_notes}</p>
+                                    )}
+                                    <Link
+                                        to={`/farrier-appointment-requests/${request.horse_uuid}`}
+                                        className="buttonMain buttonPurple"
+                                    >
+                                        Review request
+                                    </Link>
+                                </article>
+                            );
+                        })}
+                    </section>
+                )}
 
                 {loading && !isVerifyingPayment ? (
                     <section className="section-container white-section-container no-print marginbsixteen">

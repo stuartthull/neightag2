@@ -631,6 +631,24 @@ button.buttonLink {
     margin: 0 auto;
 }
 
+.nav-icon-wrapper {
+    position: relative;
+    display: block;
+    width: 24px;
+    margin: 0 auto;
+}
+
+.nav-notification-dot {
+    position: absolute;
+    top: -2px;
+    right: -3px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--primarycolor);
+    border-radius: 50%;
+    background: #dc2626;
+}
+
 .nav-link:hover {
     text-decoration: underline;
     text-underline-offset: 4px;
