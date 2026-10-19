@@ -9,16 +9,18 @@ const SITE_URL = 'https://www.neightag.com';
 export default function ShowQr(): React.JSX.Element {
     const { horse_uuid } = useParams<{ horse_uuid: string }>();
     const [horseName, setHorseName] = useState<string | null>(null);
+    const [emergencyContactName, setEmergencyContactName] = useState<string | null>(null);
     const [horseImageUrl, setHorseImageUrl] = useState<string | null>(null);
     const qrValue = `${SITE_URL}/horse-details/${horse_uuid || ''}`;
     const feedsQrValue = `${qrValue}#feeds`;
+    const farrierQrValue = `${SITE_URL}/calendar/farrier/${horse_uuid || ''}/add`;
 
     useEffect(() => {
         if (!horse_uuid) return;
 
         supabase
             .from('equi_log_main')
-            .select('horse_name, horse_image_url')
+            .select('horse_name, horse_image_url, emergency_name_one')
             .eq('horse_uuid', horse_uuid)
             .maybeSingle()
             .then(({ data, error }) => {
@@ -28,6 +30,7 @@ export default function ShowQr(): React.JSX.Element {
                 }
 
                 setHorseName(data?.horse_name ?? null);
+                setEmergencyContactName(data?.emergency_name_one ?? null);
                 setHorseImageUrl(data?.horse_image_url ?? null);
             });
     }, [horse_uuid]);
@@ -43,6 +46,13 @@ export default function ShowQr(): React.JSX.Element {
                     <h1 className="textbig">QR Code</h1>
                     {horse_uuid ? (
                         <>
+                            <p className="text-normal">
+                                <strong>Horse:</strong> {horseName || 'Horse details unavailable'}
+                            </p>
+                            <p className="text-normal marginbsixteen">
+                                <strong>First emergency contact:</strong>{' '}
+                                {emergencyContactName?.trim() || 'Not set'}
+                            </p>
                             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
                                 {horseImageUrl && (
                                     <img
@@ -58,7 +68,7 @@ export default function ShowQr(): React.JSX.Element {
                                         size={280}
                                         bgColor="#ffffff"
                                         fgColor="#000000"
-                                        level="H"
+                                        level="L"
                                         role="img"
                                         aria-label="Horse profile QR code"
                                     />
@@ -70,9 +80,21 @@ export default function ShowQr(): React.JSX.Element {
                                         size={280}
                                         bgColor="#ffffff"
                                         fgColor="#000000"
-                                        level="H"
+                                        level="L"
                                         role="img"
                                         aria-label="Feeds and turnout QR code"
+                                    />
+                                </div>
+                                <div style={{ flex: '0 0 280px', textAlign: 'center' }}>
+                                    <p className="text-normal">Farrier Appointment</p>
+                                    <QRCodeSVG
+                                        value={farrierQrValue}
+                                        size={280}
+                                        bgColor="#ffffff"
+                                        fgColor="#000000"
+                                        level="L"
+                                        role="img"
+                                        aria-label="Farrier appointment QR code"
                                     />
                                 </div>
                             </div>
@@ -81,6 +103,9 @@ export default function ShowQr(): React.JSX.Element {
                             </p>
                             <p className="text-normal">
                                 <a href={feedsQrValue}>Feeds &amp; Turnout: {feedsQrValue}</a>
+                            </p>
+                            <p className="text-normal">
+                                <a href={farrierQrValue}>Farrier appointment: {farrierQrValue}</a>
                             </p>
                         </>
                     ) : (

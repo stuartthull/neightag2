@@ -640,13 +640,30 @@ button.buttonLink {
 
 .nav-notification-dot {
     position: absolute;
-    top: -2px;
-    right: -3px;
-    width: 10px;
-    height: 10px;
+    top: -6px;
+    right: -6px;
+    width: 14px;
+    height: 14px;
     border: 2px solid var(--primarycolor);
     border-radius: 50%;
-    background: #dc2626;
+    background: #22c55e;
+    animation: farrier-notification-blink 1s step-end infinite;
+}
+
+@keyframes farrier-notification-blink {
+    45% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-notification-dot {
+        animation: none;
+    }
 }
 
 .nav-link:hover {
