@@ -115,7 +115,7 @@ export default function WhatDoYouGet(): React.JSX.Element {
 
                                 <li className="text-normal marginbeight">
                                     <strong>Feel safe when out and about:</strong> Put it on your
-                                    saddle, reigns or on your person.
+                                    saddle, bridle or on your person.
                                 </li>
                                 <li className="text-normal marginbeight">
                                     <strong>Get instant access:</strong> Get instant access to your
