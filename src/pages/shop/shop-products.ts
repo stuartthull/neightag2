@@ -1,6 +1,6 @@
 import TapTagImage from '../../assets/taptag.jpg';
 import TravelTapTagImage from '../../assets/travel-taptag.jpg';
-import StableTagImage from '../../assets/stable-tap-card.jpg';
+import StableTagImage from '../../assets/hi-viz-strap.jpg';
 import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 import SmallStableTagImage from '../../assets/small-taptag.jpg';
 import PersonalisedHorseboxPosterImage from '../../assets/personalised-horsebox-poster.jpg';
@@ -125,20 +125,19 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
      'laminated-stable-tag': {
         id: 'laminated-stable-tag',
         slug: 'laminated-stable-tag',
-        name: 'Personalised Stable Tag',
+        name: 'Hi-Viz Wrist Strap QR Code',
         price: '£4.95',
         image: StableTagImage,
-        imageAlt: 'Laminated NeighTag stable tag attached to a stable door',
+        imageAlt: 'HiViz wrist strap with QR code',
         description:
-            "A ready-to-display laminated stable tag with a Tapable area and QR code linking to your horse's up-to-date NeighTag details.",
+            "A Hi-Viz wrist strap with a QR Code for when you're out hacking or eventing. Safety first.",
         benefits: [
-            'Durable laminated finish',
-            'Quick TapTag and QR code access',
+            'Durable Hi-Viz material',
+            'Quick scan QR code access',
             'Secure payment through Stripe',
             'NeighTag subscription required',
-            'Size: 148mm x 148mm',
-            'Do let us know if your stable door is metalllic, then we can provide this product to ensure it works correctly',
+            'Size: Adjustable to fit wrist',
         ],
-        checkoutLabel: 'Buy Laminated Stable Tag - £4.95',
+        checkoutLabel: 'Buy Hi-Viz Wrist Strap QR Code - £4.95',
     },
 };

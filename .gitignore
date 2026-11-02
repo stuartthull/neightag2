@@ -17,3 +17,5 @@ data.sql
 schema.sql
 build/asset-manifest.json
 build/index.html
+.DS_Store
+src/.DS_Store
