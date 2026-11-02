@@ -72,4 +72,27 @@ describe('Home', () => {
         expect(screen.queryByText('Your upcoming events')).not.toBeInTheDocument();
         expect(screen.queryByText('Horsebox Reminders')).not.toBeInTheDocument();
     });
+
+    it('shows product and feature updates', async () => {
+        mockGetSession.mockResolvedValue({
+            data: {
+                session: null,
+            },
+        } as never);
+
+        render(<Home />);
+
+        expect(screen.getByText('Product and feature updates')).toBeInTheDocument();
+        expect(screen.getByText('Hi-Viz Wrist Straps')).toBeInTheDocument();
+        expect(screen.getByText('Add a farrier link to your calendar')).toBeInTheDocument();
+        expect(screen.getByText('Adding a farrier entry')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /add a farrier link to your calendar/i })).toHaveAttribute(
+            'href',
+            '/calendar'
+        );
+        expect(screen.getByRole('link', { name: /adding a farrier entry/i })).toHaveAttribute(
+            'href',
+            '/adding-a-farrier-entry'
+        );
+    });
 });

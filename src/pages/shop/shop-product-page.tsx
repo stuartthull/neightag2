@@ -43,12 +43,10 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
     return (
         <main className="page-wrapper">
             <Helmet>
-                <title>{product.name} | NeighTag Shop</title>
-                <meta
-                    name="description"
-                    content={`Buy a NeighTag ${product.name} for quick access to your horse's details.`}
-                />
-                <meta property="og:title" content={`${product.name} | NeighTag Shop`} />
+                <title>{product.metaTitle}</title>
+                <meta name="description" content={product.metaDescription} />
+                <meta property="og:title" content={product.metaTitle} />
+                <meta property="og:description" content={product.metaDescription} />
             </Helmet>
 
             <div className="page-container">

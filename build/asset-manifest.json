@@ -1,25 +1,36 @@
 {
   "files": {
-    "main.css": "/static/css/main.137ca7ba.css",
-    "main.js": "/static/js/main.9e04e640.js",
+    "main.css": "/static/css/main.b4432d60.css",
+    "main.js": "/static/js/main.d3eb8bdd.js",
     "static/js/453.8d3170cf.chunk.js": "/static/js/453.8d3170cf.chunk.js",
+    "static/media/taptag.jpg": "/static/media/taptag.7df27be6f5b86ff7409e.jpg",
     "static/media/home-horse2.jpg": "/static/media/home-horse2.797f098a3924a5e7e760.jpg",
-    "static/media/taptag.jpg": "/static/media/taptag.8191eb356d6801141912.jpg",
+    "static/media/farrier-app-feeds.jpg": "/static/media/farrier-app-feeds.9b93a48f6b4c38773eb9.jpg",
     "static/media/stable-poster.jpg": "/static/media/stable-poster.4df0306428377212e8b0.jpg",
+    "static/media/high-gloss-stable-tag.jpg": "/static/media/high-gloss-stable-tag.86663d60377c0f0e6487.jpg",
+    "static/media/small-taptag.jpg": "/static/media/small-taptag.a47184dcb0d93f6af2b9.jpg",
+    "static/media/travel-taptag.jpg": "/static/media/travel-taptag.c42ec2a7c633a2078277.jpg",
+    "static/media/personalised-horsebox-poster.jpg": "/static/media/personalised-horsebox-poster.a2d31f1e89c7b64d772d.jpg",
+    "static/media/hi-viz-strap.jpg": "/static/media/hi-viz-strap.60b0d1272350d10b2959.jpg",
+    "static/media/horsesafety.jpg": "/static/media/horsesafety.bfa58a0051557d8c7a32.jpg",
+    "static/media/health.jpg": "/static/media/health.8aba10bf0ff9168fdf53.jpg",
     "static/media/jane1.jpg": "/static/media/jane1.13840e2e51a743fe6471.jpg",
     "static/media/horsebox-poster.jpg": "/static/media/horsebox-poster.17cd6655d4098f8235e6.jpg",
+    "static/media/whynotfree.jpg": "/static/media/whynotfree.a6e8718ad943bd415b67.jpg",
     "static/media/phone-app.jpg": "/static/media/phone-app.3b18f063968f1acbb4b0.jpg",
+    "static/media/home-screen.jpg": "/static/media/home-screen.79167eb8be5c521d4af5.jpg",
     "static/media/generic-horse.jpg": "/static/media/generic-horse.e91683eaaa168f9ee07d.jpg",
+    "static/media/transport.jpg": "/static/media/transport.9a2ec77dd69d12cc2a9b.jpg",
     "static/media/money.jpg": "/static/media/money.d454444680326d0a0349.jpg",
     "static/media/calendar.jpg": "/static/media/calendar.db4a2991a85b54c9a8b4.jpg",
     "static/media/main-logo.png": "/static/media/main-logo.6c3bdaa87b8b73c247c2.png",
     "index.html": "/index.html",
-    "main.137ca7ba.css.map": "/static/css/main.137ca7ba.css.map",
-    "main.9e04e640.js.map": "/static/js/main.9e04e640.js.map",
+    "main.b4432d60.css.map": "/static/css/main.b4432d60.css.map",
+    "main.d3eb8bdd.js.map": "/static/js/main.d3eb8bdd.js.map",
     "453.8d3170cf.chunk.js.map": "/static/js/453.8d3170cf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.137ca7ba.css",
-    "static/js/main.9e04e640.js"
+    "static/css/main.b4432d60.css",
+    "static/js/main.d3eb8bdd.js"
   ]
 }

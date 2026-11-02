@@ -9,6 +9,8 @@ import Money from '../assets/money.jpg';
 import QrCode from '../assets/qr-code.png';
 import ScanCode from '../assets/scan-code.png';
 import Calendar from '../assets/calendar.jpg';
+import FarrierAppFeeds from '../assets/farrier-app-feeds.jpg';
+import HiVizStrap from '../assets/hi-viz-strap.jpg';
 import Janeone from '../assets/jane1.jpg';
 import Homescreen from '../assets/home-screen.jpg';
 import { LocalPrice } from '../components/local-price';
@@ -257,14 +259,14 @@ function Home(): React.JSX.Element {
                                     Opening an account and adding your horse's details is 100% free.
                                 </h2>
                                 <p className="text-normal marginbsixteen">
-                                    This is much more than a horse emergency QR code. It's a
+                                    This is much more than a horse emergency QR code and TapTag. It's a
                                     complete, real-time stable help ecosystem for your horse.
                                 </p>
                                 <p className="text-normal marginbsixteen">
                                     Store as much information as you need without spending a penny.
                                 </p>
                                 <p className="text-normal marginbsixteen">
-                                    If you want to activate your QR code so others can scan and view
+                                    If you want to activate your QR code or TapTag so others can scan and view
                                     your horse's details, it's less than{' '}
                                     <LocalPrice basePriceGbp={1} /> per month, billed annually. See?
                                     Proof that not everything in the horse world has to be
@@ -316,7 +318,7 @@ function Home(): React.JSX.Element {
                                     <h2 className="textmedium">Get your Stable card</h2>
                                     <p className="text-normal">
                                         Simply print it out and stick it on your stable. Or even get
-                                        one of our TagCards for your stable. No need to scan.
+                                        one of our TapTags for your stable. No need to scan.
                                     </p>
                                 </div>
                             </div>
@@ -339,6 +341,9 @@ function Home(): React.JSX.Element {
 
                 <section className="latest-products-strip full-width">
                     <h2 className="textbig">Our latest products</h2>
+                    <p className="marginbsixteen">
+                        <Link to="/shop">Visit the shop to see all products</Link>
+                    </p>
                     <div className="latest-products-grid">
                         {[
                             { product: SHOP_PRODUCTS['travel-taptag'], title: 'Travel TapTag' },
@@ -366,6 +371,53 @@ function Home(): React.JSX.Element {
                                 </span>
                             </Link>
                         ))}
+                    </div>
+                </section>
+
+                <section className="product-feature-updates full-width">
+                    <h2 className="textbig">Product and feature updates</h2>
+                    <div className="product-feature-updates-grid">
+                        <Link
+                            to="/shop/high-viz-wrist-straps"
+                            className="product-feature-update-card"
+                        >
+                            <img
+                                src={HiVizStrap}
+                                alt="Hi-Viz wrist strap with a QR code"
+                                className="product-feature-update-image"
+                            />
+                            <span className="product-feature-update-info">
+                                <span className="latest-product-name">
+                                    Hi-Viz Wrist Straps
+                                </span>
+                                <span className="latest-product-linker">
+                                    Keep your horse's details close at hand when hacking or
+                                    eventing.
+                                </span>
+                                <span className="product-feature-update-link">Shop now</span>
+                            </span>
+                        </Link>
+
+                        <Link
+                            to="/adding-a-farrier-entry"
+                            className="product-feature-update-card"
+                        >
+                            <img
+                                src={FarrierAppFeeds}
+                                alt="Farrier appointment and horse care information"
+                                className="product-feature-update-image"
+                            />
+                            <span className="product-feature-update-info">
+                                <span className="latest-product-name">
+                                    Adding a farrier entry
+                                </span>
+                                <span className="latest-product-linker">
+                                    See how to add a farrier appointment to your NeighTag
+                                    calendar.
+                                </span>
+                                <span className="product-feature-update-link">Read more</span>
+                            </span>
+                        </Link>
                     </div>
                 </section>
                 <div className="section-container white-section-container full-width">

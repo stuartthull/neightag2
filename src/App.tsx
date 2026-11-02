@@ -9,6 +9,7 @@ import Login from './pages/login';
 import Dashboard from './pages/dashboard';
 import EditItem from './pages/edit-horse';
 import ContactUs from './pages/contact-us';
+import AddingAFarrierEntry from './pages/adding-a-farrier-entry';
 
 // Your newly implemented views
 import HorseDetails from './pages/horse-details';
@@ -95,6 +96,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/update-password" element={<UpdatePassword />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/adding-a-farrier-entry" element={<AddingAFarrierEntry />} />
                 <Route path="/what-you-get" element={<WhatDoYouGet />} />
                 <Route path="/cookie-policy" element={<CookiePolicy />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -105,7 +107,7 @@ function AppContent(): React.JSX.Element {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/taptag" element={<TapTag />} />
                 <Route path="/shop/travel-taptag" element={<TravelTapTag />} />
-                <Route path="/shop/laminated-stable-tag" element={<LaminatedStableTag />} />
+                <Route path="/shop/high-viz-wrist-straps" element={<LaminatedStableTag />} />
                 <Route path="/shop/high-gloss-stable-tag" element={<HighGlossStableTag />} />
                 <Route path="/shop/small-stable-tag" element={<SmallStableTag />} />
                 <Route
