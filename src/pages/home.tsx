@@ -346,7 +346,7 @@ function Home(): React.JSX.Element {
                     </p>
                     <div className="latest-products-grid">
                         {[
-                            { product: SHOP_PRODUCTS['travel-taptag'], title: 'Travel TapTag' },
+                            { product: SHOP_PRODUCTS['travel-taptag'], title: 'High Gloss Travel TapTag' },
                             {
                                 product: SHOP_PRODUCTS['high-gloss-stable-tag'],
                                 title: 'High Gloss Stable Tag',
