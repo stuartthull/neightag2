@@ -351,7 +351,7 @@ function Home(): React.JSX.Element {
                                 product: SHOP_PRODUCTS['high-gloss-stable-tag'],
                                 title: 'High Gloss Stable Tag',
                             },
-                            { product: SHOP_PRODUCTS['laminated-stable-tag'], title: 'Stable Tag' },
+                            { product: SHOP_PRODUCTS['laminated-stable-tag'], title: 'Hi-Viz Wrist Straps' },
                         ].map(({ product, title }) => (
                             <Link
                                 to={`/shop/${product.slug}`}
