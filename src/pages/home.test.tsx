@@ -83,6 +83,7 @@ describe('Home', () => {
         render(<Home />);
 
         expect(screen.getByText('Product and feature updates')).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Login' })).toHaveAttribute('href', '/login');
         expect(screen.getByText('Hi-Viz Wrist Straps')).toBeInTheDocument();
         expect(screen.getByText('Add a farrier link to your calendar')).toBeInTheDocument();
         expect(screen.getByText('Adding a farrier entry')).toBeInTheDocument();

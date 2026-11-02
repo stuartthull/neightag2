@@ -100,7 +100,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
         id: 'small-stable-tag',
         slug: 'small-stable-tag',
         name: 'Personalised Small Feed and Routines Tag',
-        price: '£2.95',
+        price: '£3.95',
         image: SmallStableTagImage,
         imageAlt: 'Small NeighTag stable tag for your tack room',
         description:
@@ -115,7 +115,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'NeighTag subscription required',
             'Size: 150mm x 50mm',
         ],
-        checkoutLabel: 'Buy Small Feed and Routines Tag - £2.95',
+        checkoutLabel: 'Buy Small Feed and Routines Tag - £3.95',
     },
     'personalised-horsebox-poster': {
         id: 'personalised-horsebox-poster',

@@ -158,9 +158,14 @@ function Home(): React.JSX.Element {
                             Go to Your Stable
                         </Link>
                     ) : (
-                        <Link to="/login?mode=signup" className="buttonOrange buttonMain">
-                            Sign up now!
-                        </Link>
+                        <>
+                            <Link to="/login?mode=signup" className="buttonOrange buttonMain">
+                                Sign up now!
+                            </Link>
+                            <Link to="/login" className="buttonPurple buttonMain">
+                                Login to your account
+                            </Link>
+                        </>
                     )}
                 </div>
             </div>
@@ -341,9 +346,7 @@ function Home(): React.JSX.Element {
 
                 <section className="latest-products-strip full-width">
                     <h2 className="textbig">Our latest products</h2>
-                    <p className="marginbsixteen">
-                        <Link to="/shop">Visit the shop to see all products</Link>
-                    </p>
+
                     <div className="latest-products-grid">
                         {[
                             { product: SHOP_PRODUCTS['travel-taptag'], title: 'High Gloss Travel TapTag' },
@@ -372,6 +375,9 @@ function Home(): React.JSX.Element {
                             </Link>
                         ))}
                     </div>
+                    <p className="marginbsixteen margintsixteen">
+                        <Link to="/shop">Visit the shop to see all products</Link>
+                    </p>
                 </section>
 
                 <section className="product-feature-updates full-width">
@@ -397,7 +403,6 @@ function Home(): React.JSX.Element {
                                 <span className="product-feature-update-link">Shop now</span>
                             </span>
                         </Link>
-
                         <Link
                             to="/adding-a-farrier-entry"
                             className="product-feature-update-card"
