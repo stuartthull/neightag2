@@ -145,10 +145,10 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
     'phone-cover': {
         id: 'phone-cover',
         slug: 'phone-cover',
-        name: 'Personalised Phone Cover with QR Code',
+        name: 'Personalised Phone Cover with Emergency QR Code',
         price: '£9.95',
         image: PhoneCoverImage,
-        imageAlt: 'Personalised phone cover with NeighTag QR code',
+        imageAlt: 'Personalised phone cover with NeighTag Emergency QR code',
         description:
             "A personalised phone cover with a printed QR code linking to your horse's up-to-date NeighTag details.",
         metaTitle: 'Personalised Phone Cover with QR Code | NeighTag Shop',
