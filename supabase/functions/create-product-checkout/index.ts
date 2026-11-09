@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
                     Deno.env.get('STRIPE_TRAVEL_TAPTAG_PRICE_ID') || defaultTravelTapTagPriceId,
             },
             'travel-taptag-voucher': {
-                name: 'Travel TapTag Gift Voucher',
+                name: '1 Year Subscription Gift Voucher',
                 orderType: 'travel_taptag_voucher',
                 priceId:
                     Deno.env.get('STRIPE_TRAVEL_TAPTAG_VOUCHER_PRICE_ID') ||

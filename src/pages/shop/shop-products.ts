@@ -80,21 +80,21 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
     'travel-taptag-voucher': {
         id: 'travel-taptag-voucher',
         slug: 'travel-taptag-voucher',
-        name: 'Travel TapTag Gift Voucher',
+        name: '1 Year Subscription Gift Voucher',
         price: '£9.95',
         image: GiftVoucherImage,
-        imageAlt: 'NeighTag Travel TapTag gift voucher',
+        imageAlt: 'NeighTag 1 year subscription gift voucher',
         description:
-            'A gift voucher for a personalised Travel TapTag, including a free Travel TapTag for the recipient.',
-        metaTitle: 'Travel TapTag Gift Voucher | NeighTag Shop',
+            'A gift voucher for 1 year subscription, including a free Travel TapTag for the recipient.',
+        metaTitle: '1 Year Subscription Gift Voucher | NeighTag Shop',
         metaDescription:
-            'Buy a NeighTag gift voucher for a personalised Travel TapTag, including a free Travel TapTag.',
+            'Buy a NeighTag gift voucher for 1 year subscription, including a free Travel TapTag.',
         benefits: [
-            'Gift voucher for a personalised Travel TapTag',
+            'Gift voucher for 1 year subscription',
             'FREE Travel TapTag included',
             'Secure payment through Stripe',
         ],
-        checkoutLabel: 'Buy Travel TapTag Gift Voucher - £9.95',
+        checkoutLabel: 'Buy 1 Year Subscription Gift Voucher - £9.95',
     },
     'high-gloss-stable-tag': {
         id: 'high-gloss-stable-tag',
