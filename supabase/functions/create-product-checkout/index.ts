@@ -17,7 +17,8 @@ type ProductId =
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
     | 'small-stable-tag'
-    | 'personalised-horsebox-poster';
+    | 'personalised-horsebox-poster'
+    | 'phone-cover';
 
 type Product = {
     name: string;
@@ -31,7 +32,8 @@ const isProductId = (value: unknown): value is ProductId =>
     value === 'laminated-stable-tag' ||
     value === 'high-gloss-stable-tag' ||
     value === 'small-stable-tag' ||
-    value === 'personalised-horsebox-poster';
+    value === 'personalised-horsebox-poster' ||
+    value === 'phone-cover';
 
 Deno.serve(async (req) => {
     if (req.method === 'OPTIONS') {
@@ -101,6 +103,11 @@ Deno.serve(async (req) => {
                 name: 'Personalised Horse Box Poster A4',
                 orderType: 'horsebox_poster',
                 priceId: Deno.env.get('STRIPE_PERSONALISED_HORSEBOX_POSTER_PRICE_ID') || '',
+            },
+            'phone-cover': {
+                name: 'Personalised Phone Cover with QR Code',
+                orderType: 'phone_cover',
+                priceId: Deno.env.get('STRIPE_PHONE_COVER_PRICE_ID') || '',
             },
         };
 

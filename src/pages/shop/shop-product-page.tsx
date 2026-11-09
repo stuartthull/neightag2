@@ -96,6 +96,20 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             ))}
                         </ul>
 
+                        {product.availableCases && (
+                            <>
+                                <h2 className="textmedium">Available cases</h2>
+                                <ul className="shop-benefits">
+                                    {product.availableCases.map((availableCase) => (
+                                        <li className="text-normal" key={availableCase}>
+                                            {availableCase}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </>
+                        )}
+
+
                         <p className="shop-product-page-price">{product.price}</p>
                         <button
                             type="button"

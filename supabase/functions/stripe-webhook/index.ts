@@ -338,6 +338,7 @@ serve(async (req) => {
                     'laminated_stable_tag',
                     'high_gloss_stable_tag',
                     'horsebox_poster',
+                    'phone_cover',
                 ].includes(session.metadata?.order_type || '') &&
                 session.payment_status === 'paid'
             ) {

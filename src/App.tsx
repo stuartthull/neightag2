@@ -47,6 +47,7 @@ import mainLogo from './assets/main-logo.png';
 import HighGlossStableTag from './pages/shop/high-gloss-stable-tag';
 import SmallStableTag from './pages/shop/small-stable-tag';
 import PersonalisedHorseboxPoster from './pages/shop/personalised-horsebox-poster';
+import PhoneCover from './pages/shop/phone-cover';
 import AdminDashboard from './pages/admin-dashboard';
 
 const HamburgerSvg = () => {
@@ -114,6 +115,7 @@ function AppContent(): React.JSX.Element {
                     path="/shop/personalised-horsebox-poster"
                     element={<PersonalisedHorseboxPoster />}
                 />
+                <Route path="/shop/phone-cover" element={<PhoneCover />} />
                 <Route path="/faqs" element={<Faqs />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/blog/:slug" element={<Blog />} />

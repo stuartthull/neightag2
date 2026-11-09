@@ -4,6 +4,7 @@ import StableTagImage from '../../assets/hi-viz-strap.jpg';
 import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 import SmallStableTagImage from '../../assets/small-taptag.jpg';
 import PersonalisedHorseboxPosterImage from '../../assets/personalised-horsebox-poster.jpg';
+import PhoneCoverImage from '../../assets/phone-cover.jpg';
 
 export type ProductId =
     | 'taptag'
@@ -11,7 +12,8 @@ export type ProductId =
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
     | 'small-stable-tag'
-    | 'personalised-horsebox-poster';
+    | 'personalised-horsebox-poster'
+    | 'phone-cover';
 
 export interface ShopProduct {
     id: ProductId;
@@ -24,6 +26,7 @@ export interface ShopProduct {
     metaTitle: string;
     metaDescription: string;
     benefits: string[];
+    availableCases?: string[];
     checkoutLabel: string;
 }
 
@@ -138,6 +141,47 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'NeighTag subscription required',
         ],
         checkoutLabel: 'Buy Personalised Horse Box Poster A4 - £5.95',
+    },
+    'phone-cover': {
+        id: 'phone-cover',
+        slug: 'phone-cover',
+        name: 'Personalised Phone Cover with QR Code',
+        price: '£12.95',
+        image: PhoneCoverImage,
+        imageAlt: 'Personalised phone cover with NeighTag QR code',
+        description:
+            "A personalised phone cover with a printed QR code linking to your horse's up-to-date NeighTag details.",
+        metaTitle: 'Personalised Phone Cover with QR Code | NeighTag Shop',
+        metaDescription:
+            "Buy a personalised NeighTag phone cover with a printed QR code for quick access to your horse's details.",
+        benefits: [
+            'Personalised phone cover',
+            'Printed QR code for quick access',
+            'Secure payment through Stripe',
+            'NeighTag subscription required',
+        ],
+        availableCases: [
+            'Galaxy S22 - Plastic Case - Black',
+            'Galaxy S22 - Plastic Case - White',
+            'Galaxy S22 Plus - Plastic Case - Black',
+            'Galaxy S22 Plus - Plastic Case - White',
+            'Galaxy S22 Plus - PU Leather Flip Case',
+            'Galaxy S23 Plus - Plastic Case - Black',
+            'Galaxy S24 Plus - PU Leather Flip Case',
+            'iPhone 11 Pro 5.8 - Plastic Case - Black',
+            'iPhone 12 5.4 Mini - Plastic Case - Black',
+            'iPhone 12 6.7 Pro Max - Plastic Case - Black',
+            'iPhone 13 5.4 Mini - Plastic Case - Black',
+            'iPhone 13 6.1 Pro - Plastic Case - Black',
+            'iPhone 14 Plus 6.7 - Plastic Case - Black',
+            'iPhone 14 Pro 6.1 - Plastic Case - Black',
+            'iPhone 14 Pro Max 6.7 - Plastic Case - Black',
+            'iPhone 15 Plus 6.7 - Plastic Case - Black',
+            'iPhone 15 Pro 6.1 - Plastic Case - Black',
+            'iPhone 16 6.1 - PU Leather Flip Case',
+            'iPhone 16 Pro Max 6.9 - PU Leather Flip Case',
+        ],
+        checkoutLabel: 'Buy Personalised Phone Cover - £12.95',
     },
      'laminated-stable-tag': {
         id: 'laminated-stable-tag',
