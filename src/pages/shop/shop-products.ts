@@ -146,7 +146,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
         id: 'phone-cover',
         slug: 'phone-cover',
         name: 'Personalised Phone Cover with QR Code',
-        price: '£12.95',
+        price: '£9.95',
         image: PhoneCoverImage,
         imageAlt: 'Personalised phone cover with NeighTag QR code',
         description:
@@ -181,7 +181,7 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'iPhone 16 6.1 - PU Leather Flip Case',
             'iPhone 16 Pro Max 6.9 - PU Leather Flip Case',
         ],
-        checkoutLabel: 'Buy Personalised Phone Cover - £12.95',
+        checkoutLabel: 'Buy Personalised Phone Cover - £9.95',
     },
      'laminated-stable-tag': {
         id: 'laminated-stable-tag',
