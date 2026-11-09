@@ -10,10 +10,12 @@ const defaultPriceId = 'price_1TtTXbIfQpTOfYRJfPWeluKL';
 const defaultHighGlossStableTagPriceId = 'price_1U5NUDIfQpTOfYRJSHg2xpFE';
 const defaultTravelTapTagPriceId = 'price_1U90y6IfQpTOfYRJn5yLqmbK';
 const defaultSmallStableTagPriceId = 'price_1UEqhGIfQpTOfYRJTzdbE7EF';
+const defaultTravelTapTagVoucherPriceId = 'price_1UZpH2IfQpTOfYRJiZhxpHxd';
 
 type ProductId =
     | 'taptag'
     | 'travel-taptag'
+    | 'travel-taptag-voucher'
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
     | 'small-stable-tag'
@@ -29,6 +31,7 @@ type Product = {
 const isProductId = (value: unknown): value is ProductId =>
     value === 'taptag' ||
     value === 'travel-taptag' ||
+    value === 'travel-taptag-voucher' ||
     value === 'laminated-stable-tag' ||
     value === 'high-gloss-stable-tag' ||
     value === 'small-stable-tag' ||
@@ -79,6 +82,13 @@ Deno.serve(async (req) => {
                 orderType: 'travel_taptag',
                 priceId:
                     Deno.env.get('STRIPE_TRAVEL_TAPTAG_PRICE_ID') || defaultTravelTapTagPriceId,
+            },
+            'travel-taptag-voucher': {
+                name: 'Travel TapTag Gift Voucher',
+                orderType: 'travel_taptag_voucher',
+                priceId:
+                    Deno.env.get('STRIPE_TRAVEL_TAPTAG_VOUCHER_PRICE_ID') ||
+                    defaultTravelTapTagVoucherPriceId,
             },
             'laminated-stable-tag': {
                 name: 'Laminated Stable Tag',

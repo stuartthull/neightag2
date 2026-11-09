@@ -5,10 +5,12 @@ import HighGlossStableTagImage from '../../assets/high-gloss-stable-tag.jpg';
 import SmallStableTagImage from '../../assets/small-taptag.jpg';
 import PersonalisedHorseboxPosterImage from '../../assets/personalised-horsebox-poster.jpg';
 import PhoneCoverImage from '../../assets/phone-cover.jpg';
+import GiftVoucherImage from '../../assets/gift-voucher.jpg';
 
 export type ProductId =
     | 'taptag'
     | 'travel-taptag'
+    | 'travel-taptag-voucher'
     | 'laminated-stable-tag'
     | 'high-gloss-stable-tag'
     | 'small-stable-tag'
@@ -74,6 +76,25 @@ export const SHOP_PRODUCTS: Record<ProductId, ShopProduct> = {
             'Size: 150mm x 200mm',
         ],
         checkoutLabel: 'Buy Personalised Travel TapTag - £8.95',
+    },
+    'travel-taptag-voucher': {
+        id: 'travel-taptag-voucher',
+        slug: 'travel-taptag-voucher',
+        name: 'Travel TapTag Gift Voucher',
+        price: '£9.95',
+        image: GiftVoucherImage,
+        imageAlt: 'NeighTag Travel TapTag gift voucher',
+        description:
+            'A gift voucher for a personalised Travel TapTag, including a free Travel TapTag for the recipient.',
+        metaTitle: 'Travel TapTag Gift Voucher | NeighTag Shop',
+        metaDescription:
+            'Buy a NeighTag gift voucher for a personalised Travel TapTag, including a free Travel TapTag.',
+        benefits: [
+            'Gift voucher for a personalised Travel TapTag',
+            'FREE Travel TapTag included',
+            'Secure payment through Stripe',
+        ],
+        checkoutLabel: 'Buy Travel TapTag Gift Voucher - £9.95',
     },
     'high-gloss-stable-tag': {
         id: 'high-gloss-stable-tag',

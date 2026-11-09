@@ -53,9 +53,11 @@ export default function Shop(): React.JSX.Element {
                                     <h2 className="textmedium shop-product-heading">
                                         {product.name}
                                     </h2>
-                                    <p className="text-normal marginbsixteen">
-                                        Please note: NeighTag subscription required.
-                                    </p>
+                                    {product.id !== 'travel-taptag-voucher' && (
+                                        <p className="text-normal marginbsixteen">
+                                            Please note: NeighTag subscription required.
+                                        </p>
+                                    )}
                                     <p className="shop-product-price">{product.price}</p>
                                     <a href={`/shop/${product.slug}`} className="shop-details-link">
                                         View full product details

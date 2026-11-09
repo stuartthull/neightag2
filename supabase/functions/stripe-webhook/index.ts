@@ -335,6 +335,7 @@ serve(async (req) => {
             if (
                 [
                     'taptag',
+                    'travel_taptag_voucher',
                     'laminated_stable_tag',
                     'high_gloss_stable_tag',
                     'horsebox_poster',

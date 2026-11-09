@@ -81,11 +81,13 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             </p>
                         )}
 
-                        <p className="text-normal marginbsixteen">
-                            <b>Please note:</b>
-                            <br />
-                            NeighTag subscription required.
-                        </p>
+                        {product.id !== 'travel-taptag-voucher' && (
+                            <p className="text-normal marginbsixteen">
+                                <b>Please note:</b>
+                                <br />
+                                NeighTag subscription required.
+                            </p>
+                        )}
                         <p className="text-normal marginbsixteen">{product.description}</p>
 
                         <ul className="shop-benefits">

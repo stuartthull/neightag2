@@ -39,6 +39,7 @@ import ShowQr from './pages/show-qr';
 import Shop from './pages/shop/shop';
 import TapTag from './pages/shop/tap-tag';
 import TravelTapTag from './pages/shop/travel-taptag';
+import TravelTapTagVoucher from './pages/shop/travel-taptag-voucher';
 import LaminatedStableTag from './pages/shop/laminated-stable-tag';
 import Faqs from './pages/faqs';
 import Blog from './pages/blog';
@@ -108,6 +109,10 @@ function AppContent(): React.JSX.Element {
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/taptag" element={<TapTag />} />
                 <Route path="/shop/travel-taptag" element={<TravelTapTag />} />
+                <Route
+                    path="/shop/travel-taptag-voucher"
+                    element={<TravelTapTagVoucher />}
+                />
                 <Route path="/shop/high-viz-wrist-straps" element={<LaminatedStableTag />} />
                 <Route path="/shop/high-gloss-stable-tag" element={<HighGlossStableTag />} />
                 <Route path="/shop/small-stable-tag" element={<SmallStableTag />} />
