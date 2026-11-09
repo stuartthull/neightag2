@@ -85,7 +85,7 @@ export default function ShopProductPage({ product }: ShopProductPageProps): Reac
                             <p className="text-normal marginbsixteen">
                                 <b>Please note:</b>
                                 <br />
-                                NeighTag subscription required.
+                                NeighTag subscription required
                             </p>
                         )}
                         <p className="text-normal marginbsixteen">{product.description}</p>
